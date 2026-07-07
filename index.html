@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Piaghja — Restaurant de plage en Corse</title>
+<meta name="description" content="A Piaghja, restaurant les pieds dans le sable en Corse. Cuisine méditerranéenne, agneau à la broche, terrasse face à la mer. Réservation conseillée.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#4a5335;
+    --olive-soft:#8a9268;
+    --sable:#efe9dd;
+    --sable-deep:#e2d9c6;
+    --rose:#e7c6bd;
+    --or:#c2a15c;
+    --encre:#2a2b24;
+    --blanc:#fdfcf9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Questrial',sans-serif;
+    color:var(--encre);
+    background:var(--blanc);
+    line-height:1.7;
+  }
+  img{display:block;max-width:100%;}
+  a{color:inherit;}
+
+  /* ---------- Navigation ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.1rem 5vw;
+    transition:background .35s ease, box-shadow .35s ease;
+  }
+  nav.scrolled{
+    background:rgba(253,252,249,.94);
+    backdrop-filter:blur(8px);
+    box-shadow:0 1px 0 rgba(74,83,53,.12);
+  }
+  nav.scrolled .nav-links a, nav.scrolled .brand{color:var(--olive);}
+  .brand{
+    font-family:'Allura',cursive;
+    font-size:1.9rem;color:var(--blanc);
+    text-decoration:none;line-height:1;
+  }
+  .nav-links{display:flex;gap:2.2rem;list-style:none;}
+  .nav-links a{
+    text-decoration:none;color:var(--blanc);
+    font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;
+    position:relative;padding-bottom:3px;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:0;
+    background:var(--or);transition:width .3s ease;
+  }
+  .nav-links a:hover::after,.nav-links a:focus-visible::after{width:100%;}
+  .nav-cta{
+    border:1px solid var(--or);border-radius:999px;
+    padding:.45rem 1.2rem !important;
+  }
+  .burger{display:none;background:none;border:none;cursor:pointer;z-index:60;}
+  .burger span{display:block;width:26px;height:2px;background:var(--blanc);margin:6px 0;transition:.3s;}
+  nav.scrolled .burger span{background:var(--olive);}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;height:100svh;min-height:560px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:url('images/granit.jpg') center 35%/cover no-repeat;
+  }
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(74,83,53,.45) 60%,rgba(42,43,36,.65) 100%);
+  }
+  .hero-inner{position:relative;z-index:2;color:var(--blanc);padding:0 6vw;}
+  .hero-eyebrow{
+    font-size:.8rem;letter-spacing:.35em;text-transform:uppercase;
+    color:var(--rose);margin-bottom:1.2rem;
+  }
+  .hero-title{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(4rem,11vw,8.5rem);line-height:1.05;
+  }
+  .hero-sub{
+    max-width:34ch;margin:1.4rem auto 2.4rem;
+    font-size:clamp(1rem,1.4vw,1.15rem);color:var(--sable);
+  }
+  .btn{
+    display:inline-block;text-decoration:none;
+    letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;
+    padding:.95rem 2.4rem;border-radius:999px;
+    transition:transform .25s ease, background .25s ease, color .25s ease;
+  }
+  .btn-or{background:var(--or);color:var(--encre);}
+  .btn-or:hover{transform:translateY(-2px);background:#d4b676;}
+  .btn-ghost{border:1px solid var(--blanc);color:var(--blanc);margin-left:.8rem;}
+  .btn-ghost:hover{background:var(--blanc);color:var(--olive);}
+  .hero-scroll{
+    position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);
+    color:var(--sable);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+    text-decoration:none;opacity:.85;z-index:2;
+  }
+  .hero-scroll::after{
+    content:"";display:block;width:1px;height:34px;margin:10px auto 0;
+    background:linear-gradient(var(--sable),transparent);
+  }
+
+  /* ---------- Sections communes ---------- */
+  section{padding:clamp(4.5rem,9vw,7.5rem) 6vw;}
+  .eyebrow{
+    font-size:.78rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--or);margin-bottom:.9rem;
+  }
+  h2{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(2.6rem,5.5vw,4rem);color:var(--olive);line-height:1.1;
+    margin-bottom:1.4rem;
+  }
+  .rameau{
+    width:120px;height:22px;margin:1.6rem 0;
+  }
+
+  /* ---------- Histoire ---------- */
+  .histoire{
+    display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2.5rem,6vw,6rem);
+    align-items:center;max-width:1200px;margin:0 auto;
+  }
+  .histoire p{margin-bottom:1.1rem;max-width:52ch;}
+  .histoire-img{
+    position:relative;
+  }
+  .histoire-img img{
+    width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:2px;
+  }
+  .histoire-img::before{
+    content:"";position:absolute;inset:-16px 16px 16px -16px;
+    border:1px solid var(--or);border-radius:2px;z-index:-1;
+  }
+
+  /* ---------- Signature : agneau à la broche ---------- */
+  .signature{
+    background:var(--olive);color:var(--sable);
+    text-align:center;
+  }
+  .signature .eyebrow{color:var(--rose);}
+  .signature h2{color:var(--blanc);}
+  .signature p{max-width:58ch;margin:0 auto 1.1rem;}
+  .signature .note{
+    font-family:'Allura',cursive;font-size:1.7rem;color:var(--or);
+    margin-top:1.6rem;display:block;
+  }
+
+  /* ---------- Carte ---------- */
+  .carte-wrap{max-width:900px;margin:0 auto;}
+  .carte-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:3rem 4.5rem;margin-top:2.5rem;
+  }
+  .carte-cat h3{
+    font-size:.85rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--olive);border-bottom:1px solid var(--sable-deep);
+    padding-bottom:.6rem;margin-bottom:1.2rem;font-weight:400;
+  }
+  .plat{
+    display:flex;justify-content:space-between;align-items:baseline;
+    gap:1rem;margin-bottom:1rem;
+  }
+  .plat .nom{max-width:70%;}
+  .plat .nom small{display:block;color:#6c6d60;font-size:.85rem;}
+  .plat .prix{color:var(--or);white-space:nowrap;}
+  .carte-note{
+    text-align:center;margin-top:2.8rem;color:#6c6d60;font-size:.92rem;
+  }
+
+  /* ---------- Galerie ---------- */
+  .galerie{background:var(--sable);}
+  .galerie-head{text-align:center;max-width:60ch;margin:0 auto 2.8rem;}
+  .galerie-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+    max-width:1200px;margin:0 auto;
+  }
+  .galerie-grid figure{overflow:hidden;border-radius:2px;aspect-ratio:3/4;}
+  .galerie-grid img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .galerie-grid figure:hover img{transform:scale(1.05);}
+  .galerie-grid .ph{
+    display:flex;align-items:center;justify-content:center;
+    background:var(--sable-deep);color:var(--olive-soft);
+    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;text-align:center;padding:1rem;
+  }
+
+  /* ---------- Infos & réservation ---------- */
+  .infos{
+    display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,6rem);
+    max-width:1100px;margin:0 auto;align-items:start;
+  }
+  .infos dl div{margin-bottom:1.4rem;}
+  .infos dt{
+    font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--or);margin-bottom:.25rem;
+  }
+  .resa-card{
+    background:var(--rose);border-radius:2px;
+    padding:clamp(2rem,4vw,3rem);text-align:center;
+  }
+  .resa-card h3{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:2.4rem;color:var(--olive);margin-bottom:.8rem;
+  }
+  .resa-card p{margin-bottom:1.6rem;max-width:38ch;margin-inline:auto;}
+  .resa-card .btn{background:var(--olive);color:var(--blanc);}
+  .resa-card .btn:hover{transform:translateY(-2px);background:#5a6542;}
+  .resa-card .tel{
+    display:block;margin-top:1.2rem;font-size:1.05rem;
+    letter-spacing:.06em;text-decoration:none;color:var(--olive);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--encre);color:var(--sable);
+    text-align:center;padding:3rem 6vw 2.2rem;
+  }
+  footer .brand-foot{
+    font-family:'Allura',cursive;font-size:2.2rem;color:var(--blanc);
+  }
+  footer p{font-size:.85rem;margin-top:.8rem;color:#a5a696;}
+  footer .socials{margin-top:1.2rem;display:flex;gap:1.6rem;justify-content:center;}
+  footer .socials a{
+    font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;
+    text-decoration:none;color:var(--rose);
+  }
+  footer .socials a:hover{color:var(--or);}
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:860px){
+    .nav-links{
+      position:fixed;inset:0;background:var(--olive);
+      flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+      transform:translateX(100%);transition:transform .35s ease;
+    }
+    .nav-links.open{transform:none;}
+    .nav-links a{color:var(--blanc) !important;font-size:1rem;}
+    .burger{display:block;}
+    .histoire,.infos{grid-template-columns:1fr;}
+    .carte-grid{grid-template-columns:1fr;gap:2.5rem;}
+    .galerie-grid{grid-template-columns:1fr 1fr;}
+    .btn-ghost{margin-left:0;margin-top:.9rem;}
+  }
+  @media (max-width:520px){
+    .galerie-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="brand" href="#top">A Piaghja</a>
+  <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" onclick="toggleMenu(this)">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#histoire">Le lieu</a></li>
+    <li><a href="#broche">L'agneau à la broche</a></li>
+    <li><a href="#carte">La carte</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#infos">Infos</a></li>
+    <li><a class="nav-cta" href="#infos">Réserver</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg" role="img" aria-label="Mur de granit corse baigné de lumière sur la terrasse d'A Piaghja"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Restaurant de plage — Corse</p>
+    <h1 class="hero-title">A Piaghja</h1>
+    <p class="hero-sub">Les pieds dans le sable, la Méditerranée à portée de main. Cuisine du feu, produits de l'île, terrasse face à la mer.</p>
+    <a class="btn btn-or" href="#infos">Réserver une table</a>
+    <a class="btn btn-ghost" href="#carte">Découvrir la carte</a>
+  </div>
+  <a class="hero-scroll" href="#histoire">Descendre</a>
+</header>
+
+<section id="histoire">
+  <div class="histoire">
+    <div class="reveal">
+      <p class="eyebrow">Le lieu</p>
+      <h2>Une paillote entre granit et maquis</h2>
+      <p>Posée au bord de l'eau, A Piaghja est née d'une idée simple : offrir la Corse dans l'assiette et sous les pieds. Granit blond, bambou, céramiques vertes — le décor prolonge la plage, et la salle s'ouvre entièrement sur la mer.</p>
+      <p>Dix-huit tables en terrasse, le bruit des vagues pour fond sonore, et une cuisine qui suit le rythme des saisons et des arrivages de l'île.</p>
+      <svg class="rameau" viewBox="0 0 120 22" fill="none" aria-hidden="true">
+        <path d="M2 11 H118" stroke="#c2a15c" stroke-width="1"/>
+        <ellipse cx="38" cy="7" rx="7" ry="3.2" transform="rotate(-28 38 7)" fill="#8a9268"/>
+        <ellipse cx="60" cy="15" rx="7" ry="3.2" transform="rotate(24 60 15)" fill="#4a5335"/>
+        <ellipse cx="82" cy="7" rx="7" ry="3.2" transform="rotate(-28 82 7)" fill="#8a9268"/>
+      </svg>
+    </div>
+    <div class="histoire-img reveal">
+      <img src="images/deco.jpg" alt="Détails de décoration à A Piaghja : enseigne Beach, masque doré et affiche vintage">
+    </div>
+  </div>
+</section>
+
+<section class="signature" id="broche">
+  <div class="reveal">
+    <p class="eyebrow">Notre spécialité</p>
+    <h2>L'agneau à la broche</h2>
+    <p>Chaque service, un agneau entier tourne lentement au-dessus des braises, nourri au bois du maquis. Une cuisson de plusieurs heures, une viande confite et dorée, servie à partager — comme le veut la tradition insulaire.</p>
+    <p>Quantités limitées : la broche se réserve, elle ne s'improvise pas.</p>
+    <span class="note">Pensez à la commander lors de votre réservation</span>
+  </div>
+</section>
+
+<section id="carte">
+  <div class="carte-wrap">
+    <div style="text-align:center" class="reveal">
+      <p class="eyebrow">La carte</p>
+      <h2>Cuisine du feu &amp; de la mer</h2>
+      <p style="max-width:56ch;margin:0 auto;">Carte courte, produits de l'île, arrivages du jour. Voici un aperçu — la carte complète change avec les saisons.</p>
+    </div>
+    <div class="carte-grid reveal">
+      <div class="carte-cat">
+        <h3>Pour commencer</h3>
+        <div class="plat"><span class="nom">Entrée du moment<small>Selon le marché</small></span><span class="prix">— €</span></div>
+        <div class="plat"><span class="nom">Charcuterie corse<small>Sélection de producteurs</small></span><span class="prix">— €</span></div>
+        <div class="plat"><span class="nom">Fromages de l'île<small>Brebis &amp; chèvre</small></span><span class="prix">— €</span></div>
+      </div>
+      <div class="carte-cat">
+        <h3>La mer</h3>
+        <div class="plat"><span class="nom">Poisson du jour<small>Grillé au feu de bois</small></span><span class="prix">— €</span></div>
+        <div class="plat"><span class="nom">Arrivage de la pêche<small>Selon la criée</small></span><span class="prix">— €</span></div>
+      </div>
+      <div class="carte-cat">
+        <h3>La braise</h3>
+        <div class="plat"><span class="nom">Agneau à la broche<small>À partager, sur réservation</small></span><span class="prix">— €</span></div>
+        <div class="plat"><span class="nom">Pièce du boucher<small>Cuisson au feu de bois</small></span><span class="prix">— €</span></div>
+      </div>
+      <div class="carte-cat">
+        <h3>Douceurs</h3>
+        <div class="plat"><span class="nom">Dessert du moment<small>Fait maison</small></span><span class="prix">— €</span></div>
+        <div class="plat"><span class="nom">Fiadone<small>Le classique corse</small></span><span class="prix">— €</span></div>
+      </div>
+    </div>
+    <p class="carte-note reveal">Prix et plats mis à jour à chaque saison — carte des vins corses disponible sur place.</p>
+  </div>
+</section>
+
+<section class="galerie" id="galerie">
+  <div class="galerie-head reveal">
+    <p class="eyebrow">Galerie</p>
+    <h2>L'esprit A Piaghja</h2>
+  </div>
+  <div class="galerie-grid reveal">
+    <figure><img src="images/terrasse.webp" alt="Tables en bois et fauteuils en rotin sur la terrasse d'A Piaghja" loading="lazy"></figure>
+    <figure><img src="images/granit.jpg" alt="Jeu d'ombres et de lumière sur le mur de granit de la terrasse" loading="lazy"></figure>
+    <figure><img src="images/deco.jpg" alt="Décoration murale : enseigne Beach et masque doré" loading="lazy"></figure>
+    <figure class="ph">Photo à venir<br>— la terrasse face à la mer —</figure>
+    <figure class="ph">Photo à venir<br>— l'agneau à la broche —</figure>
+    <figure class="ph">Photo à venir<br>— la plage —</figure>
+  </div>
+</section>
+
+<section id="infos">
+  <div class="infos">
+    <div class="reveal">
+      <p class="eyebrow">Infos pratiques</p>
+      <h2>Nous trouver</h2>
+      <dl>
+        <div><dt>Adresse</dt><dd>[Adresse complète — Corse]</dd></div>
+        <div><dt>Horaires</dt><dd>[Jours &amp; horaires de service]<br>Service midi &amp; soir en saison</dd></div>
+        <div><dt>Téléphone</dt><dd><a href="tel:+33000000000">[+33 0 00 00 00 00]</a></dd></div>
+        <div><dt>Accès</dt><dd>[Parking / accès plage — à compléter]</dd></div>
+      </dl>
+    </div>
+    <div class="resa-card reveal">
+      <h3>Réserver une table</h3>
+      <p>La terrasse compte 18 tables face à la mer — en saison, la réservation est vivement conseillée.</p>
+      <a class="btn" href="tel:+33000000000">Appeler pour réserver</a>
+      <a class="tel" href="tel:+33000000000">[+33 0 00 00 00 00]</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand-foot">A Piaghja</div>
+  <p>Restaurant de plage — Corse · Ouvert en saison</p>
+  <div class="socials">
+    <a href="#" aria-label="Instagram">Instagram</a>
+    <a href="#" aria-label="Google">Avis Google</a>
+  </div>
+  <p style="margin-top:1.6rem;font-size:.75rem;">© 2026 A Piaghja — Tous droits réservés</p>
+</footer>
+
+<script>
+  // Nav qui devient opaque au scroll
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Menu mobile
+  function toggleMenu(btn){
+    const links = document.getElementById('navLinks');
+    const open = links.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  }
+  document.querySelectorAll('#navLinks a').forEach(a =>
+    a.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+      document.querySelector('.burger').setAttribute('aria-expanded','false');
+    })
+  );
+
+  // Apparition au scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
