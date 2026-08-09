@@ -76,23 +76,59 @@
   .hero-bg{
     position:absolute;inset:0;
     background:url('images/hero.jpg') center 62%/cover no-repeat;
+    animation:heroZoom 18s ease-out forwards;
   }
+  @keyframes heroZoom{from{transform:scale(1.08);}to{transform:scale(1);}}
   .hero-bg::after{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(74,83,53,.45) 60%,rgba(42,43,36,.65) 100%);
+    background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(74,83,53,.45) 60%,rgba(42,43,36,.68) 100%);
+  }
+  /* Grain argentique subtil sur toute l'image */
+  .hero-grain{
+    position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .hero-inner{position:relative;z-index:2;color:var(--blanc);padding:0 6vw;}
+  /* Filigrane éditorial derrière le titre */
+  .hero-ghost{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);
+    font-size:clamp(3.2rem,9vw,7rem);letter-spacing:.38em;text-indent:.38em;
+    text-transform:uppercase;white-space:nowrap;
+    color:transparent;-webkit-text-stroke:1px rgba(239,233,221,.14);
+    user-select:none;pointer-events:none;
+  }
   .hero-eyebrow{
-    font-size:.8rem;letter-spacing:.35em;text-transform:uppercase;
-    color:var(--rose);margin-bottom:1.2rem;
+    display:flex;align-items:center;justify-content:center;gap:1.2rem;
+    font-size:.78rem;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
+    color:var(--rose);margin-bottom:1.6rem;
+    opacity:0;animation:heroFade 1.2s ease .3s forwards;
+  }
+  .hero-eyebrow::before,.hero-eyebrow::after{
+    content:"";width:clamp(30px,6vw,64px);height:1px;
+    background:linear-gradient(90deg,transparent,rgba(194,161,92,.85));
+  }
+  .hero-eyebrow::after{
+    background:linear-gradient(90deg,rgba(194,161,92,.85),transparent);
   }
   .hero-title{
+    position:relative;
     font-family:'Allura',cursive;font-weight:400;
-    font-size:clamp(4rem,11vw,8.5rem);line-height:1.05;
+    font-size:clamp(4.2rem,12vw,9.5rem);line-height:1.08;
+    padding:0 .12em .08em;
+    color:#fdfcf9;
+    text-shadow:
+      0 2px 4px rgba(20,22,14,.45),
+      0 12px 40px rgba(20,22,14,.5);
+    opacity:0;animation:heroRise 1.4s cubic-bezier(.16,1,.3,1) .55s forwards;
   }
-  .hero-sub{
-    max-width:34ch;margin:1.4rem auto 2.4rem;
-    font-size:clamp(1rem,1.4vw,1.15rem);color:var(--sable);
+  @keyframes heroFade{to{opacity:1;}}
+  @keyframes heroRise{
+    from{opacity:0;transform:translateY(26px);letter-spacing:.06em;}
+    to{opacity:1;transform:none;letter-spacing:0;}
+  }
+  .hero-actions{
+    opacity:0;animation:heroFade 1.2s ease 1.15s forwards;
+    margin-top:2.6rem;
   }
   .btn{
     display:inline-block;text-decoration:none;
@@ -325,6 +361,7 @@
   .reveal.visible{opacity:1;transform:none;}
   @media (prefers-reduced-motion:reduce){
     .reveal{opacity:1;transform:none;transition:none;}
+    .hero-bg,.hero-eyebrow,.hero-title,.hero-actions{animation:none;opacity:1;transform:none;}
     html{scroll-behavior:auto;}
   }
 
@@ -368,12 +405,15 @@
 
 <header class="hero" id="top">
   <div class="hero-bg" role="img" aria-label="Tables dressées sur la terrasse d'A Piaghja, face à la mer"></div>
+  <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
+    <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
     <p class="hero-eyebrow">Bar &amp; Restaurant — Porto-Vecchio</p>
     <h1 class="hero-title">A Piaghja</h1>
-    <div style="height:2.2rem"></div>
-    <a class="btn btn-or" href="#infos">Réserver une table</a>
-    <a class="btn btn-ghost" href="#carte">Découvrir la carte</a>
+    <div class="hero-actions">
+      <a class="btn btn-or" href="#infos">Réserver une table</a>
+      <a class="btn btn-ghost" href="#carte">Découvrir la carte</a>
+    </div>
   </div>
   <a class="hero-scroll" href="#histoire">Descendre</a>
 </header>
