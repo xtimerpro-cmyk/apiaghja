@@ -234,6 +234,24 @@
   .tab-panel{display:none;}
   .tab-panel.active{display:block;animation:tabIn .45s ease;}
   @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+  /* ---------- Onglets de la carte ---------- */
+  .tabs{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;
+    margin:2.4rem 0 2.6rem;
+  }
+  .tab-btn{
+    font-family:'Questrial',sans-serif;font-size:.78rem;
+    letter-spacing:.18em;text-transform:uppercase;
+    background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    color:#6c6d60;padding:.55rem 1.3rem;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .tab-btn:hover{border-color:var(--or);color:var(--olive);}
+  .tab-btn.active{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:tabIn .45s ease;}
+  @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
   /* ---------- Galerie ---------- */
   .galerie{background:var(--sable);}
   .galerie-head{text-align:center;max-width:60ch;margin:0 auto 2.8rem;}
@@ -501,189 +519,9 @@
       <p class="eyebrow">La carte</p>
       <h2>Cuisine du feu &amp; de la mer</h2>
     </div>
-    <div class="tabs reveal"><button class="tab-btn active" data-tab="tab0">À partager</button><button class="tab-btn" data-tab="tab1">Plats</button><button class="tab-btn" data-tab="tab2">La braise</button><button class="tab-btn" data-tab="tab3">Les pizze</button><button class="tab-btn" data-tab="tab4">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab5">Les vins</button><button class="tab-btn" data-tab="tab6">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab7">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8">Petit déjeuner</button></div>
+    <div class="tabs reveal"><button class="tab-btn active" data-tab="tab0">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab1">À partager</button><button class="tab-btn" data-tab="tab2">Plats</button><button class="tab-btn" data-tab="tab3">La braise</button><button class="tab-btn" data-tab="tab4">Les pizze</button><button class="tab-btn" data-tab="tab5">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab6">Les vins</button><button class="tab-btn" data-tab="tab7">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8">Petit déjeuner</button></div>
     <div class="reveal">
 <div class="tab-panel active" id="tab0"><div class="carte-grid">
-<div class="carte-cat"><h3>Coté bar, à partager</h3>
-<div class="plat"><span class="nom">Planche de charcuterie du fils Bucchini</span><span class="prix">19 €</span></div>
-<div class="plat"><span class="nom">Planche de Prizuttu</span><span class="prix">22 €</span></div>
-<div class="plat"><span class="nom">Planche de fromages<small>Confiture de figues</small></span><span class="prix">19 €</span></div>
-<div class="plat"><span class="nom">La grande planche mixte<small>Charcuterie &amp; fromages</small></span><span class="prix">36 €</span></div>
-<div class="plat"><span class="nom">Antipasti de légumes à la braise<small>Mozzarella di buffala, huile d'olive</small></span><span class="prix">17 €</span></div>
-<div class="plat"><span class="nom">Les croques truffés</span><span class="prix">24 €</span></div>
-<div class="plat"><span class="nom">Pimientos del Padron<small>Fleur de sel, huile d'olive</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Houmous Libanais<small>Pois chiches frits, huile aux herbes et tortillas</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Nachos au cheddar<small>Chips de maïs, cheddar, jalapenos, olives noires, viande hachée à la tomate, crème d'Isigny</small></span><span class="prix">22 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les entrées</h3>
-<div class="plat"><span class="nom">Planche de charcuterie du fils Bucchini</span><span class="prix">19 €</span></div>
-<div class="plat"><span class="nom">Assiette de Prizuttu</span><span class="prix">22 €</span></div>
-<div class="plat"><span class="nom">Tomates, burrata crémeuse<small>Huile basilic et toasts grillés</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Salade Grecque<small>Tomates, concombres, feta, oignons rouges, olives noires, origan</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Antipasti de légumes à la braise<small>Mozzarella di buffala, huile d'olive</small></span><span class="prix">17 €</span></div>
-<div class="plat"><span class="nom">Carpaccio de poulpe<small>Vinaigrette acidulée, noisettes</small></span><span class="prix">25 €</span></div>
-<div class="plat"><span class="nom">La vraie Caesar<small>Romaine, poulet, croutons, œuf mollet, parmesan, sauce à l'anchois</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Avocado toast<small>Pain toasté, avocat, œuf mollet, fromage frais, sésame</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Carpaccio de bœuf<small>Fleurs de câpres, citron, parmesan, champignons frais, huile d'olive</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Os à moelle braisé<small>Pain grillé à l'ail</small></span><span class="prix">15 €</span></div>
-</div>
-</div></div><div class="tab-panel" id="tab1"><div class="carte-grid">
-<div class="carte-cat"><h3>Les pâtes</h3>
-<div class="plat"><span class="nom">Lasagnes</span><span class="prix">19 €</span></div>
-<div class="plat"><span class="nom">Linguine Tomates Burrata<small>Pignons grillés, roquette</small></span><span class="prix">19 €</span></div>
-<div class="plat"><span class="nom">Linguine Saumon</span><span class="prix">21 €</span></div>
-<div class="plat"><span class="nom">Linguine Crème de Truffe<small>Jambon en chiffonnade et parmesan</small></span><span class="prix">22 €</span></div>
-<div class="plat"><span class="nom">Linguine Bottarga<small>Œufs de mulet séchés, huile d'olive, ail, persil, piment</small></span><span class="prix">28 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les classiques</h3>
-<div class="plat"><span class="nom">Cheese Burger<small>Steak Black Angus, pain, cheddar, tomate, salade, confit d'oignons, sauce burger</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Tartare de bœuf au couteau<small>Bavette Allemande, échalotes, câpres, cornichons, persil, émietté de fêta, croutons noirs, œuf, sauce</small></span><span class="prix">24 €</span></div>
-<div class="plat"><span class="nom">Grande escalope de veau panée au corn flakes</span><span class="prix">24 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les enfants — jusqu'à 11 ans</h3>
-<div class="plat"><span class="nom">Poulet pané frites, linguine au jambon ou Pizzetta au fromage</span><span class="prix">13 €</span></div>
-<div class="plat"><span class="nom">Sneakers glacé, Tifruity ou compote</span></div>
-</div>
-</div></div><div class="tab-panel" id="tab2"><div class="carte-grid">
-<div class="carte-cat"><h3>La braise</h3>
-<div class="plat"><span class="nom">Entrecôte<small>Origine UE, 400 g env., frites</small></span><span class="prix">35 €</span></div>
-<div class="plat"><span class="nom">Cotelettes d'agneau<small>Origine UE, pommes de terre grenailles</small></span><span class="prix">29 €</span></div>
-<div class="plat"><span class="nom">Daurade ou Loup entier<small>Selon arrivage, 300/400 g</small></span><span class="prix">26 €</span></div>
-<div class="plat"><span class="nom">Filet de Saumon fumé au bois de cerisier</span><span class="prix">27 €</span></div>
-<div class="plat"><span class="nom">Trio de gambas sauvages<small>Beurre d'ail, zeste de citron, persil frais</small></span><span class="prix">32 €</span></div>
-<div class="plat"><span class="nom">Poulpe, Gambas et gremolata</span><span class="prix">29 €</span></div>
-<div class="plat"><span class="nom">Poulpe grillé laqué au miel &amp; paprika fumé<small>Crème de chorizo</small></span><span class="prix">35 €</span></div>
-</div>
-<div class="carte-cat"><h3>Suppléments</h3>
-<div class="plat"><span class="nom">Riz pilaf</span><span class="prix">5 €</span></div>
-<div class="plat"><span class="nom">Salade verte</span><span class="prix">4 €</span></div>
-<div class="plat"><span class="nom">Frites</span><span class="prix">4 €</span></div>
-<div class="plat"><span class="nom">Pommes de terre grenailles</span><span class="prix">4 €</span></div>
-<div class="plat"><span class="nom">Sucrine braisée</span><span class="prix">5 €</span></div>
-<div class="plat"><span class="nom">Avocat braisé, sauce yaourt</span><span class="prix">6 €</span></div>
-<div class="plat"><span class="nom">Poêlée de légumes</span><span class="prix">7 €</span></div>
-<div class="plat"><span class="nom">Sauces : poivre, roquefort, chimichurri</span><span class="prix">3 €</span></div>
-</div>
-</div></div><div class="tab-panel" id="tab3"><div class="carte-grid">
-<div class="carte-cat"><h3>Les pizze au feu de bois</h3>
-<div class="plat"><span class="nom">Pane Pizza<small>Sel, huile d'olive, romarin</small></span><span class="prix">9 €</span></div>
-<div class="plat"><span class="nom">Margherita<small>Tomate, fior di latte</small></span><span class="prix">14 €</span></div>
-<div class="plat"><span class="nom">Napolitana<small>Tomate, fior di latte, anchois, olives noires, origan</small></span><span class="prix">14,50 €</span></div>
-<div class="plat"><span class="nom">Prosciutto<small>Tomate, fior di latte, jambon</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Calzone<small>Tomate, fior di latte, jambon, champignons frais</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Regina<small>Tomate, fior di latte, jambon, champignons frais</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Regina bianca<small>Crème, fior di latte, jambon, champignons frais</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Chèvre miel<small>Crème, fior di latte, fromage de chèvre, miel</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Oignons Rock<small>Tomate, fior di latte, oignons confits, roquefort</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">4 Formaggi<small>Tomate, fior di latte, emmental, gorgonzola, parmigiano</small></span><span class="prix">17 €</span></div>
-<div class="plat"><span class="nom">Isula<small>Tomate, fior di latte, saucisse sarde, oignons, olives noires, origan</small></span><span class="prix">17 €</span></div>
-<div class="plat"><span class="nom">Vegetariana<small>Tomate, fior di latte, courgettes, aubergines, parmesan, basilic, huile d'olive</small></span><span class="prix">17 €</span></div>
-<div class="plat"><span class="nom">Baciata di Romy<small>Roquette, jambon de parme, tomates fraîches, stracciatella, huile d'olive (garnie après cuisson)</small></span><span class="prix">17 €</span></div>
-<div class="plat"><span class="nom">Pepperoni<small>Tomate, fior di latte, poivrons, chorizo, gorgonzola</small></span><span class="prix">17,50 €</span></div>
-<div class="plat"><span class="nom">Parma<small>Tomate, fior di latte, jambon de parme, roquette, parmesan</small></span><span class="prix">17,50 €</span></div>
-<div class="plat"><span class="nom">Capricciosa<small>Tomate, fior di latte, jambon, artichauts, champignons frais, olives, parmesan</small></span><span class="prix">17,50 €</span></div>
-<div class="plat"><span class="nom">Estiva<small>Tomate, fior di latte, tomates cerises, stracciatella, roquette</small></span><span class="prix">17,50 €</span></div>
-<div class="plat"><span class="nom">Golfo<small>Tomate, fior di latte, jambon, saucisse sarde piquante, oignons, œuf, origan</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Burrata<small>Tomate, fior di latte, roquette, burrata</small></span><span class="prix">19 €</span></div>
-<div class="plat"><span class="nom">Tartufata<small>Crème, fior di latte, crème de truffe noire, parmesan, roquette</small></span><span class="prix">20 €</span></div>
-</div>
-<div class="carte-cat"><h3>Suppléments pizze</h3>
-<div class="plat"><span class="nom">Fromage, œuf, anchois, légume</span><span class="prix">2 €</span></div>
-<div class="plat"><span class="nom">Jambon, saucisse, parme, sauce truffe</span><span class="prix">4 €</span></div>
-<div class="plat"><span class="nom">Stracciatella, burrata</span><span class="prix">6 €</span></div>
-</div>
-</div></div><div class="tab-panel" id="tab4"><div class="carte-grid">
-<div class="carte-cat"><h3>Le fromage</h3>
-<div class="plat"><span class="nom">Planche de fromages, confiture de figues<small>À partager</small></span><span class="prix">19 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les desserts</h3>
-<div class="plat"><span class="nom">Affogato</span><span class="prix">7 €</span></div>
-<div class="plat"><span class="nom">Tiramisu traditionnel</span><span class="prix">11 €</span></div>
-<div class="plat"><span class="nom">Soupe de fraises à la fleur d'oranger<small>Sorbet mangue, chantilly maison</small></span><span class="prix">14 €</span></div>
-<div class="plat"><span class="nom">Mousse au chocolat</span><span class="prix">10 €</span></div>
-<div class="plat"><span class="nom">Moelleux à la châtaigne<small>Glace artisanale à la châtaigne</small></span><span class="prix">9 €</span></div>
-<div class="plat"><span class="nom">Crème brûlée à la vanille</span><span class="prix">9 €</span></div>
-<div class="plat"><span class="nom">Fiadone</span><span class="prix">11 €</span></div>
-<div class="plat"><span class="nom">Dessert du jour</span><span class="prix">9 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les coupes glacées</h3>
-<div class="plat"><span class="nom">Banana split<small>Vanille, fraise, chocolat, banane fraîche, chantilly, amandes effilées, sauce chocolat</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Chocolat Liégeois<small>2 boules chocolat, lait chocolaté, chantilly, sauce chocolat</small></span><span class="prix">12 €</span></div>
-<div class="plat"><span class="nom">Café Liégeois<small>2 boules café, café frappé, chantilly, sauce café</small></span><span class="prix">12 €</span></div>
-<div class="plat"><span class="nom">Caramellata<small>Vanille, caramel beurre salé, chantilly, amandes effilées, sauce caramel</small></span><span class="prix">12 €</span></div>
-<div class="plat"><span class="nom">Bounty<small>Chocolat, noix de coco, chantilly, sauce chocolat, brisures de bounty</small></span><span class="prix">12 €</span></div>
-<div class="plat"><span class="nom">Cookie &amp; cream<small>Vanille, chocolat, cookie dough, chantilly, sauce chocolat, brisures de cookies</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Castagniccia<small>Vanille, 2 boules châtaigne, confiture de châtaignes corses, chantilly</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Spéculoos<small>Vanille, 2 boules spéculoos, brisures de spéculoos, chantilly, sauce spéculoos</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Dame Blanche<small>3 boules vanille, chantilly &amp; beaucoup de sauce chocolat</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Colonel<small>2 boules citron, vodka, zeste de citron vert</small></span><span class="prix">12 €</span></div>
-<div class="plat"><span class="nom">Sicilienne<small>Mangue, fraise, framboise, pago fraise, chantilly, sauce fruits rouges, amandes effilées</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Choco Dubaï<small>Chocolat, 2 boules pistache, chantilly, sauce pistache</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Le Milkshake<small>Parfum au choix, chantilly</small></span><span class="prix">10 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les glaces artisanales</h3>
-<div class="plat"><span class="nom">Parfums<small>Vanille bourbon de Madagascar, chocolat copeaux suisses, pistache de Sicile, café espresso, châtaigne, noix de coco, caramel beurre sel de Guérande, cookie dough, fraise, noisette romaine, spéculoos, framboise, citron de Sicile, mangue</small></span></div>
-<div class="plat"><span class="nom">La boule</span><span class="prix">4 €</span></div>
-<div class="plat"><span class="nom">Chantilly maison</span><span class="prix">2 €</span></div>
-<div class="plat"><span class="nom">Topping</span><span class="prix">1,50 €</span></div>
-<div class="plat"><span class="nom">Sauce</span><span class="prix">1 €</span></div>
-</div>
-</div></div><div class="tab-panel" id="tab5"><div class="carte-grid">
-<div class="carte-cat"><h3>La sélection au verre</h3>
-<div class="plat"><span class="nom">Cuvée classique<small>Rouge, blanc, rosé</small></span><span class="prix">7 €</span></div>
-<div class="plat"><span class="nom">Cuvée supérieure<small>Rouge, blanc, rosé</small></span><span class="prix">10 €</span></div>
-<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène, rouge</small></span><span class="prix">16 €</span></div>
-<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène, blanc</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Cantinone, domaine Vico<small>Morosaglia, rouge</small></span><span class="prix">18 €</span></div>
-<div class="plat"><span class="nom">Clos Nicrosi<small>Rogliano, blanc</small></span><span class="prix">15 €</span></div>
-<div class="plat"><span class="nom">Champagne Laurent Perrier brut réserve</span><span class="prix">18 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les rosés</h3>
-<div class="plat"><span class="nom">Villa Rossa<small>IGP Corse</small></span><span class="prix">28 €</span></div>
-<div class="plat"><span class="nom">Aria, domaine Zuria<small>Bonifacio</small></span><span class="prix">36 €</span></div>
-<div class="plat"><span class="nom">Clos Landry, gris rose<small>Calvi</small></span><span class="prix">38 €</span></div>
-<div class="plat"><span class="nom">Gris de Pauline, domaine Marquiliani<small>Aleria — Magnum 80</small></span><span class="prix">39 €</span></div>
-<div class="plat"><span class="nom">Initiale, domaine Zuria<small>Bonifacio</small></span><span class="prix">46 €</span></div>
-<div class="plat"><span class="nom">Clos Venturi<small>Ponte Leccia</small></span><span class="prix">49 €</span></div>
-<div class="plat"><span class="nom">Domaine Vaccelli<small>Ajaccio</small></span><span class="prix">60 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les blancs</h3>
-<div class="plat"><span class="nom">Villa Rossa<small>IGP Corse</small></span><span class="prix">28 €</span></div>
-<div class="plat"><span class="nom">Cuvée Valle, Castellu Piattu<small>Patrimonio</small></span><span class="prix">38 €</span></div>
-<div class="plat"><span class="nom">Albore, Nicolas Mariotti Bindi<small>Patrimonio</small></span><span class="prix">40 €</span></div>
-<div class="plat"><span class="nom">Domaine Camellu<small>Calvi</small></span><span class="prix">42 €</span></div>
-<div class="plat"><span class="nom">Clos Nicrosi<small>Rogliano</small></span><span class="prix">51 €</span></div>
-<div class="plat"><span class="nom">Domaine Leccia<small>Patrimonio</small></span><span class="prix">59 €</span></div>
-<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène</small></span><span class="prix">65 €</span></div>
-<div class="plat"><span class="nom">Crocci, domaine Zuria<small>Bonifacio</small></span><span class="prix">110 €</span></div>
-<div class="plat"><span class="nom">Tarra di Sognu, Clos Canarelli<small>Figari</small></span><span class="prix">110 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les rouges</h3>
-<div class="plat"><span class="nom">Villa Rossa<small>IGP Corse</small></span><span class="prix">28 €</span></div>
-<div class="plat"><span class="nom">E Petre<small>Côte Orientale</small></span><span class="prix">32 €</span></div>
-<div class="plat"><span class="nom">Costa Rossa, Daniel Canarelli<small>Figari</small></span><span class="prix">39 €</span></div>
-<div class="plat"><span class="nom">Cuvée des Gouverneurs, Orenga de Gaffory<small>Patrimonio</small></span><span class="prix">48 €</span></div>
-<div class="plat"><span class="nom">Storia di Corni Mozzi, Clos Culombu<small>Calvi</small></span><span class="prix">52 €</span></div>
-<div class="plat"><span class="nom">Sempre Azzezzu, domaine Giacometti<small>Patrimonio</small></span><span class="prix">55 €</span></div>
-<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène</small></span><span class="prix">60 €</span></div>
-<div class="plat"><span class="nom">Réserve perpétuelle, Castellu di Baricci<small>Sartène</small></span><span class="prix">65 €</span></div>
-<div class="plat"><span class="nom">Cantinone, domaine Vico<small>Calvi</small></span><span class="prix">75 €</span></div>
-<div class="plat"><span class="nom">La chapelle, Castellu d'Alba<small>Haute-Corse</small></span><span class="prix">85 €</span></div>
-<div class="plat"><span class="nom">Porcellese Non Solus, Nicolas Mariotti Bindi<small>Patrimonio</small></span><span class="prix">90 €</span></div>
-<div class="plat"><span class="nom">Clos Signadore<small>Patrimonio</small></span><span class="prix">130 €</span></div>
-<div class="plat"><span class="nom">Stintinu, domaine Zuria<small>Bonifacio</small></span><span class="prix">140 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les champagnes</h3>
-<div class="plat"><span class="nom">Laurent Perrier brut réserve</span><span class="prix">90 €</span></div>
-<div class="plat"><span class="nom">Billecart Salmon brut</span><span class="prix">100 €</span></div>
-<div class="plat"><span class="nom">Billecart Salmon rosé</span><span class="prix">150 €</span></div>
-</div>
-<div class="carte-cat"><h3>Les vins de dessert</h3>
-<div class="plat"><span class="nom">Muscat<small>Corse, 12 cl</small></span><span class="prix">7 €</span></div>
-<div class="plat"><span class="nom">Vino Santo de Toscane<small>Italie, 12 cl</small></span><span class="prix">12 €</span></div>
-<div class="plat"><span class="nom">Vin de Constance<small>2022, Klein Constantia, Afrique du Sud, 12 cl</small></span><span class="prix">45 €</span></div>
-</div>
-</div></div><div class="tab-panel" id="tab6"><div class="carte-grid">
 <div class="carte-cat"><h3>Les apéritifs</h3>
 <div class="plat"><span class="nom">Ricard, Casanis, 51</span><span class="prix">4 €</span></div>
 <div class="plat"><span class="nom">Martini, Cap Corse, Porto</span><span class="prix">6 €</span></div>
@@ -806,6 +644,186 @@
 <div class="plat"><span class="nom">Noisette</span><span class="prix">10 €</span></div>
 <div class="plat"><span class="nom">Prunelle de Bourgogne, Poire, Abricot, Mandarine, Cerise, Framboise, Cassis, Verveine</span><span class="prix">12 €</span></div>
 <div class="plat"><span class="nom">Suppléments : soda 1 · Redbull 2 · sirop 1</span></div>
+</div>
+</div></div><div class="tab-panel" id="tab1"><div class="carte-grid">
+<div class="carte-cat"><h3>Coté bar, à partager</h3>
+<div class="plat"><span class="nom">Planche de charcuterie du fils Bucchini</span><span class="prix">19 €</span></div>
+<div class="plat"><span class="nom">Planche de Prizuttu</span><span class="prix">22 €</span></div>
+<div class="plat"><span class="nom">Planche de fromages<small>Confiture de figues</small></span><span class="prix">19 €</span></div>
+<div class="plat"><span class="nom">La grande planche mixte<small>Charcuterie &amp; fromages</small></span><span class="prix">36 €</span></div>
+<div class="plat"><span class="nom">Antipasti de légumes à la braise<small>Mozzarella di buffala, huile d'olive</small></span><span class="prix">17 €</span></div>
+<div class="plat"><span class="nom">Les croques truffés</span><span class="prix">24 €</span></div>
+<div class="plat"><span class="nom">Pimientos del Padron<small>Fleur de sel, huile d'olive</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Houmous Libanais<small>Pois chiches frits, huile aux herbes et tortillas</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Nachos au cheddar<small>Chips de maïs, cheddar, jalapenos, olives noires, viande hachée à la tomate, crème d'Isigny</small></span><span class="prix">22 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les entrées</h3>
+<div class="plat"><span class="nom">Planche de charcuterie du fils Bucchini</span><span class="prix">19 €</span></div>
+<div class="plat"><span class="nom">Assiette de Prizuttu</span><span class="prix">22 €</span></div>
+<div class="plat"><span class="nom">Tomates, burrata crémeuse<small>Huile basilic et toasts grillés</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Salade Grecque<small>Tomates, concombres, feta, oignons rouges, olives noires, origan</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Antipasti de légumes à la braise<small>Mozzarella di buffala, huile d'olive</small></span><span class="prix">17 €</span></div>
+<div class="plat"><span class="nom">Carpaccio de poulpe<small>Vinaigrette acidulée, noisettes</small></span><span class="prix">25 €</span></div>
+<div class="plat"><span class="nom">La vraie Caesar<small>Romaine, poulet, croutons, œuf mollet, parmesan, sauce à l'anchois</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Avocado toast<small>Pain toasté, avocat, œuf mollet, fromage frais, sésame</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Carpaccio de bœuf<small>Fleurs de câpres, citron, parmesan, champignons frais, huile d'olive</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Os à moelle braisé<small>Pain grillé à l'ail</small></span><span class="prix">15 €</span></div>
+</div>
+</div></div><div class="tab-panel" id="tab2"><div class="carte-grid">
+<div class="carte-cat"><h3>Les pâtes</h3>
+<div class="plat"><span class="nom">Lasagnes</span><span class="prix">19 €</span></div>
+<div class="plat"><span class="nom">Linguine Tomates Burrata<small>Pignons grillés, roquette</small></span><span class="prix">19 €</span></div>
+<div class="plat"><span class="nom">Linguine Saumon</span><span class="prix">21 €</span></div>
+<div class="plat"><span class="nom">Linguine Crème de Truffe<small>Jambon en chiffonnade et parmesan</small></span><span class="prix">22 €</span></div>
+<div class="plat"><span class="nom">Linguine Bottarga<small>Œufs de mulet séchés, huile d'olive, ail, persil, piment</small></span><span class="prix">28 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les classiques</h3>
+<div class="plat"><span class="nom">Cheese Burger<small>Steak Black Angus, pain, cheddar, tomate, salade, confit d'oignons, sauce burger</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Tartare de bœuf au couteau<small>Bavette Allemande, échalotes, câpres, cornichons, persil, émietté de fêta, croutons noirs, œuf, sauce</small></span><span class="prix">24 €</span></div>
+<div class="plat"><span class="nom">Grande escalope de veau panée au corn flakes</span><span class="prix">24 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les enfants — jusqu'à 11 ans</h3>
+<div class="plat"><span class="nom">Poulet pané frites, linguine au jambon ou Pizzetta au fromage</span><span class="prix">13 €</span></div>
+<div class="plat"><span class="nom">Sneakers glacé, Tifruity ou compote</span></div>
+</div>
+</div></div><div class="tab-panel" id="tab3"><div class="carte-grid">
+<div class="carte-cat"><h3>La braise</h3>
+<div class="plat"><span class="nom">Entrecôte<small>Origine UE, 400 g env., frites</small></span><span class="prix">35 €</span></div>
+<div class="plat"><span class="nom">Cotelettes d'agneau<small>Origine UE, pommes de terre grenailles</small></span><span class="prix">29 €</span></div>
+<div class="plat"><span class="nom">Daurade ou Loup entier<small>Selon arrivage, 300/400 g</small></span><span class="prix">26 €</span></div>
+<div class="plat"><span class="nom">Filet de Saumon fumé au bois de cerisier</span><span class="prix">27 €</span></div>
+<div class="plat"><span class="nom">Trio de gambas sauvages<small>Beurre d'ail, zeste de citron, persil frais</small></span><span class="prix">32 €</span></div>
+<div class="plat"><span class="nom">Poulpe, Gambas et gremolata</span><span class="prix">29 €</span></div>
+<div class="plat"><span class="nom">Poulpe grillé laqué au miel &amp; paprika fumé<small>Crème de chorizo</small></span><span class="prix">35 €</span></div>
+</div>
+<div class="carte-cat"><h3>Suppléments</h3>
+<div class="plat"><span class="nom">Riz pilaf</span><span class="prix">5 €</span></div>
+<div class="plat"><span class="nom">Salade verte</span><span class="prix">4 €</span></div>
+<div class="plat"><span class="nom">Frites</span><span class="prix">4 €</span></div>
+<div class="plat"><span class="nom">Pommes de terre grenailles</span><span class="prix">4 €</span></div>
+<div class="plat"><span class="nom">Sucrine braisée</span><span class="prix">5 €</span></div>
+<div class="plat"><span class="nom">Avocat braisé, sauce yaourt</span><span class="prix">6 €</span></div>
+<div class="plat"><span class="nom">Poêlée de légumes</span><span class="prix">7 €</span></div>
+<div class="plat"><span class="nom">Sauces : poivre, roquefort, chimichurri</span><span class="prix">3 €</span></div>
+</div>
+</div></div><div class="tab-panel" id="tab4"><div class="carte-grid">
+<div class="carte-cat"><h3>Les pizze au feu de bois</h3>
+<div class="plat"><span class="nom">Pane Pizza<small>Sel, huile d'olive, romarin</small></span><span class="prix">9 €</span></div>
+<div class="plat"><span class="nom">Margherita<small>Tomate, fior di latte</small></span><span class="prix">14 €</span></div>
+<div class="plat"><span class="nom">Napolitana<small>Tomate, fior di latte, anchois, olives noires, origan</small></span><span class="prix">14,50 €</span></div>
+<div class="plat"><span class="nom">Prosciutto<small>Tomate, fior di latte, jambon</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Calzone<small>Tomate, fior di latte, jambon, champignons frais</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Regina<small>Tomate, fior di latte, jambon, champignons frais</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Regina bianca<small>Crème, fior di latte, jambon, champignons frais</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Chèvre miel<small>Crème, fior di latte, fromage de chèvre, miel</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Oignons Rock<small>Tomate, fior di latte, oignons confits, roquefort</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">4 Formaggi<small>Tomate, fior di latte, emmental, gorgonzola, parmigiano</small></span><span class="prix">17 €</span></div>
+<div class="plat"><span class="nom">Isula<small>Tomate, fior di latte, saucisse sarde, oignons, olives noires, origan</small></span><span class="prix">17 €</span></div>
+<div class="plat"><span class="nom">Vegetariana<small>Tomate, fior di latte, courgettes, aubergines, parmesan, basilic, huile d'olive</small></span><span class="prix">17 €</span></div>
+<div class="plat"><span class="nom">Baciata di Romy<small>Roquette, jambon de parme, tomates fraîches, stracciatella, huile d'olive (garnie après cuisson)</small></span><span class="prix">17 €</span></div>
+<div class="plat"><span class="nom">Pepperoni<small>Tomate, fior di latte, poivrons, chorizo, gorgonzola</small></span><span class="prix">17,50 €</span></div>
+<div class="plat"><span class="nom">Parma<small>Tomate, fior di latte, jambon de parme, roquette, parmesan</small></span><span class="prix">17,50 €</span></div>
+<div class="plat"><span class="nom">Capricciosa<small>Tomate, fior di latte, jambon, artichauts, champignons frais, olives, parmesan</small></span><span class="prix">17,50 €</span></div>
+<div class="plat"><span class="nom">Estiva<small>Tomate, fior di latte, tomates cerises, stracciatella, roquette</small></span><span class="prix">17,50 €</span></div>
+<div class="plat"><span class="nom">Golfo<small>Tomate, fior di latte, jambon, saucisse sarde piquante, oignons, œuf, origan</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Burrata<small>Tomate, fior di latte, roquette, burrata</small></span><span class="prix">19 €</span></div>
+<div class="plat"><span class="nom">Tartufata<small>Crème, fior di latte, crème de truffe noire, parmesan, roquette</small></span><span class="prix">20 €</span></div>
+</div>
+<div class="carte-cat"><h3>Suppléments pizze</h3>
+<div class="plat"><span class="nom">Fromage, œuf, anchois, légume</span><span class="prix">2 €</span></div>
+<div class="plat"><span class="nom">Jambon, saucisse, parme, sauce truffe</span><span class="prix">4 €</span></div>
+<div class="plat"><span class="nom">Stracciatella, burrata</span><span class="prix">6 €</span></div>
+</div>
+</div></div><div class="tab-panel" id="tab5"><div class="carte-grid">
+<div class="carte-cat"><h3>Le fromage</h3>
+<div class="plat"><span class="nom">Planche de fromages, confiture de figues<small>À partager</small></span><span class="prix">19 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les desserts</h3>
+<div class="plat"><span class="nom">Affogato</span><span class="prix">7 €</span></div>
+<div class="plat"><span class="nom">Tiramisu traditionnel</span><span class="prix">11 €</span></div>
+<div class="plat"><span class="nom">Soupe de fraises à la fleur d'oranger<small>Sorbet mangue, chantilly maison</small></span><span class="prix">14 €</span></div>
+<div class="plat"><span class="nom">Mousse au chocolat</span><span class="prix">10 €</span></div>
+<div class="plat"><span class="nom">Moelleux à la châtaigne<small>Glace artisanale à la châtaigne</small></span><span class="prix">9 €</span></div>
+<div class="plat"><span class="nom">Crème brûlée à la vanille</span><span class="prix">9 €</span></div>
+<div class="plat"><span class="nom">Fiadone</span><span class="prix">11 €</span></div>
+<div class="plat"><span class="nom">Dessert du jour</span><span class="prix">9 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les coupes glacées</h3>
+<div class="plat"><span class="nom">Banana split<small>Vanille, fraise, chocolat, banane fraîche, chantilly, amandes effilées, sauce chocolat</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Chocolat Liégeois<small>2 boules chocolat, lait chocolaté, chantilly, sauce chocolat</small></span><span class="prix">12 €</span></div>
+<div class="plat"><span class="nom">Café Liégeois<small>2 boules café, café frappé, chantilly, sauce café</small></span><span class="prix">12 €</span></div>
+<div class="plat"><span class="nom">Caramellata<small>Vanille, caramel beurre salé, chantilly, amandes effilées, sauce caramel</small></span><span class="prix">12 €</span></div>
+<div class="plat"><span class="nom">Bounty<small>Chocolat, noix de coco, chantilly, sauce chocolat, brisures de bounty</small></span><span class="prix">12 €</span></div>
+<div class="plat"><span class="nom">Cookie &amp; cream<small>Vanille, chocolat, cookie dough, chantilly, sauce chocolat, brisures de cookies</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Castagniccia<small>Vanille, 2 boules châtaigne, confiture de châtaignes corses, chantilly</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Spéculoos<small>Vanille, 2 boules spéculoos, brisures de spéculoos, chantilly, sauce spéculoos</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Dame Blanche<small>3 boules vanille, chantilly &amp; beaucoup de sauce chocolat</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Colonel<small>2 boules citron, vodka, zeste de citron vert</small></span><span class="prix">12 €</span></div>
+<div class="plat"><span class="nom">Sicilienne<small>Mangue, fraise, framboise, pago fraise, chantilly, sauce fruits rouges, amandes effilées</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Choco Dubaï<small>Chocolat, 2 boules pistache, chantilly, sauce pistache</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Le Milkshake<small>Parfum au choix, chantilly</small></span><span class="prix">10 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les glaces artisanales</h3>
+<div class="plat"><span class="nom">Parfums<small>Vanille bourbon de Madagascar, chocolat copeaux suisses, pistache de Sicile, café espresso, châtaigne, noix de coco, caramel beurre sel de Guérande, cookie dough, fraise, noisette romaine, spéculoos, framboise, citron de Sicile, mangue</small></span></div>
+<div class="plat"><span class="nom">La boule</span><span class="prix">4 €</span></div>
+<div class="plat"><span class="nom">Chantilly maison</span><span class="prix">2 €</span></div>
+<div class="plat"><span class="nom">Topping</span><span class="prix">1,50 €</span></div>
+<div class="plat"><span class="nom">Sauce</span><span class="prix">1 €</span></div>
+</div>
+</div></div><div class="tab-panel" id="tab6"><div class="carte-grid">
+<div class="carte-cat"><h3>La sélection au verre</h3>
+<div class="plat"><span class="nom">Cuvée classique<small>Rouge, blanc, rosé</small></span><span class="prix">7 €</span></div>
+<div class="plat"><span class="nom">Cuvée supérieure<small>Rouge, blanc, rosé</small></span><span class="prix">10 €</span></div>
+<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène, rouge</small></span><span class="prix">16 €</span></div>
+<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène, blanc</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Cantinone, domaine Vico<small>Morosaglia, rouge</small></span><span class="prix">18 €</span></div>
+<div class="plat"><span class="nom">Clos Nicrosi<small>Rogliano, blanc</small></span><span class="prix">15 €</span></div>
+<div class="plat"><span class="nom">Champagne Laurent Perrier brut réserve</span><span class="prix">18 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les rosés</h3>
+<div class="plat"><span class="nom">Villa Rossa<small>IGP Corse</small></span><span class="prix">28 €</span></div>
+<div class="plat"><span class="nom">Aria, domaine Zuria<small>Bonifacio</small></span><span class="prix">36 €</span></div>
+<div class="plat"><span class="nom">Clos Landry, gris rose<small>Calvi</small></span><span class="prix">38 €</span></div>
+<div class="plat"><span class="nom">Gris de Pauline, domaine Marquiliani<small>Aleria — Magnum 80</small></span><span class="prix">39 €</span></div>
+<div class="plat"><span class="nom">Initiale, domaine Zuria<small>Bonifacio</small></span><span class="prix">46 €</span></div>
+<div class="plat"><span class="nom">Clos Venturi<small>Ponte Leccia</small></span><span class="prix">49 €</span></div>
+<div class="plat"><span class="nom">Domaine Vaccelli<small>Ajaccio</small></span><span class="prix">60 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les blancs</h3>
+<div class="plat"><span class="nom">Villa Rossa<small>IGP Corse</small></span><span class="prix">28 €</span></div>
+<div class="plat"><span class="nom">Cuvée Valle, Castellu Piattu<small>Patrimonio</small></span><span class="prix">38 €</span></div>
+<div class="plat"><span class="nom">Albore, Nicolas Mariotti Bindi<small>Patrimonio</small></span><span class="prix">40 €</span></div>
+<div class="plat"><span class="nom">Domaine Camellu<small>Calvi</small></span><span class="prix">42 €</span></div>
+<div class="plat"><span class="nom">Clos Nicrosi<small>Rogliano</small></span><span class="prix">51 €</span></div>
+<div class="plat"><span class="nom">Domaine Leccia<small>Patrimonio</small></span><span class="prix">59 €</span></div>
+<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène</small></span><span class="prix">65 €</span></div>
+<div class="plat"><span class="nom">Crocci, domaine Zuria<small>Bonifacio</small></span><span class="prix">110 €</span></div>
+<div class="plat"><span class="nom">Tarra di Sognu, Clos Canarelli<small>Figari</small></span><span class="prix">110 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les rouges</h3>
+<div class="plat"><span class="nom">Villa Rossa<small>IGP Corse</small></span><span class="prix">28 €</span></div>
+<div class="plat"><span class="nom">E Petre<small>Côte Orientale</small></span><span class="prix">32 €</span></div>
+<div class="plat"><span class="nom">Costa Rossa, Daniel Canarelli<small>Figari</small></span><span class="prix">39 €</span></div>
+<div class="plat"><span class="nom">Cuvée des Gouverneurs, Orenga de Gaffory<small>Patrimonio</small></span><span class="prix">48 €</span></div>
+<div class="plat"><span class="nom">Storia di Corni Mozzi, Clos Culombu<small>Calvi</small></span><span class="prix">52 €</span></div>
+<div class="plat"><span class="nom">Sempre Azzezzu, domaine Giacometti<small>Patrimonio</small></span><span class="prix">55 €</span></div>
+<div class="plat"><span class="nom">Myrtus, domaine Sant'Armettu<small>Sartène</small></span><span class="prix">60 €</span></div>
+<div class="plat"><span class="nom">Réserve perpétuelle, Castellu di Baricci<small>Sartène</small></span><span class="prix">65 €</span></div>
+<div class="plat"><span class="nom">Cantinone, domaine Vico<small>Calvi</small></span><span class="prix">75 €</span></div>
+<div class="plat"><span class="nom">La chapelle, Castellu d'Alba<small>Haute-Corse</small></span><span class="prix">85 €</span></div>
+<div class="plat"><span class="nom">Porcellese Non Solus, Nicolas Mariotti Bindi<small>Patrimonio</small></span><span class="prix">90 €</span></div>
+<div class="plat"><span class="nom">Clos Signadore<small>Patrimonio</small></span><span class="prix">130 €</span></div>
+<div class="plat"><span class="nom">Stintinu, domaine Zuria<small>Bonifacio</small></span><span class="prix">140 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les champagnes</h3>
+<div class="plat"><span class="nom">Laurent Perrier brut réserve</span><span class="prix">90 €</span></div>
+<div class="plat"><span class="nom">Billecart Salmon brut</span><span class="prix">100 €</span></div>
+<div class="plat"><span class="nom">Billecart Salmon rosé</span><span class="prix">150 €</span></div>
+</div>
+<div class="carte-cat"><h3>Les vins de dessert</h3>
+<div class="plat"><span class="nom">Muscat<small>Corse, 12 cl</small></span><span class="prix">7 €</span></div>
+<div class="plat"><span class="nom">Vino Santo de Toscane<small>Italie, 12 cl</small></span><span class="prix">12 €</span></div>
+<div class="plat"><span class="nom">Vin de Constance<small>2022, Klein Constantia, Afrique du Sud, 12 cl</small></span><span class="prix">45 €</span></div>
 </div>
 </div></div><div class="tab-panel" id="tab7"><div class="carte-grid">
 <div class="carte-cat"><h3>Les softs</h3>
@@ -1037,6 +1055,16 @@
       }
     })
     .catch(() => { /* fallback statique : la note data-fallback s'affiche */ });
+
+  // ---------- Onglets de la carte ----------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
 
   // ---------- Onglets de la carte ----------
   document.querySelectorAll('.tab-btn').forEach(btn => {
