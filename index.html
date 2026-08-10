@@ -330,14 +330,75 @@
     font-size:2.4rem;color:var(--olive);margin-bottom:.8rem;
   }
   .resa-card p{margin-bottom:1.6rem;max-width:38ch;margin-inline:auto;}
-  .zenchef-wrap{
-    background:#fff;border-radius:8px;overflow:hidden;
+  .resa-widget{
+    background:var(--blanc);border-radius:10px;
     box-shadow:0 8px 30px rgba(74,83,53,.18);
     margin:0 auto 1.4rem;max-width:420px;
+    padding:1.1rem 1.1rem 1.3rem;text-align:left;
   }
-  .zenchef-wrap iframe{
-    display:block;width:100%;height:560px;border:0;
+  .rw-cal-head{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;
   }
+  .rw-cal-head span{
+    font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:var(--olive);
+  }
+  .rw-cal-head button{
+    background:none;border:1px solid var(--sable-deep);border-radius:50%;
+    width:32px;height:32px;font-size:1.1rem;color:var(--olive);cursor:pointer;
+    transition:all .2s ease;line-height:1;
+  }
+  .rw-cal-head button:hover{border-color:var(--or);}
+  .rw-cal-head button:disabled{opacity:.3;cursor:default;}
+  .rw-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .rw-jours span{
+    text-align:center;font-size:.68rem;letter-spacing:.1em;color:#8a8a7a;padding:.2rem 0;
+  }
+  .rw-day{
+    aspect-ratio:1;border:none;background:var(--sable);border-radius:8px;
+    font-family:inherit;font-size:.88rem;color:var(--encre);cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    transition:all .2s ease;
+  }
+  .rw-day:hover{background:var(--sable-deep);}
+  .rw-day.vide{background:none;cursor:default;}
+  .rw-day.passe{opacity:.32;cursor:default;background:var(--sable);}
+  .rw-day.complet{background:#f3e3df;color:#a8574a;cursor:default;}
+  .rw-day.complet::after{content:"complet";font-size:.5rem;letter-spacing:.05em;text-transform:uppercase;}
+  .rw-day.sel{background:var(--olive);color:var(--blanc);}
+  .rw-etape{margin-top:1.1rem;}
+  .rw-label{
+    font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--olive);margin-bottom:.7rem;text-align:center;
+  }
+  .rw-slot-group{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.6rem;}
+  .rw-slot-group > span{
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;width:38px;flex:none;
+  }
+  .rw-slots{display:flex;flex-wrap:wrap;gap:.4rem;}
+  .rw-slot{
+    font-family:inherit;font-size:.82rem;padding:.4rem .75rem;
+    border:1px solid var(--sable-deep);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .rw-slot:hover{border-color:var(--or);}
+  .rw-slot.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .rw-slot:disabled{opacity:.35;cursor:default;text-decoration:line-through;}
+  .rw-row{display:flex;gap:.6rem;margin-bottom:.6rem;}
+  .rw-form input,.rw-form select{
+    font-family:inherit;font-size:.92rem;width:100%;
+    padding:.7rem .8rem;border:1px solid var(--sable-deep);border-radius:8px;
+    background:var(--blanc);color:var(--encre);
+  }
+  .rw-form input:focus,.rw-form select:focus{outline:none;border-color:var(--or);}
+  .rw-submit{
+    width:100%;font-family:inherit;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
+    background:var(--olive);color:var(--blanc);border:none;border-radius:999px;
+    padding:.9rem;cursor:pointer;transition:background .25s ease;margin-top:.3rem;
+  }
+  .rw-submit:hover{background:#5a6542;}
+  .rw-submit:disabled{opacity:.5;cursor:wait;}
+  .rw-msg{margin-top:.8rem;font-size:.9rem;text-align:center;color:var(--olive);}
+  .rw-msg.err{color:#a8574a;}
   .resa-alt{
     font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;
     color:var(--olive);margin-bottom:.2rem !important;
@@ -927,12 +988,40 @@
     <div class="resa-card reveal">
       <h3>Réserver une table</h3>
       <p>La terrasse compte 18 tables face à la mer — en saison, la réservation est vivement conseillée.</p>
-      <!-- Module de réservation Zenchef — remplacer ZENCHEF_ID par le rid du restaurant -->
-      <div class="zenchef-wrap">
-        <iframe
-          src="https://bookings.zenchef.com/results?rid=ZENCHEF_ID&pid=1001"
-          title="Réserver une table chez A Piaghja"
-          loading="lazy"></iframe>
+      <div class="resa-widget" id="resaWidget">
+        <div class="rw-cal">
+          <div class="rw-cal-head">
+            <button type="button" id="rwPrev" aria-label="Mois précédent">‹</button>
+            <span id="rwMois"></span>
+            <button type="button" id="rwNext" aria-label="Mois suivant">›</button>
+          </div>
+          <div class="rw-grid rw-jours" aria-hidden="true">
+            <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+          </div>
+          <div class="rw-grid" id="rwGrid"></div>
+        </div>
+        <div class="rw-etape" id="rwSlots" hidden>
+          <p class="rw-label" id="rwDateLabel"></p>
+          <div class="rw-slot-group"><span>Midi</span><div class="rw-slots" id="rwSlotsMidi"></div></div>
+          <div class="rw-slot-group"><span>Soir</span><div class="rw-slots" id="rwSlotsSoir"></div></div>
+        </div>
+        <form class="rw-etape rw-form" id="rwForm" hidden>
+          <div class="rw-row">
+            <input id="rwPrenom" placeholder="Prénom" autocomplete="given-name" required>
+            <input id="rwNom" placeholder="Nom" autocomplete="family-name" required>
+          </div>
+          <div class="rw-row">
+            <input id="rwTel" type="tel" placeholder="Téléphone" autocomplete="tel" required>
+            <select id="rwPax" aria-label="Nombre de couverts">
+              <option value="1">1 couvert</option><option value="2" selected>2 couverts</option>
+              <option value="3">3 couverts</option><option value="4">4 couverts</option>
+              <option value="5">5 couverts</option><option value="6">6 couverts</option>
+              <option value="7">7 couverts</option><option value="8">8 couverts</option>
+            </select>
+          </div>
+          <button type="submit" class="rw-submit">Confirmer la réservation</button>
+        </form>
+        <p class="rw-msg" id="rwMsg" role="status"></p>
       </div>
       <p class="resa-alt">Ou par téléphone :</p>
       <a class="tel" href="tel:+33622061488">06 22 06 14 88</a>
@@ -1103,6 +1192,140 @@
       document.getElementById(btn.dataset.tab).classList.add('active');
     });
   });
+// ---------- Réservation maison : calendrier + créneaux + formulaire ----------
+  (function(){
+    const CRENEAUX = {
+      midi: ["12:00","12:30","13:00","13:30","14:00"],
+      soir: ["19:00","19:30","20:00","20:30","21:00","21:30"]
+    };
+    const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+    const $ = id => document.getElementById(id);
+    const grid = $("rwGrid"), msg = $("rwMsg");
+    if (!grid) return;
+
+    const auj = new Date(); auj.setHours(0,0,0,0);
+    let vue = new Date(auj.getFullYear(), auj.getMonth(), 1);
+    let dispo = {};            // { "YYYY-MM": {jours:{date:{midi,soir}}, capacite:{}} }
+    let selDate = null, selHeure = null, apiOk = true;
+
+    const iso = d => d.toISOString().slice(0,10);
+    const moisKey = d => iso(d).slice(0,7);
+
+    async function chargerMois(d){
+      const k = moisKey(d);
+      if (dispo[k]) return;
+      try{
+        const r = await fetch("/api/resa/availability?month=" + k);
+        if (!r.ok) throw 0;
+        dispo[k] = await r.json();
+      }catch{
+        apiOk = false;
+        dispo[k] = { jours: {}, capacite: { midi: 999, soir: 999 } };
+        msg.textContent = "Réservation en ligne momentanément indisponible — appelez-nous au 06 22 06 14 88.";
+        msg.className = "rw-msg err";
+      }
+    }
+
+    function resteJour(dateStr){
+      const k = dateStr.slice(0,7), m = dispo[k] || { jours:{}, capacite:{midi:60,soir:60} };
+      return m.jours[dateStr] || { midi: m.capacite.midi, soir: m.capacite.soir };
+    }
+
+    async function rendreCal(){
+      await chargerMois(vue);
+      $("rwMois").textContent = MOIS[vue.getMonth()] + " " + vue.getFullYear();
+      $("rwPrev").disabled = vue <= new Date(auj.getFullYear(), auj.getMonth(), 1);
+      grid.innerHTML = "";
+      const premier = new Date(vue), decal = (premier.getDay() + 6) % 7;
+      for (let i = 0; i < decal; i++) {
+        const v = document.createElement("span"); v.className = "rw-day vide"; grid.appendChild(v);
+      }
+      const nbJours = new Date(vue.getFullYear(), vue.getMonth()+1, 0).getDate();
+      for (let j = 1; j <= nbJours; j++){
+        const d = new Date(vue.getFullYear(), vue.getMonth(), j);
+        const ds = iso(d);
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "rw-day"; b.textContent = j;
+        if (d < auj) { b.classList.add("passe"); b.disabled = true; }
+        else {
+          const r = resteJour(ds);
+          if (r.midi <= 0 && r.soir <= 0) { b.classList.add("complet"); b.disabled = true; }
+          else b.addEventListener("click", () => choisirJour(ds, b));
+        }
+        if (ds === selDate) b.classList.add("sel");
+        grid.appendChild(b);
+      }
+    }
+
+    function choisirJour(ds, btn){
+      selDate = ds; selHeure = null;
+      document.querySelectorAll(".rw-day.sel").forEach(x => x.classList.remove("sel"));
+      btn.classList.add("sel");
+      const d = new Date(ds + "T12:00:00");
+      $("rwDateLabel").textContent = d.toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
+      const r = resteJour(ds);
+      for (const svc of ["midi","soir"]){
+        const cont = $(svc === "midi" ? "rwSlotsMidi" : "rwSlotsSoir");
+        cont.innerHTML = "";
+        for (const h of CRENEAUX[svc]){
+          const s = document.createElement("button");
+          s.type = "button"; s.className = "rw-slot"; s.textContent = h;
+          if (r[svc] <= 0) s.disabled = true;
+          else s.addEventListener("click", () => {
+            selHeure = h;
+            document.querySelectorAll(".rw-slot.sel").forEach(x => x.classList.remove("sel"));
+            s.classList.add("sel");
+            $("rwForm").hidden = false;
+          });
+          cont.appendChild(s);
+        }
+      }
+      $("rwSlots").hidden = false;
+      $("rwForm").hidden = true;
+      msg.textContent = ""; msg.className = "rw-msg";
+    }
+
+    $("rwPrev").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()-1, 1); rendreCal(); });
+    $("rwNext").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()+1, 1); rendreCal(); });
+
+    $("rwForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!selDate || !selHeure) return;
+      const btn = document.querySelector(".rw-submit");
+      btn.disabled = true; msg.textContent = "Envoi…"; msg.className = "rw-msg";
+      try{
+        const r = await fetch("/api/resa", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date: selDate, heure: selHeure,
+            prenom: $("rwPrenom").value, nom: $("rwNom").value,
+            tel: $("rwTel").value, pax: parseInt($("rwPax").value, 10)
+          })
+        });
+        const d = await r.json();
+        if (r.ok && d.ok){
+          msg.textContent = "✓ Réservation confirmée pour le " + $("rwDateLabel").textContent +
+            " à " + selHeure + " (" + d.pax + " couverts). À très vite !";
+          $("rwForm").hidden = true; $("rwSlots").hidden = true;
+          delete dispo[selDate.slice(0,7)]; selDate = null; rendreCal();
+        } else if (d.error === "complet"){
+          msg.textContent = "Ce service vient d'afficher complet — choisissez un autre créneau.";
+          msg.className = "rw-msg err";
+          delete dispo[selDate.slice(0,7)]; await rendreCal();
+        } else {
+          const e2f = { tel_invalide:"Numéro de téléphone invalide.", nom_requis:"Nom et prénom requis." };
+          msg.textContent = e2f[d.error] || "Impossible d'enregistrer — vérifiez les champs ou appelez-nous.";
+          msg.className = "rw-msg err";
+        }
+      }catch{
+        msg.textContent = "Erreur réseau — réessayez ou appelez-nous au 06 22 06 14 88.";
+        msg.className = "rw-msg err";
+      }
+      btn.disabled = false;
+    });
+
+    rendreCal();
+  })();
 </script>
 </body>
 </html>

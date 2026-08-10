@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Piaghja — Admin réservations</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{--olive:#4a5335;--sable:#efe9dd;--or:#c2a15c;--encre:#2a2b24;--blanc:#fdfcf9;--rose:#e7c6bd;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Questrial',sans-serif;background:var(--sable);color:var(--encre);min-height:100vh;padding:2rem 5vw;}
+  h1{font-family:'Allura',cursive;font-weight:400;font-size:2.6rem;color:var(--olive);}
+  .sub{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--or);margin-bottom:1.8rem;}
+  .bar{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:1.6rem;}
+  input,button{font-family:inherit;font-size:.95rem;padding:.65rem .9rem;border:1px solid #d8d2c2;border-radius:8px;background:var(--blanc);}
+  button{background:var(--olive);color:var(--blanc);border-color:var(--olive);cursor:pointer;letter-spacing:.1em;}
+  button:hover{background:#5a6542;}
+  .totaux{display:flex;gap:1rem;margin-bottom:1.4rem;flex-wrap:wrap;}
+  .tot{background:var(--blanc);border:1px solid #d8d2c2;border-radius:10px;padding:.8rem 1.4rem;}
+  .tot b{font-size:1.4rem;color:var(--olive);display:block;}
+  .tot span{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;}
+  table{width:100%;border-collapse:collapse;background:var(--blanc);border-radius:10px;overflow:hidden;}
+  th{background:var(--olive);color:var(--blanc);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding:.7rem .9rem;text-align:left;font-weight:400;}
+  td{padding:.6rem .9rem;border-bottom:1px solid #eee7d8;font-size:.95rem;}
+  tr.svc-soir td:first-child{border-left:3px solid var(--rose);}
+  tr.svc-midi td:first-child{border-left:3px solid var(--or);}
+  .del{background:none;border:none;color:#b3261e;cursor:pointer;font-size:.85rem;padding:.2rem .4rem;}
+  .msg{margin-top:1rem;color:#6c6d60;}
+  .err{color:#b3261e;}
+</style>
+</head>
+<body>
+  <h1>A Piaghja</h1>
+  <div class="sub">Réservations — accès restaurant</div>
+  <div class="bar">
+    <input type="date" id="date">
+    <input type="password" id="key" placeholder="Clé d'accès">
+    <button id="charger">Charger</button>
+  </div>
+  <div class="totaux" id="totaux" hidden>
+    <div class="tot"><b id="totMidi">0</b><span>couverts midi</span></div>
+    <div class="tot"><b id="totSoir">0</b><span>couverts soir</span></div>
+    <div class="tot"><b id="totResas">0</b><span>réservations</span></div>
+  </div>
+  <table id="table" hidden>
+    <thead><tr><th>Heure</th><th>Nom</th><th>Prénom</th><th>Téléphone</th><th>Cvts</th><th></th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <p class="msg" id="msg"></p>
+
+<script>
+  const $ = id => document.getElementById(id);
+  $('date').value = new Date().toISOString().slice(0,10);
+
+  async function charger(){
+    const date = $('date').value, key = $('key').value;
+    $('msg').textContent = 'Chargement…'; $('msg').className = 'msg';
+    try{
+      const r = await fetch(`/api/resa/admin?date=${date}&key=${encodeURIComponent(key)}`);
+      const d = await r.json();
+      if(!r.ok) throw new Error(d.error === 'non_autorise' ? 'Clé invalide' : (d.error || 'Erreur'));
+      $('totMidi').textContent = d.totaux.midi + ' / ' + d.capacite.midi;
+      $('totSoir').textContent = d.totaux.soir + ' / ' + d.capacite.soir;
+      $('totResas').textContent = d.resas.length;
+      $('totaux').hidden = false; $('table').hidden = false;
+      $('tbody').innerHTML = d.resas.map(x =>
+        `<tr class="svc-${x.service}"><td>${x.heure}</td><td>${esc(x.nom)}</td><td>${esc(x.prenom)}</td>` +
+        `<td><a href="tel:${esc(x.tel)}">${esc(x.tel)}</a></td><td>${x.pax}</td>` +
+        `<td><button class="del" data-id="${x.id}">Annuler</button></td></tr>`
+      ).join('') || '<tr><td colspan="6">Aucune réservation ce jour.</td></tr>';
+      $('msg').textContent = '';
+      document.querySelectorAll('.del').forEach(b => b.onclick = () => supprimer(b.dataset.id));
+    }catch(e){ $('msg').textContent = e.message; $('msg').className = 'msg err'; }
+  }
+
+  async function supprimer(id){
+    if(!confirm('Annuler cette réservation ?')) return;
+    const r = await fetch('/api/resa/admin', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'delete', id: parseInt(id,10), key: $('key').value })
+    });
+    if(r.ok) charger(); else { $('msg').textContent = 'Suppression impossible'; $('msg').className='msg err'; }
+  }
+
+  function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+  $('charger').onclick = charger;
+</script>
+</body>
+</html>
