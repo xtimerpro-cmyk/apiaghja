@@ -254,6 +254,18 @@
     font-size:2.4rem;color:var(--olive);margin-bottom:.8rem;
   }
   .resa-card p{margin-bottom:1.6rem;max-width:38ch;margin-inline:auto;}
+  .zenchef-wrap{
+    background:#fff;border-radius:8px;overflow:hidden;
+    box-shadow:0 8px 30px rgba(74,83,53,.18);
+    margin:0 auto 1.4rem;max-width:420px;
+  }
+  .zenchef-wrap iframe{
+    display:block;width:100%;height:560px;border:0;
+  }
+  .resa-alt{
+    font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--olive);margin-bottom:.2rem !important;
+  }
   .resa-card .btn{background:var(--olive);color:var(--blanc);}
   .resa-card .btn:hover{transform:translateY(-2px);background:#5a6542;}
   .resa-card .tel{
@@ -507,7 +519,14 @@
     <div class="resa-card reveal">
       <h3>Réserver une table</h3>
       <p>La terrasse compte 18 tables face à la mer — en saison, la réservation est vivement conseillée.</p>
-      <a class="btn" href="tel:+33000000000">Appeler pour réserver</a>
+      <!-- Module de réservation Zenchef — remplacer ZENCHEF_ID par le rid du restaurant -->
+      <div class="zenchef-wrap">
+        <iframe
+          src="https://bookings.zenchef.com/results?rid=ZENCHEF_ID&pid=1001"
+          title="Réserver une table chez A Piaghja"
+          loading="lazy"></iframe>
+      </div>
+      <p class="resa-alt">Ou par téléphone :</p>
       <a class="tel" href="tel:+33000000000">[+33 0 00 00 00 00]</a>
     </div>
   </div>
