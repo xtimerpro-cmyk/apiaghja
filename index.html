@@ -75,7 +75,7 @@
   }
   .hero-bg{
     position:absolute;inset:0;
-    background:url('images/hero.jpg') center 62%/cover no-repeat;
+    background:url('images/hero.jpg') center 38%/cover no-repeat;
     animation:heroZoom 18s ease-out forwards;
   }
   @keyframes heroZoom{from{transform:scale(1.08);}to{transform:scale(1);}}
@@ -607,6 +607,84 @@
   }
   footer .socials a:hover{color:var(--or);}
 
+
+  /* ---------- Assistant chat ---------- */
+  .chat-bulle{
+    position:fixed;right:20px;bottom:20px;z-index:70;
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--olive);box-shadow:0 10px 30px rgba(42,43,36,.35);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .25s ease, background .25s ease;
+  }
+  .chat-bulle:hover{transform:translateY(-3px);background:#5a6542;}
+  .chat-bulle svg{width:26px;height:26px;fill:var(--sable);}
+  .chat-panel{
+    position:fixed;right:20px;bottom:90px;z-index:70;
+    width:min(370px, calc(100vw - 32px));height:min(540px, calc(100vh - 120px));
+    background:var(--blanc);border-radius:16px;overflow:hidden;
+    box-shadow:0 24px 70px rgba(42,43,36,.4);
+    display:flex;flex-direction:column;
+    border:1px solid rgba(194,161,92,.35);
+  }
+  .chat-head{
+    background:var(--olive);color:var(--blanc);
+    padding:.9rem 1.1rem;display:flex;justify-content:space-between;align-items:center;
+  }
+  .chat-titre{font-family:'Allura',cursive;font-size:1.5rem;display:block;line-height:1;}
+  .chat-sous{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);}
+  .chat-fermer{
+    background:none;border:none;color:var(--sable);font-size:1.5rem;cursor:pointer;line-height:1;
+    padding:.2rem .4rem;
+  }
+  .chat-corps{
+    flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.6rem;
+    background:var(--sable);
+  }
+  .chat-msg{
+    max-width:82%;padding:.6rem .85rem;border-radius:14px;
+    font-size:.9rem;line-height:1.5;white-space:pre-line;
+  }
+  .chat-msg.bot{background:var(--blanc);color:var(--encre);align-self:flex-start;border-bottom-left-radius:4px;}
+  .chat-msg.moi{background:var(--olive);color:var(--blanc);align-self:flex-end;border-bottom-right-radius:4px;}
+  .chat-msg a{color:var(--olive);font-weight:bold;}
+  .chat-msg.moi a{color:var(--sable);}
+  .chat-typing{display:flex;gap:4px;padding:.7rem .9rem;background:var(--blanc);border-radius:14px;align-self:flex-start;}
+  .chat-typing span{
+    width:6px;height:6px;border-radius:50%;background:var(--olive-soft);
+    animation:chatDot 1.1s infinite;
+  }
+  .chat-typing span:nth-child(2){animation-delay:.18s;}
+  .chat-typing span:nth-child(3){animation-delay:.36s;}
+  @keyframes chatDot{0%,60%,100%{opacity:.3;transform:none;}30%{opacity:1;transform:translateY(-3px);}}
+  .chat-chips{
+    display:flex;gap:.4rem;flex-wrap:wrap;padding:.6rem .8rem;
+    background:var(--sable);border-top:1px solid var(--sable-deep);
+  }
+  .chat-chip{
+    font-family:inherit;font-size:.75rem;padding:.4rem .8rem;
+    border:1px solid var(--sable-deep);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .chat-chip:hover{border-color:var(--or);color:var(--olive);}
+  .chat-saisie{
+    display:flex;gap:.5rem;padding:.7rem .8rem;background:var(--blanc);
+    border-top:1px solid var(--sable-deep);
+  }
+  .chat-saisie input{
+    flex:1;font-family:inherit;font-size:.9rem;
+    padding:.6rem .8rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);
+  }
+  .chat-saisie input:focus{outline:none;border-color:var(--or);}
+  .chat-saisie button{
+    width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--olive);color:var(--sable);font-size:.9rem;
+    transition:background .2s ease;
+  }
+  .chat-saisie button:hover{background:#5a6542;}
+  @media (max-width:520px){
+    .chat-panel{right:12px;bottom:84px;}
+  }
   /* ---------- Reveal on scroll ---------- */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
   .reveal.visible{opacity:1;transform:none;}
@@ -676,7 +754,7 @@
 </nav>
 
 <header class="hero" id="top">
-  <div class="hero-bg" role="img" aria-label="Tables dressées sur la terrasse d'A Piaghja, face à la mer"></div>
+  <div class="hero-bg" role="img" aria-label="Coucher de soleil sur le golfe de Porto-Vecchio, montagnes au loin"></div>
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
     <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
@@ -1100,7 +1178,7 @@
     <figure><img src="images/terrasse.webp" alt="Tables en bois et fauteuils en rotin sur la terrasse d'A Piaghja" loading="lazy"></figure>
     <figure><img src="images/granit.jpg" alt="Jeu d'ombres et de lumière sur le mur de granit de la terrasse" loading="lazy"></figure>
     <figure><img src="images/deco.jpg" alt="Décoration murale : enseigne Beach et masque doré" loading="lazy"></figure>
-    <figure class="ph">Photo à venir<br>la terrasse face à la mer</figure>
+    <figure><img src="images/tables.jpg" alt="Tables dressées sur la terrasse, face à la mer" loading="lazy"></figure>
     <figure class="ph">Photo à venir<br>le poulpe grillé</figure>
     <figure class="ph">Photo à venir<br>la plage</figure>
   </div>
@@ -1214,6 +1292,26 @@
   </div>
   <p style="margin-top:1.6rem;font-size:.75rem;">© 2026 A Piaghja · Tous droits réservés</p>
 </footer>
+
+<button class="chat-bulle" id="chatBulle" aria-label="Ouvrir l'assistant" aria-expanded="false">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.9 2 11.7c0 2.6 1.3 4.9 3.4 6.5-.2 1.2-.8 2.4-1.9 3.4 1.9-.1 3.6-.8 4.9-1.7 1.1.3 2.4.5 3.6.5 5.5 0 10-3.9 10-8.7S17.5 3 12 3z"/></svg>
+</button>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Assistant A Piaghja" hidden>
+  <div class="chat-head">
+    <div>
+      <span class="chat-titre">A Piaghja</span>
+      <span class="chat-sous">Assistant · réponses instantanées</span>
+    </div>
+    <button class="chat-fermer" id="chatFermer" aria-label="Fermer l'assistant">×</button>
+  </div>
+  <div class="chat-corps" id="chatCorps" aria-live="polite"></div>
+  <div class="chat-chips" id="chatChips"></div>
+  <form class="chat-saisie" id="chatForm">
+    <input id="chatInput" placeholder="Posez votre question…" autocomplete="off" aria-label="Votre question">
+    <button type="submit" aria-label="Envoyer">➤</button>
+  </form>
+</div>
+
 
 <script>
   // Nav qui devient opaque au scroll
@@ -1492,6 +1590,148 @@
       carteCnt.textContent = n ? n + ' résultat' + (n > 1 ? 's' : '') : 'Aucun résultat, essayez un autre mot';
     });
   }
+  // ---------- Assistant chat ----------
+  (function(){
+    const bulle = document.getElementById('chatBulle');
+    const panel = document.getElementById('chatPanel');
+    if (!bulle || !panel) return;
+    const corps = document.getElementById('chatCorps');
+    const chips = document.getElementById('chatChips');
+    const form = document.getElementById('chatForm');
+    const input = document.getElementById('chatInput');
+    const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    let ouvert = false, accueilli = false;
+
+    const TEL = '<a href="tel:+33622061488">06 22 06 14 88</a>';
+    const GPS = '<a href="https://www.google.com/maps/dir/?api=1&destination=41.6243491,9.3157876&travelmode=driving" target="_blank" rel="noopener">lancer le GPS</a>';
+
+    const INTENTS = [
+      { m: ["bonjour","salut","bonsoir","hello","coucou","hey"], r: () => "Bonjour ! Bienvenue chez A Piaghja. Je peux vous renseigner sur les horaires, la carte, la réservation ou comment nous trouver. Que puis-je faire pour vous ?" },
+      { m: ["horaire","ouvert","ouverture","ferme","quelle heure"], r: () => "Nous servons le petit déjeuner dès 8h, puis les services du midi et du soir, en saison. Pour être sûr d'avoir une table, la réservation est conseillée !" },
+      { m: ["adresse","ou etes","ou est","trouver","situe","acces","venir","parking","gps","plage"], r: () => "Nous sommes sur la plage du Golfo di Sogno, 20137 Porto-Vecchio, les pieds dans le sable face au golfe. Vous pouvez " + GPS + " directement." },
+      { m: ["telephone","numero","appeler","joindre","contact"], r: () => "Vous pouvez nous joindre au " + TEL + ". À très vite !" },
+      { m: ["reserver","reservation","table","booker"], a: "resa", r: () => "Vous pouvez réserver directement ici : choisissez votre date et votre créneau dans le calendrier de la section Réserver, je vous y emmène !" },
+      { m: ["dispo","place","complet","libre","ce soir","aujourd"], a: "dispo" },
+      { m: ["carte","menu","manger","plat","cuisine"], a: "carte", r: () => "Notre carte est juste au-dessus : pizze au feu de bois, braise, pâtes, glaces artisanales… Vous pouvez aussi utiliser la barre de recherche pour trouver un plat précis. Je vous y emmène !" },
+      { m: ["poulpe","signature","specialite"], r: () => "Notre plat signature 2026 : le poulpe grillé laqué au miel & paprika fumé, dressé sur une crème de chorizo (35 €). À retrouver côté braise !" },
+      { m: ["pizza","pizze"], r: () => "Nos 20 pizze sont cuites au feu de bois, de la Margherita (14 €) à la Tartufata à la crème de truffe noire (20 €). La Baciata di Romy, garnie après cuisson, vaut le détour !" },
+      { m: ["petit dejeuner","brunch","matin","oeuf"], r: () => "Le petit déjeuner est servi tous les jours de 8h à 11h (formule complète 9,50 €). Et du vendredi au dimanche, œufs brouillés, omelettes et avocado toast de 8h30 à 11h !" },
+      { m: ["enfant","famille","kid"], r: () => "Nous avons un menu enfant à 13 € (jusqu'à 11 ans) : poulet pané frites, linguine au jambon ou pizzetta au fromage, avec un dessert glacé." },
+      { m: ["vin","cave","bouteille","champagne"], r: () => "Notre cave met la Corse à l'honneur : rosés, blancs et rouges de Patrimonio, Figari, Sartène, Calvi… et quelques champagnes. Toute la sélection est dans l'onglet Les vins de la carte." },
+      { m: ["glace","dessert","sucre"], r: () => "Glaces artisanales (14 parfums), coupes généreuses comme la Castagniccia à la châtaigne corse, tiramisu, fiadone… L'onglet Desserts & Glaces vous attend !" },
+      { m: ["cocktail","mojito","spritz","aperitif","boire"], r: () => "Le bar est notre fierté : incontournables, mojitos, spritz, mules, gin tonics… et de belles options sans alcool. Ouvrez l'onglet Bar & Cocktails de la carte !" },
+      { m: ["merci","top","parfait","super"], r: () => "Avec plaisir ! À très bientôt les pieds dans le sable. 🌊" },
+      { m: ["au revoir","bye","ciao","a plus"], r: () => "Au revoir, et à bientôt chez A Piaghja !" },
+    ];
+
+    function ajouter(txt, qui){
+      const d = document.createElement('div');
+      d.className = 'chat-msg ' + qui;
+      d.innerHTML = txt;
+      corps.appendChild(d);
+      corps.scrollTop = corps.scrollHeight;
+    }
+
+    function typing(on){
+      let t = corps.querySelector('.chat-typing');
+      if (on && !t){
+        t = document.createElement('div');
+        t.className = 'chat-typing';
+        t.innerHTML = '<span></span><span></span><span></span>';
+        corps.appendChild(t);
+        corps.scrollTop = corps.scrollHeight;
+      } else if (!on && t) t.remove();
+    }
+
+    function reponseBot(txt, action){
+      typing(true);
+      setTimeout(() => {
+        typing(false);
+        ajouter(txt, 'bot');
+        if (action === 'resa' || action === 'carte'){
+          setTimeout(() => {
+            document.querySelector(action === 'resa' ? '#infos' : '#carte')
+              .scrollIntoView({ behavior: 'smooth' });
+          }, 600);
+        }
+      }, 650 + Math.random() * 450);
+    }
+
+    async function repondreDispo(){
+      typing(true);
+      const auj = new Date().toISOString().slice(0,10);
+      try{
+        const r = await fetch('/api/resa/availability?month=' + auj.slice(0,7));
+        if (!r.ok) throw 0;
+        const d = await r.json();
+        const jour = d.jours[auj] || { midi: d.capacite.midi, soir: d.capacite.soir };
+        typing(false);
+        if (jour.midi <= 0 && jour.soir <= 0){
+          ajouter("Nous affichons complet aujourd'hui… Essayez un autre jour dans le calendrier de réservation, ou appelez-nous au " + TEL + " en cas de désistement !", 'bot');
+        } else {
+          let m = "Aujourd'hui : ";
+          m += jour.midi > 0 ? "il reste de la place au service du midi" : "le midi est complet";
+          m += jour.soir > 0 ? (jour.midi > 0 ? " et" : " mais") + " il reste de la place ce soir. " : ", et le soir est complet. ";
+          m += "Réservez vite dans la section Réserver !";
+          ajouter(m, 'bot');
+        }
+      }catch{
+        typing(false);
+        ajouter("Je n'arrive pas à consulter les disponibilités en direct. Le plus simple : le calendrier de la section Réserver, ou un appel au " + TEL + ".", 'bot');
+      }
+    }
+
+    function traiter(texte){
+      const q = norm(texte);
+      for (const it of INTENTS){
+        if (it.m.some(mot => q.includes(norm(mot)))){
+          if (it.a === 'dispo') return repondreDispo();
+          return reponseBot(it.r(), it.a);
+        }
+      }
+      reponseBot("Bonne question ! Je n'ai pas la réponse sous la main, mais l'équipe l'aura sûrement : appelez-nous au " + TEL + ", ou jetez un œil à la carte et aux infos pratiques juste au-dessus.");
+    }
+
+    const CHIPS = [
+      ["Horaires", "horaires"],
+      ["Réserver une table", "réserver"],
+      ["De la place ce soir ?", "dispo ce soir"],
+      ["Nous trouver", "adresse"],
+      ["La carte", "carte"],
+    ];
+    CHIPS.forEach(([label, msg]) => {
+      const c = document.createElement('button');
+      c.type = 'button'; c.className = 'chat-chip'; c.textContent = label;
+      c.addEventListener('click', () => { ajouter(label, 'moi'); traiter(msg); });
+      chips.appendChild(c);
+    });
+
+    function basculer(force){
+      ouvert = force !== undefined ? force : !ouvert;
+      panel.hidden = !ouvert;
+      bulle.setAttribute('aria-expanded', ouvert);
+      if (ouvert){
+        if (!accueilli){
+          accueilli = true;
+          reponseBot("Bonjour ! 👋 Je suis l'assistant d'A Piaghja. Horaires, carte, réservation, itinéraire… posez-moi votre question ou choisissez un raccourci ci-dessous.");
+        }
+        input.focus();
+      }
+    }
+
+    bulle.addEventListener('click', () => basculer());
+    document.getElementById('chatFermer').addEventListener('click', () => basculer(false));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && ouvert) basculer(false); });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const t = input.value.trim();
+      if (!t) return;
+      ajouter(t, 'moi');
+      input.value = '';
+      traiter(t);
+    });
+  })();
 </script>
 </body>
 </html>
