@@ -128,8 +128,25 @@
   }
   .hero-actions{
     opacity:0;animation:heroFade 1.2s ease 1.15s forwards;
-    margin-top:2.6rem;
+    margin-top:2.8rem;
+    display:flex;align-items:center;justify-content:center;
+    gap:2.2rem;flex-wrap:wrap;
   }
+  .hero-cta{
+    display:inline-flex;align-items:center;gap:.9rem;
+    color:var(--blanc);text-decoration:none;
+    font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;text-indent:.3em;
+  }
+  .cta-arrow{
+    position:relative;width:38px;height:1px;background:var(--or);
+    transition:width .35s cubic-bezier(.4,0,.2,1);
+  }
+  .cta-arrow::after{
+    content:"";position:absolute;right:0;top:50%;
+    width:7px;height:7px;border-top:1px solid var(--or);border-right:1px solid var(--or);
+    transform:translateY(-50%) rotate(45deg);
+  }
+  .hero-cta:hover .cta-arrow,.hero-cta:focus-visible .cta-arrow{width:68px;}
   .btn{
     display:inline-block;text-decoration:none;
     letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;
@@ -234,6 +251,31 @@
   .tab-panel{display:none;}
   .tab-panel.active{display:block;animation:tabIn .45s ease;}
   @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .carte-search{max-width:420px;margin:2.2rem auto 0;text-align:center;}
+  .carte-search input{
+    width:100%;font-family:inherit;font-size:.95rem;text-align:center;
+    padding:.8rem 1.1rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .carte-search input:focus{outline:none;border-color:var(--or);box-shadow:0 4px 18px rgba(194,161,92,.18);}
+  .carte-count{
+    display:block;margin-top:.6rem;min-height:1.2em;
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
+  }
+  #carte.searching .tabs{display:none;}
+  #carte.searching .tab-panel{display:block;}
+  #carte.searching .plat.hide{display:none;}
+  #carte.searching .carte-cat.hide{display:none;}
+  #carte.searching .plat{opacity:1;animation:none;}
+  .plat .lead{
+    flex:1;min-width:18px;margin:0 .55rem;
+    border-bottom:1px dotted var(--sable-deep);transform:translateY(-4px);
+  }
+  .plat{padding:.15rem .35rem;border-radius:6px;transition:background .2s ease;}
+  .plat:hover{background:var(--sable);}
+  .plat:hover .prix{color:var(--olive);}
+  .tab-panel.active .plat{opacity:0;animation:platIn .4s ease forwards;animation-delay:calc(var(--i,0)*18ms);}
+  @keyframes platIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
   /* ---------- Onglets de la carte ---------- */
   .tabs{
@@ -252,6 +294,31 @@
   .tab-panel{display:none;}
   .tab-panel.active{display:block;animation:tabIn .45s ease;}
   @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .carte-search{max-width:420px;margin:2.2rem auto 0;text-align:center;}
+  .carte-search input{
+    width:100%;font-family:inherit;font-size:.95rem;text-align:center;
+    padding:.8rem 1.1rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .carte-search input:focus{outline:none;border-color:var(--or);box-shadow:0 4px 18px rgba(194,161,92,.18);}
+  .carte-count{
+    display:block;margin-top:.6rem;min-height:1.2em;
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
+  }
+  #carte.searching .tabs{display:none;}
+  #carte.searching .tab-panel{display:block;}
+  #carte.searching .plat.hide{display:none;}
+  #carte.searching .carte-cat.hide{display:none;}
+  #carte.searching .plat{opacity:1;animation:none;}
+  .plat .lead{
+    flex:1;min-width:18px;margin:0 .55rem;
+    border-bottom:1px dotted var(--sable-deep);transform:translateY(-4px);
+  }
+  .plat{padding:.15rem .35rem;border-radius:6px;transition:background .2s ease;}
+  .plat:hover{background:var(--sable);}
+  .plat:hover .prix{color:var(--olive);}
+  .tab-panel.active .plat{opacity:0;animation:platIn .4s ease forwards;animation-delay:calc(var(--i,0)*18ms);}
+  @keyframes platIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
   /* ---------- Onglets de la carte ---------- */
   .tabs{
@@ -270,6 +337,31 @@
   .tab-panel{display:none;}
   .tab-panel.active{display:block;animation:tabIn .45s ease;}
   @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .carte-search{max-width:420px;margin:2.2rem auto 0;text-align:center;}
+  .carte-search input{
+    width:100%;font-family:inherit;font-size:.95rem;text-align:center;
+    padding:.8rem 1.1rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .carte-search input:focus{outline:none;border-color:var(--or);box-shadow:0 4px 18px rgba(194,161,92,.18);}
+  .carte-count{
+    display:block;margin-top:.6rem;min-height:1.2em;
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
+  }
+  #carte.searching .tabs{display:none;}
+  #carte.searching .tab-panel{display:block;}
+  #carte.searching .plat.hide{display:none;}
+  #carte.searching .carte-cat.hide{display:none;}
+  #carte.searching .plat{opacity:1;animation:none;}
+  .plat .lead{
+    flex:1;min-width:18px;margin:0 .55rem;
+    border-bottom:1px dotted var(--sable-deep);transform:translateY(-4px);
+  }
+  .plat{padding:.15rem .35rem;border-radius:6px;transition:background .2s ease;}
+  .plat:hover{background:var(--sable);}
+  .plat:hover .prix{color:var(--olive);}
+  .tab-panel.active .plat{opacity:0;animation:platIn .4s ease forwards;animation-delay:calc(var(--i,0)*18ms);}
+  @keyframes platIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
   /* ---------- Galerie ---------- */
   .galerie{background:var(--sable);}
   .galerie-head{text-align:center;max-width:60ch;margin:0 auto 2.8rem;}
@@ -505,6 +597,8 @@
   .reveal.visible{opacity:1;transform:none;}
   @media (prefers-reduced-motion:reduce){
     .reveal{opacity:1;transform:none;transition:none;}
+    .tab-panel.active .plat{animation:none;opacity:1;}
+    .cta-arrow{transition:none;}
     .hero-bg,.hero-eyebrow,.hero-title,.hero-actions{animation:none;opacity:1;transform:none;}
     html{scroll-behavior:auto;}
   }
@@ -574,8 +668,8 @@
     <p class="hero-eyebrow">Bar &amp; Restaurant · Porto-Vecchio</p>
     <h1 class="hero-title">A Piaghja</h1>
     <div class="hero-actions">
-      <a class="btn btn-or" href="#infos">Réserver une table</a>
-      <a class="btn btn-ghost" href="#carte">Découvrir la carte</a>
+      <a class="hero-cta" href="#infos">Réserver une table<span class="cta-arrow" aria-hidden="true"></span></a>
+      <a class="hero-cta" href="#carte">Découvrir la carte<span class="cta-arrow" aria-hidden="true"></span></a>
     </div>
   </div>
   <a class="hero-scroll" href="#histoire">Descendre</a>
@@ -616,6 +710,10 @@
     <div style="text-align:center" class="reveal">
       <p class="eyebrow">La carte</p>
       <h2>Cuisine du feu &amp; de la mer</h2>
+    </div>
+    <div class="carte-search reveal">
+      <input type="search" id="carteSearch" placeholder="Rechercher un plat, un vin, un cocktail…" aria-label="Rechercher dans la carte">
+      <span class="carte-count" id="carteCount" role="status"></span>
     </div>
     <div class="tabs"><button class="tab-btn active" data-tab="tab0">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab1">À partager</button><button class="tab-btn" data-tab="tab2">Plats</button><button class="tab-btn" data-tab="tab3">La braise</button><button class="tab-btn" data-tab="tab4">Les pizze</button><button class="tab-btn" data-tab="tab5">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab6">Les vins</button><button class="tab-btn" data-tab="tab7">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8">Petit déjeuner</button></div>
     <div>
@@ -1346,6 +1444,46 @@
 
     rendreCal();
   })();
+  // ---------- Carte interactive : pointillés, cascade, recherche ----------
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    panel.querySelectorAll('.plat').forEach((p, i) => {
+      p.style.setProperty('--i', Math.min(i, 30));
+      const prix = p.querySelector('.prix');
+      if (prix) {
+        const lead = document.createElement('span');
+        lead.className = 'lead'; lead.setAttribute('aria-hidden', 'true');
+        p.insertBefore(lead, prix);
+      }
+    });
+  });
+
+  const carteSec = document.getElementById('carte');
+  const carteInp = document.getElementById('carteSearch');
+  const carteCnt = document.getElementById('carteCount');
+  if (carteInp) {
+    const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    carteInp.addEventListener('input', () => {
+      const q = norm(carteInp.value.trim());
+      if (q.length < 2) {
+        carteSec.classList.remove('searching');
+        carteCnt.textContent = '';
+        document.querySelectorAll('#carte .hide').forEach(x => x.classList.remove('hide'));
+        return;
+      }
+      carteSec.classList.add('searching');
+      let n = 0;
+      document.querySelectorAll('#carte .carte-cat').forEach(cat => {
+        let vis = 0;
+        cat.querySelectorAll('.plat').forEach(p => {
+          const ok = norm(p.textContent).includes(q);
+          p.classList.toggle('hide', !ok);
+          if (ok) { vis++; n++; }
+        });
+        cat.classList.toggle('hide', vis === 0);
+      });
+      carteCnt.textContent = n ? n + ' résultat' + (n > 1 ? 's' : '') : 'Aucun résultat, essayez un autre mot';
+    });
+  }
 </script>
 </body>
 </html>
