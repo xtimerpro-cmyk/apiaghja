@@ -262,7 +262,12 @@
     display:block;margin-top:.6rem;min-height:1.2em;
     font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
   }
+  .carte-hint{
+    text-align:center;margin:1.6rem 0 .4rem;
+    font-family:'Allura',cursive;font-size:1.45rem;color:var(--olive-soft);
+  }
   #carte.searching .tabs{display:none;}
+  #carte.searching .carte-hint{display:none;}
   #carte.searching .tab-panel{display:block;}
   #carte.searching .plat.hide{display:none;}
   #carte.searching .carte-cat.hide{display:none;}
@@ -305,7 +310,12 @@
     display:block;margin-top:.6rem;min-height:1.2em;
     font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
   }
+  .carte-hint{
+    text-align:center;margin:1.6rem 0 .4rem;
+    font-family:'Allura',cursive;font-size:1.45rem;color:var(--olive-soft);
+  }
   #carte.searching .tabs{display:none;}
+  #carte.searching .carte-hint{display:none;}
   #carte.searching .tab-panel{display:block;}
   #carte.searching .plat.hide{display:none;}
   #carte.searching .carte-cat.hide{display:none;}
@@ -348,7 +358,12 @@
     display:block;margin-top:.6rem;min-height:1.2em;
     font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
   }
+  .carte-hint{
+    text-align:center;margin:1.6rem 0 .4rem;
+    font-family:'Allura',cursive;font-size:1.45rem;color:var(--olive-soft);
+  }
   #carte.searching .tabs{display:none;}
+  #carte.searching .carte-hint{display:none;}
   #carte.searching .tab-panel{display:block;}
   #carte.searching .plat.hide{display:none;}
   #carte.searching .carte-cat.hide{display:none;}
@@ -715,9 +730,10 @@
       <input type="search" id="carteSearch" placeholder="Rechercher un plat, un vin, un cocktail…" aria-label="Rechercher dans la carte">
       <span class="carte-count" id="carteCount" role="status"></span>
     </div>
-    <div class="tabs"><button class="tab-btn active" data-tab="tab0">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab1">À partager</button><button class="tab-btn" data-tab="tab2">Plats</button><button class="tab-btn" data-tab="tab3">La braise</button><button class="tab-btn" data-tab="tab4">Les pizze</button><button class="tab-btn" data-tab="tab5">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab6">Les vins</button><button class="tab-btn" data-tab="tab7">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8">Petit déjeuner</button></div>
+    <div class="tabs" role="tablist" aria-label="Catégories de la carte"><button class="tab-btn" data-tab="tab0">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab1">À partager</button><button class="tab-btn" data-tab="tab2">Plats</button><button class="tab-btn" data-tab="tab3">La braise</button><button class="tab-btn" data-tab="tab4">Les pizze</button><button class="tab-btn" data-tab="tab5">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab6">Les vins</button><button class="tab-btn" data-tab="tab7">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8">Petit déjeuner</button></div>
+    <p class="carte-hint" id="carteHint">Choisissez une catégorie pour parcourir la carte</p>
     <div>
-<div class="tab-panel active" id="tab0"><div class="carte-grid">
+<div class="tab-panel" id="tab0"><div class="carte-grid">
 <div class="carte-cat"><h3>Les incontournables</h3>
 <div class="plat"><span class="nom">Pina Colada<small>Rhum brun, purée de coco, jus d'ananas, citron vert</small></span><span class="prix">13 €</span></div>
 <div class="plat"><span class="nom">Margarita<small>Tequila, triple sec, jus de citron, sucre de canne</small></span><span class="prix">12 €</span></div>
@@ -1281,35 +1297,27 @@
     })
     .catch(() => { /* fallback statique : la note data-fallback s'affiche */ });
 
-  // ---------- Onglets de la carte ----------
+  // ---------- Onglets de la carte : bascule accessible ----------
+  const carteHint = document.getElementById('carteHint');
   document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', btn.dataset.tab);
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const dejaOuvert = btn.classList.contains('active');
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-expanded', 'false');
+      });
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab).classList.add('active');
+      if (!dejaOuvert) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      }
+      if (carteHint) carteHint.hidden = !dejaOuvert ? true : false;
     });
   });
 
-  // ---------- Onglets de la carte ----------
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab).classList.add('active');
-    });
-  });
-
-  // ---------- Onglets de la carte ----------
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab).classList.add('active');
-    });
-  });
 // ---------- Réservation maison : calendrier + créneaux + formulaire ----------
   (function(){
     const CRENEAUX = {
