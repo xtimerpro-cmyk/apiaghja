@@ -618,6 +618,7 @@
   }
   .chat-bulle:hover{transform:translateY(-3px);background:#5a6542;}
   .chat-bulle svg{width:26px;height:26px;fill:var(--sable);}
+  .chat-panel[hidden]{display:none !important;}
   .chat-panel{
     position:fixed;right:20px;bottom:90px;z-index:70;
     width:min(370px, calc(100vw - 32px));height:min(540px, calc(100vh - 120px));
@@ -1314,6 +1315,10 @@
 
 
 <script>
+  // Toujours arriver sur l'accueil au chargement
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
   // Nav qui devient opaque au scroll
   const nav = document.getElementById('nav');
   const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
@@ -1595,6 +1600,7 @@
     const bulle = document.getElementById('chatBulle');
     const panel = document.getElementById('chatPanel');
     if (!bulle || !panel) return;
+    panel.hidden = true;
     const corps = document.getElementById('chatCorps');
     const chips = document.getElementById('chatChips');
     const form = document.getElementById('chatForm');
