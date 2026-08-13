@@ -690,6 +690,31 @@
     }
     .chat-saisie input{font-size:16px;}
   }
+
+  /* ---------- Rail social latéral ---------- */
+  .rail-social{
+    position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:45;
+    display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  }
+  .rail-ligne{
+    width:1px;height:44px;
+    background:linear-gradient(180deg,transparent,rgba(194,161,92,.75),transparent);
+  }
+  .rail-social a{
+    width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--blanc);border:1px solid rgba(194,161,92,.5);
+    box-shadow:0 6px 18px rgba(74,83,53,.18);
+    font-size:1.1rem;text-decoration:none;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .rail-social a:hover{transform:translateY(-3px);border-color:var(--or);}
+  .rail-social a svg{width:20px;height:20px;}
+  @media (max-width:860px){
+    .rail-social{right:10px;top:44%;}
+    .rail-social a{width:38px;height:38px;font-size:1rem;}
+    .rail-ligne{height:28px;}
+  }
   /* ---------- Reveal on scroll ---------- */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
   .reveal.visible{opacity:1;transform:none;}
@@ -758,6 +783,35 @@
   </ul>
 </nav>
 
+
+<aside class="rail-social" aria-label="Nos liens">
+  <span class="rail-ligne" aria-hidden="true"></span>
+  <a href="https://www.instagram.com/apiaghja_golfodisogno/" target="_blank" rel="noopener" title="Notre Instagram" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <defs>
+        <linearGradient id="igGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#FED373"/>
+          <stop offset="26%" stop-color="#F15245"/>
+          <stop offset="61%" stop-color="#D92E7F"/>
+          <stop offset="100%" stop-color="#9B36B7"/>
+        </linearGradient>
+      </defs>
+      <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4" fill="none" stroke="url(#igGrad)" stroke-width="1.9"/>
+      <circle cx="12" cy="12" r="4.5" fill="none" stroke="url(#igGrad)" stroke-width="1.9"/>
+      <circle cx="17.4" cy="6.6" r="1.35" fill="url(#igGrad)"/>
+    </svg>
+  </a>
+  <a href="https://www.google.com/maps/place/A+PIAGHJA/@41.6243491,9.3157876,17z/data=!4m14!1m7!3m6!1s0x12d985ac6039965f:0xbfa5bbab6579a666!2sA+PIAGHJA!8m2!3d41.6243491!4d9.3157876!16s%2Fg%2F11t5ftfjgx!3m5!1s0x12d985ac6039965f:0xbfa5bbab6579a666!8m2!3d41.6243491!4d9.3157876!16s%2Fg%2F11t5ftfjgx?entry=ttu" target="_blank" rel="noopener" title="Notre fiche Google" aria-label="Avis Google">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/>
+      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09A11.99 11.99 0 0 0 12 24z"/>
+      <path fill="#FBBC05" d="M5.27 14.29A7.2 7.2 0 0 1 4.9 12c0-.8.14-1.57.37-2.29V6.62H1.29a12 12 0 0 0 0 10.76l3.98-3.09z"/>
+      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z"/>
+    </svg>
+  </a>
+  <span class="rail-ligne" aria-hidden="true"></span>
+</aside>
+
 <header class="hero" id="top">
   <div class="hero-bg" role="img" aria-label="Coucher de soleil sur le golfe de Porto-Vecchio, montagnes au loin"></div>
   <div class="hero-grain" aria-hidden="true"></div>
@@ -795,7 +849,6 @@
 
 <section class="signature" id="signature">
   <div class="reveal">
-    <p class="eyebrow">Plat signature 2026</p>
     <h2>Le poulpe grillé, miel &amp; paprika fumé</h2>
     <p>Saisi sur la braise, notre poulpe est laqué au miel et au paprika fumé, puis dressé sur une crème de chorizo. Le sucré du miel, le fumé du feu de bois, le piquant délicat du chorizo. Trois notes qui racontent la Méditerranée dans une seule assiette.</p>
     <p>Tendre à cœur, caramélisé en surface, c'est le plat qu'on vient chercher les pieds dans le sable, face au golfe.</p>
