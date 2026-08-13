@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
 <style>
   :root{
-    --olive:#6d7551;
-    --olive-soft:#8a9268;
+    --olive:#8d9570;
+    --olive-soft:#a9af8f;
     --sable:#efe9dd;
     --sable-deep:#e2d9c6;
     --rose:#e7c6bd;
@@ -40,7 +40,7 @@
   nav.scrolled{
     background:rgba(253,252,249,.94);
     backdrop-filter:blur(8px);
-    box-shadow:0 1px 0 rgba(109,117,81,.12);
+    box-shadow:0 1px 0 rgba(141,149,112,.12);
   }
   nav.scrolled .nav-links a, nav.scrolled .brand{color:var(--olive);}
   .brand{
@@ -81,7 +81,7 @@
   @keyframes heroZoom{from{transform:scale(1.08);}to{transform:scale(1);}}
   .hero-bg::after{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(109,117,81,.42) 60%,rgba(42,43,36,.68) 100%);
+    background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(141,149,112,.38) 60%,rgba(42,43,36,.68) 100%);
   }
   /* Grain argentique subtil sur toute l'image */
   .hero-grain{
@@ -201,7 +201,7 @@
 
   /* ---------- Signature : plat signature 2026 ---------- */
   .signature{
-    background:var(--olive);color:var(--sable);
+    background:var(--olive);color:#3c4128;
     text-align:center;
   }
   .signature .eyebrow{color:var(--rose);}
@@ -411,12 +411,12 @@
   .btn-gps{
     background:var(--olive);color:var(--blanc);margin-top:.6rem;
   }
-  .btn-gps:hover{transform:translateY(-2px);background:#5a6542;}
+  .btn-gps:hover{transform:translateY(-2px);background:#7c8461;}
   .map-nous{
     position:relative;max-width:1100px;margin:clamp(2.5rem,5vw,4rem) auto 0;
     height:clamp(340px,48vw,480px);border-radius:2px;overflow:hidden;
     border:1px solid rgba(194,161,92,.55);
-    box-shadow:0 22px 55px rgba(109,117,81,.25);
+    box-shadow:0 22px 55px rgba(141,149,112,.22);
   }
   .map-nous iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
   .map-cta{
@@ -427,7 +427,7 @@
     box-shadow:0 10px 28px rgba(42,43,36,.4);
     transition:transform .25s ease, background .25s ease;
   }
-  .map-cta:hover{transform:translateX(-50%) translateY(-2px);background:#5a6542;}
+  .map-cta:hover{transform:translateX(-50%) translateY(-2px);background:#7c8461;}
   .resa-card{
     background:var(--sable);border-radius:2px;
     padding:clamp(2rem,4vw,3rem);text-align:center;
@@ -439,7 +439,7 @@
   .resa-card p{margin-bottom:1.6rem;max-width:38ch;margin-inline:auto;}
   .resa-widget{
     background:var(--blanc);border-radius:10px;
-    box-shadow:0 8px 30px rgba(109,117,81,.16);
+    box-shadow:0 8px 30px rgba(141,149,112,.15);
     margin:0 auto 1.4rem;max-width:420px;
     padding:1.1rem 1.1rem 1.3rem;text-align:left;
   }
@@ -502,7 +502,7 @@
     background:var(--olive);color:var(--blanc);border:none;border-radius:999px;
     padding:.9rem;cursor:pointer;transition:background .25s ease;margin-top:.3rem;
   }
-  .rw-submit:hover{background:#5a6542;}
+  .rw-submit:hover{background:#7c8461;}
   .rw-submit:disabled{opacity:.5;cursor:wait;}
   .rw-msg{margin-top:.8rem;font-size:.9rem;text-align:center;color:var(--olive);}
   .rw-msg.err{color:#a8574a;}
@@ -511,7 +511,7 @@
     color:var(--olive);margin-bottom:.2rem !important;
   }
   .resa-card .btn{background:var(--olive);color:var(--blanc);}
-  .resa-card .btn:hover{transform:translateY(-2px);background:#5a6542;}
+  .resa-card .btn:hover{transform:translateY(-2px);background:#7c8461;}
   .resa-card .tel{
     display:block;margin-top:1.2rem;font-size:1.05rem;
     letter-spacing:.06em;text-decoration:none;color:var(--olive);
@@ -520,16 +520,16 @@
   /* ---------- Avis Google & carte ---------- */
   .google{
     background:
-      radial-gradient(ellipse 60% 50% at 18% 45%, rgba(194,161,92,.13), transparent 70%),
-      var(--encre);
-    color:var(--sable);
+      radial-gradient(ellipse 60% 50% at 18% 45%, rgba(194,161,92,.10), transparent 70%),
+      var(--blanc);
+    color:var(--encre);
   }
   .google-inner{
     display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2.5rem,5vw,5rem);
     max-width:1200px;margin:0 auto;align-items:stretch;
   }
-  .google .eyebrow{color:var(--rose);}
-  .google h2{color:var(--blanc);}
+  .google .eyebrow{color:var(--or);}
+  .google h2{color:var(--olive);}
   .note-card{
     display:flex;flex-direction:column;justify-content:center;
   }
@@ -538,7 +538,7 @@
     background:#fff;color:#202124;border-radius:12px;
     font-family:Roboto,Arial,'Helvetica Neue',sans-serif;
     padding:1.4rem 1.5rem 1.5rem;
-    box-shadow:0 1px 3px rgba(0,0,0,.3), 0 18px 50px rgba(0,0,0,.4);
+    box-shadow:0 1px 3px rgba(0,0,0,.10), 0 14px 40px rgba(0,0,0,.14);
     max-width:400px;
   }
   .gcard .gname{font-size:1.35rem;font-weight:500;letter-spacing:0;}
@@ -564,14 +564,14 @@
   }
   .gcard .gbtn:hover{background:#f8f9fa;}
   .note-verbatim{
-    font-family:'Allura',cursive;font-size:1.6rem;color:var(--rose);
+    font-family:'Allura',cursive;font-size:1.6rem;color:#c99a8c;
     margin-top:2rem;max-width:30ch;line-height:1.4;
   }
   .map-frame{
     position:relative;border-radius:2px;overflow:hidden;
     min-height:420px;
     border:1px solid rgba(194,161,92,.45);
-    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    box-shadow:0 18px 45px rgba(74,83,53,.16);
   }
   .map-frame::before{
     content:"";position:absolute;inset:12px;
@@ -592,18 +592,18 @@
 
   /* ---------- Footer ---------- */
   footer{
-    background:var(--encre);color:var(--sable);
+    background:var(--sable-deep);color:var(--encre);
     text-align:center;padding:3rem 6vw 2.2rem;
-    border-top:1px solid rgba(194,161,92,.25);
+    border-top:1px solid rgba(194,161,92,.4);
   }
   footer .brand-foot{
-    font-family:'Allura',cursive;font-size:2.2rem;color:var(--blanc);
+    font-family:'Allura',cursive;font-size:2.2rem;color:var(--olive);
   }
-  footer p{font-size:.85rem;margin-top:.8rem;color:#a5a696;}
+  footer p{font-size:.85rem;margin-top:.8rem;color:#7a7a68;}
   footer .socials{margin-top:1.2rem;display:flex;gap:1.6rem;justify-content:center;}
   footer .socials a{
     font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;
-    text-decoration:none;color:var(--rose);
+    text-decoration:none;color:var(--olive);
   }
   footer .socials a:hover{color:var(--or);}
 
@@ -616,7 +616,7 @@
     display:flex;align-items:center;justify-content:center;
     transition:transform .25s ease, background .25s ease;
   }
-  .chat-bulle:hover{transform:translateY(-3px);background:#5a6542;}
+  .chat-bulle:hover{transform:translateY(-3px);background:#7c8461;}
   .chat-bulle svg{width:26px;height:26px;fill:var(--sable);}
   .chat-panel[hidden]{display:none !important;}
   .chat-panel{
@@ -682,7 +682,7 @@
     background:var(--olive);color:var(--sable);font-size:.9rem;
     transition:background .2s ease;
   }
-  .chat-saisie button:hover{background:#5a6542;}
+  .chat-saisie button:hover{background:#7c8461;}
   @media (max-width:520px){
     .chat-panel{right:12px;bottom:84px;}
   }
@@ -779,7 +779,7 @@
       <svg class="rameau" viewBox="0 0 120 22" fill="none" aria-hidden="true">
         <path d="M2 11 H118" stroke="#c2a15c" stroke-width="1"/>
         <ellipse cx="38" cy="7" rx="7" ry="3.2" transform="rotate(-28 38 7)" fill="#8a9268"/>
-        <ellipse cx="60" cy="15" rx="7" ry="3.2" transform="rotate(24 60 15)" fill="#6d7551"/>
+        <ellipse cx="60" cy="15" rx="7" ry="3.2" transform="rotate(24 60 15)" fill="#8d9570"/>
         <ellipse cx="82" cy="7" rx="7" ry="3.2" transform="rotate(-28 82 7)" fill="#8a9268"/>
       </svg>
     </div>
