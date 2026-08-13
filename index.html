@@ -30,6 +30,52 @@
   img{display:block;max-width:100%;}
   a{color:inherit;}
 
+
+  /* ---------- Écran de chargement ---------- */
+  #splash{
+    position:fixed;inset:0;z-index:100;
+    background:var(--blanc);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+    transition:opacity .65s ease, visibility .65s ease;
+  }
+  #splash.done{opacity:0;visibility:hidden;pointer-events:none;}
+  .splash-arbre{width:min(190px,44vw);}
+  .splash-arbre .tronc{
+    stroke-dasharray:160;stroke-dashoffset:160;
+    animation:splashTronc 1s ease-out forwards;
+  }
+  .splash-arbre .t2{animation-delay:.35s;}
+  .splash-arbre .t3{animation-delay:.5s;}
+  @keyframes splashTronc{to{stroke-dashoffset:0;}}
+  .splash-arbre .grappe{
+    opacity:0;transform:scale(.6);transform-origin:center;transform-box:fill-box;
+    animation:splashFeuille .55s cubic-bezier(.34,1.4,.64,1) forwards;
+  }
+  .splash-arbre .g1{animation-delay:.65s;}
+  .splash-arbre .g2{animation-delay:.8s;}
+  .splash-arbre .g3{animation-delay:.92s;}
+  .splash-arbre .g4{animation-delay:1.05s;}
+  @keyframes splashFeuille{to{opacity:1;transform:scale(1);}}
+  .splash-arbre .olive{
+    opacity:0;animation:splashFeuille .4s ease forwards;
+  }
+  .splash-arbre .o1{animation-delay:1.2s;}
+  .splash-arbre .o2{animation-delay:1.3s;}
+  .splash-arbre .o3{animation-delay:1.4s;}
+  .splash-arbre .sol{
+    stroke-dasharray:80;stroke-dashoffset:80;
+    animation:splashTronc .7s ease-out .2s forwards;
+  }
+  .splash-nom{
+    font-family:'Allura',cursive;font-size:2.6rem;color:var(--olive);
+    opacity:0;animation:splashNom .8s ease .9s forwards;
+  }
+  @keyframes splashNom{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){
+    .splash-arbre .tronc,.splash-arbre .sol{stroke-dashoffset:0;animation:none;}
+    .splash-arbre .grappe,.splash-arbre .olive,.splash-nom{opacity:1;transform:none;animation:none;}
+  }
+
   /* ---------- Navigation ---------- */
   nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
@@ -771,6 +817,42 @@
 </style>
 </head>
 <body>
+
+<div id="splash" aria-hidden="true">
+  <svg class="splash-arbre" viewBox="0 0 200 210" fill="none">
+    <!-- Tronc noueux -->
+    <path class="tronc" d="M100 195 C98 170 92 150 96 128 C99 112 106 104 104 88"
+          stroke="#4a5335" stroke-width="5.5" stroke-linecap="round"/>
+    <path class="tronc t2" d="M97 150 C86 138 76 130 70 114" stroke="#4a5335" stroke-width="4" stroke-linecap="round"/>
+    <path class="tronc t3" d="M100 132 C112 122 124 118 132 104" stroke="#4a5335" stroke-width="4" stroke-linecap="round"/>
+    <!-- Feuillage : grappes de feuilles -->
+    <g class="feuilles">
+      <g class="grappe g1">
+        <ellipse cx="104" cy="70" rx="26" ry="17" fill="#8d9570"/>
+        <ellipse cx="86" cy="82" rx="16" ry="11" fill="#a9af8f"/>
+      </g>
+      <g class="grappe g2">
+        <ellipse cx="64" cy="100" rx="20" ry="13" fill="#a9af8f"/>
+        <ellipse cx="52" cy="110" rx="12" ry="8" fill="#8d9570"/>
+      </g>
+      <g class="grappe g3">
+        <ellipse cx="140" cy="92" rx="21" ry="14" fill="#8d9570"/>
+        <ellipse cx="152" cy="104" rx="12" ry="8" fill="#a9af8f"/>
+      </g>
+      <g class="grappe g4">
+        <ellipse cx="120" cy="56" rx="15" ry="10" fill="#a9af8f"/>
+        <ellipse cx="82" cy="58" rx="13" ry="9" fill="#8d9570"/>
+      </g>
+      <!-- Olives -->
+      <circle class="olive o1" cx="98" cy="86" r="3" fill="#c2a15c"/>
+      <circle class="olive o2" cx="126" cy="98" r="3" fill="#c2a15c"/>
+      <circle class="olive o3" cx="70" cy="106" r="3" fill="#c2a15c"/>
+    </g>
+    <!-- Sol -->
+    <path class="sol" d="M60 196 H140" stroke="#c2a15c" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+  <div class="splash-nom">A Piaghja</div>
+</div>
 
 <nav id="nav">
   <a class="brand" href="#top">A Piaghja</a>
@@ -1817,6 +1899,22 @@
     });
   }, { rootMargin: '600px' });
   document.querySelectorAll('iframe[data-src]').forEach(f => ioMaps.observe(f));
+  // ---------- Écran de chargement ----------
+  (function(){
+    const splash = document.getElementById('splash');
+    if (!splash) return;
+    const debut = performance.now();
+    function fermer(){
+      const reste = Math.max(0, 1600 - (performance.now() - debut));
+      setTimeout(() => {
+        splash.classList.add('done');
+        setTimeout(() => splash.remove(), 750);
+      }, reste);
+    }
+    if (document.readyState === 'complete') fermer();
+    else window.addEventListener('load', fermer);
+    setTimeout(fermer, 3500); // garde-fou si le chargement traîne
+  })();
 </script>
 </body>
 </html>
