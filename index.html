@@ -143,17 +143,6 @@
     color:transparent;-webkit-text-stroke:1px rgba(239,233,221,.14);
     user-select:none;pointer-events:none;
   }
-  .hl-rose{
-    position:relative;display:inline-block;color:#fdfcf9;
-  }
-  .hl-rose::before{
-    content:"";position:absolute;left:-.12em;right:-.12em;top:52%;bottom:-4%;z-index:-1;
-    background:linear-gradient(100deg,
-      rgba(231,198,189,.40) 0%,
-      rgba(231,198,189,.62) 40%,
-      rgba(231,198,189,.42) 100%);
-    border-radius:3px 6px 4px 7px;
-  }
   .hero-eyebrow{
     display:flex;align-items:center;justify-content:center;gap:1.2rem;
     font-size:.78rem;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
@@ -907,10 +896,9 @@
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
     <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
-    <p class="hero-eyebrow"><span class="hl-rose">Bar &amp; Restaurant</span> · <span class="hl-rose">Porto-Vecchio</span></p>
+    <p class="hero-eyebrow">Bar &amp; Restaurant · Porto-Vecchio</p>
     <h1 class="hero-title">A Piaghja</h1>
     <div class="hero-actions">
-      <a class="hero-cta" href="#reserver">Réserver une table<span class="cta-arrow" aria-hidden="true"></span></a>
       <a class="hero-cta" href="#carte">Découvrir la carte<span class="cta-arrow" aria-hidden="true"></span></a>
     </div>
   </div>
