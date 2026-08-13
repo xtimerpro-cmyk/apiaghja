@@ -621,7 +621,7 @@
   .chat-panel[hidden]{display:none !important;}
   .chat-panel{
     position:fixed;right:20px;bottom:90px;z-index:70;
-    width:min(310px, calc(100vw - 32px));height:min(420px, calc(100vh - 130px));
+    width:min(290px, calc(100vw - 24px));height:min(380px, calc(100dvh - 120px));
     background:var(--blanc);border-radius:16px;overflow:hidden;
     box-shadow:0 24px 70px rgba(42,43,36,.4);
     display:flex;flex-direction:column;
@@ -684,7 +684,11 @@
   }
   .chat-saisie button:hover{background:#7c8461;}
   @media (max-width:520px){
-    .chat-panel{right:12px;bottom:84px;}
+    .chat-panel{
+      right:12px;bottom:80px;
+      width:calc(100vw - 24px);height:min(56dvh, 400px);
+    }
+    .chat-saisie input{font-size:16px;}
   }
   /* ---------- Reveal on scroll ---------- */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
@@ -1721,7 +1725,8 @@
           accueilli = true;
           reponseBot("Bonjour ! 👋 Je suis l'assistant d'A Piaghja. Horaires, carte, réservation, itinéraire… posez-moi votre question ou choisissez un raccourci ci-dessous.");
         }
-        input.focus();
+        // Focus clavier uniquement sur desktop (souris) : sur mobile le clavier ne sort pas tout seul
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) input.focus();
       }
     }
 
