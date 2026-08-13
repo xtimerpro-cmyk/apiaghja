@@ -1278,7 +1278,7 @@
   </div>
   <div class="map-nous reveal">
     <iframe
-      src="https://maps.google.com/maps?ll=41.6243491,9.3157876&amp;q=A+PIAGHJA+Porto-Vecchio&amp;z=16&amp;output=embed"
+      data-src="https://maps.google.com/maps?ll=41.6243491,9.3157876&amp;q=A+PIAGHJA+Porto-Vecchio&amp;z=16&amp;output=embed"
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
       title="Carte Google Maps : A Piaghja, Porto-Vecchio"></iframe>
@@ -1310,7 +1310,7 @@
     </div>
     <div class="map-frame reveal">
       <iframe
-        src="https://maps.google.com/maps?ll=41.6243491,9.3157876&q=A+PIAGHJA+Porto-Vecchio&z=16&output=embed"
+        data-src="https://maps.google.com/maps?ll=41.6243491,9.3157876&q=A+PIAGHJA+Porto-Vecchio&z=16&output=embed"
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
         title="Carte Google Maps : emplacement d'A Piaghja">
@@ -1353,7 +1353,12 @@
 <script>
   // Toujours arriver sur l'accueil au chargement
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  // Retirer l'ancre (#carte, #infos...) laissée dans l'URL par une visite précédente
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   window.scrollTo(0, 0);
+  // Après chargement complet (images comprises) et retours via le cache navigateur (iOS)
+  window.addEventListener('load', () => window.scrollTo(0, 0));
+  window.addEventListener('pageshow', (e) => { if (e.persisted) window.scrollTo(0, 0); });
 
   // Nav qui devient opaque au scroll
   const nav = document.getElementById('nav');
@@ -1775,6 +1780,17 @@
       traiter(t);
     });
   })();
+  // ---------- Cartes Google en chargement différé (corrige le vol de focus au chargement) ----------
+  const ioMaps = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const f = e.target;
+        if (f.dataset.src && !f.src) f.src = f.dataset.src;
+        ioMaps.unobserve(f);
+      }
+    });
+  }, { rootMargin: '600px' });
+  document.querySelectorAll('iframe[data-src]').forEach(f => ioMaps.observe(f));
 </script>
 </body>
 </html>
