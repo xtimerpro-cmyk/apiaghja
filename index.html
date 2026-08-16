@@ -540,6 +540,45 @@
   }
   .rw-submit:hover{background:#7c8461;}
   .rw-submit:disabled{opacity:.5;cursor:wait;}
+  .rw-recap{
+    min-height:1.2em;text-align:center;margin-bottom:.5rem;
+    font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--olive);
+  }
+  .rw-dots{display:flex;justify-content:center;gap:.45rem;margin-bottom:1rem;}
+  .rw-dot{
+    width:7px;height:7px;border-radius:50%;background:var(--sable-deep);
+    transition:all .3s ease;
+  }
+  .rw-dot.on{background:var(--olive);transform:scale(1.25);}
+  .rw-dot.fait{background:var(--or);}
+  .rw-pax-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;}
+  .rw-pax{
+    font-family:inherit;font-size:1rem;padding:.75rem 0;
+    border:1px solid var(--sable-deep);border-radius:10px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .rw-pax:hover{border-color:var(--or);}
+  .rw-note{margin-top:.9rem;font-size:.8rem;color:#8a8a7a;text-align:center;}
+  .rw-note a{color:var(--olive);}
+  .rw-back{
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;
+    padding:0;margin-bottom:.8rem;
+  }
+  .rw-back:hover{color:var(--olive);}
+  .rw-confirm{text-align:center;}
+  .rw-check{
+    width:54px;height:54px;border-radius:50%;margin:0 auto .8rem;
+    background:var(--olive);color:var(--blanc);font-size:1.6rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .rw-confirm-txt{font-size:.95rem;line-height:1.6;}
+  .rw-again{
+    margin-top:1rem;background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    font-family:inherit;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+    padding:.55rem 1.2rem;cursor:pointer;color:var(--encre);transition:border-color .2s ease;
+  }
+  .rw-again:hover{border-color:var(--or);}
   .rw-msg{margin-top:.8rem;font-size:.9rem;text-align:center;color:var(--olive);}
   .rw-msg.err{color:#a8574a;}
   .resa-alt{
@@ -1352,38 +1391,56 @@
       <h3>Réserver une table</h3>
       <p>La terrasse compte 18 tables face à la mer. En saison, la réservation est vivement conseillée.</p>
       <div class="resa-widget" id="resaWidget">
-        <div class="rw-cal">
-          <div class="rw-cal-head">
-            <button type="button" id="rwPrev" aria-label="Mois précédent">‹</button>
-            <span id="rwMois"></span>
-            <button type="button" id="rwNext" aria-label="Mois suivant">›</button>
-          </div>
-          <div class="rw-grid rw-jours" aria-hidden="true">
-            <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
-          </div>
-          <div class="rw-grid" id="rwGrid"></div>
+        <div class="rw-recap" id="rwRecap" aria-live="polite"></div>
+        <div class="rw-dots" aria-hidden="true">
+          <span class="rw-dot on" data-dot="1"></span><span class="rw-dot" data-dot="2"></span><span class="rw-dot" data-dot="3"></span><span class="rw-dot" data-dot="4"></span>
         </div>
-        <div class="rw-etape" id="rwSlots" hidden>
-          <p class="rw-label" id="rwDateLabel"></p>
+
+        <div class="rw-etape" id="rwEtape1">
+          <p class="rw-label">Combien serez-vous ?</p>
+          <div class="rw-pax-grid" id="rwPaxGrid"></div>
+          <p class="rw-note">Plus de 8 ? Appelez-nous au <a href="tel:+33622061488">06 22 06 14 88</a></p>
+        </div>
+
+        <div class="rw-etape" id="rwEtape2" hidden>
+          <button type="button" class="rw-back" data-back="1">‹ Couverts</button>
+          <div class="rw-cal">
+            <div class="rw-cal-head">
+              <button type="button" id="rwPrev" aria-label="Mois précédent">‹</button>
+              <span id="rwMois"></span>
+              <button type="button" id="rwNext" aria-label="Mois suivant">›</button>
+            </div>
+            <div class="rw-grid rw-jours" aria-hidden="true">
+              <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="rw-grid" id="rwGrid"></div>
+          </div>
+        </div>
+
+        <div class="rw-etape" id="rwEtape3" hidden>
+          <button type="button" class="rw-back" data-back="2">‹ Date</button>
+          <p class="rw-label">Choisissez votre créneau</p>
           <div class="rw-slot-group"><span>Midi</span><div class="rw-slots" id="rwSlotsMidi"></div></div>
           <div class="rw-slot-group"><span>Soir</span><div class="rw-slots" id="rwSlotsSoir"></div></div>
         </div>
+
         <form class="rw-etape rw-form" id="rwForm" hidden>
+          <button type="button" class="rw-back" data-back="3">‹ Créneau</button>
+          <p class="rw-label">Vos coordonnées</p>
           <div class="rw-row">
             <input id="rwPrenom" placeholder="Prénom" autocomplete="given-name" required>
             <input id="rwNom" placeholder="Nom" autocomplete="family-name" required>
           </div>
-          <div class="rw-row">
-            <input id="rwTel" type="tel" placeholder="Téléphone" autocomplete="tel" required>
-            <select id="rwPax" aria-label="Nombre de couverts">
-              <option value="1">1 couvert</option><option value="2" selected>2 couverts</option>
-              <option value="3">3 couverts</option><option value="4">4 couverts</option>
-              <option value="5">5 couverts</option><option value="6">6 couverts</option>
-              <option value="7">7 couverts</option><option value="8">8 couverts</option>
-            </select>
-          </div>
+          <input id="rwTel" type="tel" placeholder="Téléphone" autocomplete="tel" required>
           <button type="submit" class="rw-submit">Confirmer la réservation</button>
         </form>
+
+        <div class="rw-etape rw-confirm" id="rwConfirm" hidden>
+          <div class="rw-check">✓</div>
+          <p class="rw-confirm-txt" id="rwConfirmTxt"></p>
+          <button type="button" class="rw-again" id="rwAgain">Faire une autre réservation</button>
+        </div>
+
         <p class="rw-msg" id="rwMsg" role="status"></p>
       </div>
       <p class="resa-alt">Ou par téléphone :</p>
