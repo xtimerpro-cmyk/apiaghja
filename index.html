@@ -35,10 +35,12 @@
   #splash{
     position:fixed;inset:0;z-index:100;
     background:#e9ecdc;
+    animation:splashGarde .65s ease 4.5s forwards;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
     transition:opacity .65s ease, visibility .65s ease;
   }
   #splash.done{opacity:0;visibility:hidden;pointer-events:none;}
+  @keyframes splashGarde{to{opacity:0;visibility:hidden;pointer-events:none;}}
   .splash-arbre{width:min(190px,44vw);}
   .splash-arbre .tronc{
     stroke-dasharray:160;stroke-dashoffset:160;
@@ -838,6 +840,26 @@
   </svg>
   <div class="splash-nom">A Piaghja</div>
 </div>
+<script>
+  // Fermeture du splash : autonome, insensible aux erreurs du reste de la page
+  (function(){
+    var splash = document.getElementById('splash');
+    if (!splash) return;
+    var debut = Date.now(), ferme = false;
+    function fermer(){
+      if (ferme) return;
+      ferme = true;
+      var reste = Math.max(0, 1600 - (Date.now() - debut));
+      setTimeout(function(){
+        splash.classList.add('done');
+        setTimeout(function(){ if (splash.parentNode) splash.parentNode.removeChild(splash); }, 800);
+      }, reste);
+    }
+    if (document.readyState === 'complete') fermer();
+    else window.addEventListener('load', fermer);
+    setTimeout(fermer, 3500);
+  })();
+</script>
 
 <nav id="nav">
   <a class="brand" href="#top">A Piaghja</a>
@@ -1907,22 +1929,6 @@
     });
   }, { rootMargin: '600px' });
   document.querySelectorAll('iframe[data-src]').forEach(f => ioMaps.observe(f));
-  // ---------- Écran de chargement ----------
-  (function(){
-    const splash = document.getElementById('splash');
-    if (!splash) return;
-    const debut = performance.now();
-    function fermer(){
-      const reste = Math.max(0, 1600 - (performance.now() - debut));
-      setTimeout(() => {
-        splash.classList.add('done');
-        setTimeout(() => splash.remove(), 750);
-      }, reste);
-    }
-    if (document.readyState === 'complete') fermer();
-    else window.addEventListener('load', fermer);
-    setTimeout(fermer, 3500); // garde-fou si le chargement traîne
-  })();
 </script>
 </body>
 </html>
