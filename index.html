@@ -1554,7 +1554,7 @@
     });
   });
 
-// ---------- Réservation maison : calendrier + créneaux + formulaire ----------
+// ---------- Réservation maison : parcours guidé en 4 étapes ----------
   (function(){
     const CRENEAUX = {
       midi: ["12:00","12:30","13:00","13:30","14:00"],
@@ -1562,16 +1562,48 @@
     };
     const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
     const $ = id => document.getElementById(id);
-    const grid = $("rwGrid"), msg = $("rwMsg");
+    const grid = $("rwGrid"), msg = $("rwMsg"), recap = $("rwRecap");
     if (!grid) return;
 
     const auj = new Date(); auj.setHours(0,0,0,0);
     let vue = new Date(auj.getFullYear(), auj.getMonth(), 1);
-    let dispo = {};            // { "YYYY-MM": {jours:{date:{midi,soir}}, capacite:{}} }
-    let selDate = null, selHeure = null, apiOk = true;
-
+    let dispo = {};
+    let sel = { pax: null, date: null, heure: null };
     const iso = d => d.toISOString().slice(0,10);
     const moisKey = d => iso(d).slice(0,7);
+    const joliDate = ds => new Date(ds + "T12:00:00")
+      .toLocaleDateString("fr-FR", { weekday:"short", day:"numeric", month:"long" });
+
+    function allerEtape(n){
+      ["rwEtape1","rwEtape2","rwEtape3","rwForm","rwConfirm"].forEach((id, i) => {
+        $(id).hidden = (i + 1 !== n);
+      });
+      document.querySelectorAll(".rw-dot").forEach(d => {
+        const num = parseInt(d.dataset.dot, 10);
+        d.classList.toggle("on", num === n);
+        d.classList.toggle("fait", num < n);
+      });
+      majRecap();
+      msg.textContent = ""; msg.className = "rw-msg";
+    }
+    function majRecap(){
+      const p = [];
+      if (sel.pax) p.push(sel.pax + (sel.pax > 1 ? " couverts" : " couvert"));
+      if (sel.date) p.push(joliDate(sel.date));
+      if (sel.heure) p.push(sel.heure);
+      recap.textContent = p.join(" · ");
+    }
+    document.querySelectorAll(".rw-back").forEach(b =>
+      b.addEventListener("click", () => allerEtape(parseInt(b.dataset.back, 10))));
+
+    const paxGrid = $("rwPaxGrid");
+    for (let i = 1; i <= 8; i++){
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "rw-pax";
+      b.textContent = i;
+      b.addEventListener("click", () => { sel.pax = i; allerEtape(2); rendreCal(); });
+      paxGrid.appendChild(b);
+    }
 
     async function chargerMois(d){
       const k = moisKey(d);
@@ -1581,25 +1613,22 @@
         if (!r.ok) throw 0;
         dispo[k] = await r.json();
       }catch{
-        apiOk = false;
         dispo[k] = { jours: {}, capacite: { midi: 999, soir: 999 } };
         msg.textContent = "Réservation en ligne momentanément indisponible, appelez-nous au 06 22 06 14 88.";
         msg.className = "rw-msg err";
       }
     }
-
-    function resteJour(dateStr){
-      const k = dateStr.slice(0,7), m = dispo[k] || { jours:{}, capacite:{midi:60,soir:60} };
-      return m.jours[dateStr] || { midi: m.capacite.midi, soir: m.capacite.soir };
+    function resteJour(ds){
+      const k = ds.slice(0,7), m = dispo[k] || { jours:{}, capacite:{midi:60,soir:60} };
+      return m.jours[ds] || { midi: m.capacite.midi, soir: m.capacite.soir };
     }
-
     async function rendreCal(){
       await chargerMois(vue);
       $("rwMois").textContent = MOIS[vue.getMonth()] + " " + vue.getFullYear();
       $("rwPrev").disabled = vue <= new Date(auj.getFullYear(), auj.getMonth(), 1);
       grid.innerHTML = "";
-      const premier = new Date(vue), decal = (premier.getDay() + 6) % 7;
-      for (let i = 0; i < decal; i++) {
+      const decal = (new Date(vue).getDay() + 6) % 7;
+      for (let i = 0; i < decal; i++){
         const v = document.createElement("span"); v.className = "rw-day vide"; grid.appendChild(v);
       }
       const nbJours = new Date(vue.getFullYear(), vue.getMonth()+1, 0).getDate();
@@ -1608,72 +1637,61 @@
         const ds = iso(d);
         const b = document.createElement("button");
         b.type = "button"; b.className = "rw-day"; b.textContent = j;
-        if (d < auj) { b.classList.add("passe"); b.disabled = true; }
+        if (d < auj){ b.classList.add("passe"); b.disabled = true; }
         else {
           const r = resteJour(ds);
-          if (r.midi <= 0 && r.soir <= 0) { b.classList.add("complet"); b.disabled = true; }
-          else b.addEventListener("click", () => choisirJour(ds, b));
+          if (r.midi < sel.pax && r.soir < sel.pax){ b.classList.add("complet"); b.disabled = true; }
+          else b.addEventListener("click", () => { sel.date = ds; sel.heure = null; allerEtape(3); rendreSlots(); });
         }
-        if (ds === selDate) b.classList.add("sel");
+        if (ds === sel.date) b.classList.add("sel");
         grid.appendChild(b);
       }
     }
-
-    function choisirJour(ds, btn){
-      selDate = ds; selHeure = null;
-      document.querySelectorAll(".rw-day.sel").forEach(x => x.classList.remove("sel"));
-      btn.classList.add("sel");
-      const d = new Date(ds + "T12:00:00");
-      $("rwDateLabel").textContent = d.toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
-      const r = resteJour(ds);
-      for (const svc of ["midi","soir"]){
-        const cont = $(svc === "midi" ? "rwSlotsMidi" : "rwSlotsSoir");
-        cont.innerHTML = "";
-        for (const h of CRENEAUX[svc]){
-          const s = document.createElement("button");
-          s.type = "button"; s.className = "rw-slot"; s.textContent = h;
-          if (r[svc] <= 0) s.disabled = true;
-          else s.addEventListener("click", () => {
-            selHeure = h;
-            document.querySelectorAll(".rw-slot.sel").forEach(x => x.classList.remove("sel"));
-            s.classList.add("sel");
-            $("rwForm").hidden = false;
-          });
-          cont.appendChild(s);
-        }
-      }
-      $("rwSlots").hidden = false;
-      $("rwForm").hidden = true;
-      msg.textContent = ""; msg.className = "rw-msg";
-    }
-
     $("rwPrev").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()-1, 1); rendreCal(); });
     $("rwNext").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()+1, 1); rendreCal(); });
 
+    function rendreSlots(){
+      const r = resteJour(sel.date);
+      for (const svc of ["midi","soir"]){
+        const cont = $(svc === "midi" ? "rwSlotsMidi" : "rwSlotsSoir");
+        cont.innerHTML = "";
+        for (const hCreneau of CRENEAUX[svc]){
+          const s = document.createElement("button");
+          s.type = "button"; s.className = "rw-slot"; s.textContent = hCreneau;
+          if (r[svc] < sel.pax) s.disabled = true;
+          else s.addEventListener("click", () => { sel.heure = hCreneau; allerEtape(4); });
+          cont.appendChild(s);
+        }
+      }
+    }
+
     $("rwForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!selDate || !selHeure) return;
       const btn = document.querySelector(".rw-submit");
       btn.disabled = true; msg.textContent = "Envoi…"; msg.className = "rw-msg";
       try{
         const r = await fetch("/api/resa", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            date: selDate, heure: selHeure,
+            date: sel.date, heure: sel.heure,
             prenom: $("rwPrenom").value, nom: $("rwNom").value,
-            tel: $("rwTel").value, pax: parseInt($("rwPax").value, 10)
+            tel: $("rwTel").value, pax: sel.pax
           })
         });
         const d = await r.json();
         if (r.ok && d.ok){
-          msg.textContent = "✓ Réservation confirmée pour le " + $("rwDateLabel").textContent +
-            " à " + selHeure + " (" + d.pax + " couverts). À très vite !";
-          $("rwForm").hidden = true; $("rwSlots").hidden = true;
-          delete dispo[selDate.slice(0,7)]; selDate = null; rendreCal();
+          $("rwConfirmTxt").innerHTML = "Votre table est réservée !<br><b>" +
+            sel.pax + (sel.pax > 1 ? " couverts" : " couvert") + " · " + joliDate(sel.date) + " · " + sel.heure +
+            "</b><br>À très vite chez A Piaghja.";
+          allerEtape(5);
+          document.querySelectorAll(".rw-dot").forEach(d2 => d2.classList.add("fait"));
+          delete dispo[sel.date.slice(0,7)];
         } else if (d.error === "complet"){
           msg.textContent = "Ce service vient d'afficher complet, choisissez un autre créneau.";
           msg.className = "rw-msg err";
-          delete dispo[selDate.slice(0,7)]; await rendreCal();
+          delete dispo[sel.date.slice(0,7)];
+          await chargerMois(new Date(sel.date + "T12:00:00"));
+          allerEtape(3); rendreSlots();
         } else {
           const e2f = { tel_invalide:"Numéro de téléphone invalide.", nom_requis:"Nom et prénom requis." };
           msg.textContent = e2f[d.error] || "Impossible d'enregistrer, vérifiez les champs ou appelez-nous.";
@@ -1686,7 +1704,13 @@
       btn.disabled = false;
     });
 
-    rendreCal();
+    $("rwAgain").addEventListener("click", () => {
+      sel = { pax: null, date: null, heure: null };
+      $("rwPrenom").value = ""; $("rwNom").value = ""; $("rwTel").value = "";
+      allerEtape(1);
+    });
+
+    allerEtape(1);
   })();
   // ---------- Carte interactive : pointillés, cascade, recherche ----------
   document.querySelectorAll('.tab-panel').forEach(panel => {
