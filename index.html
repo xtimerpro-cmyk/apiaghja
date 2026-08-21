@@ -96,6 +96,21 @@
     font-size:1.9rem;color:var(--blanc);
     text-decoration:none;line-height:1;
   }
+  .nav-ticker{
+    flex:1;overflow:hidden;margin:0 clamp(.8rem,3vw,2rem);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+  }
+  .nav-ticker-piste{
+    display:flex;width:max-content;
+    animation:tickerDefile 11s linear infinite;
+  }
+  .nav-ticker span{
+    flex:none;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--rose);white-space:nowrap;
+  }
+  nav.scrolled .nav-ticker span{color:var(--olive);}
+  @keyframes tickerDefile{to{transform:translateX(-50%);}}
   .nav-links{display:flex;gap:2.2rem;list-style:none;}
   .nav-links a{
     text-decoration:none;color:var(--blanc);
@@ -118,7 +133,7 @@
   /* ---------- Hero ---------- */
   header.hero{
     position:relative;height:100svh;min-height:560px;
-    display:flex;align-items:center;justify-content:center;text-align:center;
+    display:flex;flex-direction:column;align-items:center;text-align:center;
     overflow:hidden;
   }
   .hero-bg{
@@ -136,7 +151,10 @@
     position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .hero-inner{position:relative;z-index:2;color:var(--blanc);padding:0 6vw;}
+  .hero-inner{
+    position:relative;z-index:2;color:var(--blanc);padding:0 6vw;
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
   /* Filigrane éditorial derrière le titre */
   .hero-ghost{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);
@@ -144,21 +162,6 @@
     text-transform:uppercase;white-space:nowrap;
     color:transparent;-webkit-text-stroke:1px rgba(239,233,221,.14);
     user-select:none;pointer-events:none;
-  }
-  .hero-eyebrow{
-    position:absolute;top:clamp(110px, 20vh, 230px);left:50%;transform:translateX(-50%);
-    z-index:2;width:max-content;max-width:94vw;white-space:nowrap;
-    display:flex;align-items:center;justify-content:center;gap:1.2rem;
-    font-size:clamp(.6rem,2.4vw,.78rem);letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
-    color:var(--rose);
-    opacity:0;animation:heroFade 1.2s ease 1.7s forwards;
-  }
-  .hero-eyebrow::before,.hero-eyebrow::after{
-    content:"";width:clamp(30px,6vw,64px);height:1px;
-    background:linear-gradient(90deg,transparent,rgba(194,161,92,.85));
-  }
-  .hero-eyebrow::after{
-    background:linear-gradient(90deg,rgba(194,161,92,.85),transparent);
   }
   .hero-title{
     position:relative;
@@ -855,11 +858,12 @@
     .reveal{opacity:1;transform:none;transition:none;}
     .tab-panel.active .plat{animation:none;opacity:1;}
     .cta-arrow{transition:none;}
-    .hero-bg,.hero-eyebrow,.hero-title,.hero-actions{animation:none;opacity:1;transform:none;}
+    .hero-bg,.hero-title,.hero-actions{animation:none;opacity:1;transform:none;}
     .hero-title .lt{animation:none;opacity:1;transform:none;filter:none;}
     .hero-scroll{animation:none;opacity:1;}
     .hs-dot,.hs-chevron{animation:none;}
     .rail-social > *{animation:none;opacity:1;transform:none;}
+    .nav-ticker-piste{animation:none;}
     .galerie-grid.reveal figure{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
   }
@@ -964,6 +968,9 @@
 
 <nav id="nav">
   <a class="brand" href="#top">A Piaghja</a>
+  <div class="nav-ticker" aria-label="Bar et Restaurant, Porto-Vecchio">
+    <div class="nav-ticker-piste" aria-hidden="true"><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span></div>
+  </div>
   <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" onclick="toggleMenu(this)">
     <span></span><span></span><span></span>
   </button>
@@ -1022,8 +1029,7 @@
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
     <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
-    <p class="hero-eyebrow">Bar &amp; Restaurant · Porto-Vecchio</p>
-    <h1 class="hero-title" aria-label="A Piaghja"><span class="lt" aria-hidden="true" style="--i:0">A</span><span class="lt esp" aria-hidden="true">&nbsp;</span><span class="lt" aria-hidden="true" style="--i:1">P</span><span class="lt" aria-hidden="true" style="--i:2">i</span><span class="lt" aria-hidden="true" style="--i:3">a</span><span class="lt" aria-hidden="true" style="--i:4">g</span><span class="lt" aria-hidden="true" style="--i:5">h</span><span class="lt" aria-hidden="true" style="--i:6">j</span><span class="lt" aria-hidden="true" style="--i:7">a</span></h1>
+      <h1 class="hero-title" aria-label="A Piaghja"><span class="lt" aria-hidden="true" style="--i:0">A</span><span class="lt esp" aria-hidden="true">&nbsp;</span><span class="lt" aria-hidden="true" style="--i:1">P</span><span class="lt" aria-hidden="true" style="--i:2">i</span><span class="lt" aria-hidden="true" style="--i:3">a</span><span class="lt" aria-hidden="true" style="--i:4">g</span><span class="lt" aria-hidden="true" style="--i:5">h</span><span class="lt" aria-hidden="true" style="--i:6">j</span><span class="lt" aria-hidden="true" style="--i:7">a</span></h1>
     <div class="hero-actions">
       <a class="hero-cta" href="#carte">Découvrir la carte<span class="cta-arrow" aria-hidden="true"></span></a>
     </div>
