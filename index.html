@@ -193,10 +193,26 @@
     display:inline-flex;align-items:center;gap:.9rem;
     color:var(--blanc);text-decoration:none;
     font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;text-indent:.3em;
+    padding:1rem 2.2rem;position:relative;
+    border:1px solid rgba(194,161,92,.75);
+    background:rgba(42,43,36,.18);backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+    transition:background .35s ease, color .35s ease, border-color .35s ease;
   }
+  .hero-cta::before{
+    content:"";position:absolute;inset:4px;
+    border:1px solid rgba(194,161,92,.35);
+    pointer-events:none;transition:border-color .35s ease;
+  }
+  .hero-cta:hover{
+    background:rgba(194,161,92,.92);color:var(--encre);border-color:var(--or);
+  }
+  .hero-cta:hover::before{border-color:rgba(42,43,36,.25);}
+  .hero-cta:hover .cta-arrow{background:var(--encre);}
+  .hero-cta:hover .cta-arrow::after{border-color:var(--encre);}
   .cta-arrow{
     position:relative;width:38px;height:1px;background:var(--or);
-    transition:width .35s cubic-bezier(.4,0,.2,1);
+    transition:width .35s cubic-bezier(.4,0,.2,1), background .35s ease;
   }
   .cta-arrow::after{
     content:"";position:absolute;right:0;top:50%;
@@ -215,13 +231,36 @@
   .btn-ghost{border:1px solid var(--blanc);color:var(--blanc);margin-left:.8rem;}
   .btn-ghost:hover{background:var(--blanc);color:var(--olive);}
   .hero-scroll{
-    position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);
-    color:var(--sable);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
-    text-decoration:none;opacity:.85;z-index:2;
+    position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    text-decoration:none;z-index:2;
+    opacity:0;animation:heroFade 1.2s ease 3.4s forwards;
   }
-  .hero-scroll::after{
-    content:"";display:block;width:1px;height:34px;margin:10px auto 0;
-    background:linear-gradient(var(--sable),transparent);
+  .hs-ligne{
+    position:relative;width:1px;height:52px;overflow:hidden;
+    background:linear-gradient(180deg,transparent,rgba(194,161,92,.55),transparent);
+  }
+  .hs-dot{
+    position:absolute;left:-1.5px;top:-6px;
+    width:4px;height:4px;border-radius:50%;
+    background:var(--or);box-shadow:0 0 8px rgba(194,161,92,.9);
+    animation:hsDescente 2.4s cubic-bezier(.45,0,.55,1) infinite;
+  }
+  @keyframes hsDescente{
+    0%{transform:translateY(0);opacity:0;}
+    12%{opacity:1;}
+    82%{opacity:1;}
+    100%{transform:translateY(58px);opacity:0;}
+  }
+  .hs-chevron{
+    width:8px;height:8px;
+    border-right:1px solid var(--or);border-bottom:1px solid var(--or);
+    transform:rotate(45deg);
+    animation:hsChevron 2.4s ease-in-out infinite;
+  }
+  @keyframes hsChevron{
+    0%,100%{transform:rotate(45deg) translate(0,0);opacity:.75;}
+    50%{transform:rotate(45deg) translate(3px,3px);opacity:1;}
   }
 
   /* ---------- Sections communes ---------- */
@@ -813,6 +852,8 @@
     .cta-arrow{transition:none;}
     .hero-bg,.hero-eyebrow,.hero-title,.hero-actions{animation:none;opacity:1;transform:none;}
     .hero-title .lt{animation:none;opacity:1;transform:none;filter:none;}
+    .hero-scroll{animation:none;opacity:1;}
+    .hs-dot,.hs-chevron{animation:none;}
     .galerie-grid.reveal figure{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
   }
@@ -978,7 +1019,10 @@
       <a class="hero-cta" href="#carte">Découvrir la carte<span class="cta-arrow" aria-hidden="true"></span></a>
     </div>
   </div>
-  <a class="hero-scroll" href="#histoire">Descendre</a>
+  <a class="hero-scroll" href="#histoire" aria-label="Descendre vers le contenu">
+    <span class="hs-ligne" aria-hidden="true"><span class="hs-dot"></span></span>
+    <span class="hs-chevron" aria-hidden="true"></span>
+  </a>
 </header>
 
 <section id="histoire">
