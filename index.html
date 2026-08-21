@@ -146,9 +146,11 @@
     user-select:none;pointer-events:none;
   }
   .hero-eyebrow{
+    position:absolute;top:calc(72px + 3vh);left:50%;transform:translateX(-50%);
+    z-index:2;width:max-content;max-width:94vw;white-space:nowrap;
     display:flex;align-items:center;justify-content:center;gap:1.2rem;
-    font-size:.78rem;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
-    color:var(--rose);margin-bottom:1.6rem;
+    font-size:clamp(.6rem,2.4vw,.78rem);letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;
+    color:var(--rose);
     opacity:0;animation:heroFade 1.2s ease 1.7s forwards;
   }
   .hero-eyebrow::before,.hero-eyebrow::after{
