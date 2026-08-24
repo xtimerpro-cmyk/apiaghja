@@ -95,9 +95,13 @@
     font-family:'Allura',cursive;
     font-size:1.9rem;color:var(--blanc);
     text-decoration:none;line-height:1;
+    opacity:0;transform:translateY(-10px);filter:blur(3px);
+    animation:brandIn .9s cubic-bezier(.2,.8,.3,1) 1.65s forwards;
   }
+  @keyframes brandIn{to{opacity:1;transform:none;filter:blur(0);}}
   .nav-ticker{
     flex:1;overflow:hidden;margin:0 clamp(.8rem,3vw,2rem);
+    opacity:0;animation:heroFade 1s ease 2s forwards;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
     mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
   }
@@ -195,36 +199,29 @@
     gap:2.2rem;flex-wrap:wrap;
   }
   .hero-cta{
-    display:inline-flex;align-items:center;gap:.9rem;
-    color:var(--blanc);text-decoration:none;
-    font-size:.8rem;letter-spacing:.3em;text-transform:uppercase;text-indent:.3em;
-    padding:1rem 2.2rem;position:relative;
-    border:1px solid rgba(194,161,92,.75);
-    background:rgba(42,43,36,.18);backdrop-filter:blur(3px);
-    -webkit-backdrop-filter:blur(3px);
-    transition:background .35s ease, color .35s ease, border-color .35s ease;
+    position:relative;display:inline-flex;align-items:center;gap:.55rem;
+    color:rgba(253,252,249,.92);text-decoration:none;
+    font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;text-indent:.26em;
+    padding-bottom:.5rem;
   }
-  .hero-cta::before{
-    content:"";position:absolute;inset:4px;
-    border:1px solid rgba(194,161,92,.35);
-    pointer-events:none;transition:border-color .35s ease;
+  .hero-cta::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+    background:var(--or);transform-origin:left;
+    animation:ctaTrace 3.2s ease-in-out infinite;
   }
-  .hero-cta:hover{
-    background:rgba(194,161,92,.92);color:var(--encre);border-color:var(--or);
+  @keyframes ctaTrace{
+    0%{transform:scaleX(0);transform-origin:left;}
+    45%,55%{transform:scaleX(1);transform-origin:left;}
+    56%{transform-origin:right;}
+    100%{transform:scaleX(0);transform-origin:right;}
   }
-  .hero-cta:hover::before{border-color:rgba(42,43,36,.25);}
-  .hero-cta:hover .cta-arrow{background:var(--encre);}
-  .hero-cta:hover .cta-arrow::after{border-color:var(--encre);}
-  .cta-arrow{
-    position:relative;width:38px;height:1px;background:var(--or);
-    transition:width .35s cubic-bezier(.4,0,.2,1), background .35s ease;
+  .cta-chev{
+    width:6px;height:6px;margin-bottom:2px;
+    border-right:1px solid var(--or);border-bottom:1px solid var(--or);
+    transform:rotate(45deg);
   }
-  .cta-arrow::after{
-    content:"";position:absolute;right:0;top:50%;
-    width:7px;height:7px;border-top:1px solid var(--or);border-right:1px solid var(--or);
-    transform:translateY(-50%) rotate(45deg);
-  }
-  .hero-cta:hover .cta-arrow,.hero-cta:focus-visible .cta-arrow{width:68px;}
+  .hero-cta:hover{color:#fdfcf9;}
+  .hero-cta:hover::after{animation-play-state:paused;transform:scaleX(1);}
   .btn{
     display:inline-block;text-decoration:none;
     letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;
@@ -864,6 +861,9 @@
     .hs-dot,.hs-chevron{animation:none;}
     .rail-social > *{animation:none;opacity:1;transform:none;}
     .nav-ticker-piste{animation:none;}
+    .brand{animation:none;opacity:1;transform:none;filter:none;}
+    .hero-cta::after{animation:none;transform:scaleX(1);}
+    .nav-ticker{animation:none;opacity:1;}
     .galerie-grid.reveal figure{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
   }
@@ -1031,7 +1031,7 @@
     <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
       <h1 class="hero-title" aria-label="A Piaghja"><span class="lt" aria-hidden="true" style="--i:0">A</span><span class="lt esp" aria-hidden="true">&nbsp;</span><span class="lt" aria-hidden="true" style="--i:1">P</span><span class="lt" aria-hidden="true" style="--i:2">i</span><span class="lt" aria-hidden="true" style="--i:3">a</span><span class="lt" aria-hidden="true" style="--i:4">g</span><span class="lt" aria-hidden="true" style="--i:5">h</span><span class="lt" aria-hidden="true" style="--i:6">j</span><span class="lt" aria-hidden="true" style="--i:7">a</span></h1>
     <div class="hero-actions">
-      <a class="hero-cta" href="#carte">Découvrir la carte<span class="cta-arrow" aria-hidden="true"></span></a>
+      <a class="hero-cta" href="#carte">Découvrir la carte<span class="cta-chev" aria-hidden="true"></span></a>
     </div>
   </div>
   <a class="hero-scroll" href="#histoire" aria-label="Descendre vers le contenu">
