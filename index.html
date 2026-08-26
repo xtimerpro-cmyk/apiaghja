@@ -1719,7 +1719,7 @@
     let vue = new Date(auj.getFullYear(), auj.getMonth(), 1);
     let dispo = {};
     let sel = { pax: null, date: null, heure: null };
-    const iso = d => d.toISOString().slice(0,10);
+    const iso = d => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
     const moisKey = d => iso(d).slice(0,7);
     const joliDate = ds => new Date(ds + "T12:00:00")
       .toLocaleDateString("fr-FR", { weekday:"short", day:"numeric", month:"long" });
@@ -1843,7 +1843,15 @@
           await chargerMois(new Date(sel.date + "T12:00:00"));
           allerEtape(3); rendreSlots();
         } else {
-          const e2f = { tel_invalide:"Numéro de téléphone invalide.", nom_requis:"Nom et prénom requis." };
+          const e2f = {
+            tel_invalide: "Numéro de téléphone invalide.",
+            nom_requis: "Nom et prénom requis.",
+            date_hors_limites: "Cette date n'est plus disponible, choisissez une date à venir.",
+            date_invalide: "Date invalide, re-sélectionnez un jour dans le calendrier.",
+            creneau_invalide: "Créneau invalide, re-sélectionnez une heure.",
+            pax_invalide: "Nombre de couverts invalide.",
+            db_non_configuree: "Réservation en ligne indisponible, appelez-nous au 06 22 06 14 88."
+          };
           msg.textContent = e2f[d.error] || "Impossible d'enregistrer, vérifiez les champs ou appelez-nous.";
           msg.className = "rw-msg err";
         }
