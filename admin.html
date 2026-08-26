@@ -1,90 +1,325 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Piaghja — Admin réservations</title>
-<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>A Piaghja · Direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
 <style>
-  :root{--olive:#4a5335;--sable:#efe9dd;--or:#c2a15c;--encre:#2a2b24;--blanc:#fdfcf9;--rose:#e7c6bd;}
+  :root{
+    --olive:#7d8560; --olive-soft:#9aa17e; --sable:#efe9dd; --sable-deep:#e2d9c6;
+    --rose:#e7c6bd; --or:#c2a15c; --encre:#2a2b24; --blanc:#fdfcf9;
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Questrial',sans-serif;background:var(--sable);color:var(--encre);min-height:100vh;padding:2rem 5vw;}
-  h1{font-family:'Allura',cursive;font-weight:400;font-size:2.6rem;color:var(--olive);}
-  .sub{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--or);margin-bottom:1.8rem;}
-  .bar{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:1.6rem;}
-  input,button{font-family:inherit;font-size:.95rem;padding:.65rem .9rem;border:1px solid #d8d2c2;border-radius:8px;background:var(--blanc);}
-  button{background:var(--olive);color:var(--blanc);border-color:var(--olive);cursor:pointer;letter-spacing:.1em;}
-  button:hover{background:#5a6542;}
-  .totaux{display:flex;gap:1rem;margin-bottom:1.4rem;flex-wrap:wrap;}
-  .tot{background:var(--blanc);border:1px solid #d8d2c2;border-radius:10px;padding:.8rem 1.4rem;}
-  .tot b{font-size:1.4rem;color:var(--olive);display:block;}
-  .tot span{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;}
-  table{width:100%;border-collapse:collapse;background:var(--blanc);border-radius:10px;overflow:hidden;}
-  th{background:var(--olive);color:var(--blanc);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding:.7rem .9rem;text-align:left;font-weight:400;}
-  td{padding:.6rem .9rem;border-bottom:1px solid #eee7d8;font-size:.95rem;}
-  tr.svc-soir td:first-child{border-left:3px solid var(--rose);}
-  tr.svc-midi td:first-child{border-left:3px solid var(--or);}
-  .del{background:none;border:none;color:#b3261e;cursor:pointer;font-size:.85rem;padding:.2rem .4rem;}
-  .msg{margin-top:1rem;color:#6c6d60;}
-  .err{color:#b3261e;}
+  body{font-family:'Questrial',sans-serif;background:var(--sable);color:var(--encre);min-height:100vh;}
+  .haut{
+    background:var(--olive);color:var(--blanc);
+    padding:1rem 5vw;display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;
+  }
+  .haut h1{font-family:'Allura',cursive;font-weight:400;font-size:2rem;line-height:1;}
+  .haut span{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);}
+  main{max-width:860px;margin:0 auto;padding:1.4rem 5vw 4rem;}
+
+  /* ---------- Connexion ---------- */
+  .carte{
+    background:var(--blanc);border-radius:14px;padding:1.4rem;
+    box-shadow:0 10px 34px rgba(74,83,53,.14);margin-top:1rem;
+  }
+  .connexion{max-width:380px;margin:3rem auto;text-align:center;}
+  .connexion p{font-size:.9rem;color:#6a6a5c;margin-bottom:1rem;}
+  input,button{font-family:inherit;font-size:1rem;}
+  .champ{
+    width:100%;padding:.8rem 1rem;border:1px solid var(--sable-deep);border-radius:10px;
+    background:var(--blanc);color:var(--encre);
+  }
+  .champ:focus{outline:none;border-color:var(--or);}
+  .btn{
+    width:100%;margin-top:.8rem;padding:.85rem;border:none;border-radius:999px;cursor:pointer;
+    background:var(--olive);color:var(--blanc);
+    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
+    transition:background .2s ease;
+  }
+  .btn:hover{background:#6c7452;}
+  .erreur{color:#a8574a;font-size:.88rem;margin-top:.7rem;min-height:1.2em;}
+
+  /* ---------- Navigation jour ---------- */
+  .nav-jour{
+    display:flex;align-items:center;justify-content:center;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap;
+  }
+  .nav-jour button{
+    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:999px;
+    padding:.5rem 1rem;cursor:pointer;color:var(--encre);font-size:.85rem;
+    transition:border-color .2s ease;
+  }
+  .nav-jour button:hover{border-color:var(--or);}
+  .nav-jour .titre-jour{
+    font-size:1rem;letter-spacing:.06em;min-width:220px;text-align:center;font-weight:bold;
+  }
+  .nav-jour input[type=date]{
+    border:1px solid var(--sable-deep);border-radius:10px;padding:.45rem .6rem;background:var(--blanc);
+  }
+
+  /* ---------- Jauges ---------- */
+  .jauges{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
+  .jauge h3{
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);margin-bottom:.4rem;
+  }
+  .jauge .chiffres{font-size:1.3rem;margin-bottom:.4rem;}
+  .jauge .chiffres small{font-size:.8rem;color:#8a8a7a;}
+  .barre{height:8px;background:var(--sable);border-radius:99px;overflow:hidden;}
+  .barre i{display:block;height:100%;background:var(--olive-soft);border-radius:99px;transition:width .4s ease;}
+  .barre i.plein{background:#c48a7d;}
+
+  /* ---------- Tableau ---------- */
+  table{width:100%;border-collapse:collapse;margin-top:.6rem;font-size:.92rem;}
+  th{
+    text-align:left;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+    color:#8a8a7a;padding:.5rem .5rem;border-bottom:1px solid var(--sable-deep);font-weight:normal;
+  }
+  td{padding:.6rem .5rem;border-bottom:1px solid var(--sable);vertical-align:middle;}
+  td a{color:var(--olive);text-decoration:none;font-weight:bold;}
+  .svc{
+    display:inline-block;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+    padding:.2rem .55rem;border-radius:99px;background:var(--sable);color:var(--olive);
+  }
+  .annuler{
+    border:1px solid var(--sable-deep);background:none;border-radius:999px;
+    padding:.3rem .8rem;cursor:pointer;font-size:.75rem;color:#a8574a;
+    transition:all .2s ease;
+  }
+  .annuler:hover{border-color:#a8574a;background:#faf1ef;}
+  .vide{text-align:center;color:#8a8a7a;padding:1.6rem 0;}
+
+  /* ---------- Vue semaine ---------- */
+  .semaine{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-top:.8rem;}
+  .sem-jour{
+    background:var(--blanc);border:1px solid var(--sable-deep);border-radius:10px;
+    padding:.55rem .3rem;text-align:center;cursor:pointer;transition:border-color .2s ease;
+  }
+  .sem-jour:hover{border-color:var(--or);}
+  .sem-jour.actif{border-color:var(--olive);border-width:2px;}
+  .sem-jour .sj-nom{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8a7a;}
+  .sem-jour .sj-num{font-size:1.05rem;margin:.15rem 0;}
+  .sem-jour .sj-tot{font-size:.68rem;color:var(--olive);}
+  .section-titre{
+    font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--olive);
+    margin-top:1.6rem;
+  }
+  .deconnexion{
+    margin-top:2rem;text-align:center;
+  }
+  .deconnexion button{
+    background:none;border:none;color:#8a8a7a;cursor:pointer;font-size:.8rem;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  @media (max-width:640px){
+    .jauges{grid-template-columns:1fr;}
+    .semaine{grid-template-columns:repeat(4,1fr);}
+    th:nth-child(6),td:nth-child(6){display:none;}
+  }
 </style>
 </head>
 <body>
+
+<div class="haut">
   <h1>A Piaghja</h1>
-  <div class="sub">Réservations — accès restaurant</div>
-  <div class="bar">
-    <input type="date" id="date">
-    <input type="password" id="key" placeholder="Clé d'accès">
-    <button id="charger">Charger</button>
+  <span>Direction · Réservations</span>
+</div>
+
+<main>
+  <!-- Connexion -->
+  <div class="carte connexion" id="ecranConnexion">
+    <p>Espace réservé à la direction.<br>Entrez la clé d'accès.</p>
+    <input class="champ" type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password">
+    <button class="btn" id="btnConnexion">Entrer</button>
+    <p class="erreur" id="erreurConnexion"></p>
   </div>
-  <div class="totaux" id="totaux" hidden>
-    <div class="tot"><b id="totMidi">0</b><span>couverts midi</span></div>
-    <div class="tot"><b id="totSoir">0</b><span>couverts soir</span></div>
-    <div class="tot"><b id="totResas">0</b><span>réservations</span></div>
+
+  <!-- Tableau de bord -->
+  <div id="tableauBord" hidden>
+    <div class="nav-jour">
+      <button id="jourPrec">‹ Veille</button>
+      <span class="titre-jour" id="titreJour"></span>
+      <button id="jourSuiv">Lendemain ›</button>
+      <button id="aujourdhui">Aujourd'hui</button>
+      <input type="date" id="choixDate" aria-label="Choisir une date">
+    </div>
+
+    <div class="jauges">
+      <div class="carte jauge">
+        <h3>Service du midi</h3>
+        <div class="chiffres"><span id="totMidi">0</span> <small>/ <span id="capMidi">60</span> couverts</small></div>
+        <div class="barre"><i id="barreMidi" style="width:0%"></i></div>
+      </div>
+      <div class="carte jauge">
+        <h3>Service du soir</h3>
+        <div class="chiffres"><span id="totSoir">0</span> <small>/ <span id="capSoir">60</span> couverts</small></div>
+        <div class="barre"><i id="barreSoir" style="width:0%"></i></div>
+      </div>
+    </div>
+
+    <p class="section-titre">Réservations du jour</p>
+    <div class="carte">
+      <table>
+        <thead>
+          <tr><th>Heure</th><th>Service</th><th>Nom</th><th>Couverts</th><th>Téléphone</th><th>Prise le</th><th></th></tr>
+        </thead>
+        <tbody id="lignes"></tbody>
+      </table>
+      <p class="vide" id="aucun" hidden>Aucune réservation ce jour.</p>
+    </div>
+
+    <p class="section-titre">Les 7 prochains jours</p>
+    <div class="semaine" id="semaine"></div>
+
+    <div class="deconnexion"><button id="btnDeconnexion">Se déconnecter</button></div>
   </div>
-  <table id="table" hidden>
-    <thead><tr><th>Heure</th><th>Nom</th><th>Prénom</th><th>Téléphone</th><th>Cvts</th><th></th></tr></thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <p class="msg" id="msg"></p>
+</main>
 
 <script>
   const $ = id => document.getElementById(id);
-  $('date').value = new Date().toISOString().slice(0,10);
+  let cle = "";
+  let dateCourante = maintenantLocal();
 
-  async function charger(){
-    const date = $('date').value, key = $('key').value;
-    $('msg').textContent = 'Chargement…'; $('msg').className = 'msg';
+  function maintenantLocal(){
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+  function decale(dateStr, n){
+    const d = new Date(dateStr + "T12:00:00");
+    d.setDate(d.getDate() + n);
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+  function joli(dateStr){
+    return new Date(dateStr + "T12:00:00")
+      .toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
+  }
+
+  // ---------- Connexion ----------
+  $("btnConnexion").addEventListener("click", connecter);
+  $("cle").addEventListener("keydown", e => { if (e.key === "Enter") connecter(); });
+  async function connecter(){
+    cle = $("cle").value.trim();
+    if (!cle) return;
+    $("erreurConnexion").textContent = "Vérification…";
     try{
-      const r = await fetch(`/api/resa/admin?date=${date}&key=${encodeURIComponent(key)}`);
+      const r = await fetch(`/api/resa/admin?date=${dateCourante}&key=${encodeURIComponent(cle)}`);
+      if (r.status === 401){ $("erreurConnexion").textContent = "Clé incorrecte."; return; }
+      if (!r.ok) throw 0;
+      $("ecranConnexion").hidden = true;
+      $("tableauBord").hidden = false;
+      chargerJour(dateCourante);
+    }catch{
+      $("erreurConnexion").textContent = "Service indisponible, réessayez.";
+    }
+  }
+  $("btnDeconnexion").addEventListener("click", () => {
+    cle = ""; $("cle").value = "";
+    $("tableauBord").hidden = true;
+    $("ecranConnexion").hidden = false;
+    $("erreurConnexion").textContent = "";
+  });
+
+  // ---------- Vue jour ----------
+  async function chargerJour(dateStr){
+    dateCourante = dateStr;
+    $("titreJour").textContent = joli(dateStr);
+    $("choixDate").value = dateStr;
+    try{
+      const r = await fetch(`/api/resa/admin?date=${dateStr}&key=${encodeURIComponent(cle)}`);
       const d = await r.json();
-      if(!r.ok) throw new Error(d.error === 'non_autorise' ? 'Clé invalide' : (d.error || 'Erreur'));
-      $('totMidi').textContent = d.totaux.midi + ' / ' + d.capacite.midi;
-      $('totSoir').textContent = d.totaux.soir + ' / ' + d.capacite.soir;
-      $('totResas').textContent = d.resas.length;
-      $('totaux').hidden = false; $('table').hidden = false;
-      $('tbody').innerHTML = d.resas.map(x =>
-        `<tr class="svc-${x.service}"><td>${x.heure}</td><td>${esc(x.nom)}</td><td>${esc(x.prenom)}</td>` +
-        `<td><a href="tel:${esc(x.tel)}">${esc(x.tel)}</a></td><td>${x.pax}</td>` +
-        `<td><button class="del" data-id="${x.id}">Annuler</button></td></tr>`
-      ).join('') || '<tr><td colspan="6">Aucune réservation ce jour.</td></tr>';
-      $('msg').textContent = '';
-      document.querySelectorAll('.del').forEach(b => b.onclick = () => supprimer(b.dataset.id));
-    }catch(e){ $('msg').textContent = e.message; $('msg').className = 'msg err'; }
+      if (!r.ok) throw 0;
+
+      $("capMidi").textContent = d.capacite.midi;
+      $("capSoir").textContent = d.capacite.soir;
+      $("totMidi").textContent = d.totaux.midi;
+      $("totSoir").textContent = d.totaux.soir;
+      const pMidi = Math.min(100, Math.round(d.totaux.midi / d.capacite.midi * 100));
+      const pSoir = Math.min(100, Math.round(d.totaux.soir / d.capacite.soir * 100));
+      $("barreMidi").style.width = pMidi + "%";
+      $("barreSoir").style.width = pSoir + "%";
+      $("barreMidi").className = pMidi >= 100 ? "plein" : "";
+      $("barreSoir").className = pSoir >= 100 ? "plein" : "";
+
+      const tb = $("lignes");
+      tb.innerHTML = "";
+      $("aucun").hidden = d.resas.length > 0;
+      for (const resa of d.resas){
+        const tr = document.createElement("tr");
+        const prise = resa.created_at ? resa.created_at.slice(0, 16).replace("T", " ") : "";
+        tr.innerHTML =
+          "<td><b>" + resa.heure + "</b></td>" +
+          "<td><span class='svc'>" + resa.service + "</span></td>" +
+          "<td>" + echap(resa.prenom) + " " + echap(resa.nom) + "</td>" +
+          "<td>" + resa.pax + "</td>" +
+          "<td><a href='tel:" + echap(resa.tel) + "'>" + echap(resa.tel) + "</a></td>" +
+          "<td style='color:#8a8a7a;font-size:.8rem'>" + prise + "</td>" +
+          "<td></td>";
+        const btn = document.createElement("button");
+        btn.className = "annuler"; btn.textContent = "Annuler";
+        btn.addEventListener("click", () => annuler(resa));
+        tr.lastElementChild.appendChild(btn);
+        tb.appendChild(tr);
+      }
+      chargerSemaine();
+    }catch{
+      alert("Impossible de charger cette journée, reconnectez-vous.");
+    }
+  }
+  function echap(s){
+    return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
 
-  async function supprimer(id){
-    if(!confirm('Annuler cette réservation ?')) return;
-    const r = await fetch('/api/resa/admin', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ action:'delete', id: parseInt(id,10), key: $('key').value })
-    });
-    if(r.ok) charger(); else { $('msg').textContent = 'Suppression impossible'; $('msg').className='msg err'; }
+  async function annuler(resa){
+    if (!confirm("Annuler la réservation de " + resa.prenom + " " + resa.nom + " (" + resa.pax + " couverts à " + resa.heure + ") ?")) return;
+    try{
+      const r = await fetch("/api/resa/admin", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", id: resa.id, key: cle })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw 0;
+      chargerJour(dateCourante);
+    }catch{
+      alert("Suppression impossible, réessayez.");
+    }
   }
 
-  function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-  $('charger').onclick = charger;
+  // ---------- Vue semaine ----------
+  async function chargerSemaine(){
+    const from = maintenantLocal();
+    const to = decale(from, 6);
+    try{
+      const r = await fetch(`/api/resa/admin?from=${from}&to=${to}&key=${encodeURIComponent(cle)}`);
+      const d = await r.json();
+      if (!r.ok) throw 0;
+      const cont = $("semaine");
+      cont.innerHTML = "";
+      for (let i = 0; i <= 6; i++){
+        const ds = decale(from, i);
+        const j = d.jours[ds] || { midi:{pax:0}, soir:{pax:0} };
+        const el = document.createElement("div");
+        el.className = "sem-jour" + (ds === dateCourante ? " actif" : "");
+        const dd = new Date(ds + "T12:00:00");
+        el.innerHTML =
+          "<div class='sj-nom'>" + dd.toLocaleDateString("fr-FR", { weekday:"short" }) + "</div>" +
+          "<div class='sj-num'>" + dd.getDate() + "</div>" +
+          "<div class='sj-tot'>" + (j.midi.pax || 0) + " · " + (j.soir.pax || 0) + "</div>";
+        el.title = "Midi : " + (j.midi.pax || 0) + " couverts · Soir : " + (j.soir.pax || 0) + " couverts";
+        el.addEventListener("click", () => chargerJour(ds));
+        cont.appendChild(el);
+      }
+    }catch{ /* silencieux : la vue jour reste utilisable */ }
+  }
+
+  // ---------- Navigation ----------
+  $("jourPrec").addEventListener("click", () => chargerJour(decale(dateCourante, -1)));
+  $("jourSuiv").addEventListener("click", () => chargerJour(decale(dateCourante, 1)));
+  $("aujourdhui").addEventListener("click", () => chargerJour(maintenantLocal()));
+  $("choixDate").addEventListener("change", e => { if (e.target.value) chargerJour(e.target.value); });
 </script>
 </body>
 </html>
