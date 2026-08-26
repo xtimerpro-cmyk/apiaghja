@@ -145,6 +145,35 @@
   .pf-camp.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
   .msg-ok{color:var(--olive);font-size:.88rem;margin-top:.6rem;min-height:1.2em;}
 
+  /* ---------- Édition de la carte ---------- */
+  .cat-titre{
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);
+    padding:.9rem 0 .4rem;border-bottom:1px solid var(--sable-deep);margin-bottom:.4rem;
+  }
+  .ligne-plat{
+    display:flex;gap:.5rem;align-items:center;padding:.45rem 0;
+    border-bottom:1px solid var(--sable);flex-wrap:wrap;
+  }
+  .ligne-plat.masque{opacity:.45;}
+  .ligne-plat input{
+    padding:.5rem .6rem;border:1px solid var(--sable-deep);border-radius:8px;
+    background:var(--blanc);font-size:.9rem;
+  }
+  .ligne-plat input:focus{outline:none;border-color:var(--or);}
+  .lp-nom{flex:1;min-width:150px;}
+  .lp-desc{flex:1.5;min-width:180px;font-size:.84rem !important;color:#6a6a5c;}
+  .lp-prix{width:76px;text-align:center;}
+  .lp-btn{
+    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:8px;
+    width:38px;height:38px;cursor:pointer;font-size:.95rem;transition:all .2s ease;flex:none;
+  }
+  .lp-btn:hover{border-color:var(--or);}
+  .lp-btn.save{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .lp-btn.suppr:hover{border-color:#a8574a;color:#a8574a;}
+  .lp-panneau{
+    font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8a7a;width:100%;
+  }
+
   /* ---------- Statistiques ---------- */
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-top:1rem;}
   .kpi{background:var(--blanc);border-radius:12px;padding:.9rem;box-shadow:0 8px 24px rgba(74,83,53,.1);}
@@ -248,6 +277,7 @@
   <div class="onglets" id="onglets" hidden>
     <button class="onglet actif" data-vue="jour">Jour</button>
     <button class="onglet" data-vue="service">Service en cours</button>
+    <button class="onglet" data-vue="carte">Carte</button>
     <button class="onglet" data-vue="stats">Statistiques</button>
   </div>
 </div>
@@ -339,6 +369,45 @@
     </div>
   </div>
 
+  <!-- ===================== VUE CARTE ===================== -->
+  <div id="vueCarte" hidden>
+    <div class="nav-jour">
+      <select id="cartePanel" class="champ" style="max-width:260px"></select>
+      <input class="champ" id="carteRecherche" placeholder="Rechercher un plat…" style="max-width:260px">
+    </div>
+
+    <p class="section-titre">Ajouter un plat</p>
+    <div class="carte">
+      <div class="passage-form">
+        <div class="pf-groupe" style="min-width:160px">
+          <label for="ajCat">Catégorie</label>
+          <select id="ajCat"></select>
+        </div>
+        <div class="pf-groupe" id="ajCatNouvGroupe" hidden style="min-width:160px">
+          <label for="ajCatNouv">Nouvelle catégorie</label>
+          <input id="ajCatNouv" placeholder="Nom de la catégorie">
+        </div>
+        <div class="pf-groupe" style="flex:1;min-width:180px">
+          <label for="ajNom">Nom du plat</label>
+          <input id="ajNom" placeholder="Nom">
+        </div>
+        <div class="pf-groupe" style="flex:1.4;min-width:200px">
+          <label for="ajDesc">Description (optionnelle)</label>
+          <input id="ajDesc" placeholder="Ingrédients, précisions…">
+        </div>
+        <div class="pf-groupe">
+          <label for="ajPrix">Prix</label>
+          <input id="ajPrix" placeholder="12 €" style="width:90px">
+        </div>
+        <button type="button" class="btn" id="ajBtn">Ajouter</button>
+      </div>
+      <p class="msg-ok" id="ajMsg"></p>
+    </div>
+
+    <p class="section-titre">Plats de l'onglet</p>
+    <div class="carte" id="listeCarte"></div>
+  </div>
+
   <!-- ===================== VUE STATISTIQUES ===================== -->
   <div id="vueStats" hidden>
     <div class="nav-jour">
@@ -383,6 +452,7 @@
 <nav class="barre-app" id="barreApp" hidden aria-label="Navigation">
   <button class="bar-item actif" data-vue="jour"><span class="bi-ico">📅</span><span>Jour</span></button>
   <button class="bar-item" data-vue="service"><span class="bi-ico">🍽️</span><span>Service</span></button>
+  <button class="bar-item" data-vue="carte"><span class="bi-ico">🧾</span><span>Carte</span></button>
   <button class="bar-item" data-vue="stats"><span class="bi-ico">📊</span><span>Stats</span></button>
 </nav>
 
@@ -439,9 +509,11 @@
     document.querySelectorAll(".onglet, .bar-item").forEach(o => o.classList.toggle("actif", o.dataset.vue === vue));
     $("vueJour").hidden = vue !== "jour";
     $("vueService").hidden = vue !== "service";
+    $("vueCarte").hidden = vue !== "carte";
     $("vueStats").hidden = vue !== "stats";
     if (vue === "jour") chargerJour(dateCourante);
     if (vue === "service") chargerServiceVue();
+    if (vue === "carte") chargerCarte();
     if (vue === "stats") chargerStats();
   }
 
@@ -714,6 +786,156 @@
       alert("Statistiques indisponibles, reconnectez-vous.");
     }
   }
+  // ---------- Vue carte : édition du menu en temps réel ----------
+  const PANEL_NOMS = ["Bar & Cocktails","À partager","Plats","La braise","Les pizze","Desserts & Glaces","Les vins","Softs & Cafés","Petit déjeuner"];
+  let carteData = null;
+  let panelCourant = 0;
+
+  PANEL_NOMS.forEach((n, i) => {
+    const o = document.createElement("option");
+    o.value = i; o.textContent = n;
+    $("cartePanel").appendChild(o);
+  });
+  $("cartePanel").addEventListener("change", () => {
+    panelCourant = parseInt($("cartePanel").value, 10);
+    $("carteRecherche").value = "";
+    rendreCarte(); majAjoutCats();
+  });
+  $("carteRecherche").addEventListener("input", rendreCarte);
+  $("ajCat").addEventListener("change", () => {
+    $("ajCatNouvGroupe").hidden = $("ajCat").value !== "__nouvelle__";
+  });
+
+  async function chargerCarte(){
+    try{
+      const r = await fetch(`/api/carte?all=1&key=${encodeURIComponent(cle)}`);
+      const d = await r.json();
+      if (!r.ok) throw 0;
+      carteData = d.panels;
+      $("cartePanel").value = panelCourant;
+      rendreCarte(); majAjoutCats();
+    }catch{
+      $("listeCarte").innerHTML = "<p class='vide'>Carte indisponible. La migration a-t-elle été faite ?</p>";
+    }
+  }
+
+  function panelData(i){
+    return (carteData || []).find(p => p.panel === i) || { cats: [] };
+  }
+
+  function majAjoutCats(){
+    const sel = $("ajCat");
+    sel.innerHTML = "";
+    for (const cat of panelData(panelCourant).cats){
+      const o = document.createElement("option");
+      o.value = cat.titre; o.textContent = cat.titre;
+      sel.appendChild(o);
+    }
+    const o = document.createElement("option");
+    o.value = "__nouvelle__"; o.textContent = "+ Nouvelle catégorie…";
+    sel.appendChild(o);
+    $("ajCatNouvGroupe").hidden = true;
+  }
+
+  function normC(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+
+  function rendreCarte(){
+    const liste = $("listeCarte");
+    liste.innerHTML = "";
+    const q = normC($("carteRecherche").value.trim());
+
+    const sources = q.length >= 2
+      ? (carteData || [])
+      : [panelData(panelCourant)];
+
+    let total = 0;
+    for (const p of sources){
+      for (const cat of p.cats){
+        const plats = q.length >= 2
+          ? cat.plats.filter(x => normC(x.nom + " " + (x.descr || "")).includes(q))
+          : cat.plats;
+        if (!plats.length) continue;
+        const titre = document.createElement("div");
+        titre.className = "cat-titre";
+        titre.textContent = (q.length >= 2 ? PANEL_NOMS[p.panel] + " · " : "") + cat.titre;
+        liste.appendChild(titre);
+        for (const plat of plats){
+          total++;
+          liste.appendChild(lignePlat(plat));
+        }
+      }
+    }
+    if (!total) liste.innerHTML = "<p class='vide'>" + (q ? "Aucun plat ne correspond." : "Aucun plat dans cet onglet.") + "</p>";
+  }
+
+  function lignePlat(plat){
+    const l = document.createElement("div");
+    l.className = "ligne-plat" + (plat.visible ? "" : " masque");
+    const iNom = document.createElement("input");
+    iNom.className = "lp-nom"; iNom.value = plat.nom; iNom.maxLength = 120;
+    const iDesc = document.createElement("input");
+    iDesc.className = "lp-desc"; iDesc.value = plat.descr || ""; iDesc.placeholder = "description"; iDesc.maxLength = 300;
+    const iPrix = document.createElement("input");
+    iPrix.className = "lp-prix"; iPrix.value = plat.prix; iPrix.maxLength = 20;
+
+    const bSave = bouton("💾", "Enregistrer", async () => {
+      const r = await action({ action: "update", id: plat.id, nom: iNom.value, descr: iDesc.value, prix: iPrix.value });
+      if (r) { bSave.classList.add("save"); setTimeout(() => bSave.classList.remove("save"), 900); }
+    });
+    const bVis = bouton(plat.visible ? "👁" : "🚫", plat.visible ? "Masquer du site" : "Réafficher", async () => {
+      const r = await action({ action: "visible", id: plat.id, visible: plat.visible ? 0 : 1 });
+      if (r) chargerCarte();
+    });
+    const bSuppr = bouton("🗑", "Supprimer définitivement", async () => {
+      if (!confirm("Supprimer définitivement « " + plat.nom + " » ?\n(Pour un plat épuisé, préférez Masquer 👁)")) return;
+      const r = await action({ action: "delete", id: plat.id });
+      if (r) chargerCarte();
+    });
+    bSuppr.classList.add("suppr");
+
+    [iNom, iDesc, iPrix].forEach(i => i.addEventListener("keydown", e => { if (e.key === "Enter") bSave.click(); }));
+    l.append(iNom, iDesc, iPrix, bSave, bVis, bSuppr);
+    return l;
+  }
+
+  function bouton(txt, titre, fn){
+    const b = document.createElement("button");
+    b.className = "lp-btn"; b.textContent = txt; b.title = titre;
+    b.addEventListener("click", fn);
+    return b;
+  }
+
+  async function action(corps){
+    try{
+      const r = await fetch("/api/carte", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...corps, key: cle })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw 0;
+      return true;
+    }catch{
+      alert("Action impossible, réessayez.");
+      return false;
+    }
+  }
+
+  $("ajBtn").addEventListener("click", async () => {
+    let categorie = $("ajCat").value;
+    if (categorie === "__nouvelle__") categorie = $("ajCatNouv").value.trim();
+    const nom = $("ajNom").value.trim();
+    const prix = $("ajPrix").value.trim();
+    if (!categorie || !nom || !prix){ $("ajMsg").textContent = "Catégorie, nom et prix sont requis."; return; }
+    $("ajMsg").textContent = "Ajout…";
+    const ok = await action({ action: "add", panel: panelCourant, categorie, nom, descr: $("ajDesc").value.trim(), prix });
+    if (ok){
+      $("ajMsg").textContent = "✓ « " + nom + " » ajouté, en ligne immédiatement.";
+      $("ajNom").value = ""; $("ajDesc").value = ""; $("ajPrix").value = ""; $("ajCatNouv").value = "";
+      chargerCarte();
+    } else {
+      $("ajMsg").textContent = "";
+    }
+  });
 </script>
 </body>
 </html>

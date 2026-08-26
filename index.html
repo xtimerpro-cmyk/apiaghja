@@ -2096,6 +2096,54 @@
   document.querySelectorAll('iframe[data-src]').forEach(f => ioMaps.observe(f));
   // Cascade des photos de la galerie
   document.querySelectorAll('.galerie-grid figure').forEach((f, i) => f.style.setProperty('--i', i));
+  // ---------- Carte dynamique : pilotée depuis le back-office ----------
+  (function(){
+    function echapC(s){
+      return String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    }
+    function initPlats(){
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.querySelectorAll('.plat').forEach((p, i) => {
+          p.style.setProperty('--i', Math.min(i, 30));
+          if (!p.querySelector('.lead')) {
+            const prix = p.querySelector('.prix');
+            if (prix) {
+              const lead = document.createElement('span');
+              lead.className = 'lead'; lead.setAttribute('aria-hidden', 'true');
+              p.insertBefore(lead, prix);
+            }
+          }
+        });
+      });
+    }
+    window.__initPlats = initPlats;
+
+    fetch('/api/carte')
+      .then(r => { if (!r.ok) throw 0; return r.json(); })
+      .then(d => {
+        if (!d.panels || !d.panels.length) return;
+        for (const p of d.panels){
+          const panneau = document.getElementById('tab' + p.panel);
+          if (!panneau) continue;
+          const grille = panneau.querySelector('.carte-grid');
+          if (!grille) continue;
+          let htmlCats = '';
+          for (const cat of p.cats){
+            if (!cat.plats.length) continue;
+            htmlCats += '<div class="carte-cat"><h3>' + echapC(cat.titre) + '</h3>';
+            for (const plat of cat.plats){
+              htmlCats += '<div class="plat"><span class="nom">' + echapC(plat.nom) +
+                (plat.descr ? '<small>' + echapC(plat.descr) + '</small>' : '') +
+                '</span><span class="prix">' + echapC(plat.prix) + '</span></div>';
+            }
+            htmlCats += '</div>';
+          }
+          if (htmlCats) grille.innerHTML = htmlCats;
+        }
+        initPlats();
+      })
+      .catch(() => { /* la carte statique intégrée reste affichée */ });
+  })();
 </script>
 </body>
 </html>
