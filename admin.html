@@ -1,450 +1,636 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0708">
-<title>Back Office — O'Steph</title>
-<link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="assets/logo.png" type="image/png">
-<script>(function(){try{var t=localStorage.getItem("osteph_theme_v1")||"gold";document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>A Piaghja · Direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#7d8560; --olive-soft:#9aa17e; --sable:#efe9dd; --sable-deep:#e2d9c6;
+    --rose:#e7c6bd; --or:#c2a15c; --encre:#2a2b24; --blanc:#fdfcf9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Questrial',sans-serif;background:var(--sable);color:var(--encre);min-height:100vh;}
+  .haut{
+    background:var(--olive);color:var(--blanc);
+    padding:.9rem 4vw;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  }
+  .haut h1{font-family:'Allura',cursive;font-weight:400;font-size:1.9rem;line-height:1;}
+  .haut .sous{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);}
+  .onglets{margin-left:auto;display:flex;gap:.4rem;}
+  .onglet{
+    border:1px solid rgba(253,252,249,.35);background:none;border-radius:999px;
+    color:var(--blanc);padding:.45rem 1rem;cursor:pointer;font-family:inherit;
+    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .2s ease;
+  }
+  .onglet:hover{border-color:var(--blanc);}
+  .onglet.actif{background:var(--blanc);color:var(--olive);border-color:var(--blanc);}
+  main{max-width:900px;margin:0 auto;padding:1.2rem 4vw 4rem;}
+
+  .carte{
+    background:var(--blanc);border-radius:14px;padding:1.2rem;
+    box-shadow:0 10px 34px rgba(74,83,53,.14);margin-top:1rem;
+  }
+  input,button,select{font-family:inherit;font-size:1rem;}
+  .champ{
+    width:100%;padding:.8rem 1rem;border:1px solid var(--sable-deep);border-radius:10px;
+    background:var(--blanc);color:var(--encre);
+  }
+  .champ:focus{outline:none;border-color:var(--or);}
+  .btn{
+    padding:.8rem 1.4rem;border:none;border-radius:999px;cursor:pointer;
+    background:var(--olive);color:var(--blanc);
+    font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
+    transition:background .2s ease;
+  }
+  .btn:hover{background:#6c7452;}
+  .erreur{color:#a8574a;font-size:.88rem;margin-top:.7rem;min-height:1.2em;}
+  .connexion{max-width:380px;margin:3rem auto;text-align:center;}
+  .connexion p{font-size:.9rem;color:#6a6a5c;margin-bottom:1rem;}
+  .connexion .btn{width:100%;margin-top:.8rem;}
+
+  .nav-jour{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:1rem;flex-wrap:wrap;}
+  .nav-jour button{
+    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:999px;
+    padding:.5rem 1rem;cursor:pointer;color:var(--encre);font-size:.85rem;transition:border-color .2s ease;
+  }
+  .nav-jour button:hover{border-color:var(--or);}
+  .titre-jour{font-size:1rem;min-width:200px;text-align:center;font-weight:bold;}
+  .nav-jour input[type=date]{border:1px solid var(--sable-deep);border-radius:10px;padding:.45rem .6rem;background:var(--blanc);}
+
+  .jauges{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
+  .jauge h3{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);margin-bottom:.4rem;}
+  .jauge .chiffres{font-size:1.3rem;margin-bottom:.4rem;}
+  .jauge .chiffres small{font-size:.8rem;color:#8a8a7a;}
+  .barre{height:8px;background:var(--sable);border-radius:99px;overflow:hidden;}
+  .barre i{display:block;height:100%;background:var(--olive-soft);border-radius:99px;transition:width .4s ease;}
+  .barre i.plein{background:#c48a7d;}
+
+  table{width:100%;border-collapse:collapse;margin-top:.4rem;font-size:.92rem;}
+  th{
+    text-align:left;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    color:#8a8a7a;padding:.5rem .4rem;border-bottom:1px solid var(--sable-deep);font-weight:normal;
+  }
+  td{padding:.55rem .4rem;border-bottom:1px solid var(--sable);vertical-align:middle;}
+  td a{color:var(--olive);text-decoration:none;font-weight:bold;}
+  .svc{
+    display:inline-block;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+    padding:.18rem .5rem;border-radius:99px;background:var(--sable);color:var(--olive);
+  }
+  .svc.camp{background:#f3e7e3;color:#b0766a;}
+  .svc.pass{background:#e7ecf3;color:#5e7391;}
+  .annuler{
+    border:1px solid var(--sable-deep);background:none;border-radius:999px;
+    padding:.3rem .7rem;cursor:pointer;font-size:.72rem;color:#a8574a;transition:all .2s ease;
+  }
+  .annuler:hover{border-color:#a8574a;background:#faf1ef;}
+  .vide{text-align:center;color:#8a8a7a;padding:1.4rem 0;}
+  .section-titre{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--olive);margin-top:1.5rem;}
+
+  .semaine{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-top:.7rem;}
+  .sem-jour{
+    background:var(--blanc);border:1px solid var(--sable-deep);border-radius:10px;
+    padding:.5rem .3rem;text-align:center;cursor:pointer;transition:border-color .2s ease;
+  }
+  .sem-jour:hover{border-color:var(--or);}
+  .sem-jour.actif{border-color:var(--olive);border-width:2px;}
+  .sj-nom{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8a7a;}
+  .sj-num{font-size:1rem;margin:.12rem 0;}
+  .sj-tot{font-size:.66rem;color:var(--olive);}
+
+  /* ---------- Service ---------- */
+  .svc-bascule{display:flex;gap:.5rem;justify-content:center;margin-top:1rem;}
+  .svc-bascule button{
+    flex:1;max-width:180px;border:1px solid var(--sable-deep);background:var(--blanc);
+    border-radius:999px;padding:.6rem;cursor:pointer;font-size:.8rem;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--encre);transition:all .2s ease;
+  }
+  .svc-bascule button.actif{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .ligne-svc{
+    display:flex;align-items:center;gap:.8rem;padding:.7rem .4rem;
+    border-bottom:1px solid var(--sable);flex-wrap:wrap;
+  }
+  .ls-heure{font-weight:bold;font-size:1.05rem;width:52px;flex:none;}
+  .ls-nom{flex:1;min-width:140px;}
+  .ls-nom .badges{margin-top:.15rem;display:flex;gap:.3rem;}
+  .ls-pax{font-size:1.05rem;width:56px;flex:none;text-align:center;}
+  .ls-pax small{font-size:.65rem;color:#8a8a7a;display:block;}
+  .ls-table{display:flex;gap:.4rem;align-items:center;flex:none;}
+  .ls-table input{
+    width:74px;padding:.55rem .6rem;border:1px solid var(--sable-deep);border-radius:10px;
+    text-align:center;font-size:1rem;background:var(--blanc);
+  }
+  .ls-table input:focus{outline:none;border-color:var(--or);}
+  .ls-table input.ok{border-color:var(--olive);background:#f2f4ec;}
+  .ls-ok{
+    border:none;background:var(--olive);color:var(--blanc);border-radius:10px;
+    width:40px;height:40px;cursor:pointer;font-size:1rem;transition:background .2s ease;
+  }
+  .ls-ok:hover{background:#6c7452;}
+  .passage-form{display:flex;gap:.6rem;flex-wrap:wrap;align-items:flex-end;}
+  .pf-groupe{display:flex;flex-direction:column;gap:.3rem;}
+  .pf-groupe label{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;}
+  .pf-groupe input{
+    padding:.6rem .7rem;border:1px solid var(--sable-deep);border-radius:10px;background:var(--blanc);
+  }
+  .pf-groupe input:focus{outline:none;border-color:var(--or);}
+  .pf-camp{
+    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:999px;
+    padding:.6rem 1rem;cursor:pointer;font-size:.8rem;transition:all .2s ease;
+  }
+  .pf-camp.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .msg-ok{color:var(--olive);font-size:.88rem;margin-top:.6rem;min-height:1.2em;}
+
+  /* ---------- Statistiques ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-top:1rem;}
+  .kpi{background:var(--blanc);border-radius:12px;padding:.9rem;box-shadow:0 8px 24px rgba(74,83,53,.1);}
+  .kpi .k-val{font-size:1.6rem;color:var(--olive);}
+  .kpi .k-lab{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;margin-top:.2rem;}
+  .graph{
+    display:flex;align-items:flex-end;gap:3px;height:150px;margin-top:.8rem;
+    padding-bottom:.4rem;border-bottom:1px solid var(--sable-deep);
+  }
+  .g-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;min-width:0;cursor:default;}
+  .g-midi{background:var(--or);border-radius:2px 2px 0 0;opacity:.85;}
+  .g-soir{background:var(--olive-soft);border-radius:2px 2px 0 0;}
+  .g-jours{display:flex;gap:3px;margin-top:.3rem;}
+  .g-jours span{flex:1;text-align:center;font-size:.55rem;color:#8a8a7a;min-width:0;}
+  .legende{display:flex;gap:1.2rem;margin-top:.7rem;font-size:.75rem;color:#6a6a5c;}
+  .legende i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:.35rem;}
+  .h-barres{margin-top:.8rem;display:flex;flex-direction:column;gap:.45rem;}
+  .h-ligne{display:flex;align-items:center;gap:.6rem;font-size:.82rem;}
+  .h-ligne .h-h{width:46px;flex:none;color:#6a6a5c;}
+  .h-ligne .h-fond{flex:1;height:12px;background:var(--sable);border-radius:99px;overflow:hidden;display:block;}
+  .h-ligne .h-rempli{height:100%;background:var(--olive-soft);border-radius:99px;display:block;}
+  .h-ligne .h-val{width:36px;flex:none;text-align:right;color:var(--olive);}
+  .deconnexion{margin-top:2rem;text-align:center;}
+  .deconnexion button{
+    background:none;border:none;color:#8a8a7a;cursor:pointer;font-size:.78rem;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  @media (max-width:640px){
+    .jauges{grid-template-columns:1fr;}
+    .semaine{grid-template-columns:repeat(4,1fr);}
+    th:nth-child(7),td:nth-child(7){display:none;}
+    .onglets{margin-left:0;width:100%;justify-content:center;}
+  }
+</style>
 </head>
 <body>
-<div class="theme-switcher" role="group" aria-label="Thème">
-  <button data-theme="bw" title="Noir & Blanc" aria-label="Thème noir et blanc"></button>
-  <button data-theme="gold" title="Doré chic" aria-label="Thème doré"></button>
-  <button data-theme="light" title="Clair" aria-label="Thème clair"></button>
+
+<div class="haut">
+  <div>
+    <h1>A Piaghja</h1>
+    <span class="sous">Direction</span>
+  </div>
+  <div class="onglets" id="onglets" hidden>
+    <button class="onglet actif" data-vue="jour">Jour</button>
+    <button class="onglet" data-vue="service">Service</button>
+    <button class="onglet" data-vue="stats">Statistiques</button>
+  </div>
 </div>
 
-
-<div class="sparkle-layer"></div>
-
-<!-- ===== LOGIN ===== -->
-<div id="login-view" class="frame fade-in" style="max-width:440px;">
-  <span class="corner-star tl">✦</span>
-  <span class="corner-star bl">✦</span>
-
-  <div class="logo-block">
-    <img src="assets/logo.png" alt="O'Steph" class="logo-img" style="max-width:180px;">
-    <div class="tagline">Back Office</div>
+<main>
+  <!-- Connexion -->
+  <div class="carte connexion" id="ecranConnexion">
+    <p>Espace réservé à la direction.<br>Entrez la clé d'accès.</p>
+    <input class="champ" type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password">
+    <button class="btn" id="btnConnexion">Entrer</button>
+    <p class="erreur" id="erreurConnexion"></p>
   </div>
 
-  <form id="login-form">
-    <div class="form-group">
-      <label class="form-label" for="pwd">Mot de passe</label>
-      <input class="form-input" type="password" id="pwd" required autocomplete="current-password">
+  <!-- ===================== VUE JOUR ===================== -->
+  <div id="vueJour" hidden>
+    <div class="nav-jour">
+      <button id="jourPrec">‹</button>
+      <span class="titre-jour" id="titreJour"></span>
+      <button id="jourSuiv">›</button>
+      <button id="aujourdhui">Aujourd'hui</button>
+      <input type="date" id="choixDate" aria-label="Choisir une date">
     </div>
-    <div id="login-error" class="notice error" style="display:none;">Mot de passe incorrect.</div>
-    <button type="submit" class="btn btn-primary btn-block">Connexion</button>
-  </form>
 
-  <div class="footer">
-    <a href="https://xtimerpro-cmyk.github.io/osteph/" target="_blank">→ Voir le site public</a>
-  </div>
-</div>
-
-<!-- ===== DASHBOARD ===== -->
-<div id="dash-view" class="frame" style="display:none; max-width:1000px;">
-  <span class="corner-star tl">✦</span>
-  <span class="corner-star bl">✦</span>
-
-  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:8px;">
-    <div style="display:flex; align-items:center; gap:14px;">
-      <img src="assets/logo.png" alt="" style="height:48px; filter:drop-shadow(0 0 12px rgba(212,175,55,0.3));">
-      <div>
-        <div style="font-family:'Cinzel',serif; font-size:14px; letter-spacing:0.3em; color:var(--gold-bright);">BACK OFFICE</div>
-        <div style="font-size:12px; color:var(--gold-soft); letter-spacing:0.15em;">Gestion fidélité</div>
+    <div class="jauges">
+      <div class="carte jauge">
+        <h3>Service du midi</h3>
+        <div class="chiffres"><span id="totMidi">0</span> <small>/ <span id="capMidi">60</span> couverts</small></div>
+        <div class="barre"><i id="barreMidi" style="width:0%"></i></div>
+      </div>
+      <div class="carte jauge">
+        <h3>Service du soir</h3>
+        <div class="chiffres"><span id="totSoir">0</span> <small>/ <span id="capSoir">60</span> couverts</small></div>
+        <div class="barre"><i id="barreSoir" style="width:0%"></i></div>
       </div>
     </div>
-    <button class="btn btn-sm" id="logout-btn">Déconnexion</button>
-  </div>
 
-  <div class="divider"></div>
-
-  <!-- Stats -->
-  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
-    <span class="admin-stat">Total clients : <strong id="stat-total">0</strong></span>
-    <span class="admin-stat">Aujourd'hui : <strong id="stat-today">0</strong></span>
-    <span class="admin-stat">Ce mois : <strong id="stat-month">0</strong></span>
-    <span class="admin-stat">Menus servis : <strong id="stat-menus">0</strong></span>
-    <span class="admin-stat">Récompenses dues : <strong id="stat-rewards">0</strong></span>
-  </div>
-
-  <!-- Toolbar -->
-  <div class="admin-bar">
-    <input type="search" id="search" placeholder="Rechercher (nom, tel, n°…)">
-    <button class="btn btn-sm" id="sync-btn">⟳ Synchroniser</button>
-    <a href="qr.html" class="btn btn-sm" target="_blank" style="text-decoration:none;">📱 Mode QR</a>
-    <button class="btn btn-sm" id="export-btn">Export CSV</button>
-    <button class="btn btn-sm" id="config-btn">⚙ Config JSONBin</button>
-    <button class="btn btn-sm" id="clear-btn" style="border-color:#6b1f1f; color:#d49696;">Tout effacer (local)</button>
-  </div>
-
-  <div id="sync-status" style="font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.15em; color:var(--silver-soft); margin: -6px 0 12px; min-height:16px;"></div>
-
-  <!-- Config JSONBin -->
-  <div id="config-panel" style="display:none; padding:14px; background:rgba(255,255,255,0.04); border:1px solid var(--silver-deep); border-radius:2px; margin-bottom:14px;">
-    <div class="form-label" style="margin-bottom:8px;">Bin ID</div>
-    <input class="form-input" type="text" id="bin-id" placeholder="6612abc1234567890abcdef0">
-    <div class="form-label" style="margin: 12px 0 8px;">Master Key</div>
-    <input class="form-input" type="text" id="bin-key" placeholder="$2a$10$XXXXXXXXXXXXXXXXX...">
-    <div style="display:flex; gap:8px; margin-top:12px;">
-      <button class="btn btn-sm" id="save-bin">Enregistrer</button>
-      <button class="btn btn-sm" id="test-bin">Tester</button>
-      <button class="btn btn-sm" id="close-config">Fermer</button>
+    <p class="section-titre">Réservations du jour</p>
+    <div class="carte">
+      <table>
+        <thead>
+          <tr><th>Heure</th><th>Nom</th><th>Couverts</th><th>Table</th><th>Statut</th><th>Téléphone</th><th>Prise le</th><th></th></tr>
+        </thead>
+        <tbody id="lignes"></tbody>
+      </table>
+      <p class="vide" id="aucun" hidden>Aucune réservation ce jour.</p>
     </div>
-    <p style="font-size:12px; opacity:0.7; margin-top:10px; line-height:1.5;">
-      Voir le bloc « Setup JSONBin » ci-dessous pour les instructions complètes.
-    </p>
+
+    <p class="section-titre">Les 7 prochains jours</p>
+    <div class="semaine" id="semaine"></div>
   </div>
 
-  <!-- Table -->
-  <div style="overflow-x:auto;">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>N°</th>
-          <th>Prénom</th>
-          <th>Nom</th>
-          <th class="hide-sm">Email</th>
-          <th>Tél.</th>
-          <th>Menus</th>
-          <th class="hide-sm">Inscrit le</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="clients-tbody">
-        <!-- rempli en JS -->
-      </tbody>
-    </table>
-  </div>
-
-  <div id="empty-msg" class="empty-state" style="display:none;">
-    Aucun client inscrit pour le moment.<br>Les inscriptions via la page fidélité apparaîtront ici.
-  </div>
-
-  <!-- Setup instructions -->
-  <details style="margin-top:30px; padding:14px; background:rgba(255,255,255,0.03); border:1px solid var(--silver-deep); border-radius:2px;">
-    <summary style="cursor:pointer; font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.2em; color:var(--white);">
-      ⚙ SETUP JSONBIN (5 minutes)
-    </summary>
-    <div style="margin-top:14px; font-size:14px; line-height:1.7; color:var(--cream);">
-      <p>JSONBin est un service de stockage JSON gratuit (10 000 requêtes/mois). Sans lui, les téléphones des clients qui scannent le QR ne peuvent rien enregistrer chez toi.</p>
-
-      <p style="margin-top:14px;"><strong>1.</strong> Va sur <a href="https://jsonbin.io" target="_blank" style="color:var(--white);">jsonbin.io</a> et crée un compte gratuit (juste email + mdp).</p>
-
-      <p><strong>2.</strong> Une fois connecté, clique <em>« Create Bin »</em> en haut à droite.</p>
-
-      <p><strong>3.</strong> Dans le contenu, efface tout et remplace par juste :</p>
-      <code style="display:block; padding:8px 12px; background:var(--black); color:var(--white); border-radius:2px; margin:8px 0; font-size:14px;">[]</code>
-      <p>Donne-lui un nom genre <em>« osteph-clients »</em> et clique <em>« Create »</em>.</p>
-
-      <p><strong>4.</strong> Copie le <strong>BIN ID</strong> (visible dans l'URL de la page après création, après <code>/bin/</code> — c'est une longue chaîne de 24 caractères).</p>
-
-      <p><strong>5.</strong> Va dans le menu <em>« API Keys »</em> à gauche → copie le <strong>X-MASTER-KEY</strong> (commence par <code>$2a$10$...</code>).</p>
-
-      <p><strong>6.</strong> Reviens ici, clique <em>« ⚙ Config JSONBin »</em> en haut, colle le Bin ID + Master Key, puis <em>« Tester »</em>.</p>
-
-      <p style="margin-top:14px; font-style:italic; opacity:0.85;">À partir de là, chaque client qui scanne le QR + tape ses infos est automatiquement ajouté à ton bin, et tu peux tout voir/gérer ici. ✦</p>
-
-      <p style="margin-top:10px; font-size:12px; opacity:0.6; line-height:1.5;">
-      ⚠ Le Master Key est embarqué dans chaque QR (sinon le tel du client ne pourrait pas écrire). Quelqu'un de techniquement curieux pourrait l'extraire et écrire dans ton bin. Pour un food truck, le risque est faible. Si tu vois du spam, tu peux régénérer la clé sur jsonbin.io.
-      </p>
+  <!-- ===================== VUE SERVICE ===================== -->
+  <div id="vueService" hidden>
+    <div class="svc-bascule">
+      <button id="svcMidi">Midi</button>
+      <button id="svcSoir">Soir</button>
     </div>
-  </details>
 
-  <div class="footer" style="margin-top:30px;">O'Steph Back Office</div>
-</div>
+    <p class="section-titre">Ajouter un passage</p>
+    <div class="carte">
+      <div class="passage-form">
+        <div class="pf-groupe">
+          <label for="pfPax">Couverts</label>
+          <input type="number" id="pfPax" min="1" max="40" value="2" style="width:90px">
+        </div>
+        <div class="pf-groupe">
+          <label for="pfHeure">Heure</label>
+          <input type="time" id="pfHeure" style="width:110px">
+        </div>
+        <div class="pf-groupe">
+          <label for="pfTable">Table</label>
+          <input id="pfTable" placeholder="n°" style="width:80px" maxlength="10">
+        </div>
+        <button type="button" class="pf-camp" id="pfCamp">Camping</button>
+        <button type="button" class="btn" id="pfAjouter">Ajouter</button>
+      </div>
+      <p class="msg-ok" id="pfMsg"></p>
+    </div>
 
-<script src="assets/app.js"></script>
+    <p class="section-titre">Tables du service · <span id="svcTitre"></span></p>
+    <div class="carte" id="listeService"></div>
+  </div>
+
+  <!-- ===================== VUE STATISTIQUES ===================== -->
+  <div id="vueStats" hidden>
+    <div class="nav-jour">
+      <button id="moisPrec">‹</button>
+      <span class="titre-jour" id="titreMois"></span>
+      <button id="moisSuiv">›</button>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><div class="k-val" id="kCouverts">0</div><div class="k-lab">Couverts sur le mois</div></div>
+      <div class="kpi"><div class="k-val" id="kResas">0</div><div class="k-lab">Réservations</div></div>
+      <div class="kpi"><div class="k-val" id="kPassage">0</div><div class="k-lab">Couverts en passage</div></div>
+      <div class="kpi"><div class="k-val" id="kCamping">0%</div><div class="k-lab">Résidents camping</div></div>
+    </div>
+
+    <p class="section-titre">Affluence jour par jour</p>
+    <div class="carte">
+      <div class="graph" id="graph"></div>
+      <div class="g-jours" id="graphJours"></div>
+      <div class="legende">
+        <span><i style="background:var(--or)"></i>Midi</span>
+        <span><i style="background:var(--olive-soft)"></i>Soir</span>
+      </div>
+    </div>
+
+    <p class="section-titre">Répartition par créneau</p>
+    <div class="carte">
+      <div class="h-barres" id="heures"></div>
+    </div>
+  </div>
+
+  <div class="deconnexion" id="zoneDeconnexion" hidden><button id="btnDeconnexion">Se déconnecter</button></div>
+</main>
+
 <script>
-const ADMIN_PASSWORD = 'osteph2026'; // ← CHANGE LE MOT DE PASSE ICI
+  const $ = id => document.getElementById(id);
+  let cle = "";
+  let dateCourante = maintenantLocal();
+  let moisStats = dateCourante.slice(0, 7);
+  let serviceCourant = (new Date().getHours() < 17) ? "midi" : "soir";
 
-// ===== Auth =====
-const loginView = document.getElementById('login-view');
-const dashView = document.getElementById('dash-view');
-
-function isAuth() {
-  return sessionStorage.getItem(OSTEPH.KEY_ADMIN_AUTH) === '1';
-}
-
-function showDash() {
-  loginView.style.display = 'none';
-  dashView.style.display = 'block';
-  refresh();
-  doSync(true); // sync auto silencieuse à l'ouverture du dashboard
-}
-
-if (isAuth()) showDash();
-
-document.getElementById('login-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const pwd = document.getElementById('pwd').value;
-  if (pwd === ADMIN_PASSWORD) {
-    sessionStorage.setItem(OSTEPH.KEY_ADMIN_AUTH, '1');
-    showDash();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
+  function maintenantLocal(){
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
   }
-});
-
-document.getElementById('logout-btn').addEventListener('click', () => {
-  sessionStorage.removeItem(OSTEPH.KEY_ADMIN_AUTH);
-  location.reload();
-});
-
-// ===== Affichage clients =====
-function refresh() {
-  const all = OSTEPH.loadClients();
-  const q = document.getElementById('search').value.trim().toLowerCase();
-  const filtered = q
-    ? all.filter(c => Object.values(c).some(v => String(v).toLowerCase().includes(q)))
-    : all;
-
-  const tbody = document.getElementById('clients-tbody');
-  const empty = document.getElementById('empty-msg');
-  tbody.innerHTML = '';
-
-  if (filtered.length === 0) {
-    empty.style.display = 'block';
-  } else {
-    empty.style.display = 'none';
-    // Plus récent en haut
-    [...filtered].reverse().forEach(c => {
-      const tr = document.createElement('tr');
-      const dateStr = new Date(c.created).toLocaleDateString('fr-FR') +
-        ' ' + new Date(c.created).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-      const dash = (v) => v && v.trim() ? escapeHtml(v) : '<span style="color:var(--silver-deep);">—</span>';
-      const sourceBadge = c.source === 'qr'
-        ? '<span style="font-size:9px; padding:2px 6px; background:rgba(255,255,255,0.08); border:1px solid var(--silver-deep); border-radius:8px; letter-spacing:0.1em; vertical-align:middle; margin-left:6px; color:var(--silver-soft);">QR</span>'
-        : '';
-      const menus = parseInt(c.menus || 0, 10);
-      // Récompense due tous les 10 menus
-      const rewardDue = menus > 0 && menus % 10 === 0;
-      const rewardBadge = rewardDue
-        ? '<span title="Récompense disponible !" style="margin-left:6px; font-size:14px;">🎁</span>'
-        : '';
-      tr.innerHTML = `
-        <td class="num">${c.number}${sourceBadge}</td>
-        <td>${dash(c.prenom)}</td>
-        <td>${dash(c.nom)}</td>
-        <td class="hide-sm">${dash(c.email)}</td>
-        <td>${dash(c.telephone)}</td>
-        <td class="menus-cell">
-          <div class="menus-control">
-            <button class="menu-btn minus" data-num="${c.number}" data-action="dec" title="Retirer 1 menu">−</button>
-            <span class="menus-count ${rewardDue ? 'reward-due' : ''}">${menus}</span>
-            <button class="menu-btn plus" data-num="${c.number}" data-action="inc" title="Ajouter 1 menu">+</button>
-            ${rewardBadge}
-          </div>
-        </td>
-        <td class="hide-sm">${dateStr}</td>
-        <td><button class="del-btn" data-num="${c.number}">Supprimer</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
+  function decale(dateStr, n){
+    const d = new Date(dateStr + "T12:00:00");
+    d.setDate(d.getDate() + n);
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+  function joli(dateStr){
+    return new Date(dateStr + "T12:00:00").toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
+  }
+  function echap(s){
+    return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
 
-  // Stats
-  updateStatsOnly(all);
+  // ---------- Connexion ----------
+  $("btnConnexion").addEventListener("click", connecter);
+  $("cle").addEventListener("keydown", e => { if (e.key === "Enter") connecter(); });
+  async function connecter(){
+    cle = $("cle").value.trim();
+    if (!cle) return;
+    $("erreurConnexion").textContent = "Vérification…";
+    try{
+      const r = await fetch(`/api/resa/admin?date=${dateCourante}&key=${encodeURIComponent(cle)}`);
+      if (r.status === 401){ $("erreurConnexion").textContent = "Clé incorrecte."; return; }
+      if (!r.ok) throw 0;
+      $("ecranConnexion").hidden = true;
+      $("onglets").hidden = false;
+      $("zoneDeconnexion").hidden = false;
+      montrerVue("jour");
+    }catch{
+      $("erreurConnexion").textContent = "Service indisponible, réessayez.";
+    }
+  }
+  $("btnDeconnexion").addEventListener("click", () => location.reload());
 
-  // ===== Bind +/- menus avec debounce et feedback visuel =====
-  // On regroupe les clics rapides (genre +5 d'un coup) en un seul push cloud
-  const pendingPushes = {};
-  function scheduleCloudPush(num, cell) {
-    clearTimeout(pendingPushes[num]);
-    pendingPushes[num] = setTimeout(async () => {
-      delete pendingPushes[num];
-      if (!OSTEPH.isCloudConfigured()) {
-        cell.classList.add('saved-local');
-        setTimeout(() => cell.classList.remove('saved-local'), 1500);
+  // ---------- Onglets ----------
+  document.querySelectorAll(".onglet").forEach(o => {
+    o.addEventListener("click", () => montrerVue(o.dataset.vue));
+  });
+  function montrerVue(vue){
+    document.querySelectorAll(".onglet").forEach(o => o.classList.toggle("actif", o.dataset.vue === vue));
+    $("vueJour").hidden = vue !== "jour";
+    $("vueService").hidden = vue !== "service";
+    $("vueStats").hidden = vue !== "stats";
+    if (vue === "jour") chargerJour(dateCourante);
+    if (vue === "service") chargerServiceVue();
+    if (vue === "stats") chargerStats();
+  }
+
+  // ---------- Vue jour ----------
+  async function chargerJour(dateStr){
+    dateCourante = dateStr;
+    $("titreJour").textContent = joli(dateStr);
+    $("choixDate").value = dateStr;
+    try{
+      const r = await fetch(`/api/resa/admin?date=${dateStr}&key=${encodeURIComponent(cle)}`);
+      const d = await r.json();
+      if (!r.ok) throw 0;
+
+      $("capMidi").textContent = d.capacite.midi;
+      $("capSoir").textContent = d.capacite.soir;
+      $("totMidi").textContent = d.totaux.midi;
+      $("totSoir").textContent = d.totaux.soir;
+      const pMidi = Math.min(100, Math.round(d.totaux.midi / d.capacite.midi * 100));
+      const pSoir = Math.min(100, Math.round(d.totaux.soir / d.capacite.soir * 100));
+      $("barreMidi").style.width = pMidi + "%";
+      $("barreSoir").style.width = pSoir + "%";
+      $("barreMidi").className = pMidi >= 100 ? "plein" : "";
+      $("barreSoir").className = pSoir >= 100 ? "plein" : "";
+
+      const tb = $("lignes");
+      tb.innerHTML = "";
+      $("aucun").hidden = d.resas.length > 0;
+      for (const resa of d.resas){
+        const tr = document.createElement("tr");
+        const prise = resa.created_at ? resa.created_at.slice(0, 16).replace("T", " ") : "";
+        const nomAff = resa.type === "passage" ? "Passage" : echap(resa.prenom) + " " + echap(resa.nom);
+        let statut = "<span class='svc'>" + resa.service + "</span>";
+        if (resa.camping) statut += " <span class='svc camp'>Camping</span>";
+        if (resa.type === "passage") statut += " <span class='svc pass'>Passage</span>";
+        tr.innerHTML =
+          "<td><b>" + resa.heure + "</b></td>" +
+          "<td>" + nomAff + "</td>" +
+          "<td>" + resa.pax + "</td>" +
+          "<td>" + (resa.table_num ? "<b>" + echap(resa.table_num) + "</b>" : "<span style='color:#8a8a7a'>—</span>") + "</td>" +
+          "<td>" + statut + "</td>" +
+          "<td>" + (resa.tel ? "<a href='tel:" + echap(resa.tel) + "'>" + echap(resa.tel) + "</a>" : "—") + "</td>" +
+          "<td style='color:#8a8a7a;font-size:.78rem'>" + prise + "</td>" +
+          "<td></td>";
+        const btn = document.createElement("button");
+        btn.className = "annuler"; btn.textContent = "Annuler";
+        btn.addEventListener("click", () => annuler(resa));
+        tr.lastElementChild.appendChild(btn);
+        tb.appendChild(tr);
+      }
+      chargerSemaine();
+    }catch{
+      alert("Impossible de charger cette journée, reconnectez-vous.");
+    }
+  }
+
+  async function annuler(resa){
+    const qui = resa.type === "passage" ? "ce passage" : resa.prenom + " " + resa.nom;
+    if (!confirm("Annuler " + qui + " (" + resa.pax + " couverts à " + resa.heure + ") ?")) return;
+    try{
+      const r = await fetch("/api/resa/admin", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "delete", id: resa.id, key: cle })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw 0;
+      chargerJour(dateCourante);
+      if (!$("vueService").hidden) chargerServiceVue();
+    }catch{
+      alert("Suppression impossible, réessayez.");
+    }
+  }
+
+  async function chargerSemaine(){
+    const from = maintenantLocal();
+    const to = decale(from, 6);
+    try{
+      const r = await fetch(`/api/resa/admin?from=${from}&to=${to}&key=${encodeURIComponent(cle)}`);
+      const d = await r.json();
+      if (!r.ok) throw 0;
+      const cont = $("semaine");
+      cont.innerHTML = "";
+      for (let i = 0; i <= 6; i++){
+        const ds = decale(from, i);
+        const j = d.jours[ds] || { midi:{pax:0}, soir:{pax:0} };
+        const el = document.createElement("div");
+        el.className = "sem-jour" + (ds === dateCourante ? " actif" : "");
+        const dd = new Date(ds + "T12:00:00");
+        el.innerHTML =
+          "<div class='sj-nom'>" + dd.toLocaleDateString("fr-FR", { weekday:"short" }) + "</div>" +
+          "<div class='sj-num'>" + dd.getDate() + "</div>" +
+          "<div class='sj-tot'>" + (j.midi.pax || 0) + " · " + (j.soir.pax || 0) + "</div>";
+        el.addEventListener("click", () => chargerJour(ds));
+        cont.appendChild(el);
+      }
+    }catch{ /* silencieux */ }
+  }
+
+  $("jourPrec").addEventListener("click", () => chargerJour(decale(dateCourante, -1)));
+  $("jourSuiv").addEventListener("click", () => chargerJour(decale(dateCourante, 1)));
+  $("aujourdhui").addEventListener("click", () => chargerJour(maintenantLocal()));
+  $("choixDate").addEventListener("change", e => { if (e.target.value) chargerJour(e.target.value); });
+
+  // ---------- Vue service ----------
+  $("svcMidi").addEventListener("click", () => { serviceCourant = "midi"; chargerServiceVue(); });
+  $("svcSoir").addEventListener("click", () => { serviceCourant = "soir"; chargerServiceVue(); });
+  let campingPassage = 0;
+  $("pfCamp").addEventListener("click", () => {
+    campingPassage = campingPassage ? 0 : 1;
+    $("pfCamp").classList.toggle("sel", !!campingPassage);
+  });
+
+  async function chargerServiceVue(){
+    $("svcMidi").classList.toggle("actif", serviceCourant === "midi");
+    $("svcSoir").classList.toggle("actif", serviceCourant === "soir");
+    $("svcTitre").textContent = joli(maintenantLocal());
+    if (!$("pfHeure").value){
+      const n = new Date();
+      $("pfHeure").value = String(n.getHours()).padStart(2,"0") + ":" + String(n.getMinutes()).padStart(2,"0");
+    }
+    try{
+      const r = await fetch(`/api/resa/admin?date=${maintenantLocal()}&key=${encodeURIComponent(cle)}`);
+      const d = await r.json();
+      if (!r.ok) throw 0;
+      const liste = $("listeService");
+      liste.innerHTML = "";
+      const duService = d.resas.filter(x => x.service === serviceCourant);
+      if (!duService.length){
+        liste.innerHTML = "<p class='vide'>Aucune réservation sur ce service pour l'instant.</p>";
         return;
       }
-      cell.classList.add('saving');
-      try {
-        await OSTEPH.cloudPush(OSTEPH.loadClients());
-        cell.classList.remove('saving');
-        cell.classList.add('saved');
-        setTimeout(() => cell.classList.remove('saved'), 1500);
-        const time = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-        setSyncStatus(`✓ Sauvegardé dans le cloud · ${time}`);
-      } catch (err) {
-        cell.classList.remove('saving');
-        cell.classList.add('save-error');
-        setTimeout(() => cell.classList.remove('save-error'), 2500);
-        setSyncStatus('⚠ Erreur sync — réessayez');
+      for (const resa of duService){
+        const ligne = document.createElement("div");
+        ligne.className = "ligne-svc";
+        const nomAff = resa.type === "passage" ? "Passage" : echap(resa.prenom) + " " + echap(resa.nom);
+        let badges = "";
+        if (resa.camping) badges += "<span class='svc camp'>Camping</span>";
+        if (resa.type === "passage") badges += "<span class='svc pass'>Passage</span>";
+        ligne.innerHTML =
+          "<div class='ls-heure'>" + resa.heure + "</div>" +
+          "<div class='ls-nom'><b>" + nomAff + "</b><div class='badges'>" + badges + "</div></div>" +
+          "<div class='ls-pax'>" + resa.pax + "<small>couverts</small></div>";
+        const zone = document.createElement("div");
+        zone.className = "ls-table";
+        const inp = document.createElement("input");
+        inp.placeholder = "table";
+        inp.value = resa.table_num || "";
+        inp.maxLength = 10;
+        if (resa.table_num) inp.classList.add("ok");
+        const ok = document.createElement("button");
+        ok.className = "ls-ok"; ok.textContent = "✓"; ok.title = "Enregistrer la table";
+        const enregistrer = async () => {
+          try{
+            const r2 = await fetch("/api/resa/admin", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "table", id: resa.id, table: inp.value.trim(), key: cle })
+            });
+            const d2 = await r2.json();
+            if (!r2.ok || !d2.ok) throw 0;
+            inp.classList.toggle("ok", !!inp.value.trim());
+          }catch{ alert("Enregistrement impossible, réessayez."); }
+        };
+        ok.addEventListener("click", enregistrer);
+        inp.addEventListener("keydown", e => { if (e.key === "Enter") enregistrer(); });
+        zone.appendChild(inp); zone.appendChild(ok);
+        ligne.appendChild(zone);
+        liste.appendChild(ligne);
       }
-    }, 700); // 700ms après le dernier clic on push
+    }catch{
+      $("listeService").innerHTML = "<p class='vide'>Chargement impossible, reconnectez-vous.</p>";
+    }
   }
 
-  tbody.querySelectorAll('.menu-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const num = btn.dataset.num;
-      const action = btn.dataset.action;
-      const all = OSTEPH.loadClients();
-      const idx = all.findIndex(c => c.number === num);
-      if (idx === -1) return;
-
-      const current = parseInt(all[idx].menus || 0, 10);
-      const next = action === 'inc' ? current + 1 : Math.max(0, current - 1);
-      all[idx].menus = next;
-      all[idx].last_visit = new Date().toISOString();
-      OSTEPH.saveClients(all);
-
-      // Mise à jour immédiate du compteur sans full refresh (perf + pas de flicker)
-      const tr = btn.closest('tr');
-      const countEl = tr.querySelector('.menus-count');
-      const cell = tr.querySelector('.menus-cell');
-      if (countEl) {
-        countEl.textContent = next;
-        // Toggle reward state
-        const rewardDue = next > 0 && next % 10 === 0;
-        countEl.classList.toggle('reward-due', rewardDue);
-        // Animation pulse au clic
-        countEl.classList.remove('pulse');
-        void countEl.offsetWidth; // reflow pour relancer l'anim
-        countEl.classList.add('pulse');
-      }
-      // Refresh stats globales (sans toucher au DOM des lignes)
-      updateStatsOnly(all);
-
-      // Schedule cloud push (debounced)
-      scheduleCloudPush(num, cell);
-    });
+  $("pfAjouter").addEventListener("click", async () => {
+    const pax = parseInt($("pfPax").value, 10);
+    const heure = $("pfHeure").value;
+    if (!Number.isInteger(pax) || pax < 1){ $("pfMsg").textContent = "Nombre de couverts invalide."; return; }
+    if (!heure){ $("pfMsg").textContent = "Indiquez l'heure."; return; }
+    $("pfMsg").textContent = "Ajout…";
+    try{
+      const r = await fetch("/api/resa/admin", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "passage", date: maintenantLocal(), heure,
+          pax, table: $("pfTable").value.trim(), camping: campingPassage, key: cle
+        })
+      });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw 0;
+      $("pfMsg").textContent = "✓ Passage de " + pax + " enregistré" + (d.table ? " en table " + d.table : "") + ".";
+      $("pfTable").value = ""; $("pfPax").value = 2;
+      campingPassage = 0; $("pfCamp").classList.remove("sel");
+      serviceCourant = d.service;
+      chargerServiceVue();
+    }catch{
+      $("pfMsg").textContent = "Ajout impossible, réessayez.";
+    }
   });
 
-  // Bind suppression
-  tbody.querySelectorAll('.del-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const num = btn.dataset.num;
-      if (!confirm(`Supprimer définitivement le client ${num} ?`)) return;
+  // ---------- Vue statistiques ----------
+  $("moisPrec").addEventListener("click", () => { moisStats = decaleMois(moisStats, -1); chargerStats(); });
+  $("moisSuiv").addEventListener("click", () => { moisStats = decaleMois(moisStats, 1); chargerStats(); });
+  function decaleMois(m, n){
+    const d = new Date(m + "-15T12:00:00");
+    d.setMonth(d.getMonth() + n);
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0");
+  }
 
-      // 1. Suppression locale immédiate (UX instantanée)
-      OSTEPH.removeClient(num);
-      refresh();
+  async function chargerStats(){
+    const d0 = new Date(moisStats + "-15T12:00:00");
+    $("titreMois").textContent = d0.toLocaleDateString("fr-FR", { month:"long", year:"numeric" });
+    try{
+      const r = await fetch(`/api/resa/admin?stats=${moisStats}&key=${encodeURIComponent(cle)}`);
+      const d = await r.json();
+      if (!r.ok) throw 0;
 
-      // 2. Si cloud configuré, on push la nouvelle liste
-      if (OSTEPH.isCloudConfigured()) {
-        setSyncStatus('Suppression dans le cloud…');
-        try {
-          await OSTEPH.cloudPush(OSTEPH.loadClients());
-          setSyncStatus('✓ Supprimé du cloud · ' + new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}));
-        } catch (err) {
-          setSyncStatus('⚠ Erreur cloud — re-synchronise pour annuler');
-        }
+      let totMois = 0;
+      for (const ds in d.jours) totMois += (d.jours[ds].midi || 0) + (d.jours[ds].soir || 0);
+      $("kCouverts").textContent = totMois;
+      $("kResas").textContent = d.types.resa.nb || 0;
+      $("kPassage").textContent = d.types.passage.pax || 0;
+      const totCamp = (d.camping.oui || 0) + (d.camping.non || 0);
+      $("kCamping").textContent = totCamp ? Math.round((d.camping.oui || 0) / totCamp * 100) + "%" : "—";
+
+      // Graphique jour par jour
+      const nbJours = new Date(d0.getFullYear(), d0.getMonth() + 1, 0).getDate();
+      let maxJour = 1;
+      for (let j = 1; j <= nbJours; j++){
+        const ds = moisStats + "-" + String(j).padStart(2,"0");
+        const v = d.jours[ds];
+        if (v) maxJour = Math.max(maxJour, (v.midi || 0) + (v.soir || 0));
       }
-    });
-  });
-}
+      const graph = $("graph"), gj = $("graphJours");
+      graph.innerHTML = ""; gj.innerHTML = "";
+      for (let j = 1; j <= nbJours; j++){
+        const ds = moisStats + "-" + String(j).padStart(2,"0");
+        const v = d.jours[ds] || { midi: 0, soir: 0 };
+        const col = document.createElement("div");
+        col.className = "g-col";
+        col.title = j + " : " + (v.midi || 0) + " midi · " + (v.soir || 0) + " soir";
+        const hMidi = Math.round((v.midi || 0) / maxJour * 100);
+        const hSoir = Math.round((v.soir || 0) / maxJour * 100);
+        col.innerHTML =
+          "<div class='g-soir' style='height:" + hSoir + "%'></div>" +
+          "<div class='g-midi' style='height:" + hMidi + "%'></div>";
+        graph.appendChild(col);
+        const lab = document.createElement("span");
+        lab.textContent = (j === 1 || j % 5 === 0) ? j : "";
+        gj.appendChild(lab);
+      }
 
-function updateStatsOnly(all) {
-  document.getElementById('stat-total').textContent = all.length;
-  const today = new Date().toDateString();
-  const thisMonth = new Date().toISOString().slice(0,7);
-  document.getElementById('stat-today').textContent =
-    all.filter(c => new Date(c.created).toDateString() === today).length;
-  document.getElementById('stat-month').textContent =
-    all.filter(c => c.created.slice(0,7) === thisMonth).length;
-  const totalMenus = all.reduce((sum, c) => sum + parseInt(c.menus || 0, 10), 0);
-  const rewardsDue = all.filter(c => {
-    const m = parseInt(c.menus || 0, 10);
-    return m > 0 && m % 10 === 0;
-  }).length;
-  document.getElementById('stat-menus').textContent = totalMenus;
-  document.getElementById('stat-rewards').textContent = rewardsDue;
-}
-
-function escapeHtml(s) {
-  return String(s || '').replace(/[&<>"']/g, m =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-
-// ===== Sync status helper =====
-function setSyncStatus(msg) {
-  document.getElementById('sync-status').textContent = msg || '';
-}
-
-// ===== Sync depuis le cloud =====
-async function doSync(silent = false) {
-  if (!OSTEPH.isCloudConfigured()) {
-    if (!silent) alert('Configure d\'abord JSONBin via ⚙ Config JSONBin');
-    setSyncStatus('⚠ JSONBin non configuré · les inscriptions QR ne seront pas reçues');
-    return;
+      // Répartition par créneau
+      const heures = $("heures");
+      heures.innerHTML = "";
+      const clefs = Object.keys(d.heures).sort();
+      const maxH = Math.max(1, ...clefs.map(k => d.heures[k]));
+      if (!clefs.length) heures.innerHTML = "<p class='vide'>Aucune donnée sur ce mois.</p>";
+      for (const k of clefs){
+        const ligne = document.createElement("div");
+        ligne.className = "h-ligne";
+        ligne.innerHTML =
+          "<span class='h-h'>" + k + "</span>" +
+          "<span class='h-fond'><span class='h-rempli' style='width:" + Math.round(d.heures[k] / maxH * 100) + "%'></span></span>" +
+          "<span class='h-val'>" + d.heures[k] + "</span>";
+        heures.appendChild(ligne);
+      }
+    }catch{
+      alert("Statistiques indisponibles, reconnectez-vous.");
+    }
   }
-  setSyncStatus('Synchronisation…');
-  try {
-    const count = await OSTEPH.syncFromCloud();
-    refresh();
-    const time = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    setSyncStatus(`✓ Synchronisé · ${count} clients · ${time}`);
-  } catch (err) {
-    setSyncStatus('⚠ Erreur synchro : ' + (err.message || 'inconnue'));
-    if (!silent) alert('Synchro échouée : ' + err.message);
-  }
-}
-
-// Bouton sync manuel (l'auto-sync se fait dans showDash())
-document.getElementById('sync-btn').addEventListener('click', () => doSync(false));
-
-// ===== Toolbar =====
-document.getElementById('search').addEventListener('input', refresh);
-
-document.getElementById('export-btn').addEventListener('click', () => {
-  if (OSTEPH.loadClients().length === 0) {
-    alert('Aucun client à exporter.');
-    return;
-  }
-  OSTEPH.exportCSV();
-});
-
-document.getElementById('clear-btn').addEventListener('click', () => {
-  if (OSTEPH.loadClients().length === 0) {
-    alert('Aucun client à effacer.');
-    return;
-  }
-  if (confirm('⚠ Cela efface uniquement la copie LOCALE. Le cloud n\'est PAS touché. Continuer ?')) {
-    OSTEPH.clearAll();
-    refresh();
-    setSyncStatus('Cache local vidé · clique « Synchroniser » pour recharger depuis le cloud');
-  }
-});
-
-// ===== Config JSONBin =====
-const cfgPanel = document.getElementById('config-panel');
-const binIdInput = document.getElementById('bin-id');
-const binKeyInput = document.getElementById('bin-key');
-
-document.getElementById('config-btn').addEventListener('click', () => {
-  const cfg = OSTEPH.cloudConfig();
-  binIdInput.value = cfg.id || '';
-  binKeyInput.value = cfg.key || '';
-  cfgPanel.style.display = cfgPanel.style.display === 'none' ? 'block' : 'none';
-});
-
-document.getElementById('close-config').addEventListener('click', () => {
-  cfgPanel.style.display = 'none';
-});
-
-document.getElementById('save-bin').addEventListener('click', () => {
-  OSTEPH.setCloudConfig(binIdInput.value, binKeyInput.value);
-  alert('Configuration enregistrée. Les prochains scans QR enverront les données dans ton bin.');
-  cfgPanel.style.display = 'none';
-  doSync(true);
-});
-
-document.getElementById('test-bin').addEventListener('click', async () => {
-  // Sauvegarde temporaire pour tester
-  OSTEPH.setCloudConfig(binIdInput.value, binKeyInput.value);
-  setSyncStatus('Test en cours…');
-  try {
-    const arr = await OSTEPH.cloudFetch();
-    alert('✓ Connexion réussie ! ' + arr.length + ' enregistrement(s) dans le bin.');
-    setSyncStatus('✓ Connexion OK · ' + arr.length + ' clients dans le bin');
-  } catch (err) {
-    alert('✗ Erreur : ' + err.message + '\n\nVérifie le Bin ID et le Master Key.');
-    setSyncStatus('⚠ Test échoué : ' + err.message);
-  }
-});
 </script>
 </body>
 </html>
