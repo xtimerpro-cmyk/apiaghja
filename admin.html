@@ -172,11 +172,69 @@
     background:none;border:none;color:#8a8a7a;cursor:pointer;font-size:.78rem;
     letter-spacing:.14em;text-transform:uppercase;
   }
+
+  /* ---------- Badges sous le nom + note passage ---------- */
+  .badges-cell{margin-top:.2rem;display:flex;gap:.3rem;flex-wrap:wrap;}
+  .note-passage{
+    margin-top:.7rem;text-align:center;font-size:.82rem;color:#5e7391;min-height:1.1em;
+  }
+
+  /* ---------- Barre d'app (mobile & tablette) ---------- */
+  .barre-app{display:none;}
+
+  /* ---------- Version PC : mise en page large ---------- */
+  @media (min-width:900px){
+    main{max-width:1180px;}
+    /* Service en cours : formulaire passage à gauche, tables à droite */
+    #vueService .svc-colonnes{
+      display:grid;grid-template-columns:340px 1fr;gap:1.2rem;align-items:start;
+    }
+    #vueService .svc-colonnes .colonne-passage{position:sticky;top:1rem;}
+    #vueService .passage-form{flex-direction:column;align-items:stretch;}
+    #vueService .passage-form .pf-groupe input{width:100% !important;}
+    #vueService .passage-form .btn,#vueService .passage-form .pf-camp{width:100%;}
+    /* Statistiques : graphique et créneaux côte à côte */
+    #vueStats .stats-colonnes{
+      display:grid;grid-template-columns:1.6fr 1fr;gap:1.2rem;align-items:start;
+    }
+    .graph{height:190px;}
+  }
+
+  /* ---------- Version mobile & tablette : façon app ---------- */
+  @media (max-width:899px){
+    .onglets{display:none !important;}
+    .deconnexion{margin-bottom:1rem;}
+    body{padding-bottom:calc(76px + env(safe-area-inset-bottom));}
+    .barre-app{
+      display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;
+      background:rgba(253,252,249,.96);
+      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border-top:1px solid var(--sable-deep);
+      padding:.4rem .4rem calc(.4rem + env(safe-area-inset-bottom));
+    }
+    .bar-item{
+      flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+      background:none;border:none;cursor:pointer;padding:.4rem 0;
+      border-radius:12px;color:#8a8a7a;
+      font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+      transition:color .2s ease, background .2s ease;
+    }
+    .bar-item .bi-ico{font-size:1.25rem;}
+    .bar-item.actif{color:var(--olive);background:var(--sable);}
+    /* Confort tactile */
+    .ls-table input{width:86px;padding:.75rem .6rem;font-size:1.05rem;}
+    .ls-ok{width:48px;height:48px;}
+    .annuler{padding:.5rem .9rem;}
+    .pf-groupe input{padding:.8rem .7rem;font-size:16px;}
+    .champ{font-size:16px;}
+    /* Tableau du jour : colonnes secondaires masquées */
+    th:nth-child(4),td:nth-child(4){display:none;}   /* Table (se gère dans Service) */
+    th:nth-child(6),td:nth-child(6){display:none;}   /* Prise le */
+    .nav-jour input[type=date]{width:100%;max-width:220px;}
+  }
   @media (max-width:640px){
     .jauges{grid-template-columns:1fr;}
     .semaine{grid-template-columns:repeat(4,1fr);}
-    th:nth-child(7),td:nth-child(7){display:none;}
-    .onglets{margin-left:0;width:100%;justify-content:center;}
   }
 </style>
 </head>
@@ -189,7 +247,7 @@
   </div>
   <div class="onglets" id="onglets" hidden>
     <button class="onglet actif" data-vue="jour">Jour</button>
-    <button class="onglet" data-vue="service">Service</button>
+    <button class="onglet" data-vue="service">Service en cours</button>
     <button class="onglet" data-vue="stats">Statistiques</button>
   </div>
 </div>
@@ -226,11 +284,13 @@
       </div>
     </div>
 
+    <p class="note-passage" id="notePassage"></p>
+
     <p class="section-titre">Réservations du jour</p>
     <div class="carte">
       <table>
         <thead>
-          <tr><th>Heure</th><th>Nom</th><th>Couverts</th><th>Table</th><th>Statut</th><th>Téléphone</th><th>Prise le</th><th></th></tr>
+          <tr><th>Heure</th><th>Nom</th><th>Couverts</th><th>Table</th><th>Téléphone</th><th>Prise le</th><th></th></tr>
         </thead>
         <tbody id="lignes"></tbody>
       </table>
@@ -248,6 +308,8 @@
       <button id="svcSoir">Soir</button>
     </div>
 
+    <div class="svc-colonnes">
+    <div class="colonne-passage">
     <p class="section-titre">Ajouter un passage</p>
     <div class="carte">
       <div class="passage-form">
@@ -268,9 +330,13 @@
       </div>
       <p class="msg-ok" id="pfMsg"></p>
     </div>
+    </div>
 
+    <div class="colonne-tables">
     <p class="section-titre">Tables du service · <span id="svcTitre"></span></p>
     <div class="carte" id="listeService"></div>
+    </div>
+    </div>
   </div>
 
   <!-- ===================== VUE STATISTIQUES ===================== -->
@@ -288,6 +354,8 @@
       <div class="kpi"><div class="k-val" id="kCamping">0%</div><div class="k-lab">Résidents camping</div></div>
     </div>
 
+    <div class="stats-colonnes">
+    <div>
     <p class="section-titre">Affluence jour par jour</p>
     <div class="carte">
       <div class="graph" id="graph"></div>
@@ -298,14 +366,25 @@
       </div>
     </div>
 
+    </div>
+
+    <div>
     <p class="section-titre">Répartition par créneau</p>
     <div class="carte">
       <div class="h-barres" id="heures"></div>
+    </div>
+    </div>
     </div>
   </div>
 
   <div class="deconnexion" id="zoneDeconnexion" hidden><button id="btnDeconnexion">Se déconnecter</button></div>
 </main>
+
+<nav class="barre-app" id="barreApp" hidden aria-label="Navigation">
+  <button class="bar-item actif" data-vue="jour"><span class="bi-ico">📅</span><span>Jour</span></button>
+  <button class="bar-item" data-vue="service"><span class="bi-ico">🍽️</span><span>Service</span></button>
+  <button class="bar-item" data-vue="stats"><span class="bi-ico">📊</span><span>Stats</span></button>
+</nav>
 
 <script>
   const $ = id => document.getElementById(id);
@@ -343,6 +422,7 @@
       if (!r.ok) throw 0;
       $("ecranConnexion").hidden = true;
       $("onglets").hidden = false;
+      $("barreApp").hidden = false;
       $("zoneDeconnexion").hidden = false;
       montrerVue("jour");
     }catch{
@@ -352,11 +432,11 @@
   $("btnDeconnexion").addEventListener("click", () => location.reload());
 
   // ---------- Onglets ----------
-  document.querySelectorAll(".onglet").forEach(o => {
+  document.querySelectorAll(".onglet, .bar-item").forEach(o => {
     o.addEventListener("click", () => montrerVue(o.dataset.vue));
   });
   function montrerVue(vue){
-    document.querySelectorAll(".onglet").forEach(o => o.classList.toggle("actif", o.dataset.vue === vue));
+    document.querySelectorAll(".onglet, .bar-item").forEach(o => o.classList.toggle("actif", o.dataset.vue === vue));
     $("vueJour").hidden = vue !== "jour";
     $("vueService").hidden = vue !== "service";
     $("vueStats").hidden = vue !== "stats";
@@ -386,22 +466,24 @@
       $("barreMidi").className = pMidi >= 100 ? "plein" : "";
       $("barreSoir").className = pSoir >= 100 ? "plein" : "";
 
+      // Le récap ne montre que les réservations ; les passages vivent dans Service en cours
+      const resasSeules = d.resas.filter(x => x.type !== "passage");
+      const paxPassage = d.resas.filter(x => x.type === "passage").reduce((s, x) => s + x.pax, 0);
+      $("notePassage").textContent = paxPassage
+        ? "+ " + paxPassage + " couverts en passage ce jour (voir Service en cours)" : "";
       const tb = $("lignes");
       tb.innerHTML = "";
-      $("aucun").hidden = d.resas.length > 0;
-      for (const resa of d.resas){
+      $("aucun").hidden = resasSeules.length > 0;
+      for (const resa of resasSeules){
         const tr = document.createElement("tr");
         const prise = resa.created_at ? resa.created_at.slice(0, 16).replace("T", " ") : "";
-        const nomAff = resa.type === "passage" ? "Passage" : echap(resa.prenom) + " " + echap(resa.nom);
-        let statut = "<span class='svc'>" + resa.service + "</span>";
-        if (resa.camping) statut += " <span class='svc camp'>Camping</span>";
-        if (resa.type === "passage") statut += " <span class='svc pass'>Passage</span>";
+        let badges = "<span class='svc'>" + resa.service + "</span>";
+        if (resa.camping) badges += " <span class='svc camp'>Camping</span>";
         tr.innerHTML =
           "<td><b>" + resa.heure + "</b></td>" +
-          "<td>" + nomAff + "</td>" +
+          "<td><b>" + echap(resa.prenom) + " " + echap(resa.nom) + "</b><div class='badges-cell'>" + badges + "</div></td>" +
           "<td>" + resa.pax + "</td>" +
           "<td>" + (resa.table_num ? "<b>" + echap(resa.table_num) + "</b>" : "<span style='color:#8a8a7a'>—</span>") + "</td>" +
-          "<td>" + statut + "</td>" +
           "<td>" + (resa.tel ? "<a href='tel:" + echap(resa.tel) + "'>" + echap(resa.tel) + "</a>" : "—") + "</td>" +
           "<td style='color:#8a8a7a;font-size:.78rem'>" + prise + "</td>" +
           "<td></td>";
@@ -420,6 +502,7 @@
   async function annuler(resa){
     const qui = resa.type === "passage" ? "ce passage" : resa.prenom + " " + resa.nom;
     if (!confirm("Annuler " + qui + " (" + resa.pax + " couverts à " + resa.heure + ") ?")) return;
+    // (les passages s'annulent depuis Service en cours)
     try{
       const r = await fetch("/api/resa/admin", {
         method: "POST", headers: { "Content-Type": "application/json" },
