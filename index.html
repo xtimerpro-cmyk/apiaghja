@@ -151,9 +151,39 @@
     background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(125,133,96,.38) 60%,rgba(42,43,36,.68) 100%);
   }
   /* Grain argentique subtil sur toute l'image */
-  #hero3d{
-    position:absolute;inset:0;z-index:1;
-    pointer-events:none;
+  /* ---------- Mur de photos 3D ---------- */
+  .mur3d{
+    position:absolute;inset:0;z-index:1;overflow:hidden;
+    perspective:1100px;pointer-events:none;
+  }
+  .mur-scene{
+    position:absolute;inset:-22% -14%;
+    display:flex;gap:1.6vw;
+    transform:rotateX(11deg) rotateZ(-7deg) scale(1.08);
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .mur-col{
+    flex:1;display:flex;flex-direction:column;gap:1.6vw;
+    animation:murMonte var(--vitesse, 22s) linear infinite;
+  }
+  .mur-col.descend{animation-name:murDescend;}
+  @keyframes murMonte{to{transform:translateY(-50%);}}
+  @keyframes murDescend{from{transform:translateY(-50%);}to{transform:none;}}
+  .mur-col figure{
+    margin:0;border-radius:10px;overflow:hidden;aspect-ratio:3/4;flex:none;
+    box-shadow:0 18px 50px rgba(20,22,14,.45);
+  }
+  .mur-col img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:brightness(.72) saturate(1.05);
+  }
+  @media (max-width:860px){
+    .mur-col:nth-child(4){display:none;}
+    .mur-scene{inset:-25% -20%;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .mur3d{display:none;}
   }
   .hero-grain{
     position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
@@ -1038,8 +1068,8 @@
 
 <header class="hero" id="top">
   <div class="hero-bg" role="img" aria-label="Pin parasol sur la plage au coucher du soleil, golfe de Porto-Vecchio"></div>
+  <div class="mur3d" id="mur3d" aria-hidden="true"><div class="mur-scene" id="murScene"></div></div>
   <div class="hero-grain" aria-hidden="true"></div>
-  <canvas id="hero3d" aria-hidden="true"></canvas>
   <div class="hero-inner">
     <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
       <h1 class="hero-title" aria-label="A Piaghja"><span class="lt" aria-hidden="true" style="--i:0">A</span><span class="lt esp" aria-hidden="true">&nbsp;</span><span class="lt" aria-hidden="true" style="--i:1">P</span><span class="lt" aria-hidden="true" style="--i:2">i</span><span class="lt" aria-hidden="true" style="--i:3">a</span><span class="lt" aria-hidden="true" style="--i:4">g</span><span class="lt" aria-hidden="true" style="--i:5">h</span><span class="lt" aria-hidden="true" style="--i:6">j</span><span class="lt" aria-hidden="true" style="--i:7">a</span></h1>
@@ -2149,107 +2179,62 @@
       })
       .catch(() => { /* la carte statique intégrée reste affichée */ });
   })();
-  // ---------- Poussière dorée 3D : profondeur + parallaxe (fait maison, zéro librairie) ----------
+  // ---------- Mur de photos 3D : colonnes défilantes + parallaxe ----------
   (function(){
-    const cv = document.getElementById('hero3d');
-    if (!cv) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { cv.remove(); return; }
+    const scene = document.getElementById('murScene');
+    if (!scene) return;
 
-    const ctx = cv.getContext('2d');
-    const mobile = window.matchMedia('(max-width: 860px)').matches;
-    const N = mobile ? 110 : 220;          // nombre de particules
-    const PROF = 900;                       // profondeur de la scène
-    const FOCALE = 620;                     // perspective
-    let W = 0, H = 0, dpr = 1;
-    let cibleX = 0, cibleY = 0;             // parallaxe visée
-    let camX = 0, camY = 0;                 // parallaxe lissée
-    let visible = true, anime = true;
-
-    const TEINTES = [
-      [194, 161, 92],   // or
-      [231, 198, 189],  // rose poudré
-      [253, 252, 249],  // ivoire
+    const PHOTOS = [
+      'images/salon.jpg', 'images/cocktail.jpg', 'images/terrasse.webp', 'images/pancarte.jpg',
+      'images/tables.jpg', 'images/granit.jpg', 'images/deco.jpg', 'images/hero.jpg'
     ];
+    const VITESSES = ['19s', '27s', '23s', '31s'];
 
-    function taille(){
-      const r = cv.parentElement.getBoundingClientRect();
-      dpr = Math.min(2, window.devicePixelRatio || 1);
-      W = r.width; H = r.height;
-      cv.width = W * dpr; cv.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for (let c = 0; c < 4; c++){
+      const col = document.createElement('div');
+      col.className = 'mur-col' + (c % 2 ? ' descend' : '');
+      col.style.setProperty('--vitesse', VITESSES[c]);
+      // Chaque colonne : la série décalée, doublée pour une boucle sans couture
+      const serie = PHOTOS.slice(c * 2).concat(PHOTOS.slice(0, c * 2));
+      for (let boucle = 0; boucle < 2; boucle++){
+        for (const src of serie){
+          const f = document.createElement('figure');
+          const img = document.createElement('img');
+          img.src = src; img.alt = ''; img.decoding = 'async';
+          f.appendChild(img);
+          col.appendChild(f);
+        }
+      }
+      scene.appendChild(col);
     }
 
-    const parts = [];
-    function graine(p, neuve){
-      p.x = (Math.random() - .5) * W * 1.4;
-      p.y = neuve ? (Math.random() - .5) * H * 1.3 : H * .75;
-      p.z = Math.random() * PROF;
-      p.vy = -(.08 + Math.random() * .22);          // dérive lente vers le haut
-      p.vx = (Math.random() - .5) * .12;
-      p.vz = -(.15 + Math.random() * .45);          // avance vers l'œil
-      p.r = .8 + Math.random() * 1.9;
-      p.t = TEINTES[Math.floor(Math.random() * TEINTES.length)];
-      p.phase = Math.random() * Math.PI * 2;
-      p.scint = .5 + Math.random() * .5;
-    }
-    for (let i = 0; i < N; i++){ const p = {}; graine(p, true); parts.push(p); }
-
-    // Parallaxe : souris sur desktop, inclinaison sur mobile
+    // Parallaxe : le mur pivote avec la souris (desktop) ou l'inclinaison (mobile)
+    let cx = 0, cy = 0, vx = 0, vy = 0;
     window.addEventListener('pointermove', e => {
-      cibleX = (e.clientX / window.innerWidth - .5) * 2;
-      cibleY = (e.clientY / window.innerHeight - .5) * 2;
+      cx = (e.clientX / window.innerWidth - .5) * 2;
+      cy = (e.clientY / window.innerHeight - .5) * 2;
     }, { passive: true });
     window.addEventListener('deviceorientation', e => {
       if (e.gamma == null) return;
-      cibleX = Math.max(-1, Math.min(1, e.gamma / 25));
-      cibleY = Math.max(-1, Math.min(1, (e.beta - 45) / 25));
+      cx = Math.max(-1, Math.min(1, e.gamma / 30));
+      cy = Math.max(-1, Math.min(1, (e.beta - 45) / 30));
     }, { passive: true });
 
-    // Pause hors écran et onglet caché
-    new IntersectionObserver(en => { visible = en[0].isIntersecting; }).observe(cv);
-    document.addEventListener('visibilitychange', () => { anime = !document.hidden; });
+    let visible = true;
+    new IntersectionObserver(en => {
+      visible = en[0].isIntersecting;
+      scene.querySelectorAll('.mur-col').forEach(col =>
+        col.style.animationPlayState = visible ? 'running' : 'paused');
+    }).observe(scene.parentElement);
 
-    let tPrec = performance.now();
-    function boucle(t){
-      requestAnimationFrame(boucle);
-      if (!visible || !anime) { tPrec = t; return; }
-      const dt = Math.min(50, t - tPrec) / 16.7;
-      tPrec = t;
-
-      camX += (cibleX - camX) * .04;
-      camY += (cibleY - camY) * .04;
-
-      ctx.clearRect(0, 0, W, H);
-      const cx = W / 2, cy = H / 2;
-
-      for (const p of parts){
-        p.x += p.vx * dt; p.y += p.vy * dt; p.z += p.vz * dt;
-        if (p.z < 1 || p.y < -H * .8) graine(p, false);
-
-        const ech = FOCALE / (FOCALE + p.z);
-        // La parallaxe déplace davantage les particules proches (petit z)
-        const px = cx + (p.x - camX * (1 - p.z / PROF) * 70) * ech;
-        const py = cy + (p.y - camY * (1 - p.z / PROF) * 46) * ech;
-        if (px < -20 || px > W + 20 || py < -20 || py > H + 20) continue;
-
-        const scintille = .55 + .45 * Math.sin(t * .0014 * p.scint + p.phase);
-        const alpha = (1 - p.z / PROF) * .8 * scintille;
-        const rayon = p.r * ech * 1.6;
-
-        const g = ctx.createRadialGradient(px, py, 0, px, py, rayon * 3);
-        g.addColorStop(0, `rgba(${p.t[0]},${p.t[1]},${p.t[2]},${alpha})`);
-        g.addColorStop(.4, `rgba(${p.t[0]},${p.t[1]},${p.t[2]},${alpha * .35})`);
-        g.addColorStop(1, `rgba(${p.t[0]},${p.t[1]},${p.t[2]},0)`);
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(px, py, rayon * 3, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    taille();
-    window.addEventListener('resize', taille);
-    requestAnimationFrame(boucle);
+    (function anime(){
+      requestAnimationFrame(anime);
+      if (!visible) return;
+      vx += (cx - vx) * .05;
+      vy += (cy - vy) * .05;
+      scene.style.transform =
+        'rotateX(' + (11 - vy * 3.5) + 'deg) rotateZ(' + (-7 + vx * 2.5) + 'deg) scale(1.08)';
+    })();
   })();
 </script>
 </body>
