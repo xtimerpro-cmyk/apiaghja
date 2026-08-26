@@ -14,6 +14,9 @@ export async function onRequestPost({ env, request }) {
   const prenom = String(b.prenom || "").trim().slice(0, 60);
   const tel = String(b.tel || "").trim().slice(0, 25);
   const pax = parseInt(b.pax, 10);
+  const camping = (b.camping === 1 || b.camping === "1" || b.camping === true) ? 1
+                : (b.camping === 0 || b.camping === "0" || b.camping === false) ? 0
+                : null;
 
   // Validations
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return jsonReponse({ error: "date_invalide" }, 400);
@@ -26,21 +29,21 @@ export async function onRequestPost({ env, request }) {
   if (!nom || !prenom) return jsonReponse({ error: "nom_requis" }, 400);
   if (!/^[+0-9][0-9 .\-()]{7,}$/.test(tel)) return jsonReponse({ error: "tel_invalide" }, 400);
   if (!Number.isInteger(pax) || pax < 1 || pax > MAX_PAX) return jsonReponse({ error: "pax_invalide" }, 400);
+  if (camping === null) return jsonReponse({ error: "camping_requis" }, 400);
 
   const capacite = CAPACITE[service];
 
   // Insertion conditionnelle : une seule requête SQL, donc pas de course possible
   const sql = `
-    INSERT INTO reservations (date, heure, service, nom, prenom, tel, pax, created_at)
-    SELECT ?1, ?2, ?3, ?4, ?5, ?6, ?7, datetime('now')
-    WHERE (SELECT COALESCE(SUM(pax), 0) FROM reservations WHERE date = ?1 AND service = ?3) + ?7 <= ?8`;
+    INSERT INTO reservations (date, heure, service, nom, prenom, tel, pax, camping, created_at)
+    SELECT ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, datetime('now')
+    WHERE (SELECT COALESCE(SUM(pax), 0) FROM reservations WHERE date = ?1 AND service = ?3) + ?7 <= ?9`;
 
   const res = await env.DB.prepare(sql)
-    .bind(date, heure, service, nom, prenom, tel, pax, capacite)
+    .bind(date, heure, service, nom, prenom, tel, pax, camping, capacite)
     .run();
 
   if (!res.meta.changes) {
-    // Capacité atteinte pour ce service
     return jsonReponse({ error: "complet", service }, 409);
   }
 
@@ -48,5 +51,5 @@ export async function onRequestPost({ env, request }) {
     "SELECT ?1 - COALESCE(SUM(pax),0) AS reste FROM reservations WHERE date = ?2 AND service = ?3"
   ).bind(capacite, date, service).first();
 
-  return jsonReponse({ ok: true, date, heure, service, pax, restant: reste?.reste ?? 0 });
+  return jsonReponse({ ok: true, date, heure, service, pax, camping, restant: reste?.reste ?? 0 });
 }
