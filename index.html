@@ -151,39 +151,33 @@
     background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(125,133,96,.38) 60%,rgba(42,43,36,.68) 100%);
   }
   /* Grain argentique subtil sur toute l'image */
-  /* ---------- Mur de photos 3D ---------- */
-  .mur3d{
+  /* ---------- Constellation : les photos se construisent et se déconstruisent ---------- */
+  .constel{
     position:absolute;inset:0;z-index:1;overflow:hidden;
-    perspective:1100px;pointer-events:none;
+    perspective:1200px;pointer-events:none;
   }
-  .mur-scene{
-    position:absolute;inset:-22% -14%;
-    display:flex;gap:1.6vw;
-    transform:rotateX(11deg) rotateZ(-7deg) scale(1.08);
-    transform-style:preserve-3d;
+  .constel-scene{
+    position:absolute;left:50%;top:50%;width:0;height:0;
+    transform-style:preserve-3d;will-change:transform;
+  }
+  .constel figure{
+    position:absolute;margin:0;
+    width:clamp(84px, 11vw, 148px);aspect-ratio:3/4;
+    left:0;top:0;
+    border-radius:8px;overflow:hidden;
+    box-shadow:0 20px 55px rgba(20,22,14,.5);
+    transition:transform 1.7s cubic-bezier(.22,1,.36,1), opacity 1.2s ease;
     will-change:transform;
   }
-  .mur-col{
-    flex:1;display:flex;flex-direction:column;gap:1.6vw;
-    animation:murMonte var(--vitesse, 22s) linear infinite;
-  }
-  .mur-col.descend{animation-name:murDescend;}
-  @keyframes murMonte{to{transform:translateY(-50%);}}
-  @keyframes murDescend{from{transform:translateY(-50%);}to{transform:none;}}
-  .mur-col figure{
-    margin:0;border-radius:10px;overflow:hidden;aspect-ratio:3/4;flex:none;
-    box-shadow:0 18px 50px rgba(20,22,14,.45);
-  }
-  .mur-col img{
+  .constel img{
     width:100%;height:100%;object-fit:cover;display:block;
-    filter:brightness(.72) saturate(1.05);
+    filter:brightness(.82) saturate(1.05);
   }
   @media (max-width:860px){
-    .mur-col:nth-child(4){display:none;}
-    .mur-scene{inset:-25% -20%;}
+    .constel figure{width:clamp(64px, 17vw, 96px);}
   }
   @media (prefers-reduced-motion:reduce){
-    .mur3d{display:none;}
+    .constel{display:none;}
   }
   .hero-grain{
     position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
@@ -1068,7 +1062,7 @@
 
 <header class="hero" id="top">
   <div class="hero-bg" role="img" aria-label="Pin parasol sur la plage au coucher du soleil, golfe de Porto-Vecchio"></div>
-  <div class="mur3d" id="mur3d" aria-hidden="true"><div class="mur-scene" id="murScene"></div></div>
+  <div class="constel" id="constel" aria-hidden="true"><div class="constel-scene" id="constelScene"></div></div>
   <div class="hero-grain" aria-hidden="true"></div>
   <div class="hero-inner">
     <span class="hero-ghost" aria-hidden="true">Porto-Vecchio</span>
@@ -2179,36 +2173,82 @@
       })
       .catch(() => { /* la carte statique intégrée reste affichée */ });
   })();
-  // ---------- Mur de photos 3D : colonnes défilantes + parallaxe ----------
+  // ---------- Constellation : anneau qui se construit, se déconstruit, se reconstruit ----------
   (function(){
-    const scene = document.getElementById('murScene');
+    const scene = document.getElementById('constelScene');
     if (!scene) return;
 
     const PHOTOS = [
       'images/salon.jpg', 'images/cocktail.jpg', 'images/terrasse.webp', 'images/pancarte.jpg',
       'images/tables.jpg', 'images/granit.jpg', 'images/deco.jpg', 'images/hero.jpg'
     ];
-    const VITESSES = ['19s', '27s', '23s', '31s'];
+    const mobile = window.matchMedia('(max-width: 860px)').matches;
+    const N = mobile ? 6 : 8;
 
-    for (let c = 0; c < 4; c++){
-      const col = document.createElement('div');
-      col.className = 'mur-col' + (c % 2 ? ' descend' : '');
-      col.style.setProperty('--vitesse', VITESSES[c]);
-      // Chaque colonne : la série décalée, doublée pour une boucle sans couture
-      const serie = PHOTOS.slice(c * 2).concat(PHOTOS.slice(0, c * 2));
-      for (let boucle = 0; boucle < 2; boucle++){
-        for (const src of serie){
-          const f = document.createElement('figure');
-          const img = document.createElement('img');
-          img.src = src; img.alt = ''; img.decoding = 'async';
-          f.appendChild(img);
-          col.appendChild(f);
-        }
-      }
-      scene.appendChild(col);
+    const cartes = [];
+    for (let i = 0; i < N; i++){
+      const f = document.createElement('figure');
+      const img = document.createElement('img');
+      img.src = PHOTOS[i % PHOTOS.length]; img.alt = ''; img.decoding = 'async';
+      f.appendChild(img);
+      f.style.transitionDelay = (i * 70) + 'ms';   // la vague de construction
+      scene.appendChild(f);
+      cartes.push(f);
     }
 
-    // Parallaxe : le mur pivote avec la souris (desktop) ou l'inclinaison (mobile)
+    let angleBase = -Math.PI / 2;
+
+    function dims(){
+      const r = scene.parentElement.getBoundingClientRect();
+      return { W: r.width, H: r.height };
+    }
+
+    // Anneau elliptique épuré autour du titre
+    function construire(){
+      const { W, H } = dims();
+      const Rx = Math.min(W * .36, 460);
+      const Ry = Math.min(H * .30, 300);
+      angleBase += Math.PI / N;   // l'anneau se reforme un cran plus loin : il orbite
+      cartes.forEach((f, i) => {
+        const a = angleBase + (i / N) * Math.PI * 2;
+        const x = Math.cos(a) * Rx;
+        const y = Math.sin(a) * Ry;
+        const rz = Math.cos(a) * 6;
+        f.style.opacity = 1;
+        f.style.transform =
+          'translate3d(calc(' + x.toFixed(1) + 'px - 50%), calc(' + y.toFixed(1) + 'px - 50%), 0)' +
+          ' rotateZ(' + rz.toFixed(1) + 'deg) scale(1)';
+      });
+    }
+
+    // Dispersion : collage libre dans la profondeur, le centre reste dégagé
+    function deconstruire(){
+      const { W, H } = dims();
+      cartes.forEach(f => {
+        const a = Math.random() * Math.PI * 2;
+        const dist = .55 + Math.random() * .5;          // toujours hors du centre
+        const x = Math.cos(a) * W * .5 * dist;
+        const y = Math.sin(a) * H * .44 * dist;
+        const z = -140 + Math.random() * 380;
+        const rz = (Math.random() - .5) * 22;
+        const s = 1.05 + Math.random() * .55;
+        f.style.opacity = .92;
+        f.style.transform =
+          'translate3d(calc(' + x.toFixed(1) + 'px - 50%), calc(' + y.toFixed(1) + 'px - 50%), ' + z.toFixed(0) + 'px)' +
+          ' rotateZ(' + rz.toFixed(1) + 'deg) scale(' + s.toFixed(2) + ')';
+      });
+    }
+
+    // Le cycle : construit (tenu 4s) → déconstruit (tenu 4,5s) → reconstruit…
+    let phase = 0, actif = true;
+    function cycle(){
+      if (actif){ phase ? deconstruire() : construire(); phase = 1 - phase; }
+      setTimeout(cycle, phase ? 4000 : 4600);
+    }
+    construire();
+    setTimeout(cycle, 4000);
+
+    // Parallaxe douce de toute la scène
     let cx = 0, cy = 0, vx = 0, vy = 0;
     window.addEventListener('pointermove', e => {
       cx = (e.clientX / window.innerWidth - .5) * 2;
@@ -2220,21 +2260,18 @@
       cy = Math.max(-1, Math.min(1, (e.beta - 45) / 30));
     }, { passive: true });
 
-    let visible = true;
-    new IntersectionObserver(en => {
-      visible = en[0].isIntersecting;
-      scene.querySelectorAll('.mur-col').forEach(col =>
-        col.style.animationPlayState = visible ? 'running' : 'paused');
-    }).observe(scene.parentElement);
+    new IntersectionObserver(en => { actif = en[0].isIntersecting; }).observe(scene.parentElement);
 
     (function anime(){
       requestAnimationFrame(anime);
-      if (!visible) return;
-      vx += (cx - vx) * .05;
-      vy += (cy - vy) * .05;
+      if (!actif) return;
+      vx += (cx - vx) * .045;
+      vy += (cy - vy) * .045;
       scene.style.transform =
-        'rotateX(' + (11 - vy * 3.5) + 'deg) rotateZ(' + (-7 + vx * 2.5) + 'deg) scale(1.08)';
+        'rotateY(' + (vx * 7) + 'deg) rotateX(' + (-vy * 5) + 'deg)';
     })();
+
+    window.addEventListener('resize', () => { if (phase === 1) construire(); });
   })();
 </script>
 </body>
