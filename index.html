@@ -853,6 +853,41 @@
     .chat-saisie input{font-size:16px;}
   }
 
+
+  /* ---------- Lecteur musical figé ---------- */
+  .lecteur{
+    position:fixed;left:16px;bottom:16px;z-index:65;
+    width:min(330px, calc(100vw - 32px));
+    background:rgba(42,43,36,.88);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(194,161,92,.45);border-radius:16px;
+    box-shadow:0 16px 50px rgba(20,22,14,.5);
+    padding:.55rem .65rem .65rem;
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .lecteur.la{opacity:1;transform:none;}
+  .lect-tete{display:flex;align-items:center;gap:.5rem;}
+  .lect-note{color:var(--or);font-size:.95rem;}
+  .lect-titre{
+    flex:1;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--rose);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .lect-toggle{
+    background:none;border:1px solid rgba(253,252,249,.3);border-radius:50%;
+    width:24px;height:24px;color:var(--sable);cursor:pointer;
+    font-size:.9rem;line-height:1;flex:none;
+    transition:border-color .2s ease;
+  }
+  .lect-toggle:hover{border-color:var(--or);}
+  .lecteur iframe{
+    width:100%;height:80px;border:0;display:block;margin-top:.5rem;border-radius:12px;
+  }
+  .lecteur.mini{cursor:pointer;padding:.5rem .8rem;}
+  .lecteur.mini iframe{display:none;}
+  @media (max-width:520px){
+    .lecteur{left:12px;bottom:12px;width:min(300px, calc(100vw - 24px));}
+  }
   /* ---------- Rail social latéral ---------- */
   .rail-social{
     position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:45;
@@ -1622,6 +1657,16 @@
   <p style="margin-top:1.6rem;font-size:.75rem;">© 2026 A Piaghja · Tous droits réservés</p>
 </footer>
 
+<div class="lecteur" id="lecteur" hidden>
+  <div class="lect-tete">
+    <span class="lect-note" aria-hidden="true">♪</span>
+    <span class="lect-titre">L'ambiance A Piaghja</span>
+    <button class="lect-toggle" id="lectToggle" aria-expanded="true" aria-label="Réduire le lecteur">–</button>
+  </div>
+  <iframe id="lectIframe" title="Playlist A Piaghja sur Spotify"
+          allow="encrypted-media; clipboard-write; fullscreen; picture-in-picture"></iframe>
+</div>
+
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Assistant A Piaghja" hidden>
   <div class="chat-head">
     <div>
@@ -2235,6 +2280,45 @@
       scene.style.transform =
         'rotateX(' + (11 - vy * 3.5) + 'deg) rotateZ(' + (-7 + vx * 2.5) + 'deg) scale(1.08)';
     })();
+  })();
+  // ---------- Lecteur musical : la playlist Spotify du rail, figée en bas ----------
+  (function(){
+    const lecteur = document.getElementById('lecteur');
+    if (!lecteur) return;
+    const ancre = document.querySelector('.rail-social a[href*="open.spotify.com"]');
+    if (!ancre) return;   // tant que le lien de la playlist n'est pas renseigné, pas de lecteur
+    const m = ancre.href.match(/open\.spotify\.com\/(playlist|album|artist|track)\/([A-Za-z0-9]+)/);
+    if (!m) return;
+
+    const iframe = document.getElementById('lectIframe');
+    const toggle = document.getElementById('lectToggle');
+
+    function charger(){
+      if (!iframe.src) iframe.src = 'https://open.spotify.com/embed/' + m[1] + '/' + m[2] + '?theme=0';
+    }
+
+    // Apparition en douceur une fois la page chargée
+    function montrer(){
+      charger();
+      lecteur.hidden = false;
+      requestAnimationFrame(() => lecteur.classList.add('la'));
+    }
+    if (document.readyState === 'complete') setTimeout(montrer, 1200);
+    else window.addEventListener('load', () => setTimeout(montrer, 1200));
+
+    function basculer(mini){
+      lecteur.classList.toggle('mini', mini);
+      toggle.textContent = mini ? '♪' : '–';
+      toggle.setAttribute('aria-expanded', String(!mini));
+      toggle.setAttribute('aria-label', mini ? 'Ouvrir le lecteur' : 'Réduire le lecteur');
+    }
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      basculer(!lecteur.classList.contains('mini'));
+    });
+    lecteur.addEventListener('click', () => {
+      if (lecteur.classList.contains('mini')) basculer(false);
+    });
   })();
 </script>
 </body>
