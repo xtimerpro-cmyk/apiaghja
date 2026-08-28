@@ -1183,6 +1183,26 @@
     }
   }
 
+  /* ---------- Sélecteur de langue ---------- */
+  .lang-sel{display:flex;gap:2px;background:var(--sable);border-radius:999px;padding:3px;}
+  .lang-sel button{
+    border:none;background:none;font-family:inherit;font-size:.62rem;letter-spacing:.08em;
+    padding:.32rem .5rem;border-radius:999px;cursor:pointer;color:#8a8a7a;
+    transition:all .2s ease;
+  }
+  .lang-sel button:hover{color:var(--olive);}
+  .lang-sel button.on{background:var(--olive);color:var(--blanc);}
+  .lang-li{display:flex;align-items:center;}
+  /* ---------- Indicatif téléphonique ---------- */
+  .rw-tel-row{display:flex;gap:.5rem;margin-bottom:1rem;}
+  .rw-tel-row select{
+    flex:none;width:112px;padding:.85rem .5rem;border:1px solid var(--sable-deep);
+    border-radius:13px;background:var(--blanc);font-family:inherit;font-size:16px;color:var(--encre);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .rw-tel-row select:focus{outline:none;border-color:var(--or);box-shadow:0 0 0 3px rgba(194,161,92,.16);}
+  .rw-tel-row input{flex:1;}
+
 
   /* ---------- Ajustements page dédiée réservation ---------- */
   body{animation:none !important;}
@@ -1215,6 +1235,7 @@
     opacity:0;animation:pageFondu 1s ease .9s forwards;
   }
   .retour-site:hover{text-decoration:underline;text-underline-offset:4px;}
+  .lang-page{margin:1rem auto 0;width:max-content;opacity:0;animation:pageFondu .9s ease .7s forwards;}
 </style>
 </head>
 <body>
@@ -1223,11 +1244,12 @@
   <header class="resa-haut">
     <a class="brand-lien" href="index.html">A Piaghja</a>
     <p class="fil">BAR &amp; RESTAURANT · PORTO-VECCHIO</p>
+    <div class="lang-sel lang-page" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on">FR</button><button type="button" data-lg="en">EN</button><button type="button" data-lg="it">IT</button><button type="button" data-lg="de">DE</button><button type="button" data-lg="nl">NL</button></div>
   </header>
 
 <div class="resa-card reveal" id="reserver">
-      <h3>Réserver une table</h3>
-      <p>En saison, la réservation est vivement conseillée.</p>
+      <h3 data-i18n="resa_h3">Réserver une table</h3>
+      <p data-i18n="resa_intro">En saison, la réservation est vivement conseillée.</p>
       <div class="resa-widget" id="resaWidget">
         <div class="rw-recap" id="rwRecap" aria-live="polite"></div>
         <div class="rw-dots" aria-hidden="true">
@@ -1235,13 +1257,13 @@
         </div>
 
         <div class="rw-etape" id="rwEtape1">
-          <p class="rw-label">Combien serez-vous ?</p>
+          <p class="rw-label" data-i18n="w_pax">Combien serez-vous ?</p>
           <div class="rw-pax-grid" id="rwPaxGrid"></div>
-          <p class="rw-note">Plus de 8 ? Appelez-nous au <a href="tel:+33622061488">06 22 06 14 88</a></p>
+          <p class="rw-note" data-i18n="w_note8">Plus de 8 ? Appelez-nous au <a href="tel:+33622061488">06 22 06 14 88</a></p>
         </div>
 
         <div class="rw-etape" id="rwEtape2" hidden>
-          <button type="button" class="rw-back" data-back="1">‹ Couverts</button>
+          <button type="button" class="rw-back" data-back="1" data-i18n="w_back1">‹ Couverts</button>
           <div class="rw-cal">
             <div class="rw-cal-head">
               <button type="button" id="rwPrev" aria-label="Mois précédent">‹</button>
@@ -1256,31 +1278,43 @@
         </div>
 
         <div class="rw-etape" id="rwEtape3" hidden>
-          <button type="button" class="rw-back" data-back="2">‹ Date</button>
-          <p class="rw-label">Choisissez votre créneau</p>
+          <button type="button" class="rw-back" data-back="2" data-i18n="w_back2">‹ Date</button>
+          <p class="rw-label" data-i18n="w_slot">Choisissez votre créneau</p>
           <div class="rw-slot-group">
-            <div class="rw-svc-tete"><span>Déjeuner</span><i></i><em id="rwNoteMidi"></em></div>
+            <div class="rw-svc-tete"><span data-i18n="w_dej">Déjeuner</span><i></i><em id="rwNoteMidi"></em></div>
             <div class="rw-slots" id="rwSlotsMidi"></div>
           </div>
           <div class="rw-slot-group">
-            <div class="rw-svc-tete"><span>Dîner</span><i></i><em id="rwNoteSoir"></em></div>
+            <div class="rw-svc-tete"><span data-i18n="w_din">Dîner</span><i></i><em id="rwNoteSoir"></em></div>
             <div class="rw-slots" id="rwSlotsSoir"></div>
           </div>
         </div>
 
         <form class="rw-etape rw-form" id="rwForm" hidden>
-          <button type="button" class="rw-back" data-back="3">‹ Créneau</button>
-          <p class="rw-label">Vos coordonnées</p>
+          <button type="button" class="rw-back" data-back="3" data-i18n="w_back3">‹ Créneau</button>
+          <p class="rw-label" data-i18n="w_coord">Vos coordonnées</p>
           <div class="rw-camping" role="group" aria-label="Séjournez-vous au camping ?">
-            <button type="button" class="rw-camp" id="rwCampOui">Résident du camping</button>
-            <button type="button" class="rw-camp" id="rwCampNon">Non-résident</button>
+            <button type="button" class="rw-camp" id="rwCampOui" data-i18n="w_camp1">Résident du camping</button>
+            <button type="button" class="rw-camp" id="rwCampNon" data-i18n="w_camp0">Non-résident</button>
           </div>
           <div class="rw-row">
-            <input id="rwPrenom" placeholder="Prénom" autocomplete="given-name" required>
-            <input id="rwNom" placeholder="Nom" autocomplete="family-name" required>
+            <input id="rwPrenom" placeholder="Prénom" data-i18n-ph="ph_prenom" autocomplete="given-name" required>
+            <input id="rwNom" placeholder="Nom" data-i18n-ph="ph_nom" autocomplete="family-name" required>
           </div>
-          <input id="rwTel" type="tel" placeholder="Téléphone" autocomplete="tel" required>
-          <button type="submit" class="rw-submit">Confirmer la réservation</button>
+          <div class="rw-tel-row">
+            <select id="rwInd" aria-label="Indicatif téléphonique">
+              <option value="+33" selected>🇫🇷 +33</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+41">🇨🇭 +41</option>
+              <option value="+31">🇳🇱 +31</option>
+              <option value="+32">🇧🇪 +32</option>
+              <option value="+34">🇪🇸 +34</option>
+            </select>
+            <input id="rwTel" type="tel" placeholder="Téléphone" data-i18n-ph="ph_tel" autocomplete="tel" required>
+          </div>
+          <button type="submit" class="rw-submit" data-i18n="w_submit">Confirmer la réservation</button>
         </form>
 
         <div class="rw-etape rw-confirm" id="rwConfirm" hidden>
@@ -1290,18 +1324,18 @@
             <svg viewBox="0 0 64 64" aria-hidden="true"><circle class="ck-c" cx="32" cy="32" r="27"/><path class="ck-v" d="M20 33 L29 41 L45 24"/></svg>
             <div class="ck-feu" id="ckFeu" aria-hidden="true"></div>
           </div>
-          <p class="rw-confirm-titre">Réservation confirmée</p>
+          <p class="rw-confirm-titre" data-i18n="w_conf_titre">Réservation confirmée</p>
           <p class="rw-confirm-txt" id="rwConfirmTxt"></p>
-          <button type="button" class="rw-again" id="rwAgain">Faire une autre réservation</button>
+          <button type="button" class="rw-again" id="rwAgain" data-i18n="w_again">Faire une autre réservation</button>
         </div>
 
         <p class="rw-msg" id="rwMsg" role="status"></p>
       </div>
-      <p class="resa-alt">Ou par téléphone :</p>
+      <p class="resa-alt" data-i18n="resa_alt">Ou par téléphone :</p>
       <a class="tel" href="tel:+33622061488">06 22 06 14 88</a>
     </div>
 
-  <a class="retour-site" href="index.html">‹ Découvrir le site &amp; la carte</a>
+  <a class="retour-site" href="index.html" data-i18n="r_retour">‹ Découvrir le site &amp; la carte</a>
 </div>
 
 <script>
@@ -1317,6 +1351,175 @@
     const grid = $("rwGrid"), msg = $("rwMsg"), recap = $("rwRecap");
     if (!grid) return;
 
+    // ---------- Langues : FR par défaut + EN · IT · DE · NL ----------
+    const LOCALES = { fr:"fr-FR", en:"en-GB", it:"it-IT", de:"de-DE", nl:"nl-NL" };
+    const IND_DEFAUT = { fr:"+33", en:"+44", it:"+39", de:"+49", nl:"+31" };
+    const TR = {
+      en: {
+        nav_lieu:"The place", nav_carte:"Menu", nav_galerie:"Gallery", nav_avis:"Reviews", nav_resa:"Book",
+        cta_carte:"Discover the menu", r_retour:"‹ Discover the website &amp; menu",
+        lieu_eyebrow:"The place", lieu_h2:"A beach house between granite and maquis",
+        lieu_p1:"Set at the water's edge, A Piaghja was born from a simple idea: to offer Corsica on the plate and under your feet. Blond granite, bamboo, green ceramics — the décor extends the beach, and the room opens fully onto the sea.",
+        lieu_p2:"Eighteen tables on the terrace, the sound of the waves in the background, and a kitchen that follows the rhythm of the seasons and the island's daily catch.",
+        carte_eyebrow:"The menu", carte_h2:"Cooking of fire &amp; sea",
+        galerie_eyebrow:"Gallery", galerie_h2:"The A Piaghja spirit",
+        infos_eyebrow:"Practical info", infos_h2:"Find us",
+        dt_adresse:"Address", dt_horaires:"Hours", dt_tel:"Phone", dt_acces:"Access",
+        dd_horaires:"Breakfast from 8&nbsp;am<br>Lunch &amp; dinner service in season",
+        dd_acces:"On Golfo di Sogno beach, gulf of Porto-Vecchio",
+        btn_gps:"🧭&nbsp; Open GPS", map_cta:"🧭&nbsp; Directions to A Piaghja",
+        avis_eyebrow:"Word of mouth", avis_h2:"Our Google page",
+        resa_h3:"Book a table", resa_intro:"In season, booking is highly recommended.",
+        resa_alt:"Or by phone:", footer_saison:"Open in season", footer_legal:"Legal notice &amp; T&amp;Cs",
+        w_pax:"How many of you?", w_note8:"More than 8? Call us on <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
+        w_back1:"‹ Guests", w_back2:"‹ Date", w_back3:"‹ Time",
+        w_slot:"Choose your time", w_dej:"Lunch", w_din:"Dinner",
+        w_coord:"Your details", w_camp1:"Campsite guest", w_camp0:"Not at the campsite",
+        ph_prenom:"First name", ph_nom:"Last name", ph_tel:"Phone",
+        w_submit:"Confirm booking", w_conf_titre:"Booking confirmed", w_again:"Make another booking",
+        j_couvert:" guest", j_couverts:" guests", j_complet:"Full", j_peu:"Only {n} seats left",
+        j_envoi:"Sending…", j_conf1:"Your table is booked!", j_conf2:"See you soon at A Piaghja.",
+        j_complet_svc:"This service just filled up — please pick another time.",
+        j_reseau:"Network error — try again or call us on +33 6 22 06 14 88.",
+        j_generique:"Unable to save — check the fields or call us.",
+        e_tel_invalide:"Invalid phone number.", e_nom_requis:"First and last name required.",
+        e_date_hors_limites:"This date is no longer available, pick an upcoming date.",
+        e_date_invalide:"Invalid date, please reselect a day.", e_creneau_invalide:"Invalid time, please reselect.",
+        e_pax_invalide:"Invalid number of guests.", e_camping_requis:"Please tell us if you are staying at the campsite.",
+        e_db:"Online booking unavailable — call us on +33 6 22 06 14 88."
+      },
+      it: {
+        nav_lieu:"Il luogo", nav_carte:"Il menù", nav_galerie:"Galleria", nav_avis:"Recensioni", nav_resa:"Prenota",
+        cta_carte:"Scopri il menù", r_retour:"‹ Scopri il sito e il menù",
+        lieu_eyebrow:"Il luogo", lieu_h2:"Una paillote tra granito e macchia",
+        lieu_p1:"Adagiata in riva al mare, A Piaghja nasce da un'idea semplice: offrire la Corsica nel piatto e sotto i piedi. Granito biondo, bambù, ceramiche verdi — l'arredo prolunga la spiaggia e la sala si apre interamente sul mare.",
+        lieu_p2:"Diciotto tavoli in terrazza, il suono delle onde come sottofondo e una cucina che segue il ritmo delle stagioni e del pescato dell'isola.",
+        carte_eyebrow:"Il menù", carte_h2:"Cucina di fuoco &amp; di mare",
+        galerie_eyebrow:"Galleria", galerie_h2:"Lo spirito A Piaghja",
+        infos_eyebrow:"Info pratiche", infos_h2:"Dove siamo",
+        dt_adresse:"Indirizzo", dt_horaires:"Orari", dt_tel:"Telefono", dt_acces:"Accesso",
+        dd_horaires:"Colazione dalle 8<br>Servizio pranzo e cena in stagione",
+        dd_acces:"Sulla spiaggia del Golfo di Sogno, golfo di Porto-Vecchio",
+        btn_gps:"🧭&nbsp; Avvia il GPS", map_cta:"🧭&nbsp; Itinerario verso A Piaghja",
+        avis_eyebrow:"Dicono di noi", avis_h2:"La nostra scheda Google",
+        resa_h3:"Prenota un tavolo", resa_intro:"In stagione la prenotazione è vivamente consigliata.",
+        resa_alt:"Oppure per telefono:", footer_saison:"Aperto in stagione", footer_legal:"Note legali &amp; CG",
+        w_pax:"In quanti siete?", w_note8:"Più di 8? Chiamateci al <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
+        w_back1:"‹ Coperti", w_back2:"‹ Data", w_back3:"‹ Orario",
+        w_slot:"Scegli il tuo orario", w_dej:"Pranzo", w_din:"Cena",
+        w_coord:"I tuoi dati", w_camp1:"Ospite del campeggio", w_camp0:"Non ospite del campeggio",
+        ph_prenom:"Nome", ph_nom:"Cognome", ph_tel:"Telefono",
+        w_submit:"Conferma la prenotazione", w_conf_titre:"Prenotazione confermata", w_again:"Nuova prenotazione",
+        j_couvert:" coperto", j_couverts:" coperti", j_complet:"Completo", j_peu:"Solo {n} posti rimasti",
+        j_envoi:"Invio…", j_conf1:"Il tuo tavolo è prenotato!", j_conf2:"A prestissimo da A Piaghja.",
+        j_complet_svc:"Questo servizio si è appena riempito — scegli un altro orario.",
+        j_reseau:"Errore di rete — riprova o chiamaci al +33 6 22 06 14 88.",
+        j_generique:"Impossibile registrare — controlla i campi o chiamaci.",
+        e_tel_invalide:"Numero di telefono non valido.", e_nom_requis:"Nome e cognome obbligatori.",
+        e_date_hors_limites:"Questa data non è più disponibile, scegli una data futura.",
+        e_date_invalide:"Data non valida, riseleziona un giorno.", e_creneau_invalide:"Orario non valido, riseleziona.",
+        e_pax_invalide:"Numero di coperti non valido.", e_camping_requis:"Indica se soggiorni al campeggio.",
+        e_db:"Prenotazione online non disponibile — chiamaci al +33 6 22 06 14 88."
+      },
+      de: {
+        nav_lieu:"Der Ort", nav_carte:"Speisekarte", nav_galerie:"Galerie", nav_avis:"Bewertungen", nav_resa:"Reservieren",
+        cta_carte:"Zur Speisekarte", r_retour:"‹ Website &amp; Speisekarte entdecken",
+        lieu_eyebrow:"Der Ort", lieu_h2:"Eine Strandhütte zwischen Granit und Macchia",
+        lieu_p1:"Direkt am Wasser gelegen, entstand A Piaghja aus einer einfachen Idee: Korsika auf dem Teller und unter den Füßen. Heller Granit, Bambus, grüne Keramik — das Dekor verlängert den Strand, und der Raum öffnet sich ganz zum Meer.",
+        lieu_p2:"Achtzehn Tische auf der Terrasse, das Rauschen der Wellen im Hintergrund und eine Küche im Rhythmus der Jahreszeiten und des täglichen Fangs der Insel.",
+        carte_eyebrow:"Die Karte", carte_h2:"Küche von Feuer &amp; Meer",
+        galerie_eyebrow:"Galerie", galerie_h2:"Der Geist von A Piaghja",
+        infos_eyebrow:"Praktische Infos", infos_h2:"So finden Sie uns",
+        dt_adresse:"Adresse", dt_horaires:"Öffnungszeiten", dt_tel:"Telefon", dt_acces:"Zugang",
+        dd_horaires:"Frühstück ab 8&nbsp;Uhr<br>Mittags- &amp; Abendservice in der Saison",
+        dd_acces:"Am Strand des Golfo di Sogno, Golf von Porto-Vecchio",
+        btn_gps:"🧭&nbsp; GPS starten", map_cta:"🧭&nbsp; Route zu A Piaghja",
+        avis_eyebrow:"Man spricht über uns", avis_h2:"Unser Google-Profil",
+        resa_h3:"Tisch reservieren", resa_intro:"In der Saison wird eine Reservierung dringend empfohlen.",
+        resa_alt:"Oder telefonisch:", footer_saison:"Geöffnet in der Saison", footer_legal:"Impressum &amp; AGB",
+        w_pax:"Wie viele Personen?", w_note8:"Mehr als 8? Rufen Sie uns an: <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
+        w_back1:"‹ Personen", w_back2:"‹ Datum", w_back3:"‹ Uhrzeit",
+        w_slot:"Wählen Sie Ihre Uhrzeit", w_dej:"Mittag", w_din:"Abend",
+        w_coord:"Ihre Daten", w_camp1:"Campinggast", w_camp0:"Kein Campinggast",
+        ph_prenom:"Vorname", ph_nom:"Nachname", ph_tel:"Telefon",
+        w_submit:"Reservierung bestätigen", w_conf_titre:"Reservierung bestätigt", w_again:"Weitere Reservierung",
+        j_couvert:" Person", j_couverts:" Personen", j_complet:"Ausgebucht", j_peu:"Nur noch {n} Plätze",
+        j_envoi:"Wird gesendet…", j_conf1:"Ihr Tisch ist reserviert!", j_conf2:"Bis bald bei A Piaghja.",
+        j_complet_svc:"Dieser Service ist soeben ausgebucht — bitte wählen Sie eine andere Uhrzeit.",
+        j_reseau:"Netzwerkfehler — erneut versuchen oder anrufen: +33 6 22 06 14 88.",
+        j_generique:"Speichern nicht möglich — Felder prüfen oder anrufen.",
+        e_tel_invalide:"Ungültige Telefonnummer.", e_nom_requis:"Vor- und Nachname erforderlich.",
+        e_date_hors_limites:"Dieses Datum ist nicht mehr verfügbar, bitte ein kommendes Datum wählen.",
+        e_date_invalide:"Ungültiges Datum, bitte neu auswählen.", e_creneau_invalide:"Ungültige Uhrzeit, bitte neu auswählen.",
+        e_pax_invalide:"Ungültige Personenzahl.", e_camping_requis:"Bitte angeben, ob Sie auf dem Campingplatz wohnen.",
+        e_db:"Online-Reservierung nicht verfügbar — rufen Sie uns an: +33 6 22 06 14 88."
+      },
+      nl: {
+        nav_lieu:"De plek", nav_carte:"Menukaart", nav_galerie:"Galerij", nav_avis:"Reviews", nav_resa:"Reserveren",
+        cta_carte:"Bekijk de menukaart", r_retour:"‹ Ontdek de site &amp; menukaart",
+        lieu_eyebrow:"De plek", lieu_h2:"Een strandpaviljoen tussen graniet en maquis",
+        lieu_p1:"Aan de waterkant ontstond A Piaghja uit een simpel idee: Corsica op het bord en onder je voeten. Blond graniet, bamboe, groene keramiek — het decor loopt over in het strand en de zaal opent volledig naar zee.",
+        lieu_p2:"Achttien tafels op het terras, het geluid van de golven op de achtergrond en een keuken die het ritme volgt van de seizoenen en de dagvangst van het eiland.",
+        carte_eyebrow:"De kaart", carte_h2:"Keuken van vuur &amp; zee",
+        galerie_eyebrow:"Galerij", galerie_h2:"De geest van A Piaghja",
+        infos_eyebrow:"Praktische info", infos_h2:"Vind ons",
+        dt_adresse:"Adres", dt_horaires:"Openingstijden", dt_tel:"Telefoon", dt_acces:"Toegang",
+        dd_horaires:"Ontbijt vanaf 8&nbsp;uur<br>Lunch &amp; diner in het seizoen",
+        dd_acces:"Op het strand van Golfo di Sogno, golf van Porto-Vecchio",
+        btn_gps:"🧭&nbsp; Start GPS", map_cta:"🧭&nbsp; Route naar A Piaghja",
+        avis_eyebrow:"Men zegt over ons", avis_h2:"Onze Google-pagina",
+        resa_h3:"Reserveer een tafel", resa_intro:"In het seizoen is reserveren sterk aanbevolen.",
+        resa_alt:"Of telefonisch:", footer_saison:"Open in het seizoen", footer_legal:"Juridische info &amp; AV",
+        w_pax:"Met hoeveel zijn jullie?", w_note8:"Met meer dan 8? Bel ons op <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
+        w_back1:"‹ Gasten", w_back2:"‹ Datum", w_back3:"‹ Tijd",
+        w_slot:"Kies je tijd", w_dej:"Lunch", w_din:"Diner",
+        w_coord:"Jouw gegevens", w_camp1:"Campinggast", w_camp0:"Geen campinggast",
+        ph_prenom:"Voornaam", ph_nom:"Achternaam", ph_tel:"Telefoon",
+        w_submit:"Reservering bevestigen", w_conf_titre:"Reservering bevestigd", w_again:"Nog een reservering",
+        j_couvert:" gast", j_couverts:" gasten", j_complet:"Volgeboekt", j_peu:"Nog {n} plaatsen",
+        j_envoi:"Versturen…", j_conf1:"Je tafel is gereserveerd!", j_conf2:"Tot snel bij A Piaghja.",
+        j_complet_svc:"Deze service zit net vol — kies een andere tijd.",
+        j_reseau:"Netwerkfout — probeer opnieuw of bel +33 6 22 06 14 88.",
+        j_generique:"Opslaan niet gelukt — controleer de velden of bel ons.",
+        e_tel_invalide:"Ongeldig telefoonnummer.", e_nom_requis:"Voor- en achternaam verplicht.",
+        e_date_hors_limites:"Deze datum is niet meer beschikbaar, kies een komende datum.",
+        e_date_invalide:"Ongeldige datum, selecteer opnieuw.", e_creneau_invalide:"Ongeldige tijd, selecteer opnieuw.",
+        e_pax_invalide:"Ongeldig aantal gasten.", e_camping_requis:"Geef aan of je op de camping verblijft.",
+        e_db:"Online reserveren niet beschikbaar — bel +33 6 22 06 14 88."
+      }
+    };
+    const FR_DEFAUT = {};   // rempli au premier passage pour pouvoir revenir au français
+    let LG = "fr";
+    try { LG = localStorage.getItem("apg_lang") || "fr"; } catch(e) {}
+    if (!LOCALES[LG]) LG = "fr";
+    const L = k => (LG !== "fr" && TR[LG] && TR[LG][k]) || FR_DEFAUT["__" + k] || "";
+
+    function traduire(lg){
+      LG = LOCALES[lg] ? lg : "fr";
+      try { localStorage.setItem("apg_lang", LG); } catch(e) {}
+      document.documentElement.lang = LG;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const k = el.dataset.i18n;
+        if (!("__" + k in FR_DEFAUT)) FR_DEFAUT["__" + k] = el.innerHTML;
+        el.innerHTML = (LG === "fr") ? FR_DEFAUT["__" + k] : ((TR[LG] && TR[LG][k]) || FR_DEFAUT["__" + k]);
+      });
+      document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+        const k = el.dataset.i18nPh;
+        if (!("__" + k in FR_DEFAUT)) FR_DEFAUT["__" + k] = el.placeholder;
+        el.placeholder = (LG === "fr") ? FR_DEFAUT["__" + k] : ((TR[LG] && TR[LG][k]) || FR_DEFAUT["__" + k]);
+      });
+      document.querySelectorAll(".lang-sel button").forEach(b => b.classList.toggle("on", b.dataset.lg === LG));
+      const ind = document.getElementById("rwInd");
+      if (ind && IND_DEFAUT[LG]) ind.value = IND_DEFAUT[LG];
+    }
+    document.querySelectorAll(".lang-sel button").forEach(b =>
+      b.addEventListener("click", () => { traduire(b.dataset.lg); rafraichirWidget(); }));
+    function rafraichirWidget(){
+      majRecap();
+      if (!$("rwEtape2").hidden) rendreCal();
+      if (!$("rwEtape3").hidden) rendreSlots();
+    }
+
     const auj = new Date(); auj.setHours(0,0,0,0);
     let vue = new Date(auj.getFullYear(), auj.getMonth(), 1);
     let dispo = {};
@@ -1324,7 +1527,7 @@
     const iso = d => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
     const moisKey = d => iso(d).slice(0,7);
     const joliDate = ds => new Date(ds + "T12:00:00")
-      .toLocaleDateString("fr-FR", { weekday:"short", day:"numeric", month:"long" });
+      .toLocaleDateString(LOCALES[LG], { weekday:"short", day:"numeric", month:"long" });
 
     function allerEtape(n){
       ["rwEtape1","rwEtape2","rwEtape3","rwForm","rwConfirm"].forEach((id, i) => {
@@ -1340,7 +1543,7 @@
     }
     function majRecap(){
       const p = [];
-      if (sel.pax) p.push(sel.pax + (sel.pax > 1 ? " couverts" : " couvert"));
+      if (sel.pax) p.push(sel.pax + (sel.pax > 1 ? (L("j_couverts") || " couverts") : (L("j_couvert") || " couvert")));
       if (sel.date) p.push(joliDate(sel.date));
       if (sel.heure) p.push(sel.heure);
       recap.textContent = p.join(" · ");
@@ -1386,7 +1589,7 @@
     }
     async function rendreCal(){
       await chargerMois(vue);
-      $("rwMois").textContent = MOIS[vue.getMonth()] + " " + vue.getFullYear();
+      $("rwMois").textContent = vue.toLocaleDateString(LOCALES[LG], { month:"long", year:"numeric" });
       $("rwPrev").disabled = vue <= new Date(auj.getFullYear(), auj.getMonth(), 1);
       grid.innerHTML = "";
       const decal = (new Date(vue).getDay() + 6) % 7;
@@ -1446,7 +1649,8 @@
         const note = $(svc === "midi" ? "rwNoteMidi" : "rwNoteSoir");
         cont.innerHTML = "";
         const complet = r[svc] < sel.pax;
-        note.textContent = complet ? "Complet" : (r[svc] <= 12 ? "Plus que " + r[svc] + " places" : "");
+        note.textContent = complet ? (L("j_complet") || "Complet")
+          : (r[svc] <= 12 ? (L("j_peu") || "Plus que {n} places").replace("{n}", r[svc]) : "");
         note.className = complet ? "plein" : (r[svc] <= 12 ? "peu" : "");
         for (const hCreneau of CRENEAUX[svc]){
           const s = document.createElement("button");
@@ -1467,32 +1671,34 @@
     $("rwForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (sel.camping === null){
-        msg.textContent = "Indiquez si vous séjournez au camping ou non.";
+        msg.textContent = L("e_camping_requis") || "Indiquez si vous séjournez au camping ou non.";
         msg.className = "rw-msg err";
         return;
       }
       const btn = document.querySelector(".rw-submit");
-      btn.disabled = true; msg.textContent = "Envoi…"; msg.className = "rw-msg";
+      btn.disabled = true; msg.textContent = L("j_envoi") || "Envoi…"; msg.className = "rw-msg";
       try{
         const r = await fetch("/api/resa", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             date: sel.date, heure: sel.heure,
             prenom: $("rwPrenom").value, nom: $("rwNom").value,
-            tel: $("rwTel").value, pax: sel.pax, camping: sel.camping
+            tel: $("rwInd").value + " " + $("rwTel").value.trim().replace(/^0/, ""),
+            pax: sel.pax, camping: sel.camping
           })
         });
         const d = await r.json();
         if (r.ok && d.ok){
-          $("rwConfirmTxt").innerHTML = "Votre table est réservée !<br><b>" +
-            sel.pax + (sel.pax > 1 ? " couverts" : " couvert") + " · " + joliDate(sel.date) + " · " + sel.heure +
-            "</b><br>À très vite chez A Piaghja.";
+          $("rwConfirmTxt").innerHTML = (L("j_conf1") || "Votre table est réservée !") + "<br><b>" +
+            sel.pax + (sel.pax > 1 ? (L("j_couverts") || " couverts") : (L("j_couvert") || " couvert")) +
+            " · " + joliDate(sel.date) + " · " + sel.heure +
+            "</b><br>" + (L("j_conf2") || "À très vite chez A Piaghja.");
           allerEtape(5);
           feterConfirmation();
           document.querySelectorAll(".rw-dot").forEach(d2 => d2.classList.add("fait"));
           delete dispo[sel.date.slice(0,7)];
         } else if (d.error === "complet"){
-          msg.textContent = "Ce service vient d'afficher complet, choisissez un autre créneau.";
+          msg.textContent = L("j_complet_svc") || "Ce service vient d'afficher complet, choisissez un autre créneau.";
           msg.className = "rw-msg err";
           delete dispo[sel.date.slice(0,7)];
           await chargerMois(new Date(sel.date + "T12:00:00"));
@@ -1508,11 +1714,12 @@
             camping_requis: "Indiquez si vous séjournez au camping ou non.",
             db_non_configuree: "Réservation en ligne indisponible, appelez-nous au 06 22 06 14 88."
           };
-          msg.textContent = e2f[d.error] || "Impossible d'enregistrer, vérifiez les champs ou appelez-nous.";
+          msg.textContent = (LG !== "fr" && TR[LG]["e_" + (d.error === "db_non_configuree" ? "db" : d.error)]) ||
+            e2f[d.error] || L("j_generique") || "Impossible d'enregistrer, vérifiez les champs ou appelez-nous.";
           msg.className = "rw-msg err";
         }
       }catch{
-        msg.textContent = "Erreur réseau, réessayez ou appelez-nous au 06 22 06 14 88.";
+        msg.textContent = L("j_reseau") || "Erreur réseau, réessayez ou appelez-nous au 06 22 06 14 88.";
         msg.className = "rw-msg err";
       }
       btn.disabled = false;
@@ -1525,6 +1732,7 @@
       allerEtape(1);
     });
 
+    traduire(LG);
     allerEtape(1);
   })();
   
