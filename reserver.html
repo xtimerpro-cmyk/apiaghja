@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Réserver une table · A Piaghja · Porto-Vecchio</title>
+<meta name="description" content="Réservez votre table à A Piaghja, bar & restaurant sur la plage du Golfo di Sogno à Porto-Vecchio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --olive:#7d8560;
+    --olive-soft:#9aa17e;
+    --sable:#efe9dd;
+    --sable-deep:#e2d9c6;
+    --rose:#e7c6bd;
+    --or:#c2a15c;
+    --encre:#2a2b24;
+    --blanc:#fdfcf9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Questrial',sans-serif;
+    color:var(--encre);
+    background:var(--blanc);
+    line-height:1.7;
+  }
+  img{display:block;max-width:100%;}
+  a{color:inherit;}
+
+
+  /* ---------- Écran de chargement ---------- */
+  #splash{
+    position:fixed;inset:0;z-index:100;
+    background:#e9ecdc;
+    animation:splashGarde .65s ease 4.5s forwards;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
+    transition:opacity .65s ease, visibility .65s ease;
+  }
+  #splash.done{opacity:0;visibility:hidden;pointer-events:none;}
+  @keyframes splashGarde{to{opacity:0;visibility:hidden;pointer-events:none;}}
+  .splash-arbre{width:min(190px,44vw);}
+  .splash-arbre .tronc{
+    stroke-dasharray:160;stroke-dashoffset:160;
+    animation:splashTronc 1s ease-out forwards;
+  }
+  .splash-arbre .t2{animation-delay:.35s;}
+  .splash-arbre .t3{animation-delay:.5s;}
+  @keyframes splashTronc{to{stroke-dashoffset:0;}}
+  .splash-arbre .grappe{
+    opacity:0;transform:scale(.6);transform-origin:center;transform-box:fill-box;
+    animation:splashFeuille .55s cubic-bezier(.34,1.4,.64,1) forwards;
+  }
+  .splash-arbre .g1{animation-delay:.65s;}
+  .splash-arbre .g2{animation-delay:.8s;}
+  .splash-arbre .g3{animation-delay:.92s;}
+  .splash-arbre .g4{animation-delay:1.05s;}
+  @keyframes splashFeuille{to{opacity:1;transform:scale(1);}}
+  .splash-arbre .olive{
+    opacity:0;animation:splashFeuille .4s ease forwards;
+  }
+  .splash-arbre .o1{animation-delay:1.2s;}
+  .splash-arbre .o2{animation-delay:1.3s;}
+  .splash-arbre .o3{animation-delay:1.4s;}
+  .splash-arbre .sol{
+    stroke-dasharray:80;stroke-dashoffset:80;
+    animation:splashTronc .7s ease-out .2s forwards;
+  }
+  .splash-nom{
+    font-family:'Allura',cursive;font-size:2.6rem;color:var(--olive);
+    opacity:0;animation:splashNom .8s ease .9s forwards;
+  }
+  @keyframes splashNom{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){
+    .splash-arbre .tronc,.splash-arbre .sol{stroke-dashoffset:0;animation:none;}
+    .splash-arbre .grappe,.splash-arbre .olive,.splash-nom{opacity:1;transform:none;animation:none;}
+  }
+
+  /* ---------- Navigation ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.1rem 5vw;
+    transition:background .35s ease, box-shadow .35s ease;
+  }
+  nav.scrolled{
+    background:rgba(253,252,249,.94);
+    backdrop-filter:blur(8px);
+    box-shadow:0 1px 0 rgba(125,133,96,.12);
+  }
+  nav.scrolled .nav-links a, nav.scrolled .brand{color:var(--olive);}
+  .brand{
+    font-family:'Allura',cursive;
+    font-size:1.9rem;color:var(--blanc);
+    text-decoration:none;line-height:1;
+    opacity:0;transform:translateY(-10px);filter:blur(3px);
+    animation:brandIn .9s cubic-bezier(.2,.8,.3,1) 1.65s forwards;
+  }
+  @keyframes brandIn{to{opacity:1;transform:none;filter:blur(0);}}
+  .nav-ticker{
+    flex:1;overflow:hidden;margin:0 clamp(.8rem,3vw,2rem);
+    opacity:0;animation:heroFade 1s ease 2s forwards;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+  }
+  .nav-ticker-piste{
+    display:flex;width:max-content;
+    animation:tickerDefile 11s linear infinite;
+  }
+  .nav-ticker span{
+    flex:none;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--rose);white-space:nowrap;
+  }
+  nav.scrolled .nav-ticker span{color:var(--olive);}
+  @keyframes tickerDefile{to{transform:translateX(-50%);}}
+  .nav-links{display:flex;gap:2.2rem;list-style:none;}
+  .nav-links a{
+    text-decoration:none;color:var(--blanc);
+    font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;
+    position:relative;padding-bottom:3px;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:0;
+    background:var(--or);transition:width .3s ease;
+  }
+  .nav-links a:hover::after,.nav-links a:focus-visible::after{width:100%;}
+  .nav-cta{
+    border:1px solid var(--or);border-radius:999px;
+    padding:.45rem 1.2rem !important;
+  }
+  .burger{display:none;background:none;border:none;cursor:pointer;z-index:60;}
+  .burger span{display:block;width:26px;height:2px;background:var(--blanc);margin:6px 0;transition:.3s;}
+  nav.scrolled .burger span{background:var(--olive);}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;height:100svh;min-height:560px;
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:url('images/hero.jpg') center 55%/cover no-repeat;
+    animation:heroZoom 18s ease-out forwards;
+  }
+  @keyframes heroZoom{from{transform:scale(1.08);}to{transform:scale(1);}}
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(42,43,36,.55) 0%,rgba(125,133,96,.38) 60%,rgba(42,43,36,.68) 100%);
+  }
+  /* Grain argentique subtil sur toute l'image */
+  /* ---------- Mur de photos 3D ---------- */
+  .mur3d{
+    position:absolute;inset:0;z-index:1;overflow:hidden;
+    perspective:1100px;pointer-events:none;
+  }
+  .mur-scene{
+    position:absolute;inset:-22% -14%;
+    display:flex;gap:1.6vw;
+    transform:rotateX(11deg) rotateZ(-7deg) scale(1.08);
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .mur-col{
+    flex:1;display:flex;flex-direction:column;gap:1.6vw;
+    animation:murMonte var(--vitesse, 22s) linear infinite;
+  }
+  .mur-col.descend{animation-name:murDescend;}
+  @keyframes murMonte{to{transform:translateY(-50%);}}
+  @keyframes murDescend{from{transform:translateY(-50%);}to{transform:none;}}
+  .mur-col figure{
+    margin:0;border-radius:10px;overflow:hidden;aspect-ratio:3/4;flex:none;
+    box-shadow:0 18px 50px rgba(20,22,14,.45);
+  }
+  .mur-col img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:brightness(.72) saturate(1.05);
+  }
+  @media (max-width:860px){
+    .mur-col:nth-child(4){display:none;}
+    .mur-scene{inset:-25% -20%;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .mur3d{display:none;}
+  }
+  .hero-grain{
+    position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-inner{
+    position:relative;z-index:2;color:var(--blanc);padding:0 6vw;
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  /* Filigrane éditorial derrière le titre */
+  .hero-ghost{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);
+    font-size:clamp(3.2rem,9vw,7rem);letter-spacing:.38em;text-indent:.38em;
+    text-transform:uppercase;white-space:nowrap;
+    color:transparent;-webkit-text-stroke:1px rgba(239,233,221,.14);
+    user-select:none;pointer-events:none;
+  }
+  .hero-title{
+    position:relative;
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(4.2rem,12vw,9.5rem);line-height:1.08;
+    padding:0 .12em .08em;
+    color:#fdfcf9;
+    text-shadow:
+      0 2px 4px rgba(20,22,14,.45),
+      0 12px 40px rgba(20,22,14,.5);
+  }
+  .hero-title .lt{
+    display:inline-block;opacity:0;
+    transform:translateY(16px) rotate(3deg);filter:blur(4px);
+    animation:lettreIn .6s cubic-bezier(.2,.8,.3,1) forwards;
+    animation-delay:calc(1.9s + var(--i, 0) * .12s);
+  }
+  .hero-title .esp{width:.3em;}
+  @keyframes lettreIn{
+    to{opacity:1;transform:none;filter:blur(0);}
+  }
+  @keyframes heroFade{to{opacity:1;}}
+  @keyframes heroRise{
+    from{opacity:0;transform:translateY(26px);letter-spacing:.06em;}
+    to{opacity:1;transform:none;letter-spacing:0;}
+  }
+  .hero-actions{
+    opacity:0;animation:heroFade 1.2s ease 3.1s forwards;
+    margin-top:2.8rem;
+    display:flex;align-items:center;justify-content:center;
+    gap:2.2rem;flex-wrap:wrap;
+  }
+  .hero-cta{
+    position:relative;display:inline-flex;align-items:center;gap:.55rem;
+    color:rgba(253,252,249,.92);text-decoration:none;
+    font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;text-indent:.26em;
+    padding-bottom:.5rem;
+  }
+  .hero-cta::after{
+    content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+    background:var(--or);transform-origin:left;
+    animation:ctaTrace 3.2s ease-in-out infinite;
+  }
+  @keyframes ctaTrace{
+    0%{transform:scaleX(0);transform-origin:left;}
+    45%,55%{transform:scaleX(1);transform-origin:left;}
+    56%{transform-origin:right;}
+    100%{transform:scaleX(0);transform-origin:right;}
+  }
+  .cta-chev{
+    width:6px;height:6px;margin-bottom:2px;
+    border-right:1px solid var(--or);border-bottom:1px solid var(--or);
+    transform:rotate(45deg);
+  }
+  .hero-cta:hover{color:#fdfcf9;}
+  .hero-cta:hover::after{animation-play-state:paused;transform:scaleX(1);}
+  .btn{
+    display:inline-block;text-decoration:none;
+    letter-spacing:.2em;text-transform:uppercase;font-size:.8rem;
+    padding:.95rem 2.4rem;border-radius:999px;
+    transition:transform .25s ease, background .25s ease, color .25s ease;
+  }
+  .btn-or{background:var(--or);color:var(--encre);}
+  .btn-or:hover{transform:translateY(-2px);background:#d4b676;}
+  .btn-ghost{border:1px solid var(--blanc);color:var(--blanc);margin-left:.8rem;}
+  .btn-ghost:hover{background:var(--blanc);color:var(--olive);}
+  .hero-scroll{
+    position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    text-decoration:none;z-index:2;
+    opacity:0;animation:heroFade 1.2s ease 3.4s forwards;
+  }
+  .hs-ligne{
+    position:relative;width:1px;height:52px;overflow:hidden;
+    background:linear-gradient(180deg,transparent,rgba(194,161,92,.55),transparent);
+  }
+  .hs-dot{
+    position:absolute;left:-1.5px;top:-6px;
+    width:4px;height:4px;border-radius:50%;
+    background:var(--or);box-shadow:0 0 8px rgba(194,161,92,.9);
+    animation:hsDescente 2.4s cubic-bezier(.45,0,.55,1) infinite;
+  }
+  @keyframes hsDescente{
+    0%{transform:translateY(0);opacity:0;}
+    12%{opacity:1;}
+    82%{opacity:1;}
+    100%{transform:translateY(58px);opacity:0;}
+  }
+  .hs-chevron{
+    width:8px;height:8px;
+    border-right:1px solid var(--or);border-bottom:1px solid var(--or);
+    transform:rotate(45deg);
+    animation:hsChevron 2.4s ease-in-out infinite;
+  }
+  @keyframes hsChevron{
+    0%,100%{transform:rotate(45deg) translate(0,0);opacity:.75;}
+    50%{transform:rotate(45deg) translate(3px,3px);opacity:1;}
+  }
+
+  /* ---------- Sections communes ---------- */
+  section{padding:clamp(4.5rem,9vw,7.5rem) 6vw;}
+  .eyebrow{
+    font-size:.78rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--or);margin-bottom:.9rem;
+  }
+  h2{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(2.6rem,5.5vw,4rem);color:var(--olive);line-height:1.1;
+    margin-bottom:1.4rem;
+  }
+  .rameau{
+    width:120px;height:22px;margin:1.6rem 0;
+  }
+
+  /* ---------- Histoire ---------- */
+  .histoire{
+    display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2.5rem,6vw,6rem);
+    align-items:center;max-width:1200px;margin:0 auto;
+  }
+  .histoire p{margin-bottom:1.1rem;max-width:52ch;}
+  .histoire-img{
+    position:relative;
+  }
+  .histoire-img img{
+    width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:2px;
+  }
+  .histoire-img::before{
+    content:"";position:absolute;inset:-16px 16px 16px -16px;
+    border:1px solid var(--or);border-radius:2px;z-index:-1;
+  }
+
+  /* ---------- Carte ---------- */
+  .carte-wrap{max-width:900px;margin:0 auto;}
+  .carte-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:3rem 4.5rem;margin-top:2.5rem;
+  }
+  .carte-cat h3{
+    font-size:.85rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--olive);border-bottom:1px solid var(--sable-deep);
+    padding-bottom:.6rem;margin-bottom:1.2rem;font-weight:400;
+  }
+  .plat{
+    display:flex;justify-content:space-between;align-items:baseline;
+    gap:1rem;margin-bottom:1rem;
+  }
+  .plat .nom{max-width:70%;}
+  .plat .nom small{display:block;color:#6c6d60;font-size:.85rem;}
+  .plat .prix{color:var(--or);white-space:nowrap;}
+  .carte-note{
+    text-align:center;margin-top:2.8rem;color:#6c6d60;font-size:.92rem;
+  }
+
+
+  /* ---------- Onglets de la carte ---------- */
+  .tabs{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;
+    margin:2.4rem 0 2.6rem;
+  }
+  .tab-btn{
+    font-family:'Questrial',sans-serif;font-size:.78rem;
+    letter-spacing:.18em;text-transform:uppercase;
+    background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    color:#6c6d60;padding:.55rem 1.3rem;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .tab-btn:hover{border-color:var(--or);color:var(--olive);}
+  .tab-btn.active{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:tabIn .45s ease;}
+  @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .carte-search{max-width:420px;margin:2.2rem auto 0;text-align:center;}
+  .carte-search input{
+    width:100%;font-family:inherit;font-size:.95rem;text-align:center;
+    padding:.8rem 1.1rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .carte-search input:focus{outline:none;border-color:var(--or);box-shadow:0 4px 18px rgba(194,161,92,.18);}
+  .carte-count{
+    display:block;margin-top:.6rem;min-height:1.2em;
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
+  }
+  .carte-hint{
+    text-align:center;margin:1.6rem 0 .4rem;
+    font-family:'Allura',cursive;font-size:1.45rem;color:var(--olive-soft);
+  }
+  #carte.searching .tabs{display:none;}
+  #carte.searching .carte-hint{display:none;}
+  #carte.searching .tab-panel{display:block;}
+  #carte.searching .plat.hide{display:none;}
+  #carte.searching .carte-cat.hide{display:none;}
+  #carte.searching .plat{opacity:1;animation:none;}
+  .plat .lead{
+    flex:1;min-width:18px;margin:0 .55rem;
+    border-bottom:1px dotted var(--sable-deep);transform:translateY(-4px);
+  }
+  .plat{padding:.15rem .35rem;border-radius:6px;transition:background .2s ease;}
+  .plat:hover{background:var(--sable);}
+  .plat:hover .prix{color:var(--olive);}
+  .tab-panel.active .plat{opacity:0;animation:platIn .4s ease forwards;animation-delay:calc(var(--i,0)*18ms);}
+  @keyframes platIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* ---------- Onglets de la carte ---------- */
+  .tabs{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;
+    margin:2.4rem 0 2.6rem;
+  }
+  .tab-btn{
+    font-family:'Questrial',sans-serif;font-size:.78rem;
+    letter-spacing:.18em;text-transform:uppercase;
+    background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    color:#6c6d60;padding:.55rem 1.3rem;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .tab-btn:hover{border-color:var(--or);color:var(--olive);}
+  .tab-btn.active{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:tabIn .45s ease;}
+  @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .carte-search{max-width:420px;margin:2.2rem auto 0;text-align:center;}
+  .carte-search input{
+    width:100%;font-family:inherit;font-size:.95rem;text-align:center;
+    padding:.8rem 1.1rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .carte-search input:focus{outline:none;border-color:var(--or);box-shadow:0 4px 18px rgba(194,161,92,.18);}
+  .carte-count{
+    display:block;margin-top:.6rem;min-height:1.2em;
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
+  }
+  .carte-hint{
+    text-align:center;margin:1.6rem 0 .4rem;
+    font-family:'Allura',cursive;font-size:1.45rem;color:var(--olive-soft);
+  }
+  #carte.searching .tabs{display:none;}
+  #carte.searching .carte-hint{display:none;}
+  #carte.searching .tab-panel{display:block;}
+  #carte.searching .plat.hide{display:none;}
+  #carte.searching .carte-cat.hide{display:none;}
+  #carte.searching .plat{opacity:1;animation:none;}
+  .plat .lead{
+    flex:1;min-width:18px;margin:0 .55rem;
+    border-bottom:1px dotted var(--sable-deep);transform:translateY(-4px);
+  }
+  .plat{padding:.15rem .35rem;border-radius:6px;transition:background .2s ease;}
+  .plat:hover{background:var(--sable);}
+  .plat:hover .prix{color:var(--olive);}
+  .tab-panel.active .plat{opacity:0;animation:platIn .4s ease forwards;animation-delay:calc(var(--i,0)*18ms);}
+  @keyframes platIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* ---------- Onglets de la carte ---------- */
+  .tabs{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;
+    margin:2.4rem 0 2.6rem;
+  }
+  .tab-btn{
+    font-family:'Questrial',sans-serif;font-size:.78rem;
+    letter-spacing:.18em;text-transform:uppercase;
+    background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    color:#6c6d60;padding:.55rem 1.3rem;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .tab-btn:hover{border-color:var(--or);color:var(--olive);}
+  .tab-btn.active{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:tabIn .45s ease;}
+  @keyframes tabIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .carte-search{max-width:420px;margin:2.2rem auto 0;text-align:center;}
+  .carte-search input{
+    width:100%;font-family:inherit;font-size:.95rem;text-align:center;
+    padding:.8rem 1.1rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .carte-search input:focus{outline:none;border-color:var(--or);box-shadow:0 4px 18px rgba(194,161,92,.18);}
+  .carte-count{
+    display:block;margin-top:.6rem;min-height:1.2em;
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;
+  }
+  .carte-hint{
+    text-align:center;margin:1.6rem 0 .4rem;
+    font-family:'Allura',cursive;font-size:1.45rem;color:var(--olive-soft);
+  }
+  #carte.searching .tabs{display:none;}
+  #carte.searching .carte-hint{display:none;}
+  #carte.searching .tab-panel{display:block;}
+  #carte.searching .plat.hide{display:none;}
+  #carte.searching .carte-cat.hide{display:none;}
+  #carte.searching .plat{opacity:1;animation:none;}
+  .plat .lead{
+    flex:1;min-width:18px;margin:0 .55rem;
+    border-bottom:1px dotted var(--sable-deep);transform:translateY(-4px);
+  }
+  .plat{padding:.15rem .35rem;border-radius:6px;transition:background .2s ease;}
+  .plat:hover{background:var(--sable);}
+  .plat:hover .prix{color:var(--olive);}
+  .tab-panel.active .plat{opacity:0;animation:platIn .4s ease forwards;animation-delay:calc(var(--i,0)*18ms);}
+  @keyframes platIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  /* ---------- Galerie ---------- */
+  .galerie{background:var(--sable);}
+  .galerie-head{text-align:center;max-width:60ch;margin:0 auto 2.8rem;}
+  .galerie-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+    max-width:1200px;margin:0 auto;
+  }
+  .galerie-grid figure{overflow:hidden;border-radius:2px;aspect-ratio:3/4;}
+  .galerie-grid.reveal figure{opacity:0;transform:translateY(18px);
+    transition:opacity .6s ease, transform .6s ease;
+    transition-delay:calc(var(--i, 0) * 90ms);}
+  .galerie-grid.reveal.visible figure{opacity:1;transform:none;}
+  .galerie-grid img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .galerie-grid figure:hover img{transform:scale(1.05);}
+  .galerie-grid .ph{
+    display:flex;align-items:center;justify-content:center;
+    background:var(--sable-deep);color:var(--olive-soft);
+    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;text-align:center;padding:1rem;
+  }
+
+  /* ---------- Infos & réservation ---------- */
+  .infos{
+    display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,6rem);
+    max-width:1100px;margin:0 auto;align-items:start;
+  }
+  .infos dl div{margin-bottom:1.4rem;}
+  .infos dt{
+    font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--or);margin-bottom:.25rem;
+  }
+  .gps-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(194,161,92,.5);text-underline-offset:3px;}
+  .gps-link:hover{text-decoration-color:var(--or);}
+  .btn-gps{
+    background:var(--olive);color:var(--blanc);margin-top:.6rem;
+  }
+  .btn-gps:hover{transform:translateY(-2px);background:#7c8461;}
+  .map-nous{
+    position:relative;max-width:1100px;margin:clamp(2.5rem,5vw,4rem) auto 0;
+    height:clamp(340px,48vw,480px);border-radius:2px;overflow:hidden;
+    border:1px solid rgba(194,161,92,.55);
+    box-shadow:0 22px 55px rgba(125,133,96,.22);
+  }
+  .map-nous iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .map-cta{
+    position:absolute;left:50%;bottom:20px;transform:translateX(-50%);
+    background:var(--olive);color:var(--blanc);text-decoration:none;
+    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
+    padding:.85rem 1.8rem;border-radius:999px;white-space:nowrap;
+    box-shadow:0 10px 28px rgba(42,43,36,.4);
+    transition:transform .25s ease, background .25s ease;
+  }
+  .map-cta:hover{transform:translateX(-50%) translateY(-2px);background:#7c8461;}
+  .resa-card{
+    scroll-margin-top:90px;
+    background:var(--sable);border-radius:2px;
+    padding:clamp(2rem,4vw,3rem);text-align:center;
+  }
+  .resa-card h3{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:2.4rem;color:var(--olive);margin-bottom:.8rem;
+  }
+  .resa-card p{margin-bottom:1.6rem;max-width:38ch;margin-inline:auto;}
+  .resa-widget{
+    background:var(--blanc);border-radius:10px;
+    box-shadow:0 8px 30px rgba(125,133,96,.15);
+    margin:0 auto 1.4rem;max-width:420px;
+    padding:1.1rem 1.1rem 1.3rem;text-align:left;
+  }
+  .rw-cal-head{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;
+  }
+  .rw-cal-head span{
+    font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:var(--olive);
+  }
+  .rw-cal-head button{
+    background:none;border:1px solid var(--sable-deep);border-radius:50%;
+    width:32px;height:32px;font-size:1.1rem;color:var(--olive);cursor:pointer;
+    transition:all .2s ease;line-height:1;
+  }
+  .rw-cal-head button:hover{border-color:var(--or);}
+  .rw-cal-head button:disabled{opacity:.3;cursor:default;}
+  .rw-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .rw-jours span{
+    text-align:center;font-size:.68rem;letter-spacing:.1em;color:#8a8a7a;padding:.2rem 0;
+  }
+  .rw-day{
+    aspect-ratio:1;border:none;background:var(--sable);border-radius:8px;
+    font-family:inherit;font-size:.88rem;color:var(--encre);cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    transition:all .2s ease;
+  }
+  .rw-day:hover{background:var(--sable-deep);}
+  .rw-day.vide{background:none;cursor:default;}
+  .rw-day.passe{opacity:.32;cursor:default;background:var(--sable);}
+  .rw-day.complet{background:#f3e3df;color:#a8574a;cursor:default;}
+  .rw-day.complet::after{content:"complet";font-size:.5rem;letter-spacing:.05em;text-transform:uppercase;}
+  .rw-day.sel{background:var(--olive);color:var(--blanc);}
+  .rw-etape{margin-top:1.1rem;}
+  .rw-label{
+    font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--olive);margin-bottom:.7rem;text-align:center;
+  }
+  .rw-slot-group{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.6rem;}
+  .rw-slot-group > span{
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:#8a8a7a;width:38px;flex:none;
+  }
+  .rw-slots{display:flex;flex-wrap:wrap;gap:.4rem;}
+  .rw-slot{
+    font-family:inherit;font-size:.82rem;padding:.4rem .75rem;
+    border:1px solid var(--sable-deep);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .rw-slot:hover{border-color:var(--or);}
+  .rw-slot.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .rw-slot:disabled{opacity:.35;cursor:default;text-decoration:line-through;}
+  .rw-row{display:flex;gap:.6rem;margin-bottom:.6rem;}
+  .rw-form input,.rw-form select{
+    font-family:inherit;font-size:.92rem;width:100%;
+    padding:.7rem .8rem;border:1px solid var(--sable-deep);border-radius:8px;
+    background:var(--blanc);color:var(--encre);
+  }
+  .rw-form input:focus,.rw-form select:focus{outline:none;border-color:var(--or);}
+  .rw-submit{
+    width:100%;font-family:inherit;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
+    background:var(--olive);color:var(--blanc);border:none;border-radius:999px;
+    padding:.9rem;cursor:pointer;transition:background .25s ease;margin-top:.3rem;
+  }
+  .rw-submit:hover{background:#7c8461;}
+  .rw-submit:disabled{opacity:.5;cursor:wait;}
+  .rw-recap{
+    min-height:1.2em;text-align:center;margin-bottom:.5rem;
+    font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--olive);
+  }
+  .rw-dots{display:flex;justify-content:center;gap:.45rem;margin-bottom:1rem;}
+  .rw-dot{
+    width:7px;height:7px;border-radius:50%;background:var(--sable-deep);
+    transition:all .3s ease;
+  }
+  .rw-dot.on{background:var(--olive);transform:scale(1.25);}
+  .rw-dot.fait{background:var(--or);}
+  .rw-pax-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;}
+  .rw-pax{
+    font-family:inherit;font-size:1rem;padding:.75rem 0;
+    border:1px solid var(--sable-deep);border-radius:10px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .rw-pax:hover{border-color:var(--or);}
+  .rw-note{margin-top:.9rem;font-size:.8rem;color:#8a8a7a;text-align:center;}
+  .rw-note a{color:var(--olive);}
+  .rw-back{
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;
+    padding:0;margin-bottom:.8rem;
+  }
+  .rw-back:hover{color:var(--olive);}
+  .rw-camping{display:flex;gap:.5rem;margin-bottom:.7rem;}
+  .rw-camp{
+    flex:1;font-family:inherit;font-size:.8rem;padding:.65rem .4rem;
+    border:1px solid var(--sable-deep);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .rw-camp:hover{border-color:var(--or);}
+  .rw-camp.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .rw-confirm{text-align:center;}
+  .rw-check{
+    width:54px;height:54px;border-radius:50%;margin:0 auto .8rem;
+    background:var(--olive);color:var(--blanc);font-size:1.6rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .rw-confirm-txt{font-size:.95rem;line-height:1.6;}
+  .rw-again{
+    margin-top:1rem;background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    font-family:inherit;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+    padding:.55rem 1.2rem;cursor:pointer;color:var(--encre);transition:border-color .2s ease;
+  }
+  .rw-again:hover{border-color:var(--or);}
+  .rw-msg{margin-top:.8rem;font-size:.9rem;text-align:center;color:var(--olive);}
+  .rw-msg.err{color:#a8574a;}
+  .resa-alt{
+    font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--olive);margin-bottom:.2rem !important;
+  }
+  .resa-card .btn{background:var(--olive);color:var(--blanc);}
+  .resa-card .btn:hover{transform:translateY(-2px);background:#7c8461;}
+  .resa-card .tel{
+    display:block;margin-top:1.2rem;font-size:1.05rem;
+    letter-spacing:.06em;text-decoration:none;color:var(--olive);
+  }
+
+  /* ---------- Avis Google & carte ---------- */
+  .google{
+    background:
+      radial-gradient(ellipse 60% 50% at 18% 45%, rgba(194,161,92,.10), transparent 70%),
+      var(--blanc);
+    color:var(--encre);
+  }
+  .google-inner{
+    display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2.5rem,5vw,5rem);
+    max-width:1200px;margin:0 auto;align-items:stretch;
+  }
+  .google .eyebrow{color:var(--or);}
+  .google h2{color:var(--olive);}
+  .note-card{
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  /* Fiche façon Google : carte blanche, typo système, codes visuels natifs */
+  .gcard{
+    background:#fff;color:#202124;border-radius:12px;
+    font-family:Roboto,Arial,'Helvetica Neue',sans-serif;
+    padding:1.4rem 1.5rem 1.5rem;
+    box-shadow:0 1px 3px rgba(0,0,0,.10), 0 14px 40px rgba(0,0,0,.14);
+    max-width:400px;
+  }
+  .gcard .gname{font-size:1.35rem;font-weight:500;letter-spacing:0;}
+  .gcard .gtype{color:#5f6368;font-size:.82rem;margin-top:.15rem;}
+  .gcard .grate{display:flex;align-items:center;gap:.45rem;margin-top:.7rem;}
+  .gcard .gnum{font-size:.95rem;color:#5f6368;}
+  .gcard .gstars{display:flex;gap:1px;}
+  .gcard .gstar{position:relative;width:15px;height:15px;}
+  .gcard .gstar svg{position:absolute;inset:0;width:15px;height:15px;fill:#dadce0;}
+  .gcard .gstar .gfill{position:absolute;inset:0;overflow:hidden;width:0%;}
+  .gcard .gstar .gfill svg{fill:#fbbc04;}
+  .gcard .gcount{color:#1a73e8;font-size:.95rem;text-decoration:none;}
+  .gcard .gcount:hover{text-decoration:underline;}
+  .gcard .gdiv{border:none;border-top:1px solid #e8eaed;margin:1rem -1.5rem;}
+  .gcard .gmeta{color:#5f6368;font-size:.86rem;line-height:1.65;}
+  .gcard .gmeta b{color:#202124;font-weight:500;}
+  .gcard .gbtn{
+    display:inline-block;margin-top:1rem;
+    font-family:inherit;font-size:.88rem;font-weight:500;
+    color:#1a73e8;border:1px solid #dadce0;border-radius:999px;
+    padding:.5rem 1.3rem;text-decoration:none;
+    transition:background .2s ease;
+  }
+  .gcard .gbtn:hover{background:#f8f9fa;}
+  .note-verbatim{
+    font-family:'Allura',cursive;font-size:1.6rem;color:#c99a8c;
+    margin-top:2rem;max-width:30ch;line-height:1.4;
+  }
+  .map-frame{
+    position:relative;border-radius:2px;overflow:hidden;
+    min-height:420px;
+    border:1px solid rgba(194,161,92,.45);
+    box-shadow:0 18px 45px rgba(74,83,53,.16);
+  }
+  .map-frame::before{
+    content:"";position:absolute;inset:12px;
+    border:1px solid rgba(194,161,92,.35);border-radius:2px;
+    pointer-events:none;z-index:2;
+  }
+  .map-frame iframe{
+    position:absolute;inset:0;width:100%;height:100%;border:0;
+    filter:saturate(.82) contrast(1.04);
+  }
+  .map-pin{
+    position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+    background:rgba(42,43,36,.88);backdrop-filter:blur(6px);
+    color:var(--sable);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;
+    padding:.55rem 1.3rem;border-radius:999px;z-index:3;
+    border:1px solid rgba(194,161,92,.45);white-space:nowrap;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--sable-deep);color:var(--encre);
+    text-align:center;padding:3rem 6vw 2.2rem;
+    border-top:1px solid rgba(194,161,92,.4);
+  }
+  footer .brand-foot{
+    font-family:'Allura',cursive;font-size:2.2rem;color:var(--olive);
+  }
+  footer p{font-size:.85rem;margin-top:.8rem;color:#7a7a68;}
+  footer .socials{margin-top:1.2rem;display:flex;gap:1.6rem;justify-content:center;}
+  footer .socials a{
+    font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;
+    text-decoration:none;color:var(--olive);
+  }
+  footer .socials a:hover{color:var(--or);}
+
+
+  /* ---------- Assistant chat ---------- */
+  .chat-panel[hidden]{display:none !important;}
+  .chat-panel{
+    position:fixed;right:20px;bottom:90px;z-index:70;
+    width:min(290px, calc(100vw - 24px));height:min(380px, calc(100dvh - 120px));
+    background:var(--blanc);border-radius:16px;overflow:hidden;
+    box-shadow:0 24px 70px rgba(42,43,36,.4);
+    display:flex;flex-direction:column;
+    border:1px solid rgba(194,161,92,.35);
+  }
+  .chat-head{
+    background:var(--olive);color:var(--blanc);
+    padding:.9rem 1.1rem;display:flex;justify-content:space-between;align-items:center;
+  }
+  .chat-titre{font-family:'Allura',cursive;font-size:1.3rem;display:block;line-height:1;}
+  .chat-sous{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);}
+  .chat-fermer{
+    background:none;border:none;color:var(--sable);font-size:1.5rem;cursor:pointer;line-height:1;
+    padding:.2rem .4rem;
+  }
+  .chat-corps{
+    flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.6rem;
+    background:var(--sable);
+  }
+  .chat-msg{
+    max-width:85%;padding:.5rem .75rem;border-radius:13px;
+    font-size:.85rem;line-height:1.45;white-space:pre-line;
+  }
+  .chat-msg.bot{background:var(--blanc);color:var(--encre);align-self:flex-start;border-bottom-left-radius:4px;}
+  .chat-msg.moi{background:var(--olive);color:var(--blanc);align-self:flex-end;border-bottom-right-radius:4px;}
+  .chat-msg a{color:var(--olive);font-weight:bold;}
+  .chat-msg.moi a{color:var(--sable);}
+  .chat-typing{display:flex;gap:4px;padding:.7rem .9rem;background:var(--blanc);border-radius:14px;align-self:flex-start;}
+  .chat-typing span{
+    width:6px;height:6px;border-radius:50%;background:var(--olive-soft);
+    animation:chatDot 1.1s infinite;
+  }
+  .chat-typing span:nth-child(2){animation-delay:.18s;}
+  .chat-typing span:nth-child(3){animation-delay:.36s;}
+  @keyframes chatDot{0%,60%,100%{opacity:.3;transform:none;}30%{opacity:1;transform:translateY(-3px);}}
+  .chat-chips{
+    display:flex;gap:.4rem;flex-wrap:wrap;padding:.6rem .8rem;
+    background:var(--sable);border-top:1px solid var(--sable-deep);
+  }
+  .chat-chip{
+    font-family:inherit;font-size:.7rem;padding:.32rem .65rem;
+    border:1px solid var(--sable-deep);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .chat-chip:hover{border-color:var(--or);color:var(--olive);}
+  .chat-saisie{
+    display:flex;gap:.5rem;padding:.7rem .8rem;background:var(--blanc);
+    border-top:1px solid var(--sable-deep);
+  }
+  .chat-saisie input{
+    flex:1;font-family:inherit;font-size:.9rem;
+    padding:.6rem .8rem;border:1px solid var(--sable-deep);border-radius:999px;
+    background:var(--blanc);color:var(--encre);
+  }
+  .chat-saisie input:focus{outline:none;border-color:var(--or);}
+  .chat-saisie button{
+    width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--olive);color:var(--sable);font-size:.9rem;
+    transition:background .2s ease;
+  }
+  .chat-saisie button:hover{background:#7c8461;}
+  @media (max-width:520px){
+    .chat-panel{
+      right:12px;bottom:80px;
+      width:calc(100vw - 24px);height:min(56dvh, 400px);
+    }
+    .chat-saisie input{font-size:16px;}
+  }
+
+
+  /* ---------- Lecteur musical figé ---------- */
+  .lecteur{
+    position:fixed;left:16px;bottom:16px;z-index:65;
+    width:min(330px, calc(100vw - 32px));
+    background:rgba(42,43,36,.88);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(194,161,92,.45);border-radius:16px;
+    box-shadow:0 16px 50px rgba(20,22,14,.5);
+    padding:.55rem .65rem .65rem;
+    opacity:0;transform:translateY(14px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .lecteur.la{opacity:1;transform:none;}
+  .lect-tete{display:flex;align-items:center;gap:.5rem;}
+  .lect-note{color:var(--or);font-size:.95rem;}
+  .lect-titre{
+    flex:1;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--rose);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .lect-toggle{
+    background:none;border:1px solid rgba(253,252,249,.3);border-radius:50%;
+    width:24px;height:24px;color:var(--sable);cursor:pointer;
+    font-size:.9rem;line-height:1;flex:none;
+    transition:border-color .2s ease;
+  }
+  .lect-toggle:hover{border-color:var(--or);}
+  .lecteur iframe{
+    width:100%;height:80px;border:0;display:block;margin-top:.5rem;border-radius:12px;
+  }
+  .lecteur.mini{cursor:pointer;padding:.5rem .8rem;}
+  .lecteur.mini iframe{display:none;}
+  @media (max-width:520px){
+    .lecteur{left:12px;bottom:12px;width:min(300px, calc(100vw - 24px));}
+  }
+  /* ---------- Rail social latéral ---------- */
+  .rail-social{
+    position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:45;
+    display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  }
+  .rail-social > *{
+    opacity:0;transform:translateX(18px);
+    animation:railIn .55s cubic-bezier(.2,.8,.3,1) forwards;
+  }
+  .rail-social > *:nth-child(1){animation-delay:2.1s;}
+  .rail-social > *:nth-child(2){animation-delay:2.25s;}
+  .rail-social > *:nth-child(3){animation-delay:2.4s;}
+  .rail-social > *:nth-child(4){animation-delay:2.55s;}
+  .rail-social > *:nth-child(5){animation-delay:2.7s;}
+  .rail-social > *:nth-child(6){animation-delay:2.85s;}
+  .rail-social > *:nth-child(7){animation-delay:3s;}
+  @keyframes railIn{to{opacity:1;transform:none;}}
+  .rail-ligne{
+    width:1px;height:44px;
+    background:linear-gradient(180deg,transparent,rgba(194,161,92,.75),transparent);
+  }
+  .rail-social a,.rail-social button{
+    width:42px;height:42px;border-radius:50%;cursor:pointer;padding:0;
+    display:flex;align-items:center;justify-content:center;
+    background:#e9ecdc;border:1px solid rgba(194,161,92,.5);
+    box-shadow:0 6px 18px rgba(74,83,53,.18);
+    font-size:1.1rem;text-decoration:none;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .rail-social a:hover,.rail-social button:hover{transform:translateY(-3px);border-color:var(--or);}
+  .rail-social a svg,.rail-social button svg{width:20px;height:20px;}
+  .rail-emoji{font-size:1.15rem;line-height:1;}
+  @media (max-width:860px){
+    .rail-social{right:10px;top:44%;}
+    .rail-social a,.rail-social button{width:38px;height:38px;font-size:1rem;}
+    .rail-ligne{height:28px;}
+  }
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .tab-panel.active .plat{animation:none;opacity:1;}
+    .cta-arrow{transition:none;}
+    .hero-bg,.hero-title,.hero-actions{animation:none;opacity:1;transform:none;}
+    .hero-title .lt{animation:none;opacity:1;transform:none;filter:none;}
+    .hero-scroll{animation:none;opacity:1;}
+    .hs-dot,.hs-chevron{animation:none;}
+    .rail-social > *{animation:none;opacity:1;transform:none;}
+    .nav-ticker-piste{animation:none;}
+    .brand{animation:none;opacity:1;transform:none;filter:none;}
+    .hero-cta::after{animation:none;transform:scaleX(1);}
+    .nav-ticker{animation:none;opacity:1;}
+    .galerie-grid.reveal figure{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:860px){
+    html{scroll-padding-top:76px;}
+
+    /* Onglets de la carte : rail sticky defilable au doigt */
+    .tabs{
+      position:sticky;top:58px;z-index:40;
+      flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+      margin-left:-6vw;margin-right:-6vw;padding:.7rem 6vw;
+      background:rgba(253,252,249,.92);backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    .tabs::-webkit-scrollbar{display:none;}
+    .tab-btn{flex:none;}
+
+    /* Confort tactile */
+    .rw-day{font-size:.95rem;}
+    .rw-slot{padding:.55rem .9rem;}
+    .gcard{max-width:none;}
+
+    .nav-links{
+      position:fixed;inset:0;background:var(--olive);
+      flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+      transform:translateX(100%);transition:transform .35s ease;
+    }
+    .nav-links.open{transform:none;}
+    .nav-links a{color:var(--blanc) !important;font-size:1rem;}
+    .burger{display:block;}
+    .histoire,.infos,.google-inner{grid-template-columns:1fr;}
+    .carte-grid{grid-template-columns:1fr;gap:2.5rem;}
+    .galerie-grid{grid-template-columns:1fr 1fr;}
+    .btn-ghost{margin-left:0;margin-top:.9rem;}
+    .map-frame{min-height:340px;}
+  }
+  @media (max-width:520px){
+    .galerie-grid{grid-template-columns:1fr;}
+  }
+
+
+  /* ---------- Ajustements page dédiée réservation ---------- */
+  body{animation:none !important;}
+  .page-resa{
+    min-height:100dvh;display:flex;flex-direction:column;align-items:center;
+    padding:1.2rem 5vw 3rem;
+  }
+  .resa-haut{
+    text-align:center;padding:1.6rem 0 .4rem;
+  }
+  .resa-haut .brand-lien{
+    font-family:'Allura',cursive;font-size:2.6rem;color:var(--olive);
+    text-decoration:none;line-height:1;display:inline-block;
+    opacity:0;transform:translateY(10px);filter:blur(3px);
+    animation:pageArrive .8s cubic-bezier(.2,.8,.3,1) .1s forwards;
+  }
+  .resa-haut .fil{
+    font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--olive-soft);
+    margin-top:.55rem;
+    opacity:0;animation:pageFondu .9s ease .5s forwards;
+  }
+  @keyframes pageArrive{to{opacity:1;transform:none;filter:blur(0);}}
+  @keyframes pageFondu{to{opacity:1;}}
+  .page-resa .resa-card{
+    width:min(560px, 100%);margin-top:1.4rem;
+    opacity:0;transform:translateY(18px);
+    animation:pageArrive .9s cubic-bezier(.2,.8,.3,1) .35s forwards;
+  }
+  .page-resa .resa-card.reveal{opacity:0;transform:translateY(18px);}
+  .retour-site{
+    margin-top:2rem;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--olive);text-decoration:none;
+    opacity:0;animation:pageFondu 1s ease .9s forwards;
+  }
+  .retour-site:hover{text-decoration:underline;text-underline-offset:4px;}
+</style>
+</head>
+<body>
+
+<div class="page-resa">
+  <header class="resa-haut">
+    <a class="brand-lien" href="index.html">A Piaghja</a>
+    <p class="fil">BAR &amp; RESTAURANT · PORTO-VECCHIO</p>
+  </header>
+
+<div class="resa-card reveal" id="reserver">
+      <h3>Réserver une table</h3>
+      <p>La terrasse compte 18 tables face à la mer. En saison, la réservation est vivement conseillée.</p>
+      <div class="resa-widget" id="resaWidget">
+        <div class="rw-recap" id="rwRecap" aria-live="polite"></div>
+        <div class="rw-dots" aria-hidden="true">
+          <span class="rw-dot on" data-dot="1"></span><span class="rw-dot" data-dot="2"></span><span class="rw-dot" data-dot="3"></span><span class="rw-dot" data-dot="4"></span>
+        </div>
+
+        <div class="rw-etape" id="rwEtape1">
+          <p class="rw-label">Combien serez-vous ?</p>
+          <div class="rw-pax-grid" id="rwPaxGrid"></div>
+          <p class="rw-note">Plus de 8 ? Appelez-nous au <a href="tel:+33622061488">06 22 06 14 88</a></p>
+        </div>
+
+        <div class="rw-etape" id="rwEtape2" hidden>
+          <button type="button" class="rw-back" data-back="1">‹ Couverts</button>
+          <div class="rw-cal">
+            <div class="rw-cal-head">
+              <button type="button" id="rwPrev" aria-label="Mois précédent">‹</button>
+              <span id="rwMois"></span>
+              <button type="button" id="rwNext" aria-label="Mois suivant">›</button>
+            </div>
+            <div class="rw-grid rw-jours" aria-hidden="true">
+              <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div class="rw-grid" id="rwGrid"></div>
+          </div>
+        </div>
+
+        <div class="rw-etape" id="rwEtape3" hidden>
+          <button type="button" class="rw-back" data-back="2">‹ Date</button>
+          <p class="rw-label">Choisissez votre créneau</p>
+          <div class="rw-slot-group"><span>Midi</span><div class="rw-slots" id="rwSlotsMidi"></div></div>
+          <div class="rw-slot-group"><span>Soir</span><div class="rw-slots" id="rwSlotsSoir"></div></div>
+        </div>
+
+        <form class="rw-etape rw-form" id="rwForm" hidden>
+          <button type="button" class="rw-back" data-back="3">‹ Créneau</button>
+          <p class="rw-label">Vos coordonnées</p>
+          <div class="rw-camping" role="group" aria-label="Séjournez-vous au camping ?">
+            <button type="button" class="rw-camp" id="rwCampOui">Résident du camping</button>
+            <button type="button" class="rw-camp" id="rwCampNon">Non-résident</button>
+          </div>
+          <div class="rw-row">
+            <input id="rwPrenom" placeholder="Prénom" autocomplete="given-name" required>
+            <input id="rwNom" placeholder="Nom" autocomplete="family-name" required>
+          </div>
+          <input id="rwTel" type="tel" placeholder="Téléphone" autocomplete="tel" required>
+          <button type="submit" class="rw-submit">Confirmer la réservation</button>
+        </form>
+
+        <div class="rw-etape rw-confirm" id="rwConfirm" hidden>
+          <div class="rw-check">✓</div>
+          <p class="rw-confirm-txt" id="rwConfirmTxt"></p>
+          <button type="button" class="rw-again" id="rwAgain">Faire une autre réservation</button>
+        </div>
+
+        <p class="rw-msg" id="rwMsg" role="status"></p>
+      </div>
+      <p class="resa-alt">Ou par téléphone :</p>
+      <a class="tel" href="tel:+33622061488">06 22 06 14 88</a>
+    </div>
+
+  <a class="retour-site" href="index.html">‹ Découvrir le site &amp; la carte</a>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+// ---------- Réservation maison : parcours guidé en 4 étapes ----------
+  (function(){
+    const CRENEAUX = {
+      midi: ["12:00","12:30","13:00","13:30","14:00"],
+      soir: ["19:00","19:30","20:00","20:30","21:00","21:30"]
+    };
+    const MOIS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+    const $ = id => document.getElementById(id);
+    const grid = $("rwGrid"), msg = $("rwMsg"), recap = $("rwRecap");
+    if (!grid) return;
+
+    const auj = new Date(); auj.setHours(0,0,0,0);
+    let vue = new Date(auj.getFullYear(), auj.getMonth(), 1);
+    let dispo = {};
+    let sel = { pax: null, date: null, heure: null, camping: null };
+    const iso = d => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+    const moisKey = d => iso(d).slice(0,7);
+    const joliDate = ds => new Date(ds + "T12:00:00")
+      .toLocaleDateString("fr-FR", { weekday:"short", day:"numeric", month:"long" });
+
+    function allerEtape(n){
+      ["rwEtape1","rwEtape2","rwEtape3","rwForm","rwConfirm"].forEach((id, i) => {
+        $(id).hidden = (i + 1 !== n);
+      });
+      document.querySelectorAll(".rw-dot").forEach(d => {
+        const num = parseInt(d.dataset.dot, 10);
+        d.classList.toggle("on", num === n);
+        d.classList.toggle("fait", num < n);
+      });
+      majRecap();
+      msg.textContent = ""; msg.className = "rw-msg";
+    }
+    function majRecap(){
+      const p = [];
+      if (sel.pax) p.push(sel.pax + (sel.pax > 1 ? " couverts" : " couvert"));
+      if (sel.date) p.push(joliDate(sel.date));
+      if (sel.heure) p.push(sel.heure);
+      recap.textContent = p.join(" · ");
+    }
+    document.querySelectorAll(".rw-back").forEach(b =>
+      b.addEventListener("click", () => allerEtape(parseInt(b.dataset.back, 10))));
+
+    // Choix résident camping / non-résident
+    const campOui = $("rwCampOui"), campNon = $("rwCampNon");
+    function choisirCamping(val){
+      sel.camping = val;
+      campOui.classList.toggle("sel", val === 1);
+      campNon.classList.toggle("sel", val === 0);
+    }
+    campOui.addEventListener("click", () => choisirCamping(1));
+    campNon.addEventListener("click", () => choisirCamping(0));
+
+    const paxGrid = $("rwPaxGrid");
+    for (let i = 1; i <= 8; i++){
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "rw-pax";
+      b.textContent = i;
+      b.addEventListener("click", () => { sel.pax = i; allerEtape(2); rendreCal(); });
+      paxGrid.appendChild(b);
+    }
+
+    async function chargerMois(d){
+      const k = moisKey(d);
+      if (dispo[k]) return;
+      try{
+        const r = await fetch("/api/resa/availability?month=" + k);
+        if (!r.ok) throw 0;
+        dispo[k] = await r.json();
+      }catch{
+        dispo[k] = { jours: {}, capacite: { midi: 999, soir: 999 } };
+        msg.textContent = "Réservation en ligne momentanément indisponible, appelez-nous au 06 22 06 14 88.";
+        msg.className = "rw-msg err";
+      }
+    }
+    function resteJour(ds){
+      const k = ds.slice(0,7), m = dispo[k] || { jours:{}, capacite:{midi:60,soir:60} };
+      return m.jours[ds] || { midi: m.capacite.midi, soir: m.capacite.soir };
+    }
+    async function rendreCal(){
+      await chargerMois(vue);
+      $("rwMois").textContent = MOIS[vue.getMonth()] + " " + vue.getFullYear();
+      $("rwPrev").disabled = vue <= new Date(auj.getFullYear(), auj.getMonth(), 1);
+      grid.innerHTML = "";
+      const decal = (new Date(vue).getDay() + 6) % 7;
+      for (let i = 0; i < decal; i++){
+        const v = document.createElement("span"); v.className = "rw-day vide"; grid.appendChild(v);
+      }
+      const nbJours = new Date(vue.getFullYear(), vue.getMonth()+1, 0).getDate();
+      for (let j = 1; j <= nbJours; j++){
+        const d = new Date(vue.getFullYear(), vue.getMonth(), j);
+        const ds = iso(d);
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "rw-day"; b.textContent = j;
+        if (d < auj){ b.classList.add("passe"); b.disabled = true; }
+        else {
+          const r = resteJour(ds);
+          if (r.midi < sel.pax && r.soir < sel.pax){ b.classList.add("complet"); b.disabled = true; }
+          else b.addEventListener("click", () => { sel.date = ds; sel.heure = null; allerEtape(3); rendreSlots(); });
+        }
+        if (ds === sel.date) b.classList.add("sel");
+        grid.appendChild(b);
+      }
+    }
+    $("rwPrev").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()-1, 1); rendreCal(); });
+    $("rwNext").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()+1, 1); rendreCal(); });
+
+    function rendreSlots(){
+      const r = resteJour(sel.date);
+      for (const svc of ["midi","soir"]){
+        const cont = $(svc === "midi" ? "rwSlotsMidi" : "rwSlotsSoir");
+        cont.innerHTML = "";
+        for (const hCreneau of CRENEAUX[svc]){
+          const s = document.createElement("button");
+          s.type = "button"; s.className = "rw-slot"; s.textContent = hCreneau;
+          if (r[svc] < sel.pax) s.disabled = true;
+          else s.addEventListener("click", () => { sel.heure = hCreneau; allerEtape(4); });
+          cont.appendChild(s);
+        }
+      }
+    }
+
+    $("rwForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (sel.camping === null){
+        msg.textContent = "Indiquez si vous séjournez au camping ou non.";
+        msg.className = "rw-msg err";
+        return;
+      }
+      const btn = document.querySelector(".rw-submit");
+      btn.disabled = true; msg.textContent = "Envoi…"; msg.className = "rw-msg";
+      try{
+        const r = await fetch("/api/resa", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date: sel.date, heure: sel.heure,
+            prenom: $("rwPrenom").value, nom: $("rwNom").value,
+            tel: $("rwTel").value, pax: sel.pax, camping: sel.camping
+          })
+        });
+        const d = await r.json();
+        if (r.ok && d.ok){
+          $("rwConfirmTxt").innerHTML = "Votre table est réservée !<br><b>" +
+            sel.pax + (sel.pax > 1 ? " couverts" : " couvert") + " · " + joliDate(sel.date) + " · " + sel.heure +
+            "</b><br>À très vite chez A Piaghja.";
+          allerEtape(5);
+          document.querySelectorAll(".rw-dot").forEach(d2 => d2.classList.add("fait"));
+          delete dispo[sel.date.slice(0,7)];
+        } else if (d.error === "complet"){
+          msg.textContent = "Ce service vient d'afficher complet, choisissez un autre créneau.";
+          msg.className = "rw-msg err";
+          delete dispo[sel.date.slice(0,7)];
+          await chargerMois(new Date(sel.date + "T12:00:00"));
+          allerEtape(3); rendreSlots();
+        } else {
+          const e2f = {
+            tel_invalide: "Numéro de téléphone invalide.",
+            nom_requis: "Nom et prénom requis.",
+            date_hors_limites: "Cette date n'est plus disponible, choisissez une date à venir.",
+            date_invalide: "Date invalide, re-sélectionnez un jour dans le calendrier.",
+            creneau_invalide: "Créneau invalide, re-sélectionnez une heure.",
+            pax_invalide: "Nombre de couverts invalide.",
+            camping_requis: "Indiquez si vous séjournez au camping ou non.",
+            db_non_configuree: "Réservation en ligne indisponible, appelez-nous au 06 22 06 14 88."
+          };
+          msg.textContent = e2f[d.error] || "Impossible d'enregistrer, vérifiez les champs ou appelez-nous.";
+          msg.className = "rw-msg err";
+        }
+      }catch{
+        msg.textContent = "Erreur réseau, réessayez ou appelez-nous au 06 22 06 14 88.";
+        msg.className = "rw-msg err";
+      }
+      btn.disabled = false;
+    });
+
+    $("rwAgain").addEventListener("click", () => {
+      sel = { pax: null, date: null, heure: null, camping: null };
+      campOui.classList.remove("sel"); campNon.classList.remove("sel");
+      $("rwPrenom").value = ""; $("rwNom").value = ""; $("rwTel").value = "";
+      allerEtape(1);
+    });
+
+    allerEtape(1);
+  })();
+  
+  // La carte .reveal doit apparaître (pas d'observateur de scroll ici)
+  document.querySelectorAll('.reveal').forEach(r => r.classList.add('visible'));
+</script>
+</body>
+</html>
