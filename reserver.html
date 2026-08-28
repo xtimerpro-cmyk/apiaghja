@@ -1117,13 +1117,13 @@
   .ck-c{
     fill:none;stroke:var(--or);stroke-width:2.4;
     stroke-dasharray:170;stroke-dashoffset:170;
-    animation:ckTrace .8s cubic-bezier(.4,0,.2,1) .1s forwards;
   }
   .ck-v{
     fill:none;stroke:var(--olive);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;
     stroke-dasharray:40;stroke-dashoffset:40;
-    animation:ckTrace .5s cubic-bezier(.4,0,.2,1) .75s forwards;
   }
+  .rw-confirm.joue .ck-c{animation:ckTrace .8s cubic-bezier(.4,0,.2,1) .1s forwards;}
+  .rw-confirm.joue .ck-v{animation:ckTrace .5s cubic-bezier(.4,0,.2,1) .75s forwards;}
   @keyframes ckTrace{to{stroke-dashoffset:0;}}
   .rw-confirm-txt{font-size:.95rem;line-height:1.7;}
   .rw-again{
@@ -1137,10 +1137,10 @@
   .rw-check{position:relative;}
   .ck-halo{
     position:absolute;inset:0;border-radius:50%;
-    border:2px solid rgba(194,161,92,.55);
-    animation:ckHalo 1.1s cubic-bezier(.2,.7,.3,1) .85s both;
+    border:2px solid rgba(194,161,92,.55);opacity:0;
   }
-  .ck-halo.h2{animation-delay:1.05s;animation-duration:1.3s;}
+  .rw-confirm.joue .ck-halo{animation:ckHalo 1.1s cubic-bezier(.2,.7,.3,1) .85s both;}
+  .rw-confirm.joue .ck-halo.h2{animation-delay:1.05s;animation-duration:1.3s;}
   @keyframes ckHalo{
     from{transform:scale(.6);opacity:0;}
     30%{opacity:.9;}
@@ -1150,11 +1150,13 @@
     font-family:'Allura',cursive;font-size:2rem;color:var(--olive);line-height:1.1;
     margin-bottom:.5rem;
     opacity:0;transform:translateY(10px);filter:blur(4px);
-    animation:ckTitre .7s cubic-bezier(.2,.8,.3,1) 1s forwards;
   }
   @keyframes ckTitre{to{opacity:1;transform:none;filter:blur(0);}}
-  .rw-confirm-txt{opacity:0;animation:ckTitre .7s ease 1.25s forwards;}
-  .rw-again{opacity:0;animation:ckTitre .7s ease 1.5s forwards;}
+  .rw-confirm-txt{opacity:0;}
+  .rw-again{opacity:0;}
+  .rw-confirm.joue .rw-confirm-titre{animation:ckTitre .7s cubic-bezier(.2,.8,.3,1) 1s forwards;}
+  .rw-confirm.joue .rw-confirm-txt{animation:ckTitre .7s ease 1.25s forwards;}
+  .rw-confirm.joue .rw-again{animation:ckTitre .7s ease 1.5s forwards;}
   .ck-feu{position:absolute;inset:-30px;pointer-events:none;overflow:visible;}
   .ck-part{
     position:absolute;left:50%;top:50%;
@@ -1171,8 +1173,14 @@
     }
   }
   @media (prefers-reduced-motion:reduce){
-    .ck-halo,.ck-part{animation:none;display:none;}
-    .rw-confirm-titre,.rw-confirm-txt,.rw-again{animation:none;opacity:1;transform:none;filter:none;}
+    .ck-halo,.ck-part{animation:none !important;display:none;}
+    .rw-confirm-titre,.rw-confirm-txt,.rw-again,
+    .rw-confirm.joue .rw-confirm-titre,.rw-confirm.joue .rw-confirm-txt,.rw-confirm.joue .rw-again{
+      animation:none !important;opacity:1 !important;transform:none !important;filter:none !important;
+    }
+    .ck-c,.ck-v,.rw-confirm.joue .ck-c,.rw-confirm.joue .ck-v{
+      animation:none !important;stroke-dashoffset:0 !important;
+    }
   }
 
 
@@ -1405,6 +1413,11 @@
     $("rwNext").addEventListener("click", () => { vue = new Date(vue.getFullYear(), vue.getMonth()+1, 1); rendreCal(); });
 
     function feterConfirmation(){
+      // Rejouer toute la séquence, à chaque confirmation, sur tous les navigateurs
+      const conf = $("rwConfirm");
+      conf.classList.remove("joue");
+      void conf.offsetWidth;   // forcer le navigateur à acter le retrait avant le rajout
+      conf.classList.add("joue");
       const feu = $("ckFeu");
       if (!feu) return;
       feu.innerHTML = "";
