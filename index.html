@@ -1201,6 +1201,27 @@
   }
   .rw-tel-row select:focus{outline:none;border-color:var(--or);box-shadow:0 0 0 3px rgba(194,161,92,.16);}
   .rw-tel-row input{flex:1;}
+
+  /* ---------- Drapeaux de langue ---------- */
+  .lang-sel.drapeaux{background:none;padding:0;gap:.05rem;}
+  .lang-sel.drapeaux button{
+    font-size:1.02rem;line-height:1;padding:.18rem .22rem;
+    opacity:.38;filter:saturate(.75);transform:scale(1);
+    transition:opacity .25s ease, transform .25s ease, filter .25s ease;
+  }
+  .lang-sel.drapeaux button:hover{opacity:.85;filter:none;}
+  .lang-sel.drapeaux button.on{
+    opacity:1;filter:none;transform:scale(1.22);
+    background:none;
+  }
+  nav > .drapeaux{margin-left:1rem;flex:none;}
+  .burger{order:6;}
+  nav > .drapeaux{order:5;}
+  @media (max-width:860px){
+    nav > .drapeaux{margin-left:.4rem;margin-right:.5rem;}
+    .lang-sel.drapeaux button{font-size:1.08rem;padding:.2rem .16rem;}
+  }
+  .carte-lang{margin:1.1rem auto 0;width:max-content;}
 </style>
 </head>
 <body>
@@ -1275,8 +1296,8 @@
     <li><a href="#galerie" data-i18n="nav_galerie">Galerie</a></li>
     <li><a href="#avis" data-i18n="nav_avis">Avis</a></li>
     <li><a class="nav-cta" href="#reserver" data-i18n="nav_resa">Réserver</a></li>
-    <li class="lang-li"><div class="lang-sel" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on">FR</button><button type="button" data-lg="en">EN</button><button type="button" data-lg="it">IT</button><button type="button" data-lg="de">DE</button><button type="button" data-lg="nl">NL</button></div></li>
   </ul>
+  <div class="lang-sel drapeaux" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
 </nav>
 
 
@@ -1363,13 +1384,14 @@
     <div style="text-align:center" class="reveal">
       <p class="eyebrow" data-i18n="carte_eyebrow">La carte</p>
       <h2 data-i18n="carte_h2">Cuisine du feu &amp; de la mer</h2>
+      <div class="lang-sel drapeaux carte-lang" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
     </div>
     <div class="carte-search reveal">
-      <input type="search" id="carteSearch" placeholder="Rechercher un plat, un vin, un cocktail…" aria-label="Rechercher dans la carte">
+      <input type="search" id="carteSearch" placeholder="Rechercher un plat, un vin, un cocktail…" data-i18n-ph="carte_search" aria-label="Rechercher dans la carte">
       <span class="carte-count" id="carteCount" role="status"></span>
     </div>
-    <div class="tabs" role="tablist" aria-label="Catégories de la carte"><button class="tab-btn" data-tab="tab0">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab1">À partager</button><button class="tab-btn" data-tab="tab2">Plats</button><button class="tab-btn" data-tab="tab3">La braise</button><button class="tab-btn" data-tab="tab4">Les pizze</button><button class="tab-btn" data-tab="tab5">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab6">Les vins</button><button class="tab-btn" data-tab="tab7">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8">Petit déjeuner</button></div>
-    <p class="carte-hint" id="carteHint">Choisissez une catégorie pour parcourir la carte</p>
+    <div class="tabs" role="tablist" aria-label="Catégories de la carte"><button class="tab-btn" data-tab="tab0" data-i18n="tab_bar">Bar &amp; Cocktails</button><button class="tab-btn" data-tab="tab1" data-i18n="tab_part">À partager</button><button class="tab-btn" data-tab="tab2" data-i18n="tab_plats">Plats</button><button class="tab-btn" data-tab="tab3" data-i18n="tab_braise">La braise</button><button class="tab-btn" data-tab="tab4" data-i18n="tab_pizze">Les pizze</button><button class="tab-btn" data-tab="tab5" data-i18n="tab_dess">Desserts &amp; Glaces</button><button class="tab-btn" data-tab="tab6" data-i18n="tab_vins">Les vins</button><button class="tab-btn" data-tab="tab7" data-i18n="tab_softs">Softs &amp; Cafés</button><button class="tab-btn" data-tab="tab8" data-i18n="tab_pdj">Petit déjeuner</button></div>
+    <p class="carte-hint" id="carteHint" data-i18n="carte_hint">Choisissez une catégorie pour parcourir la carte</p>
     <div>
 <div class="tab-panel" id="tab0"><div class="carte-grid">
 <div class="carte-cat"><h3>Les incontournables</h3>
@@ -2070,6 +2092,9 @@
         avis_eyebrow:"Word of mouth", avis_h2:"Our Google page",
         resa_h3:"Book a table", resa_intro:"In season, booking is highly recommended.",
         resa_alt:"Or by phone:", footer_saison:"Open in season", footer_legal:"Legal notice &amp; T&amp;Cs",
+        tab_bar:"Bar &amp; Cocktails", tab_part:"To share", tab_plats:"Mains", tab_braise:"From the embers",
+        tab_pizze:"Le pizze", tab_dess:"Desserts &amp; ice cream", tab_vins:"Wines", tab_softs:"Softs &amp; coffee", tab_pdj:"Breakfast",
+        carte_search:"Search a dish, a wine, a cocktail…", carte_hint:"Pick a category to browse the menu",
         w_pax:"How many of you?", w_note8:"More than 8? Call us on <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Guests", w_back2:"‹ Date", w_back3:"‹ Time",
         w_slot:"Choose your time", w_dej:"Lunch", w_din:"Dinner",
@@ -2103,6 +2128,9 @@
         avis_eyebrow:"Dicono di noi", avis_h2:"La nostra scheda Google",
         resa_h3:"Prenota un tavolo", resa_intro:"In stagione la prenotazione è vivamente consigliata.",
         resa_alt:"Oppure per telefono:", footer_saison:"Aperto in stagione", footer_legal:"Note legali &amp; CG",
+        tab_bar:"Bar &amp; Cocktail", tab_part:"Da condividere", tab_plats:"Piatti", tab_braise:"La brace",
+        tab_pizze:"Le pizze", tab_dess:"Dolci &amp; gelati", tab_vins:"I vini", tab_softs:"Bibite &amp; caffè", tab_pdj:"Colazione",
+        carte_search:"Cerca un piatto, un vino, un cocktail…", carte_hint:"Scegli una categoria per sfogliare il menù",
         w_pax:"In quanti siete?", w_note8:"Più di 8? Chiamateci al <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Coperti", w_back2:"‹ Data", w_back3:"‹ Orario",
         w_slot:"Scegli il tuo orario", w_dej:"Pranzo", w_din:"Cena",
@@ -2136,6 +2164,9 @@
         avis_eyebrow:"Man spricht über uns", avis_h2:"Unser Google-Profil",
         resa_h3:"Tisch reservieren", resa_intro:"In der Saison wird eine Reservierung dringend empfohlen.",
         resa_alt:"Oder telefonisch:", footer_saison:"Geöffnet in der Saison", footer_legal:"Impressum &amp; AGB",
+        tab_bar:"Bar &amp; Cocktails", tab_part:"Zum Teilen", tab_plats:"Hauptgerichte", tab_braise:"Vom Grill",
+        tab_pizze:"Le pizze", tab_dess:"Desserts &amp; Eis", tab_vins:"Weine", tab_softs:"Softdrinks &amp; Kaffee", tab_pdj:"Frühstück",
+        carte_search:"Gericht, Wein oder Cocktail suchen…", carte_hint:"Wählen Sie eine Kategorie, um die Karte zu entdecken",
         w_pax:"Wie viele Personen?", w_note8:"Mehr als 8? Rufen Sie uns an: <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Personen", w_back2:"‹ Datum", w_back3:"‹ Uhrzeit",
         w_slot:"Wählen Sie Ihre Uhrzeit", w_dej:"Mittag", w_din:"Abend",
@@ -2169,6 +2200,9 @@
         avis_eyebrow:"Men zegt over ons", avis_h2:"Onze Google-pagina",
         resa_h3:"Reserveer een tafel", resa_intro:"In het seizoen is reserveren sterk aanbevolen.",
         resa_alt:"Of telefonisch:", footer_saison:"Open in het seizoen", footer_legal:"Juridische info &amp; AV",
+        tab_bar:"Bar &amp; Cocktails", tab_part:"Om te delen", tab_plats:"Hoofdgerechten", tab_braise:"Van de gril",
+        tab_pizze:"Le pizze", tab_dess:"Desserts &amp; ijs", tab_vins:"Wijnen", tab_softs:"Frisdrank &amp; koffie", tab_pdj:"Ontbijt",
+        carte_search:"Zoek een gerecht, wijn of cocktail…", carte_hint:"Kies een categorie om de kaart te bekijken",
         w_pax:"Met hoeveel zijn jullie?", w_note8:"Met meer dan 8? Bel ons op <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Gasten", w_back2:"‹ Datum", w_back3:"‹ Tijd",
         w_slot:"Kies je tijd", w_dej:"Lunch", w_din:"Diner",
