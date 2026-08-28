@@ -983,6 +983,154 @@
   @media (max-width:520px){
     .galerie-grid{grid-template-columns:1fr;}
   }
+
+  /* ══════════ REFONTE WIDGET RÉSERVATION (V80) ══════════ */
+  .resa-card{
+    border-radius:22px;
+    box-shadow:0 24px 70px rgba(74,83,53,.16), 0 2px 10px rgba(74,83,53,.07);
+    border:1px solid rgba(194,161,92,.28);
+  }
+  .resa-card > h3{letter-spacing:.02em;}
+  .resa-card > p{color:#8a8a7a;font-size:.88rem;}
+  .rw-recap{
+    font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);
+    min-height:1.2em;text-align:center;
+  }
+  .rw-dots{display:flex;gap:.45rem;justify-content:center;margin:.7rem 0 1.1rem;}
+  .rw-dot{
+    width:26px;height:3px;border-radius:99px;background:var(--sable-deep);
+    transition:background .35s ease, width .35s ease;
+  }
+  .rw-dot.on{background:var(--olive);width:38px;}
+  .rw-dot.fait{background:var(--or);}
+  .rw-etape:not([hidden]){animation:rwIn .38s cubic-bezier(.2,.8,.3,1);}
+  @keyframes rwIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .rw-label{
+    font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--or);
+    margin-bottom:.9rem;text-align:center;
+  }
+  .rw-back{
+    font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+    background:none;border:none;color:#8a8a7a;cursor:pointer;padding:0 0 .8rem;
+    transition:color .2s ease;
+  }
+  .rw-back:hover{color:var(--olive);}
+  /* Couverts : pastilles rondes */
+  .rw-pax-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;}
+  .rw-pax{
+    aspect-ratio:1;border-radius:50%;border:1px solid var(--sable-deep);
+    background:var(--blanc);font-size:1.05rem;color:var(--encre);cursor:pointer;
+    transition:all .22s cubic-bezier(.2,.8,.3,1);font-family:inherit;
+  }
+  .rw-pax:hover{
+    border-color:var(--or);transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(194,161,92,.25);
+  }
+  .rw-note{font-size:.78rem;color:#8a8a7a;text-align:center;margin-top:1rem;}
+  .rw-note a{color:var(--olive);}
+  /* Calendrier */
+  .rw-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;}
+  .rw-cal-head span{font-size:.95rem;letter-spacing:.06em;text-transform:capitalize;}
+  .rw-cal-head button{
+    width:34px;height:34px;border-radius:50%;border:1px solid var(--sable-deep);
+    background:var(--blanc);cursor:pointer;color:var(--encre);font-size:1rem;
+    transition:all .2s ease;
+  }
+  .rw-cal-head button:hover:not(:disabled){border-color:var(--or);}
+  .rw-cal-head button:disabled{opacity:.3;cursor:default;}
+  .rw-jours span{font-size:.62rem;letter-spacing:.1em;color:#a5a596;}
+  .rw-day{
+    aspect-ratio:1;border-radius:50%;border:1px solid transparent;
+    background:none;font-family:inherit;font-size:.88rem;color:var(--encre);cursor:pointer;
+    transition:all .18s ease;
+  }
+  .rw-day:hover:not(:disabled){border-color:var(--or);background:var(--blanc);}
+  .rw-day.sel{background:var(--olive);color:var(--blanc);border-color:var(--olive);}
+  .rw-day.passe{color:#c9c9bc;cursor:default;}
+  .rw-day.complet{color:#c9c9bc;text-decoration:line-through;cursor:default;}
+  .rw-day.vide{pointer-events:none;}
+  /* Créneaux : pastilles horaires */
+  .rw-slot-group{margin-bottom:1.1rem;}
+  .rw-svc-tete{
+    display:flex;align-items:center;gap:.7rem;margin-bottom:.65rem;
+  }
+  .rw-svc-tete span{
+    font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--encre);
+  }
+  .rw-svc-tete i{
+    flex:1;height:1px;background:linear-gradient(90deg, rgba(194,161,92,.55), rgba(194,161,92,.08));
+  }
+  .rw-svc-tete em{font-style:normal;font-size:.7rem;letter-spacing:.06em;}
+  .rw-svc-tete em.plein{color:#b0766a;}
+  .rw-svc-tete em.peu{color:var(--or);}
+  .rw-slots{display:flex;flex-wrap:wrap;gap:.55rem;}
+  .rw-slot{
+    flex:1 1 calc(25% - .55rem);min-width:72px;max-width:110px;
+    padding:.62rem .3rem;border-radius:999px;
+    border:1px solid var(--sable-deep);background:var(--blanc);
+    font-family:inherit;font-size:.9rem;color:var(--encre);cursor:pointer;
+    transition:all .22s cubic-bezier(.2,.8,.3,1);
+  }
+  .rw-slot:hover:not(:disabled){
+    border-color:var(--or);transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(194,161,92,.22);
+  }
+  .rw-slot.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .rw-slot.off{
+    border-style:dashed;color:#c0c0b2;background:transparent;cursor:default;
+  }
+  /* Formulaire */
+  .rw-camping{display:flex;gap:.5rem;margin-bottom:.8rem;}
+  .rw-camp{
+    flex:1;font-family:inherit;font-size:.8rem;padding:.7rem .4rem;
+    border:1px solid var(--sable-deep);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .22s ease;
+  }
+  .rw-camp:hover{border-color:var(--or);}
+  .rw-camp.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .rw-form input{
+    width:100%;padding:.85rem 1rem;border:1px solid var(--sable-deep);border-radius:13px;
+    background:var(--blanc);font-family:inherit;font-size:16px;color:var(--encre);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .rw-form input::placeholder{color:#b3b3a4;}
+  .rw-form input:focus{
+    outline:none;border-color:var(--or);
+    box-shadow:0 0 0 3px rgba(194,161,92,.16);
+  }
+  .rw-row{display:flex;gap:.6rem;margin-bottom:.6rem;}
+  .rw-form > input#rwTel{margin-bottom:1rem;}
+  .rw-submit{
+    width:100%;padding:.95rem;border:none;border-radius:999px;cursor:pointer;
+    background:linear-gradient(135deg, #6c7452, var(--olive));color:var(--blanc);
+    font-family:inherit;font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;
+    transition:all .25s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 10px 26px rgba(74,83,53,.28);
+  }
+  .rw-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 32px rgba(74,83,53,.36);}
+  .rw-submit:disabled{opacity:.6;cursor:default;}
+  /* Confirmation : la coche qui se dessine */
+  .rw-confirm{text-align:center;padding:.6rem 0;}
+  .rw-check{width:74px;height:74px;margin:0 auto 1rem;}
+  .rw-check svg{width:100%;height:100%;}
+  .ck-c{
+    fill:none;stroke:var(--or);stroke-width:2.4;
+    stroke-dasharray:170;stroke-dashoffset:170;
+    animation:ckTrace .8s cubic-bezier(.4,0,.2,1) .1s forwards;
+  }
+  .ck-v{
+    fill:none;stroke:var(--olive);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:40;stroke-dashoffset:40;
+    animation:ckTrace .5s cubic-bezier(.4,0,.2,1) .75s forwards;
+  }
+  @keyframes ckTrace{to{stroke-dashoffset:0;}}
+  .rw-confirm-txt{font-size:.95rem;line-height:1.7;}
+  .rw-again{
+    margin-top:1.1rem;background:none;border:1px solid var(--sable-deep);border-radius:999px;
+    padding:.6rem 1.3rem;font-family:inherit;font-size:.72rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--encre);cursor:pointer;transition:border-color .2s ease;
+  }
+  .rw-again:hover{border-color:var(--or);}
 </style>
 </head>
 <body>
@@ -1541,7 +1689,7 @@
     </div>
     <div class="resa-card reveal" id="reserver">
       <h3>Réserver une table</h3>
-      <p>La terrasse compte 18 tables face à la mer. En saison, la réservation est vivement conseillée.</p>
+      <p>En saison, la réservation est vivement conseillée.</p>
       <div class="resa-widget" id="resaWidget">
         <div class="rw-recap" id="rwRecap" aria-live="polite"></div>
         <div class="rw-dots" aria-hidden="true">
@@ -1572,8 +1720,14 @@
         <div class="rw-etape" id="rwEtape3" hidden>
           <button type="button" class="rw-back" data-back="2">‹ Date</button>
           <p class="rw-label">Choisissez votre créneau</p>
-          <div class="rw-slot-group"><span>Midi</span><div class="rw-slots" id="rwSlotsMidi"></div></div>
-          <div class="rw-slot-group"><span>Soir</span><div class="rw-slots" id="rwSlotsSoir"></div></div>
+          <div class="rw-slot-group">
+            <div class="rw-svc-tete"><span>Déjeuner</span><i></i><em id="rwNoteMidi"></em></div>
+            <div class="rw-slots" id="rwSlotsMidi"></div>
+          </div>
+          <div class="rw-slot-group">
+            <div class="rw-svc-tete"><span>Dîner</span><i></i><em id="rwNoteSoir"></em></div>
+            <div class="rw-slots" id="rwSlotsSoir"></div>
+          </div>
         </div>
 
         <form class="rw-etape rw-form" id="rwForm" hidden>
@@ -1592,7 +1746,7 @@
         </form>
 
         <div class="rw-etape rw-confirm" id="rwConfirm" hidden>
-          <div class="rw-check">✓</div>
+          <div class="rw-check"><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="ck-c" cx="32" cy="32" r="27"/><path class="ck-v" d="M20 33 L29 41 L45 24"/></svg></div>
           <p class="rw-confirm-txt" id="rwConfirmTxt"></p>
           <button type="button" class="rw-again" id="rwAgain">Faire une autre réservation</button>
         </div>
@@ -1649,7 +1803,7 @@
 
 <footer>
   <div class="brand-foot">A Piaghja</div>
-  <p>Bar &amp; Restaurant · Porto-Vecchio · Ouvert en saison</p>
+  <p>Bar &amp; Restaurant · Porto-Vecchio · Ouvert en saison · <a href="legal.html" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Mentions légales &amp; CG</a></p>
   <div class="socials">
     <a href="https://www.instagram.com/apiaghja_golfodisogno/" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
     <a href="https://www.google.com/maps/place/A+PIAGHJA/@41.6243491,9.3157876,17z/data=!4m14!1m7!3m6!1s0x12d985ac6039965f:0xbfa5bbab6579a666!2sA+PIAGHJA!8m2!3d41.6243491!4d9.3157876!16s%2Fg%2F11t5ftfjgx!3m5!1s0x12d985ac6039965f:0xbfa5bbab6579a666!8m2!3d41.6243491!4d9.3157876!16s%2Fg%2F11t5ftfjgx?entry=ttu" aria-label="Google">Avis Google</a>
@@ -1906,12 +2060,22 @@
       const r = resteJour(sel.date);
       for (const svc of ["midi","soir"]){
         const cont = $(svc === "midi" ? "rwSlotsMidi" : "rwSlotsSoir");
+        const note = $(svc === "midi" ? "rwNoteMidi" : "rwNoteSoir");
         cont.innerHTML = "";
+        const complet = r[svc] < sel.pax;
+        note.textContent = complet ? "Complet" : (r[svc] <= 12 ? "Plus que " + r[svc] + " places" : "");
+        note.className = complet ? "plein" : (r[svc] <= 12 ? "peu" : "");
         for (const hCreneau of CRENEAUX[svc]){
           const s = document.createElement("button");
-          s.type = "button"; s.className = "rw-slot"; s.textContent = hCreneau;
-          if (r[svc] < sel.pax) s.disabled = true;
-          else s.addEventListener("click", () => { sel.heure = hCreneau; allerEtape(4); });
+          s.type = "button"; s.className = "rw-slot" + (complet ? " off" : "");
+          s.textContent = hCreneau;
+          if (complet) s.disabled = true;
+          else s.addEventListener("click", () => {
+            sel.heure = hCreneau;
+            cont.querySelectorAll(".rw-slot").forEach(x => x.classList.remove("sel"));
+            s.classList.add("sel");
+            setTimeout(() => allerEtape(4), 160);
+          });
           cont.appendChild(s);
         }
       }
