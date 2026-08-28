@@ -1222,6 +1222,129 @@
     .lang-sel.drapeaux button{font-size:1.08rem;padding:.2rem .16rem;}
   }
   .carte-lang{margin:1.1rem auto 0;width:max-content;}
+
+  /* ══════════ REFONTE ASSISTANT (V85) ══════════ */
+  .chat-panel{
+    width:min(340px, calc(100vw - 24px));height:min(520px, calc(100dvh - 120px));
+    border-radius:22px;border:1px solid rgba(194,161,92,.4);
+    box-shadow:0 30px 80px rgba(42,43,36,.45), 0 4px 16px rgba(42,43,36,.18);
+  }
+  .chat-head{
+    background:linear-gradient(135deg, #6c7452, var(--olive) 55%, #8a9268);
+    padding:1rem 1.1rem;position:relative;overflow:hidden;
+  }
+  .chat-head::after{
+    content:"";position:absolute;right:-22px;top:-24px;width:110px;height:110px;
+    border-radius:50%;background:rgba(253,252,249,.07);
+  }
+  .chat-avatar{
+    width:38px;height:38px;border-radius:50%;flex:none;
+    background:var(--sable);display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(194,161,92,.6);
+  }
+  .chat-avatar svg{width:24px;height:24px;}
+  .chat-head-in{display:flex;align-items:center;gap:.65rem;}
+  .chat-titre{font-size:1.45rem;}
+  .chat-sous{display:flex;align-items:center;gap:.35rem;}
+  .chat-sous::before{
+    content:"";width:6px;height:6px;border-radius:50%;background:#a6e3a1;
+    box-shadow:0 0 6px #a6e3a1;
+  }
+  .chat-corps{
+    background:
+      radial-gradient(ellipse 70% 40% at 80% 0%, rgba(194,161,92,.08), transparent 60%),
+      var(--sable);
+    padding:1rem .9rem;gap:.55rem;
+  }
+  .chat-msg{
+    border-radius:16px;padding:.6rem .85rem;font-size:.86rem;
+    animation:chatMsgIn .32s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 2px 8px rgba(74,83,53,.07);
+  }
+  @keyframes chatMsgIn{from{opacity:0;transform:translateY(8px) scale(.97);}to{opacity:1;transform:none;}}
+  .chat-msg.bot{border-bottom-left-radius:5px;}
+  .chat-msg.moi{border-bottom-right-radius:5px;background:linear-gradient(135deg,#6c7452,var(--olive));}
+  /* Boutons d'action dans le fil */
+  .chat-actions{
+    display:flex;flex-wrap:wrap;gap:.4rem;align-self:flex-start;max-width:95%;
+    animation:chatMsgIn .32s cubic-bezier(.2,.8,.3,1);
+  }
+  .chat-act{
+    font-family:inherit;font-size:.78rem;padding:.45rem .8rem;
+    border:1px solid rgba(194,161,92,.55);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .chat-act:hover{border-color:var(--or);transform:translateY(-1px);box-shadow:0 6px 14px rgba(194,161,92,.22);}
+  .chat-act.multi.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .chat-act.valide{background:linear-gradient(135deg,#6c7452,var(--olive));border:none;color:var(--blanc);}
+  .chat-date-row{display:flex;gap:.4rem;align-self:flex-start;animation:chatMsgIn .32s ease;}
+  .chat-date-row input{
+    font-family:inherit;font-size:.85rem;padding:.5rem .7rem;
+    border:1px solid var(--sable-deep);border-radius:12px;background:var(--blanc);color:var(--encre);
+  }
+  .chat-date-row input:focus{outline:none;border-color:var(--or);}
+  /* Carte pré-devis */
+  .chat-devis{
+    align-self:stretch;background:var(--blanc);border:1px solid rgba(194,161,92,.5);
+    border-radius:16px;padding:.9rem 1rem;animation:chatMsgIn .4s ease;
+    box-shadow:0 8px 24px rgba(74,83,53,.12);
+  }
+  .chat-devis h4{
+    font-family:'Allura',cursive;font-weight:400;font-size:1.5rem;color:var(--olive);
+    margin:0 0 .5rem;text-align:center;
+  }
+  .chat-devis .dv-ligne{
+    display:flex;justify-content:space-between;gap:.6rem;
+    font-size:.8rem;padding:.22rem 0;color:#5c5d50;
+  }
+  .chat-devis .dv-ligne b{color:var(--encre);font-weight:normal;}
+  .chat-devis .dv-total{
+    display:flex;justify-content:space-between;margin-top:.5rem;padding-top:.55rem;
+    border-top:1px solid var(--sable-deep);font-size:.95rem;color:var(--encre);
+  }
+  .chat-devis .dv-total b{color:var(--olive);font-size:1.05rem;}
+  .chat-devis .dv-note{font-size:.68rem;color:#8a8a7a;margin-top:.5rem;line-height:1.5;text-align:center;}
+  .chat-saisie{padding:.65rem .75rem;}
+  .chat-saisie button{
+    background:linear-gradient(135deg,#6c7452,var(--olive));
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .chat-saisie button:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(74,83,53,.3);}
+  .chat-chip{border-radius:999px;padding:.36rem .7rem;}
+  @media (max-width:520px){
+    .chat-panel{height:min(62dvh, 520px);}
+  }
+
+  /* ---------- Bandeau conditions générales ---------- */
+  .cg-bar{
+    position:fixed;left:50%;bottom:14px;transform:translate(-50%, 130%);z-index:85;
+    width:min(560px, calc(100vw - 24px));
+    background:rgba(42,43,36,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(194,161,92,.5);border-radius:18px;
+    padding:.9rem 1.1rem;color:var(--sable);
+    display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+    box-shadow:0 18px 55px rgba(20,22,14,.5);
+    transition:transform .6s cubic-bezier(.2,.8,.3,1);
+  }
+  .cg-bar.la{transform:translate(-50%, 0);}
+  .cg-bar p{flex:1;min-width:220px;font-size:.78rem;line-height:1.55;margin:0;}
+  .cg-bar a{color:var(--or);}
+  .cg-actions{display:flex;gap:.5rem;}
+  .cg-ok{
+    font-family:inherit;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    background:var(--or);color:var(--encre);border:none;border-radius:999px;
+    padding:.55rem 1.2rem;cursor:pointer;transition:transform .2s ease;
+  }
+  .cg-ok:hover{transform:translateY(-1px);}
+  .cg-lire{
+    font-family:inherit;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    background:none;color:var(--sable);border:1px solid rgba(253,252,249,.35);border-radius:999px;
+    padding:.55rem 1.1rem;cursor:pointer;text-decoration:none;transition:border-color .2s ease;
+  }
+  .cg-lire:hover{border-color:var(--or);}
+  @media (max-width:520px){
+    .cg-bar{bottom:10px;padding:.8rem .9rem;}
+  }
 </style>
 </head>
 <body>
@@ -1934,9 +2057,21 @@
 
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Assistant A Piaghja" hidden>
   <div class="chat-head">
-    <div>
-      <span class="chat-titre">A Piaghja</span>
-      <span class="chat-sous">Assistant · réponses instantanées</span>
+    <div class="chat-head-in">
+      <span class="chat-avatar" aria-hidden="true">
+        <svg viewBox="0 0 200 210" fill="none">
+          <path d="M100 195 C98 172 102 152 97 130 C93 112 100 100 97 80" stroke="#4a5335" stroke-width="9" stroke-linecap="round"/>
+          <ellipse cx="100" cy="58" rx="46" ry="16" fill="#7d8560"/>
+          <ellipse cx="100" cy="47" rx="33" ry="13" fill="#9aa17e"/>
+          <ellipse cx="57" cy="68" rx="25" ry="12" fill="#9aa17e"/>
+          <ellipse cx="144" cy="66" rx="25" ry="12" fill="#7d8560"/>
+          <circle cx="100" cy="77" r="5" fill="#c2a15c"/>
+        </svg>
+      </span>
+      <div>
+        <span class="chat-titre">A Piaghja</span>
+        <span class="chat-sous">Assistant · en ligne</span>
+      </div>
     </div>
     <button class="chat-fermer" id="chatFermer" aria-label="Fermer l'assistant">×</button>
   </div>
@@ -2095,6 +2230,7 @@
         tab_bar:"Bar &amp; Cocktails", tab_part:"To share", tab_plats:"Mains", tab_braise:"From the embers",
         tab_pizze:"Le pizze", tab_dess:"Desserts &amp; ice cream", tab_vins:"Wines", tab_softs:"Softs &amp; coffee", tab_pdj:"Breakfast",
         carte_search:"Search a dish, a wine, a cocktail…", carte_hint:"Pick a category to browse the menu",
+        cg_txt:"By continuing to browse, you accept our <a href=\"legal.html\">Terms &amp; legal notice</a>.", cg_lire:"Read", cg_ok:"I accept",
         w_pax:"How many of you?", w_note8:"More than 8? Call us on <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Guests", w_back2:"‹ Date", w_back3:"‹ Time",
         w_slot:"Choose your time", w_dej:"Lunch", w_din:"Dinner",
@@ -2131,6 +2267,7 @@
         tab_bar:"Bar &amp; Cocktail", tab_part:"Da condividere", tab_plats:"Piatti", tab_braise:"La brace",
         tab_pizze:"Le pizze", tab_dess:"Dolci &amp; gelati", tab_vins:"I vini", tab_softs:"Bibite &amp; caffè", tab_pdj:"Colazione",
         carte_search:"Cerca un piatto, un vino, un cocktail…", carte_hint:"Scegli una categoria per sfogliare il menù",
+        cg_txt:"Proseguendo la navigazione accetti le nostre <a href=\"legal.html\">Condizioni Generali &amp; note legali</a>.", cg_lire:"Leggi", cg_ok:"Accetto",
         w_pax:"In quanti siete?", w_note8:"Più di 8? Chiamateci al <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Coperti", w_back2:"‹ Data", w_back3:"‹ Orario",
         w_slot:"Scegli il tuo orario", w_dej:"Pranzo", w_din:"Cena",
@@ -2167,6 +2304,7 @@
         tab_bar:"Bar &amp; Cocktails", tab_part:"Zum Teilen", tab_plats:"Hauptgerichte", tab_braise:"Vom Grill",
         tab_pizze:"Le pizze", tab_dess:"Desserts &amp; Eis", tab_vins:"Weine", tab_softs:"Softdrinks &amp; Kaffee", tab_pdj:"Frühstück",
         carte_search:"Gericht, Wein oder Cocktail suchen…", carte_hint:"Wählen Sie eine Kategorie, um die Karte zu entdecken",
+        cg_txt:"Mit dem Weitersurfen akzeptieren Sie unsere <a href=\"legal.html\">AGB &amp; Impressum</a>.", cg_lire:"Lesen", cg_ok:"Akzeptieren",
         w_pax:"Wie viele Personen?", w_note8:"Mehr als 8? Rufen Sie uns an: <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Personen", w_back2:"‹ Datum", w_back3:"‹ Uhrzeit",
         w_slot:"Wählen Sie Ihre Uhrzeit", w_dej:"Mittag", w_din:"Abend",
@@ -2203,6 +2341,7 @@
         tab_bar:"Bar &amp; Cocktails", tab_part:"Om te delen", tab_plats:"Hoofdgerechten", tab_braise:"Van de gril",
         tab_pizze:"Le pizze", tab_dess:"Desserts &amp; ijs", tab_vins:"Wijnen", tab_softs:"Frisdrank &amp; koffie", tab_pdj:"Ontbijt",
         carte_search:"Zoek een gerecht, wijn of cocktail…", carte_hint:"Kies een categorie om de kaart te bekijken",
+        cg_txt:"Door verder te surfen accepteer je onze <a href=\"legal.html\">Algemene Voorwaarden &amp; juridische info</a>.", cg_lire:"Lezen", cg_ok:"Ik accepteer",
         w_pax:"Met hoeveel zijn jullie?", w_note8:"Met meer dan 8? Bel ons op <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Gasten", w_back2:"‹ Datum", w_back3:"‹ Tijd",
         w_slot:"Kies je tijd", w_dej:"Lunch", w_din:"Diner",
@@ -2244,6 +2383,7 @@
       document.querySelectorAll(".lang-sel button").forEach(b => b.classList.toggle("on", b.dataset.lg === LG));
       const ind = document.getElementById("rwInd");
       if (ind && IND_DEFAUT[LG]) ind.value = IND_DEFAUT[LG];
+      if (window.__traduireCarte) window.__traduireCarte(LG);
     }
     document.querySelectorAll(".lang-sel button").forEach(b =>
       b.addEventListener("click", () => { traduire(b.dataset.lg); rafraichirWidget(); }));
@@ -2468,6 +2608,300 @@
     traduire(LG);
     allerEtape(1);
   })();
+  // ═══════ Traduction de la carte (catégories, plats génériques, descriptions) ═══════
+  // Format compact : FR ¦ EN ¦ IT ¦ DE ¦ NL — les noms propres (cocktails, pizze, vins…) restent inchangés.
+  (function(){
+    const L = [
+"Les incontournables¦The essentials¦Gli imperdibili¦Die Klassiker¦De klassiekers",
+"Les mojitos¦Mojitos¦I mojito¦Mojitos¦Mojito's",
+"Les spritz¦Spritz¦Gli spritz¦Spritz¦Spritz",
+"Les mules¦Mules¦I mule¦Mules¦Mules",
+"Les gin tonics¦Gin & tonics¦I gin tonic¦Gin Tonics¦Gin-tonics",
+"Les cocktails sans alcool¦Alcohol-free cocktails¦Cocktail analcolici¦Alkoholfreie Cocktails¦Alcoholvrije cocktails",
+"Les cocktails d'après-dîner¦After-dinner cocktails¦Cocktail after dinner¦After-Dinner-Cocktails¦After-dinnercocktails",
+"Eaux de vie & liqueurs¦Brandies & liqueurs¦Acquaviti e liquori¦Brände & Liköre¦Eaux-de-vie & likeuren",
+"Les apéritifs¦Aperitifs¦Gli aperitivi¦Aperitife¦Aperitieven",
+"Les bières¦Beers¦Le birre¦Biere¦Bieren",
+"Rhum¦Rum¦Rum¦Rum¦Rum",
+"Tequila · Jalisco, Mexique¦Tequila · Jalisco, Mexico¦Tequila · Jalisco, Messico¦Tequila · Jalisco, Mexiko¦Tequila · Jalisco, Mexico",
+"Mezcal · Oaxaca, Mexique¦Mezcal · Oaxaca, Mexico¦Mezcal · Oaxaca, Messico¦Mezcal · Oaxaca, Mexiko¦Mezcal · Oaxaca, Mexico",
+"Coté bar, à partager¦Bar side, to share¦Lato bar, da condividere¦Von der Bar, zum Teilen¦Aan de bar, om te delen",
+"Les entrées¦Starters¦Gli antipasti¦Vorspeisen¦Voorgerechten",
+"Les pâtes¦Pasta¦La pasta¦Pasta¦Pasta",
+"Les classiques¦The classics¦I classici¦Die Klassiker¦De klassiekers",
+"Les enfants · jusqu'à 11 ans¦Kids · up to 11¦Bambini · fino a 11 anni¦Kinder · bis 11 Jahre¦Kinderen · tot 11 jaar",
+"La braise¦From the embers¦La brace¦Vom Grill¦Van de gril",
+"Suppléments¦Extras¦Supplementi¦Beilagen¦Extra's",
+"Les pizze au feu de bois¦Wood-fired pizze¦Le pizze al forno a legna¦Pizze aus dem Holzofen¦Pizze uit de houtoven",
+"Suppléments pizze¦Pizza extras¦Supplementi pizze¦Pizza-Extras¦Pizza-extra's",
+"Le fromage¦Cheese¦Il formaggio¦Käse¦Kaas",
+"Les desserts¦Desserts¦I dolci¦Desserts¦Desserts",
+"Les coupes glacées¦Ice cream sundaes¦Le coppe gelato¦Eisbecher¦IJscoupes",
+"Les glaces artisanales¦Artisanal ice creams¦I gelati artigianali¦Hausgemachtes Eis¦Ambachtelijk ijs",
+"La sélection au verre¦By the glass¦Al calice¦Offene Weine¦Per glas",
+"Les rosés¦Rosés¦I rosati¦Roséweine¦Rosés",
+"Les blancs¦Whites¦I bianchi¦Weißweine¦Witte wijnen",
+"Les rouges¦Reds¦I rossi¦Rotweine¦Rode wijnen",
+"Les champagnes¦Champagnes¦Gli champagne¦Champagner¦Champagnes",
+"Les vins de dessert¦Dessert wines¦Vini da dessert¦Dessertweine¦Dessertwijnen",
+"Les softs¦Soft drinks¦Le bibite¦Softdrinks¦Frisdranken",
+"Les boissons chaudes¦Hot drinks¦Bevande calde¦Heiße Getränke¦Warme dranken",
+"Tous les jours de 8h à 11h¦Every day, 8–11 am¦Tutti i giorni dalle 8 alle 11¦Täglich von 8 bis 11 Uhr¦Elke dag van 8 tot 11 uur",
+"Vendredi, samedi & dimanche de 8h30 à 11h¦Friday to Sunday, 8:30–11 am¦Venerdì, sabato e domenica dalle 8:30 alle 11¦Freitag, Samstag & Sonntag von 8:30 bis 11 Uhr¦Vrijdag, zaterdag & zondag van 8:30 tot 11 uur",
+"Rhum brun, purée de coco, jus d'ananas, citron vert¦Dark rum, coconut purée, pineapple juice, lime¦Rum scuro, purea di cocco, succo d'ananas, lime¦Brauner Rum, Kokospüree, Ananassaft, Limette¦Bruine rum, kokospuree, ananassap, limoen",
+"Tequila, triple sec, jus de citron, sucre de canne¦Tequila, triple sec, lemon juice, cane sugar¦Tequila, triple sec, succo di limone, zucchero di canna¦Tequila, Triple Sec, Zitronensaft, Rohrzucker¦Tequila, triple sec, citroensap, rietsuiker",
+"Vodka, jus de tomate, jus de citron, Worcestershire sauce, tabasco, céleri¦Vodka, tomato juice, lemon juice, Worcestershire sauce, tabasco, celery¦Vodka, succo di pomodoro, succo di limone, salsa Worcestershire, tabasco, sedano¦Wodka, Tomatensaft, Zitronensaft, Worcestershiresauce, Tabasco, Sellerie¦Wodka, tomatensap, citroensap, worcestershiresaus, tabasco, selderij",
+"Rhum brun, rhum blanc, Cointreau, sirop d'orgeat, jus de citron vert¦Dark rum, white rum, Cointreau, orgeat syrup, lime juice¦Rum scuro, rum bianco, Cointreau, sciroppo d'orzata, succo di lime¦Brauner Rum, weißer Rum, Cointreau, Mandelsirup, Limettensaft¦Bruine rum, witte rum, Cointreau, orgeatsiroop, limoensap",
+"Cachaça, citron vert, sucre de canne¦Cachaça, lime, cane sugar¦Cachaça, lime, zucchero di canna¦Cachaça, Limette, Rohrzucker¦Cachaça, limoen, rietsuiker",
+"Vodka Eristoff, citron vert, sucre de canne¦Eristoff vodka, lime, cane sugar¦Vodka Eristoff, lime, zucchero di canna¦Eristoff-Wodka, Limette, Rohrzucker¦Eristoff-wodka, limoen, rietsuiker",
+"Vodka, gin, rhum, tequila, triple sec, coca, jus de citron¦Vodka, gin, rum, tequila, triple sec, cola, lemon juice¦Vodka, gin, rum, tequila, triple sec, cola, succo di limone¦Wodka, Gin, Rum, Tequila, Triple Sec, Cola, Zitronensaft¦Wodka, gin, rum, tequila, triple sec, cola, citroensap",
+"Classique¦Classic¦Classico¦Klassisch¦Klassiek",
+"Rhum brun, citron vert, cassonade, menthe fraîche, eau gazeuse¦Dark rum, lime, brown sugar, fresh mint, sparkling water¦Rum scuro, lime, zucchero di canna, menta fresca, acqua frizzante¦Brauner Rum, Limette, brauner Zucker, frische Minze, Sprudelwasser¦Bruine rum, limoen, bruine suiker, verse munt, bruiswater",
+"Rhum brun, citron vert, cassonade, menthe fraîche, champagne Laurent Perrier brut¦Dark rum, lime, brown sugar, fresh mint, Laurent Perrier brut champagne¦Rum scuro, lime, zucchero di canna, menta fresca, champagne Laurent Perrier brut¦Brauner Rum, Limette, brauner Zucker, frische Minze, Champagner Laurent Perrier brut¦Bruine rum, limoen, bruine suiker, verse munt, Laurent Perrier brut champagne",
+"Fraise, Framboise ou Passion¦Strawberry, raspberry or passion fruit¦Fragola, lampone o frutto della passione¦Erdbeere, Himbeere oder Passionsfrucht¦Aardbei, framboos of passievrucht",
+"Rhum blanc, citron vert, purée de fruit, menthe fraîche, eau gazeuse¦White rum, lime, fruit purée, fresh mint, sparkling water¦Rum bianco, lime, purea di frutta, menta fresca, acqua frizzante¦Weißer Rum, Limette, Fruchtpüree, frische Minze, Sprudelwasser¦Witte rum, limoen, fruitpuree, verse munt, bruiswater",
+"Myrte¦Myrtle¦Mirto¦Myrte¦Mirte",
+"Liqueur de myrte, citron vert, cassonade, menthe fraîche, eau gazeuse¦Myrtle liqueur, lime, brown sugar, fresh mint, sparkling water¦Liquore di mirto, lime, zucchero di canna, menta fresca, acqua frizzante¦Myrtenlikör, Limette, brauner Zucker, frische Minze, Sprudelwasser¦Mirtelikeur, limoen, bruine suiker, verse munt, bruiswater",
+"Apérol, prosecco, eau gazeuse, orange¦Aperol, prosecco, sparkling water, orange¦Aperol, prosecco, acqua frizzante, arancia¦Aperol, Prosecco, Sprudelwasser, Orange¦Aperol, prosecco, bruiswater, sinaasappel",
+"Cap Corse Mattei rouge, muscat pétillant Casanova, eau gazeuse, orange¦Red Cap Corse Mattei, Casanova sparkling muscat, sparkling water, orange¦Cap Corse Mattei rosso, moscato frizzante Casanova, acqua frizzante, arancia¦Roter Cap Corse Mattei, Casanova-Perlmuskateller, Sprudelwasser, Orange¦Rode Cap Corse Mattei, Casanova mousserende muskaat, bruiswater, sinaasappel",
+"Liqueur Saint Germain, prosecco, eau gazeuse, menthe fraîche, citron¦Saint Germain liqueur, prosecco, sparkling water, fresh mint, lemon¦Liquore Saint Germain, prosecco, acqua frizzante, menta fresca, limone¦Saint-Germain-Likör, Prosecco, Sprudelwasser, frische Minze, Zitrone¦Saint Germain-likeur, prosecco, bruiswater, verse munt, citroen",
+"Limoncello, prosecco, eau gazeuse, citron¦Limoncello, prosecco, sparkling water, lemon¦Limoncello, prosecco, acqua frizzante, limone¦Limoncello, Prosecco, Sprudelwasser, Zitrone¦Limoncello, prosecco, bruiswater, citroen",
+"Gin Mattei, ginger beer, citron vert, cassonade¦Mattei gin, ginger beer, lime, brown sugar¦Gin Mattei, ginger beer, lime, zucchero di canna¦Mattei-Gin, Ginger Beer, Limette, brauner Zucker¦Mattei-gin, gemberbier, limoen, bruine suiker",
+"Vodka Eristoff, ginger beer, citron vert, cassonade¦Eristoff vodka, ginger beer, lime, brown sugar¦Vodka Eristoff, ginger beer, lime, zucchero di canna¦Eristoff-Wodka, Ginger Beer, Limette, brauner Zucker¦Eristoff-wodka, gemberbier, limoen, bruine suiker",
+"Rhum ambré Havana, ginger beer, citron vert, cassonade¦Havana amber rum, ginger beer, lime, brown sugar¦Rum ambrato Havana, ginger beer, lime, zucchero di canna¦Havana-Rum, Ginger Beer, Limette, brauner Zucker¦Havana amberrum, gemberbier, limoen, bruine suiker",
+"Tequila Olmeca, ginger beer, citron vert, cassonade¦Olmeca tequila, ginger beer, lime, brown sugar¦Tequila Olmeca, ginger beer, lime, zucchero di canna¦Olmeca-Tequila, Ginger Beer, Limette, brauner Zucker¦Olmeca-tequila, gemberbier, limoen, bruine suiker",
+"Schweppes Tonic, baies de genièvre, citron jaune, citron vert¦Schweppes Tonic, juniper berries, lemon, lime¦Schweppes Tonic, bacche di ginepro, limone, lime¦Schweppes Tonic, Wacholderbeeren, Zitrone, Limette¦Schweppes Tonic, jeneverbessen, citroen, limoen",
+"Citron vert, menthe fraîche, sucre de canne, limonade¦Lime, fresh mint, cane sugar, lemonade¦Lime, menta fresca, zucchero di canna, limonata¦Limette, frische Minze, Rohrzucker, Limonade¦Limoen, verse munt, rietsuiker, limonade",
+"Purée de coco, jus d'ananas, jus de citron¦Coconut purée, pineapple juice, lemon juice¦Purea di cocco, succo d'ananas, succo di limone¦Kokospüree, Ananassaft, Zitronensaft¦Kokospuree, ananassap, citroensap",
+"Cap Mattei sans alcool, Muscat Casanova sans alcool¦Alcohol-free Cap Mattei, alcohol-free Casanova muscat¦Cap Mattei analcolico, moscato Casanova analcolico¦Alkoholfreier Cap Mattei, alkoholfreier Casanova-Muskateller¦Alcoholvrije Cap Mattei, alcoholvrije Casanova-muskaat",
+"Grenadine, jus d'ananas, jus d'orange¦Grenadine, pineapple juice, orange juice¦Granatina, succo d'ananas, succo d'arancia¦Grenadine, Ananassaft, Orangensaft¦Grenadine, ananassap, sinaasappelsap",
+"Amaretto, blanc d'œuf, jus de citron, sirop de sucre¦Amaretto, egg white, lemon juice, sugar syrup¦Amaretto, albume, succo di limone, sciroppo di zucchero¦Amaretto, Eiweiß, Zitronensaft, Zuckersirup¦Amaretto, eiwit, citroensap, suikersiroop",
+"Strato, blanc d'œuf, jus de citron, sirop de sucre¦Strato, egg white, lemon juice, sugar syrup¦Strato, albume, succo di limone, sciroppo di zucchero¦Strato, Eiweiß, Zitronensaft, Zuckersirup¦Strato, eiwit, citroensap, suikersiroop",
+"Whisky, sirop de sucre, espresso, chantilly¦Whisky, sugar syrup, espresso, whipped cream¦Whisky, sciroppo di zucchero, espresso, panna montata¦Whisky, Zuckersirup, Espresso, Sahne¦Whisky, suikersiroop, espresso, slagroom",
+"Vodka, liqueur de café¦Vodka, coffee liqueur¦Vodka, liquore al caffè¦Wodka, Kaffeelikör¦Wodka, koffielikeur",
+"Vodka, espresso, liqueur de café, sirop de sucre¦Vodka, espresso, coffee liqueur, sugar syrup¦Vodka, espresso, liquore al caffè, sciroppo di zucchero¦Wodka, Espresso, Kaffeelikör, Zuckersirup¦Wodka, espresso, koffielikeur, suikersiroop",
+"Crème de cacao blanc, crème de menthe, crème fraîche¦White cacao liqueur, crème de menthe, fresh cream¦Crema di cacao bianco, crema di menta, panna fresca¦Weißer Kakaolikör, Pfefferminzlikör, Sahne¦Witte cacaolikeur, crème de menthe, verse room",
+"Rhum brun, jus de citron, miel, anis étoilé, cannelle, eau chaude¦Dark rum, lemon juice, honey, star anise, cinnamon, hot water¦Rum scuro, succo di limone, miele, anice stellato, cannella, acqua calda¦Brauner Rum, Zitronensaft, Honig, Sternanis, Zimt, heißes Wasser¦Bruine rum, citroensap, honing, steranijs, kaneel, warm water",
+"Écosse¦Scotland¦Scozia¦Schottland¦Schotland",
+"Corse, France¦Corsica, France¦Corsica, Francia¦Korsika, Frankreich¦Corsica, Frankrijk",
+"Japon¦Japan¦Giappone¦Japan¦Japan",
+"Angleterre¦England¦Inghilterra¦England¦Engeland",
+"Géorgie¦Georgia¦Georgia¦Georgien¦Georgië",
+"Suède¦Sweden¦Svezia¦Schweden¦Zweden",
+"Pologne¦Poland¦Polonia¦Polen¦Polen",
+"Caraïbes¦Caribbean¦Caraibi¦Karibik¦Caraïben",
+"Vénézuéla¦Venezuela¦Venezuela¦Venezuela¦Venezuela",
+"Jamaïque¦Jamaica¦Giamaica¦Jamaika¦Jamaica",
+"La Barbade¦Barbados¦Barbados¦Barbados¦Barbados",
+"Allemagne¦Germany¦Germania¦Deutschland¦Duitsland",
+"Bergamote¦Bergamot¦Bergamotto¦Bergamotte¦Bergamot",
+"Grappa, Myrte¦Grappa, myrtle¦Grappa, mirto¦Grappa, Myrte¦Grappa, mirte",
+"Prune¦Plum¦Prugna¦Pflaume¦Pruim",
+"Get 27, Get 31, Jagermeister, Bailey's, Malibu, Cointreau, Café¦Get 27, Get 31, Jägermeister, Bailey's, Malibu, Cointreau, coffee¦Get 27, Get 31, Jägermeister, Bailey's, Malibu, Cointreau, caffè¦Get 27, Get 31, Jägermeister, Bailey's, Malibu, Cointreau, Kaffee¦Get 27, Get 31, Jägermeister, Bailey's, Malibu, Cointreau, koffie",
+"Amaretto Disaronno, Myrte blanche¦Amaretto Disaronno, white myrtle¦Amaretto Disaronno, mirto bianco¦Amaretto Disaronno, weiße Myrte¦Amaretto Disaronno, witte mirte",
+"Limoncello, Myrte rouge¦Limoncello, red myrtle¦Limoncello, mirto rosso¦Limoncello, rote Myrte¦Limoncello, rode mirte",
+"Châtaigne, Cedra¦Chestnut, citron¦Castagna, cedro¦Kastanie, Zedratzitrone¦Kastanje, cederappel",
+"Noisette¦Hazelnut¦Nocciola¦Haselnuss¦Hazelnoot",
+"Prunelle de Bourgogne, Poire, Abricot, Mandarine, Cerise, Framboise, Cassis, Verveine¦Burgundy sloe, pear, apricot, mandarin, cherry, raspberry, blackcurrant, verbena¦Prugnola di Borgogna, pera, albicocca, mandarino, ciliegia, lampone, ribes nero, verbena¦Schlehe aus Burgund, Birne, Aprikose, Mandarine, Kirsche, Himbeere, Schwarze Johannisbeere, Eisenkraut¦Sleedoorn uit Bourgondië, peer, abrikoos, mandarijn, kers, framboos, zwarte bes, verbena",
+"Suppléments : soda 1 · Redbull 2 · sirop 1¦Extras: soda 1 · Red Bull 2 · syrup 1¦Supplementi: bibita 1 · Red Bull 2 · sciroppo 1¦Zuschläge: Limo 1 · Red Bull 2 · Sirup 1¦Supplementen: frisdrank 1 · Red Bull 2 · siroop 1",
+"Muscat, Muscat pétillant, Prosecco¦Muscat, sparkling muscat, prosecco¦Moscato, moscato frizzante, prosecco¦Muskateller, Perlmuskateller, Prosecco¦Muskaat, mousserende muskaat, prosecco",
+"Kir¦Kir¦Kir¦Kir¦Kir",
+"Cassis, mûre, framboise, pêche, fraise¦Blackcurrant, blackberry, raspberry, peach, strawberry¦Ribes nero, mora, lampone, pesca, fragola¦Schwarze Johannisbeere, Brombeere, Himbeere, Pfirsich, Erdbeere¦Zwarte bes, braam, framboos, perzik, aardbei",
+"Ambrée, Rossa, Limoncella¦Amber, Rossa, Limoncella¦Ambrata, Rossa, Limoncella¦Bernstein, Rossa, Limoncella¦Amber, Rossa, Limoncella",
+"Blonde, Blanche à l'immortelle, Miel¦Lager, wheat beer with immortelle, honey¦Bionda, blanche all'elicriso, miele¦Hell, Weißbier mit Immortelle, Honig¦Blond, witbier met immortelle, honing",
+"Pression Pietra Bionda, 25 cl¦Draught Pietra Bionda, 25 cl¦Pietra Bionda alla spina, 25 cl¦Pietra Bionda vom Fass, 25 cl¦Pietra Bionda van de tap, 25 cl",
+"Pression Pietra Bionda, 50 cl¦Draught Pietra Bionda, 50 cl¦Pietra Bionda alla spina, 50 cl¦Pietra Bionda vom Fass, 50 cl¦Pietra Bionda van de tap, 50 cl",
+"Planche de charcuterie du fils Bucchini¦Charcuterie board from the Bucchini family¦Tagliere di salumi del figlio Bucchini¦Wurstplatte vom Sohn Bucchini¦Charcuterieplank van zoon Bucchini",
+"Planche de Prizuttu¦Prizuttu ham board¦Tagliere di Prizuttu¦Prizuttu-Platte¦Prizuttu-plank",
+"Assiette de Prizuttu¦Prizuttu ham plate¦Piatto di Prizuttu¦Prizuttu-Teller¦Bord Prizuttu",
+"Planche de fromages¦Cheese board¦Tagliere di formaggi¦Käseplatte¦Kaasplank",
+"Confiture de figues¦Fig jam¦Confettura di fichi¦Feigenkonfitüre¦Vijgenjam",
+"La grande planche mixte¦The large mixed board¦Il gran tagliere misto¦Die große gemischte Platte¦De grote gemengde plank",
+"Charcuterie & fromages¦Cold cuts & cheeses¦Salumi e formaggi¦Wurst & Käse¦Charcuterie & kazen",
+"Antipasti de légumes à la braise¦Ember-grilled vegetable antipasti¦Antipasti di verdure alla brace¦Gegrillte Gemüse-Antipasti¦Antipasti van gegrilde groenten",
+"Mozzarella di buffala, huile d'olive¦Buffalo mozzarella, olive oil¦Mozzarella di bufala, olio d'oliva¦Büffelmozzarella, Olivenöl¦Buffelmozzarella, olijfolie",
+"Les croques truffés¦Truffled croque-monsieurs¦I croque tartufati¦Getrüffelte Croques¦Truffel-croques",
+"Fleur de sel, huile d'olive¦Fleur de sel, olive oil¦Fior di sale, olio d'oliva¦Fleur de Sel, Olivenöl¦Fleur de sel, olijfolie",
+"Houmous Libanais¦Lebanese hummus¦Hummus libanese¦Libanesischer Hummus¦Libanese hummus",
+"Pois chiches frits, huile aux herbes et tortillas¦Fried chickpeas, herb oil and tortillas¦Ceci fritti, olio alle erbe e tortillas¦Frittierte Kichererbsen, Kräuteröl und Tortillas¦Gefrituurde kikkererwten, kruidenolie en tortilla's",
+"Nachos au cheddar¦Cheddar nachos¦Nachos al cheddar¦Cheddar-Nachos¦Nachos met cheddar",
+"Chips de maïs, cheddar, jalapenos, olives noires, viande hachée à la tomate, crème d'Isigny¦Corn chips, cheddar, jalapeños, black olives, minced beef in tomato, Isigny cream¦Chips di mais, cheddar, jalapeños, olive nere, carne macinata al pomodoro, crema d'Isigny¦Maischips, Cheddar, Jalapeños, schwarze Oliven, Hackfleisch in Tomate, Isigny-Crème¦Maïschips, cheddar, jalapeños, zwarte olijven, gehakt in tomatensaus, Isigny-room",
+"Tomates, burrata crémeuse¦Tomatoes, creamy burrata¦Pomodori, burrata cremosa¦Tomaten, cremige Burrata¦Tomaten, romige burrata",
+"Huile basilic et toasts grillés¦Basil oil and grilled toasts¦Olio al basilico e pane tostato¦Basilikumöl und geröstetes Brot¦Basilicumolie en geroosterd brood",
+"Salade Grecque¦Greek salad¦Insalata greca¦Griechischer Salat¦Griekse salade",
+"Tomates, concombres, feta, oignons rouges, olives noires, origan¦Tomatoes, cucumber, feta, red onions, black olives, oregano¦Pomodori, cetrioli, feta, cipolle rosse, olive nere, origano¦Tomaten, Gurke, Feta, rote Zwiebeln, schwarze Oliven, Oregano¦Tomaten, komkommer, feta, rode ui, zwarte olijven, oregano",
+"Carpaccio de poulpe¦Octopus carpaccio¦Carpaccio di polpo¦Oktopus-Carpaccio¦Octopuscarpaccio",
+"Vinaigrette acidulée, noisettes¦Tangy vinaigrette, hazelnuts¦Vinaigrette acidula, nocciole¦Säuerliche Vinaigrette, Haselnüsse¦Frisse vinaigrette, hazelnoten",
+"La vraie Caesar¦The real Caesar¦La vera Caesar¦Der echte Caesar¦De echte caesar",
+"Romaine, poulet, croutons, œuf mollet, parmesan, sauce à l'anchois¦Romaine, chicken, croutons, soft-boiled egg, parmesan, anchovy dressing¦Lattuga romana, pollo, crostini, uovo morbido, parmigiano, salsa alle acciughe¦Römersalat, Hähnchen, Croûtons, wachsweiches Ei, Parmesan, Sardellensauce¦Romeinse sla, kip, croutons, zachtgekookt ei, parmezaan, ansjovisdressing",
+"Pain toasté, avocat, œuf mollet, fromage frais, sésame¦Toasted bread, avocado, soft-boiled egg, cream cheese, sesame¦Pane tostato, avocado, uovo morbido, formaggio fresco, sesamo¦Geröstetes Brot, Avocado, wachsweiches Ei, Frischkäse, Sesam¦Geroosterd brood, avocado, zachtgekookt ei, verse kaas, sesam",
+"Carpaccio de bœuf¦Beef carpaccio¦Carpaccio di manzo¦Rindercarpaccio¦Rundercarpaccio",
+"Fleurs de câpres, citron, parmesan, champignons frais, huile d'olive¦Caper berries, lemon, parmesan, fresh mushrooms, olive oil¦Fiori di cappero, limone, parmigiano, funghi freschi, olio d'oliva¦Kapernbeeren, Zitrone, Parmesan, frische Pilze, Olivenöl¦Kappertjesbessen, citroen, parmezaan, verse champignons, olijfolie",
+"Os à moelle braisé¦Braised bone marrow¦Osso con midollo alla brace¦Geschmortes Markbein¦Gegrild mergpijpje",
+"Pain grillé à l'ail¦Garlic toast¦Pane tostato all'aglio¦Knoblauchtoast¦Knoflooktoast",
+"Lasagnes¦Lasagne¦Lasagne¦Lasagne¦Lasagne",
+"Linguine Tomates Burrata¦Linguine, tomatoes & burrata¦Linguine pomodoro e burrata¦Linguine Tomaten-Burrata¦Linguine tomaat-burrata",
+"Pignons grillés, roquette¦Toasted pine nuts, rocket¦Pinoli tostati, rucola¦Geröstete Pinienkerne, Rucola¦Geroosterde pijnboompitten, rucola",
+"Linguine Saumon¦Salmon linguine¦Linguine al salmone¦Lachs-Linguine¦Linguine met zalm",
+"Linguine Crème de Truffe¦Truffle cream linguine¦Linguine alla crema di tartufo¦Trüffelcreme-Linguine¦Linguine met truffelroom",
+"Jambon en chiffonnade et parmesan¦Shredded ham and parmesan¦Prosciutto a chiffonnade e parmigiano¦Schinken-Chiffonnade und Parmesan¦Fijngesneden ham en parmezaan",
+"Œufs de mulet séchés, huile d'olive, ail, persil, piment¦Dried mullet roe, olive oil, garlic, parsley, chilli¦Uova di muggine essiccate, olio, aglio, prezzemolo, peperoncino¦Getrockneter Meeräschenrogen, Olivenöl, Knoblauch, Petersilie, Chili¦Gedroogde harderkuit, olijfolie, knoflook, peterselie, peper",
+"Steak Black Angus, pain, cheddar, tomate, salade, confit d'oignons, sauce burger¦Black Angus steak, bun, cheddar, tomato, lettuce, onion confit, burger sauce¦Black Angus, pane, cheddar, pomodoro, insalata, cipolle confit, salsa burger¦Black-Angus-Steak, Bun, Cheddar, Tomate, Salat, Zwiebelconfit, Burgersauce¦Black Angus, broodje, cheddar, tomaat, sla, uienconfijt, burgersaus",
+"Tartare de bœuf au couteau¦Hand-cut beef tartare¦Tartare di manzo al coltello¦Rindertatar, handgeschnitten¦Met de hand gesneden rundertartaar",
+"Bavette Allemande, échalotes, câpres, cornichons, persil, émietté de fêta, croutons noirs, œuf, sauce¦German bavette, shallots, capers, gherkins, parsley, crumbled feta, black croutons, egg, sauce¦Bavetta, scalogno, capperi, cetriolini, prezzemolo, feta sbriciolata, crostini neri, uovo, salsa¦Bavette, Schalotten, Kapern, Cornichons, Petersilie, Feta, schwarze Croûtons, Ei, Sauce¦Bavette, sjalot, kappertjes, augurk, peterselie, feta, zwarte croutons, ei, saus",
+"Grande escalope de veau panée au corn flakes¦Large veal escalope breaded in corn flakes¦Grande cotoletta di vitello impanata ai corn flakes¦Großes Kalbsschnitzel in Cornflakes-Panade¦Grote kalfsschnitzel gepaneerd met cornflakes",
+"Poulet pané frites, linguine au jambon ou Pizzetta au fromage¦Breaded chicken with fries, ham linguine or cheese pizzetta¦Pollo impanato con patatine, linguine al prosciutto o pizzetta al formaggio¦Paniertes Hähnchen mit Pommes, Schinken-Linguine oder Käse-Pizzetta¦Gepaneerde kip met friet, linguine met ham of kaaspizzetta",
+"Sneakers glacé, Tifruity ou compote¦Iced Snickers, Tifruity or fruit compote¦Snickers gelato, Tifruity o composta¦Snickers-Eis, Tifruity oder Kompott¦Snickers-ijs, Tifruity of compote",
+"Entrecôte¦Rib steak¦Entrecôte¦Entrecôte¦Entrecote",
+"Origine UE, 400 g env., frites¦EU origin, approx. 400 g, fries¦Origine UE, circa 400 g, patatine¦EU-Herkunft, ca. 400 g, Pommes¦EU-herkomst, ca. 400 g, friet",
+"Cotelettes d'agneau¦Lamb chops¦Costolette d'agnello¦Lammkoteletts¦Lamskoteletten",
+"Origine UE, pommes de terre grenailles¦EU origin, baby potatoes¦Origine UE, patate novelle¦EU-Herkunft, Drillinge¦EU-herkomst, krieltjes",
+"Daurade ou Loup entier¦Whole sea bream or sea bass¦Orata o branzino intero¦Ganze Dorade oder Wolfsbarsch¦Hele dorade of zeebaars",
+"Selon arrivage, 300/400 g¦Daily catch, 300/400 g¦Secondo pescato, 300/400 g¦Je nach Fang, 300/400 g¦Dagvangst, 300/400 g",
+"Filet de Saumon fumé au bois de cerisier¦Salmon fillet smoked over cherry wood¦Filetto di salmone affumicato al legno di ciliegio¦Lachsfilet, über Kirschholz geräuchert¦Zalmfilet gerookt op kersenhout",
+"Trio de gambas sauvages¦Trio of wild king prawns¦Trio di gamberoni selvaggi¦Trio wilder Riesengarnelen¦Trio wilde gamba's",
+"Beurre d'ail, zeste de citron, persil frais¦Garlic butter, lemon zest, fresh parsley¦Burro all'aglio, scorza di limone, prezzemolo fresco¦Knoblauchbutter, Zitronenzeste, frische Petersilie¦Knoflookboter, citroenrasp, verse peterselie",
+"Poulpe, Gambas et gremolata¦Octopus, king prawns and gremolata¦Polpo, gamberoni e gremolata¦Oktopus, Garnelen und Gremolata¦Octopus, gamba's en gremolata",
+"Poulpe grillé laqué au miel & paprika fumé¦Grilled octopus glazed with honey & smoked paprika¦Polpo grigliato laccato al miele e paprika affumicata¦Gegrillter Oktopus, glasiert mit Honig & geräuchertem Paprika¦Gegrilde octopus gelakt met honing & gerookte paprika",
+"Crème de chorizo¦Chorizo cream¦Crema di chorizo¦Chorizo-Creme¦Chorizoroom",
+"Riz pilaf¦Pilaf rice¦Riso pilaf¦Pilawreis¦Pilavrijst",
+"Salade verte¦Green salad¦Insalata verde¦Grüner Salat¦Groene salade",
+"Frites¦Fries¦Patatine fritte¦Pommes frites¦Friet",
+"Pommes de terre grenailles¦Baby potatoes¦Patate novelle¦Drillinge¦Krieltjes",
+"Sucrine braisée¦Braised baby gem lettuce¦Sucrine brasata¦Geschmorte Sucrine¦Gegrilde little gem",
+"Avocat braisé, sauce yaourt¦Grilled avocado, yoghurt sauce¦Avocado alla brace, salsa allo yogurt¦Gegrillte Avocado, Joghurtsauce¦Gegrilde avocado, yoghurtsaus",
+"Poêlée de légumes¦Sautéed vegetables¦Verdure saltate¦Gemüsepfanne¦Gebakken groenten",
+"Sauces : poivre, roquefort, chimichurri¦Sauces: pepper, roquefort, chimichurri¦Salse: pepe, roquefort, chimichurri¦Saucen: Pfeffer, Roquefort, Chimichurri¦Sauzen: peper, roquefort, chimichurri",
+"Sel, huile d'olive, romarin¦Salt, olive oil, rosemary¦Sale, olio d'oliva, rosmarino¦Salz, Olivenöl, Rosmarin¦Zout, olijfolie, rozemarijn",
+"Tomate, fior di latte¦Tomato, fior di latte¦Pomodoro, fior di latte¦Tomate, Fior di Latte¦Tomaat, fior di latte",
+"Tomate, fior di latte, anchois, olives noires, origan¦Tomato, fior di latte, anchovies, black olives, oregano¦Pomodoro, fior di latte, acciughe, olive nere, origano¦Tomate, Fior di Latte, Sardellen, schwarze Oliven, Oregano¦Tomaat, fior di latte, ansjovis, zwarte olijven, oregano",
+"Tomate, fior di latte, jambon¦Tomato, fior di latte, ham¦Pomodoro, fior di latte, prosciutto¦Tomate, Fior di Latte, Schinken¦Tomaat, fior di latte, ham",
+"Tomate, fior di latte, jambon, champignons frais¦Tomato, fior di latte, ham, fresh mushrooms¦Pomodoro, fior di latte, prosciutto, funghi freschi¦Tomate, Fior di Latte, Schinken, frische Pilze¦Tomaat, fior di latte, ham, verse champignons",
+"Crème, fior di latte, jambon, champignons frais¦Cream, fior di latte, ham, fresh mushrooms¦Panna, fior di latte, prosciutto, funghi freschi¦Sahne, Fior di Latte, Schinken, frische Pilze¦Room, fior di latte, ham, verse champignons",
+"Crème, fior di latte, fromage de chèvre, miel¦Cream, fior di latte, goat cheese, honey¦Panna, fior di latte, formaggio di capra, miele¦Sahne, Fior di Latte, Ziegenkäse, Honig¦Room, fior di latte, geitenkaas, honing",
+"Tomate, fior di latte, oignons confits, roquefort¦Tomato, fior di latte, onion confit, roquefort¦Pomodoro, fior di latte, cipolle confit, roquefort¦Tomate, Fior di Latte, Zwiebelconfit, Roquefort¦Tomaat, fior di latte, uienconfijt, roquefort",
+"Tomate, fior di latte, emmental, gorgonzola, parmigiano¦Tomato, fior di latte, emmental, gorgonzola, parmigiano¦Pomodoro, fior di latte, emmental, gorgonzola, parmigiano¦Tomate, Fior di Latte, Emmentaler, Gorgonzola, Parmigiano¦Tomaat, fior di latte, emmentaler, gorgonzola, parmigiano",
+"Tomate, fior di latte, saucisse sarde, oignons, olives noires, origan¦Tomato, fior di latte, Sardinian sausage, onions, black olives, oregano¦Pomodoro, fior di latte, salsiccia sarda, cipolle, olive nere, origano¦Tomate, Fior di Latte, sardische Wurst, Zwiebeln, schwarze Oliven, Oregano¦Tomaat, fior di latte, Sardijnse worst, ui, zwarte olijven, oregano",
+"Tomate, fior di latte, courgettes, aubergines, parmesan, basilic, huile d'olive¦Tomato, fior di latte, courgettes, aubergines, parmesan, basil, olive oil¦Pomodoro, fior di latte, zucchine, melanzane, parmigiano, basilico, olio¦Tomate, Fior di Latte, Zucchini, Auberginen, Parmesan, Basilikum, Olivenöl¦Tomaat, fior di latte, courgette, aubergine, parmezaan, basilicum, olijfolie",
+"Roquette, jambon de parme, tomates fraîches, stracciatella, huile d'olive (garnie après cuisson)¦Rocket, Parma ham, fresh tomatoes, stracciatella, olive oil (topped after baking)¦Rucola, prosciutto di Parma, pomodori freschi, stracciatella, olio (farcita dopo cottura)¦Rucola, Parmaschinken, frische Tomaten, Stracciatella, Olivenöl (nach dem Backen belegt)¦Rucola, parmaham, verse tomaten, stracciatella, olijfolie (belegd na het bakken)",
+"Tomate, fior di latte, poivrons, chorizo, gorgonzola¦Tomato, fior di latte, peppers, chorizo, gorgonzola¦Pomodoro, fior di latte, peperoni, chorizo, gorgonzola¦Tomate, Fior di Latte, Paprika, Chorizo, Gorgonzola¦Tomaat, fior di latte, paprika, chorizo, gorgonzola",
+"Tomate, fior di latte, jambon de parme, roquette, parmesan¦Tomato, fior di latte, Parma ham, rocket, parmesan¦Pomodoro, fior di latte, prosciutto di Parma, rucola, parmigiano¦Tomate, Fior di Latte, Parmaschinken, Rucola, Parmesan¦Tomaat, fior di latte, parmaham, rucola, parmezaan",
+"Tomate, fior di latte, jambon, artichauts, champignons frais, olives, parmesan¦Tomato, fior di latte, ham, artichokes, fresh mushrooms, olives, parmesan¦Pomodoro, fior di latte, prosciutto, carciofi, funghi freschi, olive, parmigiano¦Tomate, Fior di Latte, Schinken, Artischocken, frische Pilze, Oliven, Parmesan¦Tomaat, fior di latte, ham, artisjokken, verse champignons, olijven, parmezaan",
+"Tomate, fior di latte, tomates cerises, stracciatella, roquette¦Tomato, fior di latte, cherry tomatoes, stracciatella, rocket¦Pomodoro, fior di latte, pomodorini, stracciatella, rucola¦Tomate, Fior di Latte, Kirschtomaten, Stracciatella, Rucola¦Tomaat, fior di latte, kerstomaatjes, stracciatella, rucola",
+"Tomate, fior di latte, jambon, saucisse sarde piquante, oignons, œuf, origan¦Tomato, fior di latte, ham, spicy Sardinian sausage, onions, egg, oregano¦Pomodoro, fior di latte, prosciutto, salsiccia sarda piccante, cipolle, uovo, origano¦Tomate, Fior di Latte, Schinken, scharfe sardische Wurst, Zwiebeln, Ei, Oregano¦Tomaat, fior di latte, ham, pittige Sardijnse worst, ui, ei, oregano",
+"Tomate, fior di latte, roquette, burrata¦Tomato, fior di latte, rocket, burrata¦Pomodoro, fior di latte, rucola, burrata¦Tomate, Fior di Latte, Rucola, Burrata¦Tomaat, fior di latte, rucola, burrata",
+"Crème, fior di latte, crème de truffe noire, parmesan, roquette¦Cream, fior di latte, black truffle cream, parmesan, rocket¦Panna, fior di latte, crema di tartufo nero, parmigiano, rucola¦Sahne, Fior di Latte, schwarze Trüffelcreme, Parmesan, Rucola¦Room, fior di latte, zwarte truffelroom, parmezaan, rucola",
+"Fromage, œuf, anchois, légume¦Cheese, egg, anchovies, vegetable¦Formaggio, uovo, acciughe, verdura¦Käse, Ei, Sardellen, Gemüse¦Kaas, ei, ansjovis, groente",
+"Jambon, saucisse, parme, sauce truffe¦Ham, sausage, Parma ham, truffle sauce¦Prosciutto, salsiccia, Parma, salsa al tartufo¦Schinken, Wurst, Parmaschinken, Trüffelsauce¦Ham, worst, parmaham, truffelsaus",
+"Planche de fromages, confiture de figues¦Cheese board, fig jam¦Tagliere di formaggi, confettura di fichi¦Käseplatte, Feigenkonfitüre¦Kaasplank, vijgenjam",
+"À partager¦To share¦Da condividere¦Zum Teilen¦Om te delen",
+"Tiramisu traditionnel¦Traditional tiramisu¦Tiramisù tradizionale¦Klassisches Tiramisu¦Traditionele tiramisu",
+"Soupe de fraises à la fleur d'oranger¦Strawberry soup with orange blossom¦Zuppetta di fragole ai fiori d'arancio¦Erdbeersuppe mit Orangenblüte¦Aardbeiensoep met oranjebloesem",
+"Sorbet mangue, chantilly maison¦Mango sorbet, homemade whipped cream¦Sorbetto al mango, panna montata della casa¦Mangosorbet, hausgemachte Chantilly¦Mangosorbet, huisgemaakte slagroom",
+"Mousse au chocolat¦Chocolate mousse¦Mousse al cioccolato¦Schokoladenmousse¦Chocolademousse",
+"Moelleux à la châtaigne¦Chestnut fondant¦Tortino alla castagna¦Kastanienküchlein¦Kastanjemoelleux",
+"Glace artisanale à la châtaigne¦Artisanal chestnut ice cream¦Gelato artigianale alla castagna¦Hausgemachtes Kastanieneis¦Ambachtelijk kastanje-ijs",
+"Crème brûlée à la vanille¦Vanilla crème brûlée¦Crème brûlée alla vaniglia¦Vanille-Crème-brûlée¦Vanille crème brûlée",
+"Dessert du jour¦Dessert of the day¦Dolce del giorno¦Dessert des Tages¦Dessert van de dag",
+"Vanille, fraise, chocolat, banane fraîche, chantilly, amandes effilées, sauce chocolat¦Vanilla, strawberry, chocolate, fresh banana, whipped cream, flaked almonds, chocolate sauce¦Vaniglia, fragola, cioccolato, banana fresca, panna, mandorle a lamelle, salsa al cioccolato¦Vanille, Erdbeere, Schokolade, frische Banane, Sahne, Mandelblättchen, Schokoladensauce¦Vanille, aardbei, chocolade, verse banaan, slagroom, amandelschaafsel, chocoladesaus",
+"2 boules chocolat, lait chocolaté, chantilly, sauce chocolat¦2 scoops chocolate, chocolate milk, whipped cream, chocolate sauce¦2 palline di cioccolato, latte al cioccolato, panna, salsa al cioccolato¦2 Kugeln Schokolade, Kakaomilch, Sahne, Schokoladensauce¦2 bollen chocolade, chocolademelk, slagroom, chocoladesaus",
+"2 boules café, café frappé, chantilly, sauce café¦2 scoops coffee, iced coffee, whipped cream, coffee sauce¦2 palline al caffè, caffè frappé, panna, salsa al caffè¦2 Kugeln Kaffee, Eiskaffee, Sahne, Kaffeesauce¦2 bollen koffie, ijskoffie, slagroom, koffiesaus",
+"Vanille, caramel beurre salé, chantilly, amandes effilées, sauce caramel¦Vanilla, salted butter caramel, whipped cream, flaked almonds, caramel sauce¦Vaniglia, caramello al burro salato, panna, mandorle a lamelle, salsa al caramello¦Vanille, Salzbutterkaramell, Sahne, Mandelblättchen, Karamellsauce¦Vanille, gezouten karamel, slagroom, amandelschaafsel, karamelsaus",
+"Chocolat, noix de coco, chantilly, sauce chocolat, brisures de bounty¦Chocolate, coconut, whipped cream, chocolate sauce, Bounty pieces¦Cioccolato, cocco, panna, salsa al cioccolato, pezzetti di Bounty¦Schokolade, Kokos, Sahne, Schokoladensauce, Bounty-Stückchen¦Chocolade, kokos, slagroom, chocoladesaus, stukjes Bounty",
+"Vanille, chocolat, cookie dough, chantilly, sauce chocolat, brisures de cookies¦Vanilla, chocolate, cookie dough, whipped cream, chocolate sauce, cookie pieces¦Vaniglia, cioccolato, cookie dough, panna, salsa al cioccolato, briciole di cookie¦Vanille, Schokolade, Cookie Dough, Sahne, Schokoladensauce, Keksstückchen¦Vanille, chocolade, cookie dough, slagroom, chocoladesaus, koekkruimels",
+"Vanille, 2 boules châtaigne, confiture de châtaignes corses, chantilly¦Vanilla, 2 scoops chestnut, Corsican chestnut jam, whipped cream¦Vaniglia, 2 palline alla castagna, confettura di castagne corse, panna¦Vanille, 2 Kugeln Kastanie, korsische Kastanienkonfitüre, Sahne¦Vanille, 2 bollen kastanje, Corsicaanse kastanjejam, slagroom",
+"Vanille, 2 boules spéculoos, brisures de spéculoos, chantilly, sauce spéculoos¦Vanilla, 2 scoops speculoos, speculoos crumbs, whipped cream, speculoos sauce¦Vaniglia, 2 palline speculoos, briciole di speculoos, panna, salsa speculoos¦Vanille, 2 Kugeln Spekulatius, Spekulatiusbrösel, Sahne, Spekulatiussauce¦Vanille, 2 bollen speculoos, speculooskruim, slagroom, speculoossaus",
+"3 boules vanille, chantilly & beaucoup de sauce chocolat¦3 scoops vanilla, whipped cream & plenty of chocolate sauce¦3 palline di vaniglia, panna e tanta salsa al cioccolato¦3 Kugeln Vanille, Sahne & viel Schokoladensauce¦3 bollen vanille, slagroom & veel chocoladesaus",
+"2 boules citron, vodka, zeste de citron vert¦2 scoops lemon, vodka, lime zest¦2 palline al limone, vodka, scorza di lime¦2 Kugeln Zitrone, Wodka, Limettenzeste¦2 bollen citroen, wodka, limoenrasp",
+"Mangue, fraise, framboise, pago fraise, chantilly, sauce fruits rouges, amandes effilées¦Mango, strawberry, raspberry, strawberry Pago, whipped cream, red berry sauce, flaked almonds¦Mango, fragola, lampone, Pago alla fragola, panna, salsa ai frutti rossi, mandorle¦Mango, Erdbeere, Himbeere, Erdbeer-Pago, Sahne, rote Fruchtsauce, Mandelblättchen¦Mango, aardbei, framboos, aardbeien-Pago, slagroom, rood fruitsaus, amandelschaafsel",
+"Chocolat, 2 boules pistache, chantilly, sauce pistache¦Chocolate, 2 scoops pistachio, whipped cream, pistachio sauce¦Cioccolato, 2 palline al pistacchio, panna, salsa al pistacchio¦Schokolade, 2 Kugeln Pistazie, Sahne, Pistaziensauce¦Chocolade, 2 bollen pistache, slagroom, pistachesaus",
+"Le Milkshake¦Milkshake¦Il milkshake¦Milkshake¦Milkshake",
+"Parfum au choix, chantilly¦Flavour of your choice, whipped cream¦Gusto a scelta, panna¦Sorte nach Wahl, Sahne¦Smaak naar keuze, slagroom",
+"Parfums¦Flavours¦I gusti¦Sorten¦Smaken",
+"Vanille bourbon de Madagascar, chocolat copeaux suisses, pistache de Sicile, café espresso, châtaigne, noix de coco, caramel beurre sel de Guérande, cookie dough, fraise, noisette romaine, spéculoos, framboise, citron de Sicile, mangue¦Madagascar bourbon vanilla, Swiss chocolate shavings, Sicilian pistachio, espresso, chestnut, coconut, Guérande salted butter caramel, cookie dough, strawberry, Roman hazelnut, speculoos, raspberry, Sicilian lemon, mango¦Vaniglia bourbon del Madagascar, cioccolato con scaglie svizzere, pistacchio di Sicilia, caffè espresso, castagna, cocco, caramello al burro salato di Guérande, cookie dough, fragola, nocciola romana, speculoos, lampone, limone di Sicilia, mango¦Bourbon-Vanille aus Madagaskar, Schweizer Schokoladenspäne, sizilianische Pistazie, Espresso, Kastanie, Kokos, Karamell mit Guérande-Salzbutter, Cookie Dough, Erdbeere, römische Haselnuss, Spekulatius, Himbeere, sizilianische Zitrone, Mango¦Bourbonvanille uit Madagaskar, Zwitserse chocoladeschilfers, Siciliaanse pistache, espresso, kastanje, kokos, karamel met Guérande-boter, cookie dough, aardbei, Romeinse hazelnoot, speculoos, framboos, Siciliaanse citroen, mango",
+"La boule¦Per scoop¦La pallina¦Die Kugel¦Per bol",
+"Chantilly maison¦Homemade whipped cream¦Panna montata della casa¦Hausgemachte Chantilly¦Huisgemaakte slagroom",
+"Sauce¦Sauce¦Salsa¦Sauce¦Saus",
+"Cuvée classique¦Classic cuvée¦Cuvée classica¦Klassische Cuvée¦Klassieke cuvée",
+"Cuvée supérieure¦Superior cuvée¦Cuvée superiore¦Superior-Cuvée¦Superieure cuvée",
+"Rouge, blanc, rosé¦Red, white, rosé¦Rosso, bianco, rosato¦Rot, Weiß, Rosé¦Rood, wit, rosé",
+"Sartène, rouge¦Sartène, red¦Sartène, rosso¦Sartène, rot¦Sartène, rood",
+"Sartène, blanc¦Sartène, white¦Sartène, bianco¦Sartène, weiß¦Sartène, wit",
+"Morosaglia, rouge¦Morosaglia, red¦Morosaglia, rosso¦Morosaglia, rot¦Morosaglia, rood",
+"Rogliano, blanc¦Rogliano, white¦Rogliano, bianco¦Rogliano, weiß¦Rogliano, wit",
+"Corse, 12 cl¦Corsica, 12 cl¦Corsica, 12 cl¦Korsika, 12 cl¦Corsica, 12 cl",
+"Italie, 12 cl¦Italy, 12 cl¦Italia, 12 cl¦Italien, 12 cl¦Italië, 12 cl",
+"2022, Klein Constantia, Afrique du Sud, 12 cl¦2022, Klein Constantia, South Africa, 12 cl¦2022, Klein Constantia, Sudafrica, 12 cl¦2022, Klein Constantia, Südafrika, 12 cl¦2022, Klein Constantia, Zuid-Afrika, 12 cl",
+"Eau minérale plate Zilia¦Zilia still mineral water¦Acqua minerale naturale Zilia¦Stilles Mineralwasser Zilia¦Plat mineraalwater Zilia",
+"Eau minérale pétillante Orezza¦Orezza sparkling mineral water¦Acqua minerale frizzante Orezza¦Mineralwasser mit Kohlensäure Orezza¦Bruisend mineraalwater Orezza",
+"Sirop à l'eau¦Cordial with water¦Sciroppo con acqua¦Sirup mit Wasser¦Siroop met water",
+"Limonade¦Lemonade¦Limonata¦Limonade¦Limonade",
+"Tomate, fraise, orange, ACE, ananas, pomme¦Tomato, strawberry, orange, ACE, pineapple, apple¦Pomodoro, fragola, arancia, ACE, ananas, mela¦Tomate, Erdbeere, Orange, ACE, Ananas, Apfel¦Tomaat, aardbei, sinaasappel, ACE, ananas, appel",
+"Orange, Citron pressé¦Freshly squeezed orange or lemon¦Spremuta d'arancia o di limone¦Frisch gepresste Orange oder Zitrone¦Vers geperst sinaasappel- of citroensap",
+"Thé glacé maison¦Homemade iced tea¦Tè freddo della casa¦Hausgemachter Eistee¦Huisgemaakte ijsthee",
+"Agua Fresca concombre citron vert¦Cucumber & lime agua fresca¦Agua fresca cetriolo e lime¦Agua Fresca Gurke-Limette¦Agua fresca komkommer-limoen",
+"Détox¦Detox¦Detox¦Detox¦Detox",
+"Espresso, Décaféiné¦Espresso, decaf¦Espresso, decaffeinato¦Espresso, entkoffeiniert¦Espresso, cafeïnevrij",
+"Chocolat chaud¦Hot chocolate¦Cioccolata calda¦Heiße Schokolade¦Warme chocolademelk",
+"Chocolat viennois¦Viennese hot chocolate¦Cioccolata viennese¦Wiener Schokolade¦Weense chocolademelk",
+"Grand crème, Cappuccino¦Large white coffee, cappuccino¦Caffè con latte grande, cappuccino¦Großer Milchkaffee, Cappuccino¦Grote koffie verkeerd, cappuccino",
+"Lait chaud ou froid¦Hot or cold milk¦Latte caldo o freddo¦Milch, warm oder kalt¦Warme of koude melk",
+"Café frappé¦Iced coffee¦Caffè frappé¦Eiskaffee¦IJskoffie",
+"Vanille, caramel, chocolat¦Vanilla, caramel, chocolate¦Vaniglia, caramello, cioccolato¦Vanille, Karamell, Schokolade¦Vanille, karamel, chocolade",
+"Vanille, caramel ou chocolat¦Vanilla, caramel or chocolate¦Vaniglia, caramello o cioccolato¦Vanille, Karamell oder Schokolade¦Vanille, karamel of chocolade",
+"Sélection de thés et infusions Kusmi Tea¦Selection of Kusmi teas and infusions¦Selezione di tè e infusi Kusmi¦Auswahl an Kusmi-Tees und Aufgüssen¦Selectie Kusmi-thee en -infusies",
+"Le petit déjeuner complet¦The full breakfast¦La colazione completa¦Das komplette Frühstück¦Het volledige ontbijt",
+"Café ou thé, jus de fruit, 1 viennoiserie, pain beurre et confiture · autre boisson chaude +2¦Coffee or tea, fruit juice, 1 pastry, bread with butter and jam · other hot drink +2¦Caffè o tè, succo di frutta, 1 brioche, pane burro e marmellata · altra bevanda calda +2¦Kaffee oder Tee, Fruchtsaft, 1 Gebäckstück, Brot mit Butter und Konfitüre · anderes Heißgetränk +2¦Koffie of thee, vruchtensap, 1 viennoiserie, brood met boter en jam · andere warme drank +2",
+"Viennoiserie¦Pastry¦Brioche¦Gebäckstück¦Viennoiserie",
+"Pain au chocolat ou croissant¦Pain au chocolat or croissant¦Pain au chocolat o croissant¦Pain au Chocolat oder Croissant¦Pain au chocolat of croissant",
+"Pain beurre & confiture¦Bread, butter & jam¦Pane, burro e marmellata¦Brot, Butter & Konfitüre¦Brood, boter & jam",
+"Œufs brouillés crémeux, pain toasté¦Creamy scrambled eggs, toast¦Uova strapazzate cremose, pane tostato¦Cremiges Rührei, Toast¦Romig roerei, toast",
+"Supp. cheddar +2 · supp. jambon blanc, bacon, sauce à la truffe +4¦Extra cheddar +2 · extra ham, bacon, truffle sauce +4¦Supp. cheddar +2 · supp. prosciutto cotto, bacon, salsa al tartufo +4¦Cheddar +2 · Schinken, Bacon, Trüffelsauce +4¦Extra cheddar +2 · extra ham, bacon, truffelsaus +4",
+"Œufs au plat, bacon, pain toasté¦Fried eggs, bacon, toast¦Uova al tegamino, bacon, pane tostato¦Spiegeleier, Bacon, Toast¦Spiegeleieren, bacon, toast",
+"Omelette nature¦Plain omelette¦Omelette semplice¦Omelett natur¦Naturel omelet",
+"Omelette jambon¦Ham omelette¦Omelette al prosciutto¦Schinken-Omelett¦Omelet met ham",
+"Omelette jambon fromage¦Ham & cheese omelette¦Omelette prosciutto e formaggio¦Schinken-Käse-Omelett¦Omelet met ham en kaas",
+"Toast Italien¦Italian toast¦Toast italiano¦Italienischer Toast¦Italiaanse toast",
+"Pain toasté, jambon de parme, stracciatella, tomates cerises, parmesan, pignons grillés¦Toasted bread, Parma ham, stracciatella, cherry tomatoes, parmesan, toasted pine nuts¦Pane tostato, prosciutto di Parma, stracciatella, pomodorini, parmigiano, pinoli tostati¦Geröstetes Brot, Parmaschinken, Stracciatella, Kirschtomaten, Parmesan, geröstete Pinienkerne¦Geroosterd brood, parmaham, stracciatella, kerstomaatjes, parmezaan, geroosterde pijnboompitten",
+"Supplément avocat¦Extra avocado¦Supplemento avocado¦Extra Avocado¦Extra avocado",
+"Skyr¦Skyr¦Skyr¦Skyr¦Skyr",
+"Commande minimum au restaurant : 1 plat par personne · Prix nets en euros, service compris · Liste des allergènes disponible sur place.¦Minimum order at the restaurant: 1 dish per person · Net prices in euros, service included · Allergen list available on site.¦Ordine minimo al ristorante: 1 piatto a persona · Prezzi netti in euro, servizio incluso · Lista degli allergeni disponibile in loco.¦Mindestbestellung im Restaurant: 1 Gericht pro Person · Nettopreise in Euro, inkl. Service · Allergenliste vor Ort erhältlich.¦Minimale bestelling in het restaurant: 1 gerecht per persoon · Nettoprijzen in euro, service inbegrepen · Allergenenlijst ter plaatse beschikbaar."
+    ];
+    const IDX = { en: 1, it: 2, de: 3, nl: 4 };
+    const MAP = {};
+    for (const ligne of L){
+      const p = ligne.split("¦");
+      MAP[p[0]] = p;
+    }
+    function poser(el, texte){ el.textContent = texte; }
+    window.__traduireCarte = function(lg){
+      const i = IDX[lg];   // undefined pour fr → restauration
+      // Titres de catégories + note de bas de carte
+      document.querySelectorAll("#carte .carte-cat h3, #carte .carte-note").forEach(el => {
+        if (el.dataset.fr === undefined) el.dataset.fr = el.textContent.trim();
+        const fr = el.dataset.fr;
+        poser(el, (i && MAP[fr]) ? MAP[fr][i] : fr);
+      });
+      // Noms de plats (premier nœud texte) + descriptions <small>
+      document.querySelectorAll("#carte .plat .nom").forEach(nom => {
+        const tn = nom.childNodes[0];
+        if (tn && tn.nodeType === 3){
+          if (nom.dataset.fr === undefined) nom.dataset.fr = tn.textContent.trim();
+          const fr = nom.dataset.fr;
+          tn.textContent = (i && MAP[fr]) ? MAP[fr][i] : fr;
+        }
+        const sm = nom.querySelector("small");
+        if (sm){
+          if (sm.dataset.fr === undefined) sm.dataset.fr = sm.textContent.trim();
+          const fr = sm.dataset.fr;
+          poser(sm, (i && MAP[fr]) ? MAP[fr][i] : fr);
+        }
+      });
+    };
+    // Appliquer la langue mémorisée dès maintenant (la carte statique est déjà dans la page)
+    try{ window.__traduireCarte(localStorage.getItem("apg_lang") || "fr"); }catch(e){}
+  })();
+
   // ---------- Carte interactive : pointillés, cascade, recherche ----------
   document.querySelectorAll('.tab-panel').forEach(panel => {
     panel.querySelectorAll('.plat').forEach((p, i) => {
@@ -2524,11 +2958,243 @@
     const TEL = '<a href="tel:+33622061488">06 22 06 14 88</a>';
     const GPS = '<a href="https://www.google.com/maps/dir/?api=1&destination=41.6243491,9.3157876&travelmode=driving" target="_blank" rel="noopener">lancer le GPS</a>';
 
+    // ═══════ Organisation d'événements : parcours guidé + pré-devis ═══════
+    // ⚠️ TARIFS INDICATIFS À AJUSTER : modifiez librement les montants ci-dessous.
+    const EVT_TARIFS = {
+      formules: {
+        aperitif:       { nom: "Apéritif dînatoire",  parPers: 39 },
+        repas:          { nom: "Repas assis",         parPers: 59 },
+        cocktail_repas: { nom: "Cocktail + repas",    parPers: 75 }
+      },
+      options: {
+        musique: { nom: "Ambiance musicale / DJ",     forfait: 300 },
+        gateau:  { nom: "Gâteau d'événement",         parPers: 8 },
+        deco:    { nom: "Décoration personnalisée",   forfait: 150 },
+        openbar: { nom: "Formule open bar (2h)",      parPers: 25 }
+      }
+    };
+    const EVT_TYPES = ["Anniversaire","Mariage","Entreprise","EVJF / EVG","Baptême","Autre"];
+    let evt = null;
+
+    function actionsBot(boutons){
+      const bloc = document.createElement("div");
+      bloc.className = "chat-actions";
+      boutons.forEach(([label, fn, cls]) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "chat-act" + (cls ? " " + cls : "");
+        b.textContent = label;
+        b.addEventListener("click", () => fn(b, bloc));
+        bloc.appendChild(b);
+      });
+      corps.appendChild(bloc);
+      corps.scrollTop = corps.scrollHeight;
+      return bloc;
+    }
+    function retirerActions(){
+      corps.querySelectorAll(".chat-actions, .chat-date-row").forEach(x => x.remove());
+    }
+
+    function demarrerEvenement(){
+      evt = { etape: "type", data: { options: [] } };
+      reponseBot("Avec grand plaisir ! 🎉 A Piaghja privatise sa terrasse face à la mer pour vos plus belles occasions. Quel type d'événement organisez-vous ?");
+      setTimeout(() => {
+        actionsBot(EVT_TYPES.map(t => [t, () => {
+          ajouter(t, "moi"); retirerActions();
+          evt.data.type = t; evt.etape = "pax";
+          reponseBot("Très beau projet ! Combien d'invités environ ?");
+          setTimeout(() => actionsBot([
+            ["10 – 20", () => evtPax(15, "10 – 20")],
+            ["20 – 40", () => evtPax(30, "20 – 40")],
+            ["40 – 80", () => evtPax(60, "40 – 80")],
+            ["80 et +", () => evtPax(90, "80 et +")],
+            ["Nombre exact…", () => {
+              retirerActions();
+              ajouter("Je vous donne le nombre exact", "moi");
+              evt.etape = "pax_libre";
+              reponseBot("Écrivez simplement le nombre d'invités ci-dessous 👇");
+            }]
+          ]), 1300);
+        }]));
+      }, 1300);
+    }
+    function evtPax(n, label){
+      retirerActions();
+      ajouter(label + " invités", "moi");
+      evt.data.pax = n; evt.data.paxLabel = label;
+      evtDate();
+    }
+    function evtDate(){
+      evt.etape = "date";
+      reponseBot("À quelle date (même approximative) ?");
+      setTimeout(() => {
+        const row = document.createElement("div");
+        row.className = "chat-date-row";
+        const inp = document.createElement("input");
+        inp.type = "date";
+        inp.min = new Date().toISOString().slice(0,10);
+        const ok = document.createElement("button");
+        ok.type = "button"; ok.className = "chat-act valide"; ok.textContent = "Valider";
+        ok.addEventListener("click", () => {
+          if (!inp.value) return;
+          const jolie = new Date(inp.value + "T12:00:00").toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long", year:"numeric" });
+          ajouter(jolie, "moi"); retirerActions();
+          evt.data.date = inp.value; evt.data.dateJolie = jolie;
+          evtMoment();
+        });
+        row.appendChild(inp); row.appendChild(ok);
+        corps.appendChild(row);
+        corps.scrollTop = corps.scrollHeight;
+      }, 1300);
+    }
+    function evtMoment(){
+      evt.etape = "moment";
+      reponseBot("Plutôt en journée ou en soirée ?");
+      setTimeout(() => actionsBot([
+        ["☀️ Déjeuner", () => evtMomentChoisi("Déjeuner")],
+        ["🌅 Soirée", () => evtMomentChoisi("Soirée")],
+        ["🌙 Journée complète", () => evtMomentChoisi("Journée complète")]
+      ]), 1300);
+    }
+    function evtMomentChoisi(m){
+      retirerActions(); ajouter(m, "moi");
+      evt.data.moment = m;
+      evt.etape = "formule";
+      reponseBot("Quelle formule imaginez-vous ?");
+      setTimeout(() => actionsBot(
+        Object.entries(EVT_TARIFS.formules).map(([cle, f]) =>
+          [f.nom + " · " + f.parPers + " €/pers", () => {
+            retirerActions(); ajouter(f.nom, "moi");
+            evt.data.formule = cle;
+            evtOptions();
+          }]
+        ).concat([["Je ne sais pas encore", () => {
+          retirerActions(); ajouter("À définir ensemble", "moi");
+          evt.data.formule = null;
+          evtOptions();
+        }]])
+      ), 1300);
+    }
+    function evtOptions(){
+      evt.etape = "options";
+      reponseBot("Des envies en plus ? Sélectionnez, puis validez :");
+      setTimeout(() => {
+        const boutons = Object.entries(EVT_TARIFS.options).map(([cle, o]) =>
+          [o.nom, (b) => {
+            b.classList.toggle("sel");
+            const i = evt.data.options.indexOf(cle);
+            if (i === -1) evt.data.options.push(cle); else evt.data.options.splice(i, 1);
+          }, "multi"]
+        );
+        boutons.push(["Valider ✓", () => {
+          retirerActions();
+          ajouter(evt.data.options.length
+            ? evt.data.options.map(c => EVT_TARIFS.options[c].nom).join(", ")
+            : "Sans option pour l'instant", "moi");
+          evtContact();
+        }, "valide"]);
+        actionsBot(boutons);
+      }, 1300);
+    }
+    function evtContact(){
+      evt.etape = "contact";
+      reponseBot("Dernière étape : votre prénom et un numéro pour vous envoyer le devis définitif. Écrivez-les ci-dessous (ex : Marie 06 12 34 56 78) 👇");
+    }
+    function evtEstimation(){
+      const d = evt.data;
+      let lignes = [], total = 0;
+      if (d.formule){
+        const f = EVT_TARIFS.formules[d.formule];
+        const m = f.parPers * d.pax;
+        lignes.push([f.nom + " × " + d.pax, m]); total += m;
+      }
+      for (const cle of d.options){
+        const o = EVT_TARIFS.options[cle];
+        const m = o.forfait ? o.forfait : o.parPers * d.pax;
+        lignes.push([o.nom + (o.parPers ? " × " + d.pax : ""), m]); total += m;
+      }
+      return { lignes, total };
+    }
+    function evtRecap(){
+      const d = evt.data;
+      const est = evtEstimation();
+      const carte = document.createElement("div");
+      carte.className = "chat-devis";
+      let hc = "<h4>Votre pré-devis</h4>";
+      hc += "<div class='dv-ligne'><span>Événement</span><b>" + d.type + "</b></div>";
+      hc += "<div class='dv-ligne'><span>Date</span><b>" + d.dateJolie + "</b></div>";
+      hc += "<div class='dv-ligne'><span>Moment</span><b>" + d.moment + "</b></div>";
+      hc += "<div class='dv-ligne'><span>Invités</span><b>" + (d.paxLabel || d.pax) + "</b></div>";
+      for (const [lbl, m] of est.lignes)
+        hc += "<div class='dv-ligne'><span>" + lbl + "</span><b>" + m.toLocaleString("fr-FR") + " €</b></div>";
+      if (est.total > 0){
+        const bas = Math.round(est.total * .95 / 10) * 10;
+        const haut = Math.round(est.total * 1.15 / 10) * 10;
+        hc += "<div class='dv-total'><span>Estimation</span><b>" + bas.toLocaleString("fr-FR") + " – " + haut.toLocaleString("fr-FR") + " €</b></div>";
+      } else {
+        hc += "<div class='dv-total'><span>Estimation</span><b>sur mesure</b></div>";
+      }
+      hc += "<div class='dv-note'>Pré-devis indicatif établi automatiquement.<br>L'équipe vous confirme le devis définitif très vite au " + (d.tel || "") + ".</div>";
+      carte.innerHTML = hc;
+      corps.appendChild(carte);
+      corps.scrollTop = corps.scrollHeight;
+      return est;
+    }
+    async function evtEnvoyer(est){
+      const d = evt.data;
+      try{
+        await fetch("/api/evenement", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: d.type, date: d.date, moment: d.moment, pax: d.pax,
+            formule: d.formule ? EVT_TARIFS.formules[d.formule].nom : "À définir",
+            options: d.options.map(c => EVT_TARIFS.options[c].nom).join(", "),
+            prenom: d.prenom, tel: d.tel,
+            estimation: est.total
+          })
+        });
+      }catch(e){ /* le récap est affiché, le client a promis d'être rappelé */ }
+    }
+    function evtTraiterTexte(texte){
+      if (/annul/i.test(texte)){
+        evt = null; retirerActions();
+        reponseBot("Pas de souci, on reprend la conversation ! Que puis-je faire pour vous ?");
+        return;
+      }
+      if (evt.etape === "pax_libre"){
+        const n = parseInt(texte.replace(/\D/g, ""), 10);
+        if (!n || n < 2){ reponseBot("Je n'ai pas saisi le nombre — écrivez-le en chiffres (ex : 35)."); return; }
+        evt.data.pax = Math.min(n, 500); evt.data.paxLabel = String(Math.min(n, 500));
+        evtDate();
+        return;
+      }
+      if (evt.etape === "contact"){
+        const mTel = texte.match(/((?:\+|00)?[0-9][0-9 .\-]{8,})/);
+        if (!mTel){ reponseBot("Il me manque un numéro de téléphone valide — réessayez (ex : Marie 06 12 34 56 78)."); return; }
+        evt.data.tel = mTel[1].trim();
+        evt.data.prenom = texte.replace(mTel[1], "").replace(/[,;:]/g, " ").trim() || "Non précisé";
+        evt.etape = "fini";
+        typing(true);
+        setTimeout(() => {
+          typing(false);
+          ajouter("Merci" + (evt.data.prenom !== "Non précisé" ? " " + evt.data.prenom : "") + " ! Voici votre pré-devis :", "bot");
+          const est = evtRecap();
+          evtEnvoyer(est);
+          setTimeout(() => {
+            ajouter("Votre demande est transmise à l'équipe — vous recevrez la confirmation et le devis définitif très rapidement. Une précision à ajouter ? Appelez-nous au " + TEL + ". 🌊", "bot");
+            evt = null;
+          }, 1400);
+        }, 900);
+        return;
+      }
+      reponseBot("Choisissez une des propositions ci-dessus pour continuer — ou écrivez « annuler » pour quitter le devis.");
+    }
+
     const INTENTS = [
       { m: ["bonjour","salut","bonsoir","hello","coucou","hey"], r: () => "Bonjour ! Bienvenue chez A Piaghja. Je peux vous renseigner sur les horaires, la carte, la réservation ou comment nous trouver. Que puis-je faire pour vous ?" },
       { m: ["horaire","ouvert","ouverture","ferme","quelle heure"], r: () => "Nous servons le petit déjeuner dès 8h, puis les services du midi et du soir, en saison. Pour être sûr d'avoir une table, la réservation est conseillée !" },
       { m: ["adresse","ou etes","ou est","trouver","situe","acces","venir","parking","gps","plage"], r: () => "Nous sommes sur la plage du Golfo di Sogno, 20137 Porto-Vecchio, les pieds dans le sable face au golfe. Vous pouvez " + GPS + " directement." },
       { m: ["telephone","numero","appeler","joindre","contact"], r: () => "Vous pouvez nous joindre au " + TEL + ". À très vite !" },
+      { m: ["evenement","événement","anniversaire","mariage","privatis","groupe","entreprise","evjf","evg","bapteme","baptême","fete","fête","soiree privee","devis"], a: "event" },
       { m: ["reserver","reservation","table","booker"], a: "resa", r: () => "Vous pouvez réserver directement ici : choisissez votre date et votre créneau dans le calendrier de la section Réserver, je vous y emmène !" },
       { m: ["dispo","place","complet","libre","ce soir","aujourd"], a: "dispo" },
       { m: ["carte","menu","manger","plat","cuisine"], a: "carte", r: () => "Notre carte est juste au-dessus : pizze au feu de bois, braise, pâtes, glaces artisanales… Vous pouvez aussi utiliser la barre de recherche pour trouver un plat précis. Je vous y emmène !" },
@@ -2601,10 +3267,12 @@
     }
 
     function traiter(texte){
+      if (evt && evt.etape){ return evtTraiterTexte(texte); }
       const q = norm(texte);
       for (const it of INTENTS){
         if (it.m.some(mot => q.includes(norm(mot)))){
           if (it.a === 'dispo') return repondreDispo();
+          if (it.a === 'event') return demarrerEvenement();
           return reponseBot(it.r(), it.a);
         }
       }
@@ -2612,6 +3280,7 @@
     }
 
     const CHIPS = [
+      ["🎉 Organiser un événement", "événement"],
       ["Horaires", "horaires"],
       ["Réserver une table", "réserver"],
       ["De la place ce soir ?", "dispo ce soir"],
@@ -2632,7 +3301,7 @@
       if (ouvert){
         if (!accueilli){
           accueilli = true;
-          reponseBot("Bonjour ! 👋 Je suis l'assistant d'A Piaghja. Horaires, carte, réservation, itinéraire… posez-moi votre question ou choisissez un raccourci ci-dessous.");
+          reponseBot("Bonjour ! 👋 Je suis l'assistant d'A Piaghja. Réservation, horaires, carte… et si vous rêvez d'un événement privé sur la plage — anniversaire, mariage, soirée d'entreprise — je vous prépare un pré-devis en 1 minute. ✨");
         }
         // Focus clavier uniquement sur desktop (souris) : sur mobile le clavier ne sort pas tout seul
         if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) input.focus();
@@ -2710,6 +3379,7 @@
           if (htmlCats) grille.innerHTML = htmlCats;
         }
         initPlats();
+        try{ if (window.__traduireCarte) window.__traduireCarte(localStorage.getItem('apg_lang') || 'fr'); }catch(e){}
       })
       .catch(() => { /* la carte statique intégrée reste affichée */ });
   })();
@@ -2810,5 +3480,32 @@
     });
   })();
 </script>
+
+<div class="cg-bar" id="cgBar" role="region" aria-label="Conditions générales" hidden>
+  <p data-i18n="cg_txt">En poursuivant votre navigation, vous acceptez nos <a href="legal.html">Conditions Générales &amp; mentions légales</a>.</p>
+  <div class="cg-actions">
+    <a class="cg-lire" href="legal.html" data-i18n="cg_lire">Lire</a>
+    <button class="cg-ok" id="cgOk" data-i18n="cg_ok">J'accepte</button>
+  </div>
+</div>
+<script>
+  (function(){
+    var bar = document.getElementById('cgBar');
+    var ok = document.getElementById('cgOk');
+    var vu = false;
+    try { vu = localStorage.getItem('apg_cg') === '1'; } catch(e) {}
+    if (vu || !bar) return;
+    setTimeout(function(){
+      bar.hidden = false;
+      requestAnimationFrame(function(){ bar.classList.add('la'); });
+    }, 2600);
+    ok.addEventListener('click', function(){
+      try { localStorage.setItem('apg_cg', '1'); } catch(e) {}
+      bar.classList.remove('la');
+      setTimeout(function(){ bar.hidden = true; }, 650);
+    });
+  })();
+</script>
+
 </body>
 </html>

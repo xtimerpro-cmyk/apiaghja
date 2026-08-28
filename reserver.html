@@ -1224,6 +1224,129 @@
   }
   .carte-lang{margin:1.1rem auto 0;width:max-content;}
 
+  /* ══════════ REFONTE ASSISTANT (V85) ══════════ */
+  .chat-panel{
+    width:min(340px, calc(100vw - 24px));height:min(520px, calc(100dvh - 120px));
+    border-radius:22px;border:1px solid rgba(194,161,92,.4);
+    box-shadow:0 30px 80px rgba(42,43,36,.45), 0 4px 16px rgba(42,43,36,.18);
+  }
+  .chat-head{
+    background:linear-gradient(135deg, #6c7452, var(--olive) 55%, #8a9268);
+    padding:1rem 1.1rem;position:relative;overflow:hidden;
+  }
+  .chat-head::after{
+    content:"";position:absolute;right:-22px;top:-24px;width:110px;height:110px;
+    border-radius:50%;background:rgba(253,252,249,.07);
+  }
+  .chat-avatar{
+    width:38px;height:38px;border-radius:50%;flex:none;
+    background:var(--sable);display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(194,161,92,.6);
+  }
+  .chat-avatar svg{width:24px;height:24px;}
+  .chat-head-in{display:flex;align-items:center;gap:.65rem;}
+  .chat-titre{font-size:1.45rem;}
+  .chat-sous{display:flex;align-items:center;gap:.35rem;}
+  .chat-sous::before{
+    content:"";width:6px;height:6px;border-radius:50%;background:#a6e3a1;
+    box-shadow:0 0 6px #a6e3a1;
+  }
+  .chat-corps{
+    background:
+      radial-gradient(ellipse 70% 40% at 80% 0%, rgba(194,161,92,.08), transparent 60%),
+      var(--sable);
+    padding:1rem .9rem;gap:.55rem;
+  }
+  .chat-msg{
+    border-radius:16px;padding:.6rem .85rem;font-size:.86rem;
+    animation:chatMsgIn .32s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 2px 8px rgba(74,83,53,.07);
+  }
+  @keyframes chatMsgIn{from{opacity:0;transform:translateY(8px) scale(.97);}to{opacity:1;transform:none;}}
+  .chat-msg.bot{border-bottom-left-radius:5px;}
+  .chat-msg.moi{border-bottom-right-radius:5px;background:linear-gradient(135deg,#6c7452,var(--olive));}
+  /* Boutons d'action dans le fil */
+  .chat-actions{
+    display:flex;flex-wrap:wrap;gap:.4rem;align-self:flex-start;max-width:95%;
+    animation:chatMsgIn .32s cubic-bezier(.2,.8,.3,1);
+  }
+  .chat-act{
+    font-family:inherit;font-size:.78rem;padding:.45rem .8rem;
+    border:1px solid rgba(194,161,92,.55);border-radius:999px;background:var(--blanc);
+    color:var(--encre);cursor:pointer;transition:all .2s ease;
+  }
+  .chat-act:hover{border-color:var(--or);transform:translateY(-1px);box-shadow:0 6px 14px rgba(194,161,92,.22);}
+  .chat-act.multi.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .chat-act.valide{background:linear-gradient(135deg,#6c7452,var(--olive));border:none;color:var(--blanc);}
+  .chat-date-row{display:flex;gap:.4rem;align-self:flex-start;animation:chatMsgIn .32s ease;}
+  .chat-date-row input{
+    font-family:inherit;font-size:.85rem;padding:.5rem .7rem;
+    border:1px solid var(--sable-deep);border-radius:12px;background:var(--blanc);color:var(--encre);
+  }
+  .chat-date-row input:focus{outline:none;border-color:var(--or);}
+  /* Carte pré-devis */
+  .chat-devis{
+    align-self:stretch;background:var(--blanc);border:1px solid rgba(194,161,92,.5);
+    border-radius:16px;padding:.9rem 1rem;animation:chatMsgIn .4s ease;
+    box-shadow:0 8px 24px rgba(74,83,53,.12);
+  }
+  .chat-devis h4{
+    font-family:'Allura',cursive;font-weight:400;font-size:1.5rem;color:var(--olive);
+    margin:0 0 .5rem;text-align:center;
+  }
+  .chat-devis .dv-ligne{
+    display:flex;justify-content:space-between;gap:.6rem;
+    font-size:.8rem;padding:.22rem 0;color:#5c5d50;
+  }
+  .chat-devis .dv-ligne b{color:var(--encre);font-weight:normal;}
+  .chat-devis .dv-total{
+    display:flex;justify-content:space-between;margin-top:.5rem;padding-top:.55rem;
+    border-top:1px solid var(--sable-deep);font-size:.95rem;color:var(--encre);
+  }
+  .chat-devis .dv-total b{color:var(--olive);font-size:1.05rem;}
+  .chat-devis .dv-note{font-size:.68rem;color:#8a8a7a;margin-top:.5rem;line-height:1.5;text-align:center;}
+  .chat-saisie{padding:.65rem .75rem;}
+  .chat-saisie button{
+    background:linear-gradient(135deg,#6c7452,var(--olive));
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .chat-saisie button:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(74,83,53,.3);}
+  .chat-chip{border-radius:999px;padding:.36rem .7rem;}
+  @media (max-width:520px){
+    .chat-panel{height:min(62dvh, 520px);}
+  }
+
+  /* ---------- Bandeau conditions générales ---------- */
+  .cg-bar{
+    position:fixed;left:50%;bottom:14px;transform:translate(-50%, 130%);z-index:85;
+    width:min(560px, calc(100vw - 24px));
+    background:rgba(42,43,36,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border:1px solid rgba(194,161,92,.5);border-radius:18px;
+    padding:.9rem 1.1rem;color:var(--sable);
+    display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+    box-shadow:0 18px 55px rgba(20,22,14,.5);
+    transition:transform .6s cubic-bezier(.2,.8,.3,1);
+  }
+  .cg-bar.la{transform:translate(-50%, 0);}
+  .cg-bar p{flex:1;min-width:220px;font-size:.78rem;line-height:1.55;margin:0;}
+  .cg-bar a{color:var(--or);}
+  .cg-actions{display:flex;gap:.5rem;}
+  .cg-ok{
+    font-family:inherit;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    background:var(--or);color:var(--encre);border:none;border-radius:999px;
+    padding:.55rem 1.2rem;cursor:pointer;transition:transform .2s ease;
+  }
+  .cg-ok:hover{transform:translateY(-1px);}
+  .cg-lire{
+    font-family:inherit;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    background:none;color:var(--sable);border:1px solid rgba(253,252,249,.35);border-radius:999px;
+    padding:.55rem 1.1rem;cursor:pointer;text-decoration:none;transition:border-color .2s ease;
+  }
+  .cg-lire:hover{border-color:var(--or);}
+  @media (max-width:520px){
+    .cg-bar{bottom:10px;padding:.8rem .9rem;}
+  }
+
 
   /* ---------- Ajustements page dédiée réservation ---------- */
   body{animation:none !important;}
@@ -1395,6 +1518,7 @@
         tab_bar:"Bar &amp; Cocktails", tab_part:"To share", tab_plats:"Mains", tab_braise:"From the embers",
         tab_pizze:"Le pizze", tab_dess:"Desserts &amp; ice cream", tab_vins:"Wines", tab_softs:"Softs &amp; coffee", tab_pdj:"Breakfast",
         carte_search:"Search a dish, a wine, a cocktail…", carte_hint:"Pick a category to browse the menu",
+        cg_txt:"By continuing to browse, you accept our <a href=\"legal.html\">Terms &amp; legal notice</a>.", cg_lire:"Read", cg_ok:"I accept",
         w_pax:"How many of you?", w_note8:"More than 8? Call us on <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Guests", w_back2:"‹ Date", w_back3:"‹ Time",
         w_slot:"Choose your time", w_dej:"Lunch", w_din:"Dinner",
@@ -1431,6 +1555,7 @@
         tab_bar:"Bar &amp; Cocktail", tab_part:"Da condividere", tab_plats:"Piatti", tab_braise:"La brace",
         tab_pizze:"Le pizze", tab_dess:"Dolci &amp; gelati", tab_vins:"I vini", tab_softs:"Bibite &amp; caffè", tab_pdj:"Colazione",
         carte_search:"Cerca un piatto, un vino, un cocktail…", carte_hint:"Scegli una categoria per sfogliare il menù",
+        cg_txt:"Proseguendo la navigazione accetti le nostre <a href=\"legal.html\">Condizioni Generali &amp; note legali</a>.", cg_lire:"Leggi", cg_ok:"Accetto",
         w_pax:"In quanti siete?", w_note8:"Più di 8? Chiamateci al <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Coperti", w_back2:"‹ Data", w_back3:"‹ Orario",
         w_slot:"Scegli il tuo orario", w_dej:"Pranzo", w_din:"Cena",
@@ -1467,6 +1592,7 @@
         tab_bar:"Bar &amp; Cocktails", tab_part:"Zum Teilen", tab_plats:"Hauptgerichte", tab_braise:"Vom Grill",
         tab_pizze:"Le pizze", tab_dess:"Desserts &amp; Eis", tab_vins:"Weine", tab_softs:"Softdrinks &amp; Kaffee", tab_pdj:"Frühstück",
         carte_search:"Gericht, Wein oder Cocktail suchen…", carte_hint:"Wählen Sie eine Kategorie, um die Karte zu entdecken",
+        cg_txt:"Mit dem Weitersurfen akzeptieren Sie unsere <a href=\"legal.html\">AGB &amp; Impressum</a>.", cg_lire:"Lesen", cg_ok:"Akzeptieren",
         w_pax:"Wie viele Personen?", w_note8:"Mehr als 8? Rufen Sie uns an: <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Personen", w_back2:"‹ Datum", w_back3:"‹ Uhrzeit",
         w_slot:"Wählen Sie Ihre Uhrzeit", w_dej:"Mittag", w_din:"Abend",
@@ -1503,6 +1629,7 @@
         tab_bar:"Bar &amp; Cocktails", tab_part:"Om te delen", tab_plats:"Hoofdgerechten", tab_braise:"Van de gril",
         tab_pizze:"Le pizze", tab_dess:"Desserts &amp; ijs", tab_vins:"Wijnen", tab_softs:"Frisdrank &amp; koffie", tab_pdj:"Ontbijt",
         carte_search:"Zoek een gerecht, wijn of cocktail…", carte_hint:"Kies een categorie om de kaart te bekijken",
+        cg_txt:"Door verder te surfen accepteer je onze <a href=\"legal.html\">Algemene Voorwaarden &amp; juridische info</a>.", cg_lire:"Lezen", cg_ok:"Ik accepteer",
         w_pax:"Met hoeveel zijn jullie?", w_note8:"Met meer dan 8? Bel ons op <a href=\"tel:+33622061488\">+33 6 22 06 14 88</a>",
         w_back1:"‹ Gasten", w_back2:"‹ Datum", w_back3:"‹ Tijd",
         w_slot:"Kies je tijd", w_dej:"Lunch", w_din:"Diner",
@@ -1544,6 +1671,7 @@
       document.querySelectorAll(".lang-sel button").forEach(b => b.classList.toggle("on", b.dataset.lg === LG));
       const ind = document.getElementById("rwInd");
       if (ind && IND_DEFAUT[LG]) ind.value = IND_DEFAUT[LG];
+      if (window.__traduireCarte) window.__traduireCarte(LG);
     }
     document.querySelectorAll(".lang-sel button").forEach(b =>
       b.addEventListener("click", () => { traduire(b.dataset.lg); rafraichirWidget(); }));
@@ -1771,5 +1899,32 @@
   
   document.querySelectorAll('.reveal').forEach(r => r.classList.add('visible'));
 </script>
+
+<div class="cg-bar" id="cgBar" role="region" aria-label="Conditions générales" hidden>
+  <p data-i18n="cg_txt">En poursuivant votre navigation, vous acceptez nos <a href="legal.html">Conditions Générales &amp; mentions légales</a>.</p>
+  <div class="cg-actions">
+    <a class="cg-lire" href="legal.html" data-i18n="cg_lire">Lire</a>
+    <button class="cg-ok" id="cgOk" data-i18n="cg_ok">J'accepte</button>
+  </div>
+</div>
+<script>
+  (function(){
+    var bar = document.getElementById('cgBar');
+    var ok = document.getElementById('cgOk');
+    var vu = false;
+    try { vu = localStorage.getItem('apg_cg') === '1'; } catch(e) {}
+    if (vu || !bar) return;
+    setTimeout(function(){
+      bar.hidden = false;
+      requestAnimationFrame(function(){ bar.classList.add('la'); });
+    }, 1800);
+    ok.addEventListener('click', function(){
+      try { localStorage.setItem('apg_cg', '1'); } catch(e) {}
+      bar.classList.remove('la');
+      setTimeout(function(){ bar.hidden = true; }, 650);
+    });
+  })();
+</script>
+
 </body>
 </html>
