@@ -365,6 +365,59 @@
   .ds-tete-l span:first-child{width:120px;}
   .ds-tete-l span{flex:1;min-width:180px;}
 
+
+  /* ---------- Fichier client ---------- */
+  .cl-outils{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.7rem;}
+  .cl-filtres{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem;}
+  .cl-ligne{
+    border-bottom:1px dashed rgba(194,161,92,.3);
+  }
+  .cl-ligne:last-child{border-bottom:none;}
+  .cl-tete{
+    display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
+    padding:.6rem .4rem;cursor:pointer;border-radius:10px;transition:background .2s ease;
+  }
+  .cl-tete:hover{background:rgba(239,233,221,.5);}
+  .cl-avatar{
+    width:38px;height:38px;border-radius:50%;flex:none;
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    display:flex;align-items:center;justify-content:center;font-size:.8rem;letter-spacing:.05em;
+  }
+  .cl-ligne.vip .cl-avatar{background:linear-gradient(135deg,var(--or),#d4b26e);}
+  .cl-id{flex:1;min-width:150px;}
+  .cl-id small{display:block;color:#8a8a7a;font-size:.72rem;}
+  .cl-badges{display:flex;gap:.3rem;flex-wrap:wrap;align-items:center;}
+  .cl-der{font-size:.68rem;color:#a3a294;white-space:nowrap;}
+  .cl-fiche{
+    padding:.2rem .5rem 1rem;display:grid;gap:.8rem;
+    grid-template-columns:1fr 1fr;
+  }
+  @media (max-width:680px){.cl-fiche{grid-template-columns:1fr;}}
+  .cl-bloc{background:rgba(239,233,221,.45);border-radius:14px;padding:.8rem .9rem;}
+  .cl-bloc h4{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);margin-bottom:.5rem;font-weight:normal;}
+  .cl-bloc .d-l{display:flex;justify-content:space-between;font-size:.8rem;color:#5c5d50;padding:.14rem 0;}
+  .cl-bloc .d-l b{font-weight:normal;color:var(--encre);}
+  .cl-switchs{display:flex;flex-direction:column;gap:.45rem;}
+  .cl-sw{display:flex;align-items:center;gap:.5rem;font-size:.82rem;cursor:pointer;user-select:none;}
+  .cl-note{width:100%;border:1px solid var(--sable-deep);border-radius:10px;padding:.5rem .6rem;font-family:inherit;font-size:.8rem;background:var(--blanc);resize:vertical;min-height:56px;}
+  .cl-note:focus{outline:none;border-color:var(--or);}
+  .cl-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;}
+  .cl-actions a{
+    text-decoration:none;font-size:.76rem;border-radius:999px;padding:.4rem .85rem;
+    border:1px solid rgba(194,161,92,.5);color:var(--encre);transition:all .2s ease;
+  }
+  .cl-actions a:hover{border-color:var(--or);transform:translateY(-1px);}
+  .cl-actions a.plein{background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);border:none;}
+  /* Campagne */
+  .camp-panneau{border:1px solid rgba(194,161,92,.5);}
+  .camp-cible{font-size:.85rem;color:#5c5d50;margin-bottom:.6rem;}
+  .camp-cible b{color:var(--olive-fonce);font-weight:normal;}
+  .camp-modeles{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.6rem;}
+  .camp-txt{width:100%;border:1px solid var(--sable-deep);border-radius:12px;padding:.7rem .8rem;font-family:inherit;font-size:.85rem;background:var(--blanc);resize:vertical;min-height:84px;}
+  .camp-txt:focus{outline:none;border-color:var(--or);}
+  .camp-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem;}
+  .camp-note{font-size:.68rem;color:#8a8a7a;margin-top:.6rem;line-height:1.5;}
+
   /* ---------- Squelettes & toast ---------- */
   .sk{position:relative;overflow:hidden;background:var(--sable);border-radius:10px;min-height:16px;}
   .sk::after{
@@ -426,6 +479,7 @@
       <button class="onglet on" data-vue="jour">Carnet de réservations</button>
       <button class="onglet" data-vue="service">Service en cours</button>
       <button class="onglet" data-vue="dataservices">Data services</button>
+      <button class="onglet" data-vue="clients">Fichier client</button>
       <button class="onglet" data-vue="carte">Carte</button>
       <button class="onglet" data-vue="evenements">Événements<span class="puce" id="puceEvt" hidden></span></button>
       <button class="onglet" data-vue="stats">Stats</button>
@@ -508,6 +562,47 @@
         </div>
         <div class="ds-tete-l"><span>Journée</span><span>☀️ Midi</span><span>🌙 Soir</span></div>
         <div id="dsListe"></div>
+      </div>
+    </section>
+
+    <!-- ═══════ Vue Fichier client ═══════ -->
+    <section id="vueClients" hidden>
+      <div class="cl-outils">
+        <input class="recherche" id="clRecherche" placeholder="Rechercher un nom, un numéro…">
+        <span class="compteur" id="clCompteur"></span>
+        <button class="btn-doux" id="clCampagneBtn">🎯 Campagne</button>
+      </div>
+      <div class="cl-filtres" id="clFiltres">
+        <button class="p-pill on" data-f="tous">Tous</button>
+        <button class="p-pill" data-f="fideles">Fidèles 3+</button>
+        <button class="p-pill" data-f="sansavis">Sans avis</button>
+        <button class="p-pill" data-f="avis">Avis laissé ⭐</button>
+        <button class="p-pill" data-f="camping">Camping 🏕</button>
+        <button class="p-pill" data-f="devis">Événement 🎉</button>
+        <button class="p-pill" data-f="vip">VIP</button>
+        <button class="p-pill" data-f="optout">Ne pas contacter</button>
+      </div>
+
+      <div class="carte camp-panneau" id="campPanneau" hidden>
+        <h2 class="titre">Campagne marketing</h2>
+        <div class="camp-cible" id="campCible"></div>
+        <div class="camp-modeles">
+          <button class="p-pill" data-mod="avis">Demande d'avis</button>
+          <button class="p-pill" data-mod="event">Soirée / événement</button>
+          <button class="p-pill" data-mod="retour">Offre de retour</button>
+        </div>
+        <textarea class="camp-txt" id="campTexte" placeholder="Votre message…"></textarea>
+        <div class="camp-actions">
+          <button class="btn-plein" id="campCopierNums">📋 Copier les numéros</button>
+          <button class="btn-doux" id="campCopierMsg">📋 Copier le message</button>
+          <button class="btn-doux" id="campCsv">💾 Export CSV</button>
+        </div>
+        <div class="camp-note">La cible reprend vos filtres actuels — les clients « ne pas contacter » sont toujours exclus automatiquement. Le CSV est prêt pour un envoi groupé (Brevo, etc.). Pensez à inclure « STOP au … » dans vos SMS commerciaux.</div>
+        <div class="msg" id="campMsg"></div>
+      </div>
+
+      <div class="carte">
+        <div id="clListe"></div>
       </div>
     </section>
 
@@ -638,7 +733,7 @@
   let moisStats = dateCourante.slice(0, 7);
 
   // ═══════════ Navigation entre vues ═══════════
-  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", carte: "vueCarte", evenements: "vueEvenements", stats: "vueStats" };
+  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", clients: "vueClients", carte: "vueCarte", evenements: "vueEvenements", stats: "vueStats" };
   let vueCourante = "jour";
   function montrerVue(nom){
     vueCourante = nom;
@@ -647,6 +742,7 @@
     if (nom === "jour") chargerJour();
     if (nom === "service") chargerServiceVue();
     if (nom === "dataservices") chargerDataServices();
+    if (nom === "clients") chargerClients();
     if (nom === "carte") chargerCarte();
     if (nom === "evenements") chargerEvenements();
     if (nom === "stats") chargerStats();
@@ -1261,6 +1357,227 @@
   $("dataSuiv").addEventListener("click", () => decaleMoisData(1));
   $("choixMoisData").addEventListener("change", () => {
     if ($("choixMoisData").value) { moisData = $("choixMoisData").value; chargerDataServices(); }
+  });
+
+
+  // ═══════════ Vue Fichier client ═══════════
+  // ⚠️ Remplacez [LIEN_AVIS_GOOGLE] par votre lien d'avis Google pour l'inclure dans les SMS.
+  const LIEN_AVIS = "[LIEN_AVIS_GOOGLE]";
+  const lienAvisPret = () => LIEN_AVIS.indexOf("[") === -1;
+  let clientsData = [];
+  let clFiltre = "tous";
+
+  const urlClients = () => `/api/clients?key=${encodeURIComponent(cle)}`;
+
+  function clInitiales(c){
+    const p = (c.prenom || "").trim(), n = (c.nom || "").trim();
+    return ((p[0] || "") + (n[0] || p[1] || "")).toUpperCase() || "☺";
+  }
+  function clNomComplet(c){
+    return ((c.prenom ? c.prenom + " " : "") + (c.nom || "")).trim() || "Client";
+  }
+  function clFiltrer(){
+    const q = normC($("clRecherche").value.trim());
+    return clientsData.filter(c => {
+      if (clFiltre === "fideles" && c.visites < 3) return false;
+      if (clFiltre === "sansavis" && (c.avis || c.optout)) return false;
+      if (clFiltre === "avis" && !c.avis) return false;
+      if (clFiltre === "camping" && !c.campings) return false;
+      if (clFiltre === "devis" && !c.devis) return false;
+      if (clFiltre === "vip" && !c.vip) return false;
+      if (clFiltre === "optout" && !c.optout) return false;
+      if (q && !normC(clNomComplet(c) + " " + c.tel).includes(q)) return false;
+      return true;
+    });
+  }
+
+  async function majFiche(c, champs){
+    const rep = await apiPost("/api/clients", { action: "maj", tel: c.telN,
+      avis: c.avis, vip: c.vip, optout: c.optout, note: c.note, ...champs });
+    if (rep.ok) {
+      Object.assign(c, champs);
+      invalider("/api/clients");
+      toast("Fiche mise à jour");
+      return true;
+    }
+    toast("Enregistrement refusé", true);
+    return false;
+  }
+
+  function ligneClient(c){
+    const l = document.createElement("div");
+    l.className = "cl-ligne" + (c.vip ? " vip" : "");
+    const tete = document.createElement("div");
+    tete.className = "cl-tete";
+    tete.innerHTML =
+      '<span class="cl-avatar">' + clInitiales(c) + '</span>' +
+      '<div class="cl-id"><span>' + clNomComplet(c) + '</span><small>' + c.tel + '</small></div>' +
+      '<div class="cl-badges">' +
+        '<span class="badge">' + c.visites + ' visite' + (c.visites > 1 ? 's' : '') + '</span>' +
+        '<span class="badge">' + c.couverts + ' cvts</span>' +
+        (c.campings ? '<span class="badge camp">🏕</span>' : '') +
+        (c.devis ? '<span class="badge">🎉</span>' : '') +
+        (c.avis ? '<span class="badge">⭐ avis</span>' : '') +
+        (c.vip ? '<span class="badge" style="border-color:var(--or);color:var(--or)">VIP</span>' : '') +
+        (c.optout ? '<span class="badge pass">⛔</span>' : '') +
+      '</div>' +
+      '<span class="cl-der">vu le ' + new Date(c.derniere + "T12:00:00").toLocaleDateString("fr-FR", { day:"numeric", month:"short", year:"2-digit" }) + '</span>';
+    l.appendChild(tete);
+
+    let fiche = null;
+    tete.addEventListener("click", () => {
+      if (fiche) { fiche.remove(); fiche = null; return; }
+      fiche = document.createElement("div");
+      fiche.className = "cl-fiche";
+
+      const histo = document.createElement("div");
+      histo.className = "cl-bloc";
+      histo.innerHTML = "<h4>Historique</h4>" +
+        '<div class="d-l"><span>Première visite</span><b>' + joli(c.premiere) + '</b></div>' +
+        '<div class="d-l"><span>Dernière visite</span><b>' + joli(c.derniere) + '</b></div>' +
+        '<div class="d-l"><span>Réservations</span><b>' + c.visites + '</b></div>' +
+        '<div class="d-l"><span>Couverts cumulés</span><b>' + c.couverts + '</b></div>' +
+        '<div class="d-l"><span>Tablée moyenne</span><b>' + (c.couverts / c.visites).toFixed(1).replace(".0","") + '</b></div>' +
+        '<div class="d-l"><span>Séjours camping</span><b>' + c.campings + '</b></div>' +
+        (c.devis ? '<div class="d-l"><span>Devis événement</span><b>' + c.devis + '</b></div>' : "");
+      const act = document.createElement("div");
+      act.className = "cl-actions";
+      const corpsAvis = "Bonjour" + (c.prenom ? " " + c.prenom : "") + " ! Merci de votre visite à A Piaghja 🌊 Un petit avis nous aiderait énormément" + (lienAvisPret() ? " : " + LIEN_AVIS : " !") + " À très vite sur la plage !";
+      act.innerHTML =
+        '<a class="plein" href="tel:' + c.telN + '">📞 Appeler</a>' +
+        (c.optout ? "" :
+          '<a href="sms:' + c.telN + '?&body=' + encodeURIComponent(corpsAvis) + '">💬 SMS demande d\'avis</a>');
+      histo.appendChild(act);
+
+      const crm = document.createElement("div");
+      crm.className = "cl-bloc";
+      crm.innerHTML = "<h4>Suivi</h4>";
+      const sw = document.createElement("div");
+      sw.className = "cl-switchs";
+      const faireSw = (label, champ) => {
+        const lab = document.createElement("label");
+        lab.className = "cl-sw";
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = !!c[champ];
+        cb.addEventListener("change", async () => {
+          const ok = await majFiche(c, { [champ]: cb.checked ? 1 : 0 });
+          if (!ok) cb.checked = !cb.checked;
+          else rendreClients();
+        });
+        lab.appendChild(cb);
+        lab.appendChild(document.createTextNode(" " + label));
+        return lab;
+      };
+      sw.appendChild(faireSw("A laissé un avis ⭐", "avis"));
+      sw.appendChild(faireSw("Client VIP", "vip"));
+      sw.appendChild(faireSw("Ne plus contacter ⛔", "optout"));
+      crm.appendChild(sw);
+      const note = document.createElement("textarea");
+      note.className = "cl-note";
+      note.placeholder = "Notes : préférences, allergies, table favorite…";
+      note.value = c.note || "";
+      note.style.marginTop = ".6rem";
+      note.addEventListener("blur", () => {
+        if (note.value !== (c.note || "")) majFiche(c, { note: note.value });
+      });
+      crm.appendChild(note);
+
+      fiche.appendChild(histo);
+      fiche.appendChild(crm);
+      l.appendChild(fiche);
+    });
+    return l;
+  }
+
+  function rendreClients(){
+    const liste = clFiltrer();
+    const zone = $("clListe");
+    zone.innerHTML = "";
+    const avecAvis = clientsData.filter(c => c.avis).length;
+    $("clCompteur").textContent = liste.length + " / " + clientsData.length + " clients · " + avecAvis + " avis ⭐";
+    majCampagne(liste);
+    if (!liste.length) { zone.innerHTML = '<div class="vide">Aucun client ne correspond.</div>'; return; }
+    const frag = document.createDocumentFragment();
+    for (const c of liste) frag.appendChild(ligneClient(c));
+    zone.appendChild(frag);
+  }
+
+  async function chargerClients(force){
+    const gen = ++generation;
+    $("clListe").innerHTML = squelettes(6);
+    try {
+      const data = await apiGet(urlClients(), force);
+      if (gen !== generation || vueCourante !== "clients") return;
+      clientsData = data.clients || [];
+      rendreClients();
+    } catch (e) {
+      if (gen === generation && vueCourante === "clients")
+        $("clListe").innerHTML = '<div class="vide">Chargement impossible (le point /api/clients est-il déployé ?).</div>';
+    }
+  }
+
+  $("clFiltres").addEventListener("click", (e) => {
+    const b = e.target.closest(".p-pill");
+    if (!b) return;
+    clFiltre = b.dataset.f;
+    $("clFiltres").querySelectorAll(".p-pill").forEach(x => x.classList.toggle("on", x === b));
+    rendreClients();
+  });
+  let minuterieCl = null;
+  $("clRecherche").addEventListener("input", () => {
+    clearTimeout(minuterieCl);
+    minuterieCl = setTimeout(rendreClients, 150);
+  });
+
+  // ----- Campagne marketing -----
+  const MODELES = {
+    avis: () => "Bonjour ! Merci de votre visite à A Piaghja 🌊 Un petit avis Google nous aiderait énormément" + (lienAvisPret() ? " : " + LIEN_AVIS : " !") + " À très vite sur la plage !",
+    event: () => "A Piaghja 🌊 Soirée spéciale sur la plage du Golfo di Sogno ! Réservez vite votre table : https://apiaghja.pages.dev/reserver — On vous attend !",
+    retour: () => "Bonjour ! Ça nous ferait plaisir de vous revoir à A Piaghja 🌊 Votre table face à la mer vous attend : https://apiaghja.pages.dev/reserver"
+  };
+  let cibleCampagne = [];
+  function majCampagne(liste){
+    cibleCampagne = liste.filter(c => !c.optout);
+    $("campCible").innerHTML = "Cible actuelle : <b>" + cibleCampagne.length + " client" + (cibleCampagne.length > 1 ? "s" : "") + "</b> (filtres appliqués, opposés au contact exclus).";
+  }
+  $("clCampagneBtn").addEventListener("click", () => {
+    $("campPanneau").hidden = !$("campPanneau").hidden;
+  });
+  document.querySelectorAll("#campPanneau .camp-modeles .p-pill").forEach(b => {
+    b.addEventListener("click", () => { $("campTexte").value = MODELES[b.dataset.mod](); });
+  });
+  async function copier(texte, message){
+    try {
+      await navigator.clipboard.writeText(texte);
+      $("campMsg").className = "msg ok";
+      $("campMsg").textContent = message;
+    } catch (e) {
+      $("campMsg").className = "msg ko";
+      $("campMsg").textContent = "Copie refusée par le navigateur.";
+    }
+  }
+  $("campCopierNums").addEventListener("click", () => {
+    if (!cibleCampagne.length) return;
+    copier(cibleCampagne.map(c => c.tel).join(", "), cibleCampagne.length + " numéros copiés — collez-les dans Messages.");
+  });
+  $("campCopierMsg").addEventListener("click", () => {
+    if (!$("campTexte").value.trim()) return;
+    copier($("campTexte").value.trim(), "Message copié.");
+  });
+  $("campCsv").addEventListener("click", () => {
+    if (!cibleCampagne.length) return;
+    const lignes = ["telephone;prenom;nom;visites;couverts;derniere_visite"];
+    for (const c of cibleCampagne)
+      lignes.push([c.tel, c.prenom || "", c.nom || "", c.visites, c.couverts, c.derniere].join(";"));
+    const a = document.createElement("a");
+    a.href = "data:text/csv;charset=utf-8," + encodeURIComponent("\ufeff" + lignes.join("\n"));
+    a.download = "clients-apiaghja.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    $("campMsg").className = "msg ok";
+    $("campMsg").textContent = "CSV téléchargé (" + cibleCampagne.length + " clients).";
   });
 
   // ═══════════ Vue Stats ═══════════
