@@ -1390,6 +1390,20 @@
     .nav-meteo{padding:.28rem .55rem;font-size:.62rem;}
     .nav-meteo .nm-lieu{display:none;}
   }
+
+  /* ---------- Drapeaux repliés sur mobile ---------- */
+  @media (max-width:640px){
+    #langSel button{display:none;font-size:.6rem;padding:.26rem .4rem;}
+    #langSel button.on{display:inline-block;position:relative;padding-right:.9rem;}
+    #langSel button.on::after{
+      content:"▾";position:absolute;right:.22rem;top:50%;transform:translateY(-50%);
+      font-size:.5rem;color:#8a8a7a;
+    }
+    #langSel.ouvert button{display:inline-block;}
+    #langSel.ouvert button.on{padding-right:.4rem;}
+    #langSel.ouvert button.on::after{content:"";}
+    .nav-meteo{margin-left:auto;}
+  }
 </style>
 </head>
 <body>
@@ -3582,6 +3596,26 @@
         try { localStorage.setItem('apg_meteo2', JSON.stringify({ t: Date.now(), txt: txt })); } catch(e) {}
       })
       .catch(function(){ /* pastille masquée si la météo ne répond pas */ });
+  })();
+</script>
+<script>
+  (function(){
+    var sel = document.getElementById('langSel');
+    if (!sel) return;
+    var mq = window.matchMedia('(max-width:640px)');
+    sel.addEventListener('click', function(e){
+      if (!mq.matches) return;
+      if (!sel.classList.contains('ouvert')){
+        e.stopPropagation();
+        e.preventDefault();
+        sel.classList.add('ouvert');
+      } else {
+        setTimeout(function(){ sel.classList.remove('ouvert'); }, 80);
+      }
+    }, true);
+    document.addEventListener('click', function(e){
+      if (!sel.contains(e.target)) sel.classList.remove('ouvert');
+    });
   })();
 </script>
 </body>
