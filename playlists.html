@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nos playlists · A Piaghja · Porto-Vecchio</title>
+<meta name="description" content="Les playlists d'A Piaghja : les ambiances de la plage du Golfo di Sogno à emporter partout — du café du matin aux soirées face à la mer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#7d8560;--olive-soft:#9aa17e;--olive-fonce:#4a5335;
+    --sable:#efe9dd;--sable-deep:#e2d9c6;--rose:#e7c6bd;--or:#c2a15c;
+    --encre:#2a2b24;--blanc:#fdfcf9;--terre:#b0553f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Questrial',sans-serif;color:var(--encre);background:var(--sable);min-height:100dvh;}
+  ::placeholder{color:#a09f92;}
+
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.85rem 1.3rem;
+    background:rgba(253,252,249,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(194,161,92,.3);
+  }
+  .brand{
+    font-family:'Allura',cursive;font-size:1.8rem;color:var(--olive-fonce);
+    text-decoration:none;line-height:1;text-shadow:0 1px 2px rgba(42,43,36,.14);
+  }
+  .nav-retour{
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--encre);
+    text-decoration:none;border:1px solid rgba(194,161,92,.5);border-radius:999px;
+    padding:.42rem .95rem;transition:all .2s ease;white-space:nowrap;
+  }
+  .nav-retour:hover{border-color:var(--or);transform:translateY(-1px);}
+  .defile{
+    position:fixed;top:calc(1.7rem + 1.9rem);left:0;right:0;z-index:49;
+    background:rgba(42,43,36,.92);border-bottom:1px solid rgba(194,161,92,.35);
+    overflow:hidden;white-space:nowrap;padding:.22rem 0;
+  }
+  .defile-piste{display:inline-flex;width:max-content;animation:defiler 38s linear infinite;}
+  .defile-piste span{
+    font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);
+    text-shadow:0 1px 2px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  @keyframes defiler{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  main{max-width:960px;margin:0 auto;padding:8.2rem 1.2rem 4rem;}
+  .entete{text-align:center;margin-bottom:2.6rem;}
+  h1{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(3rem,8vw,5rem);line-height:1.05;margin-bottom:.6rem;
+  }
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    h1{
+      background:linear-gradient(172deg,#55603c 8%,var(--olive) 55%,#99a07c 96%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 2px 2px rgba(42,43,36,.2)) drop-shadow(0 10px 20px rgba(42,43,36,.1));
+    }
+  }
+  .entete p{color:#6b6c5e;max-width:52ch;margin:0 auto;line-height:1.7;}
+  .filet{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);margin:1.2rem auto 0;}
+
+  .playlists{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;}
+  .pl{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.4);border-radius:22px;
+    overflow:hidden;box-shadow:0 16px 40px rgba(42,43,36,.08);
+    transition:transform .25s ease, box-shadow .25s ease;
+    display:flex;flex-direction:column;
+  }
+  .pl:hover{transform:translateY(-4px);box-shadow:0 26px 56px rgba(42,43,36,.13);}
+  .pl-tete{padding:1.3rem 1.3rem 1rem;text-align:center;}
+  .pl-ico{font-size:1.7rem;}
+  .pl-titre{
+    font-family:'Allura',cursive;font-size:2rem;color:var(--olive-fonce);line-height:1.1;margin:.25rem 0 .35rem;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .pl-sous{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--or);}
+  .pl-desc{font-size:.84rem;color:#6b6c5e;line-height:1.65;margin-top:.6rem;}
+  .pl-corps{margin-top:auto;}
+  .pl-corps iframe{display:block;width:100%;height:352px;border:0;}
+  .pl-attente{
+    margin:0 1.3rem 1.3rem;background:var(--sable);border:1px dashed rgba(194,161,92,.55);
+    border-radius:16px;padding:1.1rem;text-align:center;font-size:.8rem;color:#8a8a7a;line-height:1.6;
+  }
+  .pl-attente b{color:var(--olive-fonce);font-weight:normal;}
+
+  footer{
+    text-align:center;padding:2.4rem 1rem 3rem;color:#7a7a68;font-size:.8rem;
+    border-top:1px solid rgba(194,161,92,.25);margin-top:3rem;
+  }
+  footer .brand-foot{
+    font-family:'Allura',cursive;font-size:2rem;color:var(--olive);display:block;margin-bottom:.4rem;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.vu{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html">A Piaghja</a>
+  <a class="nav-retour" href="index.html">‹ Retour au site</a>
+</nav>
+<div class="defile" aria-hidden="true">
+  <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span></div>
+</div>
+
+<main>
+  <div class="entete reveal">
+    <h1>Nos playlists</h1>
+    <p>La bande-son d'A Piaghja à emporter partout : du premier café face au Golfo di Sogno aux dernières lueurs sur l'eau. Appuyez sur lecture, fermez les yeux — vous êtes sur la plage.</p>
+    <div class="filet"></div>
+  </div>
+
+  <div class="playlists reveal" id="playlists"></div>
+</main>
+
+<footer>
+  <span class="brand-foot">A Piaghja</span>
+  Bar &amp; Restaurant · Plage du Golfo di Sogno · Porto-Vecchio · <a href="tel:0622061488" style="color:inherit">06 22 06 14 88</a>
+</footer>
+
+<script>
+  "use strict";
+  // ═══════════════════════════════════════════════════════════════════
+  // ⚠️ VOS PLAYLISTS : collez simplement vos liens Spotify ci-dessous
+  // (lien de partage : Spotify → playlist → ··· → Partager → Copier le lien)
+  // Tant qu'un lien contient [ ], la carte affiche « bientôt disponible ».
+  // ═══════════════════════════════════════════════════════════════════
+  var PLAYLISTS = [
+    {
+      ico: "🌅", titre: "Matin doré", sous: "Café · Lever de soleil",
+      desc: "Douceur acoustique et bossa légère pour accompagner le petit-déjeuner face à la mer.",
+      lien: "[LIEN_SPOTIFY_MATIN]"
+    },
+    {
+      ico: "☀️", titre: "Plein soleil", sous: "Plage · Déjeuner",
+      desc: "L'énergie chic de la plage : nu-disco, balearic et pépites ensoleillées pour l'après-midi.",
+      lien: "[LIEN_SPOTIFY_JOUR]"
+    },
+    {
+      ico: "🌊", titre: "Golden hour", sous: "Apéritif · Coucher de soleil",
+      desc: "Le moment signature d'A Piaghja : mélodies suspendues et cocktails quand le ciel s'embrase.",
+      lien: "[LIEN_SPOTIFY_SUNSET]"
+    },
+    {
+      ico: "🌙", titre: "Notte", sous: "Dîner · Soirée",
+      desc: "La nuit s'installe sur le Golfo di Sogno : grooves feutrés et braises qui rougeoient.",
+      lien: "[LIEN_SPOTIFY_SOIR]"
+    }
+  ];
+
+  var zone = document.getElementById("playlists");
+  PLAYLISTS.forEach(function(p){
+    var carte = document.createElement("article");
+    carte.className = "pl";
+    var pret = p.lien && p.lien.indexOf("[") === -1 && p.lien.indexOf("open.spotify.com") !== -1;
+    var corps;
+    if (pret){
+      var embed = p.lien.split("?")[0].replace("open.spotify.com/", "open.spotify.com/embed/");
+      corps = '<div class="pl-corps"><iframe src="' + embed + '?theme=0" loading="lazy" ' +
+              'allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" ' +
+              'title="Playlist ' + p.titre + '"></iframe></div>';
+    } else {
+      corps = '<div class="pl-corps"><div class="pl-attente"><b>Bientôt disponible</b><br>' +
+              'Cette ambiance arrive très vite sur notre Spotify — en attendant, elle joue en vrai sur la plage. 🌊</div></div>';
+    }
+    carte.innerHTML =
+      '<div class="pl-tete">' +
+        '<div class="pl-ico">' + p.ico + '</div>' +
+        '<div class="pl-titre">' + p.titre + '</div>' +
+        '<div class="pl-sous">' + p.sous + '</div>' +
+        '<p class="pl-desc">' + p.desc + '</p>' +
+      '</div>' + corps;
+    zone.appendChild(carte);
+  });
+
+  var obs = new IntersectionObserver(function(entrees){
+    entrees.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("vu"); obs.unobserve(e.target); } });
+  }, { threshold: .1 });
+  document.querySelectorAll(".reveal").forEach(function(el){ obs.observe(el); });
+</script>
+</body>
+</html>
