@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>A Piaghja · Direction</title>
@@ -10,932 +10,1205 @@
 <link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
 <style>
   :root{
-    --olive:#7d8560; --olive-soft:#9aa17e; --sable:#efe9dd; --sable-deep:#e2d9c6;
-    --rose:#e7c6bd; --or:#c2a15c; --encre:#2a2b24; --blanc:#fdfcf9;
+    --olive:#7d8560;
+    --olive-soft:#9aa17e;
+    --olive-fonce:#4a5335;
+    --sable:#efe9dd;
+    --sable-deep:#e2d9c6;
+    --rose:#e7c6bd;
+    --or:#c2a15c;
+    --encre:#2a2b24;
+    --blanc:#fdfcf9;
+    --terre:#b0553f;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Questrial',sans-serif;background:var(--sable);color:var(--encre);min-height:100vh;}
-  .haut{
-    background:var(--olive);color:var(--blanc);
-    padding:.9rem 4vw;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:'Questrial',sans-serif;color:var(--encre);
+    background:
+      radial-gradient(ellipse 60% 40% at 85% -5%, rgba(194,161,92,.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 0% 100%, rgba(125,133,96,.08), transparent 60%),
+      var(--sable);
+    min-height:100dvh;
   }
-  .haut h1{font-family:'Allura',cursive;font-weight:400;font-size:1.9rem;line-height:1;}
-  .haut .sous{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);}
-  .onglets{margin-left:auto;display:flex;gap:.4rem;}
+  button{font-family:inherit;cursor:pointer;}
+  input,select{font-family:inherit;color:var(--encre);}
+  ::placeholder{color:#a09f92;}
+
+  /* ---------- Barre haute ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+    padding:.7rem 1.1rem;
+    background:rgba(253,252,249,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(194,161,92,.35);
+  }
+  .marque{display:flex;align-items:center;gap:.55rem;}
+  .marque svg{width:30px;height:30px;flex:none;}
+  .marque .nom{font-family:'Allura',cursive;font-size:1.7rem;line-height:1;color:var(--olive-fonce);}
+  .marque .role{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--or);display:block;margin-top:.05rem;}
+  .onglets{display:flex;gap:.4rem;flex-wrap:wrap;margin-left:auto;}
   .onglet{
-    border:1px solid rgba(253,252,249,.35);background:none;border-radius:999px;
-    color:var(--blanc);padding:.45rem 1rem;cursor:pointer;font-family:inherit;
-    font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;transition:all .2s ease;
+    border:1px solid rgba(194,161,92,.5);background:var(--blanc);color:var(--encre);
+    border-radius:999px;padding:.42rem .95rem;font-size:.8rem;
+    transition:all .22s ease;position:relative;
   }
-  .onglet:hover{border-color:var(--blanc);}
-  .onglet.actif{background:var(--blanc);color:var(--olive);border-color:var(--blanc);}
-  main{max-width:900px;margin:0 auto;padding:1.2rem 4vw 4rem;}
+  .onglet:hover{border-color:var(--or);transform:translateY(-1px);}
+  .onglet.on{
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    border-color:transparent;box-shadow:0 6px 16px rgba(74,83,53,.28);
+  }
+  .onglet .puce{
+    position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 4px;
+    border-radius:999px;background:var(--terre);color:var(--blanc);
+    font-size:.62rem;line-height:17px;text-align:center;
+  }
+  .btn-sortie{
+    border:none;background:none;color:#8a8a7a;font-size:.72rem;
+    letter-spacing:.12em;text-transform:uppercase;padding:.4rem .2rem;
+  }
+  .btn-sortie:hover{color:var(--terre);}
 
+  main{max-width:1080px;margin:0 auto;padding:1.2rem 1rem 4rem;}
+
+  /* ---------- Cartes & structure ---------- */
   .carte{
-    background:var(--blanc);border-radius:14px;padding:1.2rem;
-    box-shadow:0 10px 34px rgba(74,83,53,.14);margin-top:1rem;
+    background:var(--blanc);border:1px solid rgba(194,161,92,.35);border-radius:18px;
+    padding:1.1rem 1.2rem;box-shadow:0 10px 30px rgba(42,43,36,.06);
+    margin-bottom:1rem;
   }
-  input,button,select{font-family:inherit;font-size:1rem;}
-  .champ{
-    width:100%;padding:.8rem 1rem;border:1px solid var(--sable-deep);border-radius:10px;
-    background:var(--blanc);color:var(--encre);
+  h2.titre{
+    font-family:'Allura',cursive;font-weight:400;font-size:2rem;color:var(--olive-fonce);
+    margin-bottom:.6rem;
   }
-  .champ:focus{outline:none;border-color:var(--or);}
-  .btn{
-    padding:.8rem 1.4rem;border:none;border-radius:999px;cursor:pointer;
-    background:var(--olive);color:var(--blanc);
-    font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
-    transition:background .2s ease;
-  }
-  .btn:hover{background:#6c7452;}
-  .erreur{color:#a8574a;font-size:.88rem;margin-top:.7rem;min-height:1.2em;}
-  .connexion{max-width:380px;margin:3rem auto;text-align:center;}
-  .connexion p{font-size:.9rem;color:#6a6a5c;margin-bottom:1rem;}
-  .connexion .btn{width:100%;margin-top:.8rem;}
+  .sous{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);}
 
-  .nav-jour{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:1rem;flex-wrap:wrap;}
-  .nav-jour button{
-    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:999px;
-    padding:.5rem 1rem;cursor:pointer;color:var(--encre);font-size:.85rem;transition:border-color .2s ease;
+  /* ---------- Connexion ---------- */
+  .voile-connexion{
+    min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:1rem;
   }
-  .nav-jour button:hover{border-color:var(--or);}
-  .titre-jour{font-size:1rem;min-width:200px;text-align:center;font-weight:bold;}
-  .nav-jour input[type=date]{border:1px solid var(--sable-deep);border-radius:10px;padding:.45rem .6rem;background:var(--blanc);}
+  .co-carte{
+    width:min(360px,100%);text-align:center;
+    background:var(--blanc);border:1px solid rgba(194,161,92,.4);border-radius:22px;
+    padding:2.2rem 1.8rem;box-shadow:0 30px 70px rgba(42,43,36,.18);
+  }
+  .co-carte svg{width:54px;height:54px;margin-bottom:.6rem;}
+  .co-carte h1{font-family:'Allura',cursive;font-weight:400;font-size:2.6rem;color:var(--olive-fonce);}
+  .co-carte .sous{display:block;margin-bottom:1.4rem;}
+  .co-carte input{
+    width:100%;padding:.75rem 1rem;border:1px solid var(--sable-deep);border-radius:12px;
+    background:var(--sable);font-size:1rem;text-align:center;letter-spacing:.15em;
+  }
+  .co-carte input:focus{outline:none;border-color:var(--or);}
+  .co-carte button{
+    width:100%;margin-top:.8rem;padding:.75rem;border:none;border-radius:999px;
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .co-carte button:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(74,83,53,.3);}
+  .co-erreur{color:var(--terre);font-size:.8rem;margin-top:.7rem;min-height:1.1em;}
 
-  .jauges{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
-  .jauge h3{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);margin-bottom:.4rem;}
-  .jauge .chiffres{font-size:1.3rem;margin-bottom:.4rem;}
-  .jauge .chiffres small{font-size:.8rem;color:#8a8a7a;}
-  .barre{height:8px;background:var(--sable);border-radius:99px;overflow:hidden;}
-  .barre i{display:block;height:100%;background:var(--olive-soft);border-radius:99px;transition:width .4s ease;}
-  .barre i.plein{background:#c48a7d;}
+  /* ---------- Navigation date / mois ---------- */
+  .nav-ligne{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;}
+  .nav-ligne .fleche{
+    width:38px;height:38px;border-radius:50%;border:1px solid rgba(194,161,92,.5);
+    background:var(--blanc);font-size:1.1rem;transition:all .2s ease;
+  }
+  .nav-ligne .fleche:hover{border-color:var(--or);transform:translateY(-1px);}
+  .nav-titre{font-size:1.05rem;flex:1;min-width:180px;}
+  .nav-titre b{text-transform:capitalize;font-weight:normal;}
+  .btn-doux{
+    border:1px solid rgba(194,161,92,.5);background:var(--blanc);border-radius:999px;
+    padding:.4rem .9rem;font-size:.75rem;transition:all .2s ease;
+  }
+  .btn-doux:hover{border-color:var(--or);}
+  input[type="date"], input[type="month"], input[type="time"]{
+    border:1px solid var(--sable-deep);border-radius:10px;background:var(--blanc);
+    padding:.4rem .55rem;font-size:.82rem;
+  }
 
-  table{width:100%;border-collapse:collapse;margin-top:.4rem;font-size:.92rem;}
-  th{
-    text-align:left;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
-    color:#8a8a7a;padding:.5rem .4rem;border-bottom:1px solid var(--sable-deep);font-weight:normal;
+  /* ---------- Jauges ---------- */
+  .jauges{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem;}
+  @media (max-width:560px){.jauges{grid-template-columns:1fr;}}
+  .jauge{background:var(--blanc);border:1px solid rgba(194,161,92,.35);border-radius:16px;padding:.9rem 1rem;}
+  .jauge .j-tete{display:flex;justify-content:space-between;align-items:baseline;}
+  .jauge .j-nom{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);}
+  .jauge .j-val{font-size:1.5rem;}
+  .jauge .j-val small{font-size:.75rem;color:#8a8a7a;}
+  .jauge .j-barre{height:8px;border-radius:999px;background:var(--sable);margin-top:.5rem;overflow:hidden;}
+  .jauge .j-barre i{
+    display:block;height:100%;border-radius:999px;width:0;
+    background:linear-gradient(90deg,var(--olive-soft),var(--olive));
+    transition:width .7s cubic-bezier(.2,.8,.3,1);
   }
-  td{padding:.55rem .4rem;border-bottom:1px solid var(--sable);vertical-align:middle;}
-  td a{color:var(--olive);text-decoration:none;font-weight:bold;}
-  .svc{
-    display:inline-block;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
-    padding:.18rem .5rem;border-radius:99px;background:var(--sable);color:var(--olive);
-  }
-  .svc.camp{background:#f3e7e3;color:#b0766a;}
-  .svc.pass{background:#e7ecf3;color:#5e7391;}
-  .annuler{
-    border:1px solid var(--sable-deep);background:none;border-radius:999px;
-    padding:.3rem .7rem;cursor:pointer;font-size:.72rem;color:#a8574a;transition:all .2s ease;
-  }
-  .annuler:hover{border-color:#a8574a;background:#faf1ef;}
-  .vide{text-align:center;color:#8a8a7a;padding:1.4rem 0;}
-  .section-titre{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--olive);margin-top:1.5rem;}
+  .jauge.chaud .j-barre i{background:linear-gradient(90deg,var(--or),#d4b26e);}
+  .jauge.plein .j-barre i{background:linear-gradient(90deg,#c4664e,var(--terre));}
 
-  .semaine{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-top:.7rem;}
-  .sem-jour{
-    background:var(--blanc);border:1px solid var(--sable-deep);border-radius:10px;
-    padding:.5rem .3rem;text-align:center;cursor:pointer;transition:border-color .2s ease;
+  /* ---------- Lignes de réservation ---------- */
+  .svc-sep{
+    display:flex;align-items:center;gap:.7rem;margin:1.1rem 0 .5rem;
+    font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--or);
   }
-  .sem-jour:hover{border-color:var(--or);}
-  .sem-jour.actif{border-color:var(--olive);border-width:2px;}
-  .sj-nom{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8a7a;}
-  .sj-num{font-size:1rem;margin:.12rem 0;}
-  .sj-tot{font-size:.66rem;color:var(--olive);}
+  .svc-sep::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(194,161,92,.45),transparent);}
+  .resa{
+    display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
+    padding:.6rem .5rem;border-bottom:1px dashed rgba(194,161,92,.3);
+    animation:apparait .3s ease both;
+  }
+  @keyframes apparait{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .resa:last-child{border-bottom:none;}
+  .r-heure{
+    background:var(--sable);border-radius:10px;padding:.3rem .55rem;
+    font-size:.85rem;min-width:56px;text-align:center;
+  }
+  .r-nom{flex:1;min-width:140px;}
+  .r-nom small{display:block;color:#8a8a7a;font-size:.72rem;}
+  .r-nom a{color:inherit;text-decoration:none;border-bottom:1px dotted rgba(194,161,92,.7);}
+  .r-pax{
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    border-radius:999px;padding:.25rem .7rem;font-size:.8rem;white-space:nowrap;
+  }
+  .badge{
+    font-size:.66rem;letter-spacing:.06em;border-radius:999px;padding:.2rem .55rem;
+    border:1px solid rgba(194,161,92,.5);color:#7a7a6c;white-space:nowrap;
+  }
+  .badge.camp{border-color:rgba(125,133,96,.6);color:var(--olive-fonce);background:rgba(125,133,96,.08);}
+  .badge.pass{border-color:rgba(176,85,63,.4);color:var(--terre);background:rgba(176,85,63,.06);}
+  .r-table{width:64px;text-align:center;border:1px solid var(--sable-deep);border-radius:10px;padding:.32rem .3rem;font-size:.82rem;background:var(--blanc);}
+  .r-table:focus{outline:none;border-color:var(--or);}
+  .r-table.ok{border-color:var(--olive);background:rgba(125,133,96,.07);}
+  .r-suppr{
+    border:none;background:none;font-size:.95rem;color:#b9b8ab;padding:.3rem .4rem;border-radius:8px;
+    transition:all .2s ease;
+  }
+  .r-suppr:hover{color:var(--terre);background:rgba(176,85,63,.08);}
+  .r-suppr.arme{color:var(--blanc);background:var(--terre);}
+  .vide{
+    text-align:center;color:#8a8a7a;padding:1.6rem 0;font-size:.9rem;
+  }
 
-  /* ---------- Service ---------- */
-  .svc-bascule{display:flex;gap:.5rem;justify-content:center;margin-top:1rem;}
-  .svc-bascule button{
-    flex:1;max-width:180px;border:1px solid var(--sable-deep);background:var(--blanc);
-    border-radius:999px;padding:.6rem;cursor:pointer;font-size:.8rem;
-    letter-spacing:.16em;text-transform:uppercase;color:var(--encre);transition:all .2s ease;
-  }
-  .svc-bascule button.actif{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
-  .ligne-svc{
-    display:flex;align-items:center;gap:.8rem;padding:.7rem .4rem;
-    border-bottom:1px solid var(--sable);flex-wrap:wrap;
-  }
-  .ls-heure{font-weight:bold;font-size:1.05rem;width:52px;flex:none;}
-  .ls-nom{flex:1;min-width:140px;}
-  .ls-nom .badges{margin-top:.15rem;display:flex;gap:.3rem;}
-  .ls-pax{font-size:1.05rem;width:56px;flex:none;text-align:center;}
-  .ls-pax small{font-size:.65rem;color:#8a8a7a;display:block;}
-  .ls-table{display:flex;gap:.4rem;align-items:center;flex:none;}
-  .ls-table input{
-    width:74px;padding:.55rem .6rem;border:1px solid var(--sable-deep);border-radius:10px;
-    text-align:center;font-size:1rem;background:var(--blanc);
-  }
-  .ls-table input:focus{outline:none;border-color:var(--or);}
-  .ls-table input.ok{border-color:var(--olive);background:#f2f4ec;}
-  .ls-ok{
-    border:none;background:var(--olive);color:var(--blanc);border-radius:10px;
-    width:40px;height:40px;cursor:pointer;font-size:1rem;transition:background .2s ease;
-  }
-  .ls-ok:hover{background:#6c7452;}
-  .passage-form{display:flex;gap:.6rem;flex-wrap:wrap;align-items:flex-end;}
-  .pf-groupe{display:flex;flex-direction:column;gap:.3rem;}
-  .pf-groupe label{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;}
-  .pf-groupe input{
-    padding:.6rem .7rem;border:1px solid var(--sable-deep);border-radius:10px;background:var(--blanc);
-  }
-  .pf-groupe input:focus{outline:none;border-color:var(--or);}
+  /* ---------- Passage ---------- */
+  .passage{display:flex;align-items:flex-end;gap:.7rem;flex-wrap:wrap;}
+  .pf-g{display:flex;flex-direction:column;gap:.25rem;}
+  .pf-g label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#8a8a7a;}
+  .pf-g input{padding:.45rem .6rem;}
   .pf-camp{
-    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:999px;
-    padding:.6rem 1rem;cursor:pointer;font-size:.8rem;transition:all .2s ease;
+    display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:#5c5d50;
+    padding:.45rem .2rem;user-select:none;cursor:pointer;
   }
-  .pf-camp.sel{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
-  .msg-ok{color:var(--olive);font-size:.88rem;margin-top:.6rem;min-height:1.2em;}
+  .btn-plein{
+    border:none;border-radius:999px;padding:.55rem 1.2rem;
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-plein:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(74,83,53,.3);}
 
-  /* ---------- Édition de la carte ---------- */
-  .cat-titre{
-    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);
-    padding:.9rem 0 .4rem;border-bottom:1px solid var(--sable-deep);margin-bottom:.4rem;
+  /* ---------- Semaine ---------- */
+  .semaine{display:grid;grid-template-columns:repeat(7,1fr);gap:.45rem;}
+  @media (max-width:640px){.semaine{grid-template-columns:repeat(4,1fr);}}
+  .sem-j{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.35);border-radius:14px;
+    padding:.55rem .4rem;text-align:center;cursor:pointer;transition:all .2s ease;
   }
-  .ligne-plat{
-    display:flex;gap:.5rem;align-items:center;padding:.45rem 0;
-    border-bottom:1px solid var(--sable);flex-wrap:wrap;
-  }
-  .ligne-plat.masque{opacity:.45;}
-  .ligne-plat input{
-    padding:.5rem .6rem;border:1px solid var(--sable-deep);border-radius:8px;
-    background:var(--blanc);font-size:.9rem;
-  }
-  .ligne-plat input:focus{outline:none;border-color:var(--or);}
-  .lp-nom{flex:1;min-width:150px;}
-  .lp-desc{flex:1.5;min-width:180px;font-size:.84rem !important;color:#6a6a5c;}
-  .lp-prix{width:76px;text-align:center;}
-  .lp-btn{
-    border:1px solid var(--sable-deep);background:var(--blanc);border-radius:8px;
-    width:38px;height:38px;cursor:pointer;font-size:.95rem;transition:all .2s ease;flex:none;
-  }
-  .lp-btn:hover{border-color:var(--or);}
-  .lp-btn.save{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
-  .lp-btn.suppr:hover{border-color:#a8574a;color:#a8574a;}
-  .lp-panneau{
-    font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8a7a;width:100%;
-  }
+  .sem-j:hover{border-color:var(--or);transform:translateY(-2px);}
+  .sem-j.actif{border-color:var(--olive);box-shadow:0 6px 14px rgba(74,83,53,.15);}
+  .sem-j .sj-nom{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#8a8a7a;}
+  .sem-j .sj-num{font-size:1.05rem;margin:.15rem 0;}
+  .sem-j .sj-tot{font-size:.68rem;color:var(--olive-fonce);}
+  .sem-j .sj-tot b{color:var(--or);font-weight:normal;}
 
-  /* ---------- Statistiques ---------- */
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-top:1rem;}
-  .kpi{background:var(--blanc);border-radius:12px;padding:.9rem;box-shadow:0 8px 24px rgba(74,83,53,.1);}
-  .kpi .k-val{font-size:1.6rem;color:var(--olive);}
-  .kpi .k-lab{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;margin-top:.2rem;}
-  .graph{
-    display:flex;align-items:flex-end;gap:3px;height:150px;margin-top:.8rem;
-    padding-bottom:.4rem;border-bottom:1px solid var(--sable-deep);
+  /* ---------- Services (vue plan) ---------- */
+  .plan{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  @media (max-width:720px){.plan{grid-template-columns:1fr;}}
+  .creneau{margin-bottom:.6rem;}
+  .creneau .c-h{
+    display:flex;justify-content:space-between;font-size:.78rem;color:var(--or);
+    letter-spacing:.12em;margin-bottom:.25rem;
   }
-  .g-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;min-width:0;cursor:default;}
-  .g-midi{background:var(--or);border-radius:2px 2px 0 0;opacity:.85;}
-  .g-soir{background:var(--olive-soft);border-radius:2px 2px 0 0;}
+  .creneau .c-l{font-size:.85rem;padding:.18rem 0;color:#4c4d42;display:flex;gap:.5rem;}
+  .creneau .c-l b{font-weight:normal;color:var(--encre);}
+  .creneau .c-l .t{color:var(--or);}
+
+  /* ---------- Carte (gestion) ---------- */
+  .outils-carte{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.9rem;}
+  .recherche{
+    flex:1;min-width:200px;padding:.55rem .9rem;border:1px solid var(--sable-deep);
+    border-radius:999px;background:var(--blanc);font-size:.85rem;
+  }
+  .recherche:focus{outline:none;border-color:var(--or);}
+  .compteur{font-size:.72rem;color:#8a8a7a;white-space:nowrap;}
+  .panneaux{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem;}
+  .p-pill{
+    border:1px solid rgba(194,161,92,.5);background:var(--blanc);border-radius:999px;
+    padding:.32rem .75rem;font-size:.74rem;transition:all .2s ease;
+  }
+  .p-pill.on{background:var(--olive);border-color:var(--olive);color:var(--blanc);}
+  .cat-bloc{margin-bottom:.4rem;border:1px solid rgba(194,161,92,.3);border-radius:14px;overflow:hidden;background:var(--blanc);}
+  .cat-tete{
+    width:100%;display:flex;justify-content:space-between;align-items:center;gap:.6rem;
+    padding:.65rem .9rem;background:rgba(239,233,221,.5);border:none;text-align:left;font-size:.9rem;
+  }
+  .cat-tete small{color:#8a8a7a;font-size:.72rem;}
+  .cat-corps{padding:.3rem .9rem .6rem;}
+  .plat-l{
+    display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;
+    padding:.45rem 0;border-bottom:1px dashed rgba(194,161,92,.25);
+  }
+  .plat-l:last-child{border-bottom:none;}
+  .plat-l input{border:1px solid transparent;border-radius:8px;padding:.3rem .45rem;background:transparent;font-size:.85rem;}
+  .plat-l input:hover{border-color:var(--sable-deep);}
+  .plat-l input:focus{outline:none;border-color:var(--or);background:var(--blanc);}
+  .plat-l .i-nom{flex:2;min-width:150px;}
+  .plat-l .i-desc{flex:3;min-width:180px;font-size:.76rem;color:#6b6c5e;}
+  .plat-l .i-prix{width:70px;text-align:right;}
+  .plat-l.off .i-nom, .plat-l.off .i-desc, .plat-l.off .i-prix{opacity:.4;text-decoration:line-through;}
+  .mini{
+    border:none;background:none;font-size:.9rem;padding:.25rem .35rem;border-radius:8px;color:#a3a294;
+    transition:all .2s ease;
+  }
+  .mini:hover{color:var(--encre);background:var(--sable);}
+  .mini.sauver{color:var(--blanc);background:var(--olive);}
+  .mini.arme{color:var(--blanc);background:var(--terre);}
+  .ajout{display:flex;gap:.5rem;flex-wrap:wrap;align-items:flex-end;}
+  .ajout input, .ajout select{padding:.45rem .6rem;border:1px solid var(--sable-deep);border-radius:10px;background:var(--blanc);font-size:.82rem;}
+  .msg{font-size:.78rem;min-height:1.1em;margin-top:.4rem;}
+  .msg.ok{color:var(--olive-fonce);}
+  .msg.ko{color:var(--terre);}
+
+  /* ---------- Événements ---------- */
+  .devis-grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.9rem;}
+  .devis{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.4);border-radius:16px;
+    padding:1rem 1.1rem;box-shadow:0 8px 22px rgba(42,43,36,.06);
+    animation:apparait .35s ease both;position:relative;
+  }
+  .devis.neuf::before{
+    content:"nouveau";position:absolute;top:-8px;right:12px;
+    background:var(--terre);color:var(--blanc);font-size:.6rem;letter-spacing:.14em;
+    text-transform:uppercase;border-radius:999px;padding:.2rem .6rem;
+  }
+  .devis .d-type{font-family:'Allura',cursive;font-size:1.6rem;color:var(--olive-fonce);line-height:1.1;}
+  .devis .d-date{font-size:.78rem;color:var(--or);letter-spacing:.06em;margin-bottom:.5rem;text-transform:capitalize;}
+  .devis .d-l{display:flex;justify-content:space-between;gap:.6rem;font-size:.8rem;color:#5c5d50;padding:.16rem 0;}
+  .devis .d-l b{font-weight:normal;color:var(--encre);text-align:right;}
+  .devis .d-tot{
+    display:flex;justify-content:space-between;margin-top:.45rem;padding-top:.45rem;
+    border-top:1px solid var(--sable-deep);font-size:.9rem;
+  }
+  .devis .d-tot b{color:var(--olive);}
+  .devis .d-pied{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem;gap:.5rem;flex-wrap:wrap;}
+  .devis .d-tel{
+    text-decoration:none;background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    border-radius:999px;padding:.35rem .85rem;font-size:.78rem;
+  }
+  .devis .d-recu{font-size:.66rem;color:#a3a294;margin-top:.4rem;}
+
+  /* ---------- Stats ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1rem;}
+  .kpi{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.35);border-radius:16px;
+    padding:.95rem 1rem;transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .kpi:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(42,43,36,.08);}
+  .kpi .k-val{font-size:1.7rem;color:var(--olive-fonce);}
+  .kpi .k-lab{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#8a8a7a;margin-top:.15rem;}
+  .stats-2{display:grid;grid-template-columns:3fr 2fr;gap:1rem;}
+  @media (max-width:820px){.stats-2{grid-template-columns:1fr;}}
+  .graphe{display:flex;align-items:flex-end;gap:3px;height:170px;padding-top:.4rem;}
+  .g-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;min-width:6px;position:relative;cursor:pointer;}
+  .g-col i{display:block;border-radius:3px 3px 0 0;}
+  .g-col .midi{background:var(--olive-soft);}
+  .g-col .soir{background:var(--or);}
+  .g-col:hover .midi{background:var(--olive);}
+  .g-col::after{
+    content:attr(data-bulle);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+    background:var(--encre);color:var(--blanc);font-size:.62rem;padding:.2rem .45rem;border-radius:7px;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s ease;z-index:5;
+  }
+  .g-col:hover::after{opacity:1;}
   .g-jours{display:flex;gap:3px;margin-top:.3rem;}
-  .g-jours span{flex:1;text-align:center;font-size:.55rem;color:#8a8a7a;min-width:0;}
-  .legende{display:flex;gap:1.2rem;margin-top:.7rem;font-size:.75rem;color:#6a6a5c;}
-  .legende i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:.35rem;}
-  .h-barres{margin-top:.8rem;display:flex;flex-direction:column;gap:.45rem;}
-  .h-ligne{display:flex;align-items:center;gap:.6rem;font-size:.82rem;}
-  .h-ligne .h-h{width:46px;flex:none;color:#6a6a5c;}
-  .h-ligne .h-fond{flex:1;height:12px;background:var(--sable);border-radius:99px;overflow:hidden;display:block;}
-  .h-ligne .h-rempli{height:100%;background:var(--olive-soft);border-radius:99px;display:block;}
-  .h-ligne .h-val{width:36px;flex:none;text-align:right;color:var(--olive);}
-  .deconnexion{margin-top:2rem;text-align:center;}
-  .deconnexion button{
-    background:none;border:none;color:#8a8a7a;cursor:pointer;font-size:.78rem;
-    letter-spacing:.14em;text-transform:uppercase;
-  }
+  .g-jours span{flex:1;text-align:center;font-size:.56rem;color:#a3a294;min-width:6px;}
+  .legende{display:flex;gap:1rem;font-size:.7rem;color:#8a8a7a;margin-top:.6rem;}
+  .legende i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:.3rem;vertical-align:-1px;}
+  .h-ligne{display:flex;align-items:center;gap:.6rem;margin:.3rem 0;font-size:.75rem;}
+  .h-ligne .h-h{width:44px;color:#8a8a7a;}
+  .h-ligne .h-b{flex:1;height:12px;background:var(--sable);border-radius:999px;overflow:hidden;}
+  .h-ligne .h-b i{display:block;height:100%;background:linear-gradient(90deg,var(--olive-soft),var(--olive));border-radius:999px;width:0;transition:width .6s ease;}
+  .h-ligne .h-v{width:34px;text-align:right;color:var(--olive-fonce);}
 
-  /* ---------- Badges sous le nom + note passage ---------- */
-  .badges-cell{margin-top:.2rem;display:flex;gap:.3rem;flex-wrap:wrap;}
-  .note-passage{
-    margin-top:.7rem;text-align:center;font-size:.82rem;color:#5e7391;min-height:1.1em;
+  /* ---------- Squelettes & toast ---------- */
+  .sk{position:relative;overflow:hidden;background:var(--sable);border-radius:10px;min-height:16px;}
+  .sk::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(253,252,249,.75),transparent);
+    animation:brille 1.2s infinite;
   }
-
-  /* ---------- Barre d'app (mobile & tablette) ---------- */
-  .barre-app{display:none;}
-
-  /* ---------- Version PC : mise en page large ---------- */
-  @media (min-width:900px){
-    main{max-width:1180px;}
-    /* Service en cours : formulaire passage à gauche, tables à droite */
-    #vueService .svc-colonnes{
-      display:grid;grid-template-columns:340px 1fr;gap:1.2rem;align-items:start;
-    }
-    #vueService .svc-colonnes .colonne-passage{position:sticky;top:1rem;}
-    #vueService .passage-form{flex-direction:column;align-items:stretch;}
-    #vueService .passage-form .pf-groupe input{width:100% !important;}
-    #vueService .passage-form .btn,#vueService .passage-form .pf-camp{width:100%;}
-    /* Statistiques : graphique et créneaux côte à côte */
-    #vueStats .stats-colonnes{
-      display:grid;grid-template-columns:1.6fr 1fr;gap:1.2rem;align-items:start;
-    }
-    .graph{height:190px;}
+  @keyframes brille{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
+  .sk-l{height:38px;margin:.45rem 0;}
+  #toast{
+    position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:90;
+    background:var(--encre);color:var(--blanc);border-radius:999px;padding:.6rem 1.2rem;
+    font-size:.8rem;transition:transform .4s cubic-bezier(.2,.8,.3,1);max-width:90vw;
   }
-
-  /* ---------- Version mobile & tablette : façon app ---------- */
-  @media (max-width:899px){
-    .onglets{display:none !important;}
-    .deconnexion{margin-bottom:1rem;}
-    body{padding-bottom:calc(76px + env(safe-area-inset-bottom));}
-    .barre-app{
-      display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;
-      background:rgba(253,252,249,.96);
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-      border-top:1px solid var(--sable-deep);
-      padding:.4rem .4rem calc(.4rem + env(safe-area-inset-bottom));
-    }
-    .bar-item{
-      flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
-      background:none;border:none;cursor:pointer;padding:.4rem 0;
-      border-radius:12px;color:#8a8a7a;
-      font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
-      transition:color .2s ease, background .2s ease;
-    }
-    .bar-item .bi-ico{font-size:1.25rem;}
-    .bar-item.actif{color:var(--olive);background:var(--sable);}
-    /* Confort tactile */
-    .ls-table input{width:86px;padding:.75rem .6rem;font-size:1.05rem;}
-    .ls-ok{width:48px;height:48px;}
-    .annuler{padding:.5rem .9rem;}
-    .pf-groupe input{padding:.8rem .7rem;font-size:16px;}
-    .champ{font-size:16px;}
-    /* Tableau du jour : colonnes secondaires masquées */
-    th:nth-child(4),td:nth-child(4){display:none;}   /* Table (se gère dans Service) */
-    th:nth-child(6),td:nth-child(6){display:none;}   /* Prise le */
-    .nav-jour input[type=date]{width:100%;max-width:220px;}
-  }
-  @media (max-width:640px){
-    .jauges{grid-template-columns:1fr;}
-    .semaine{grid-template-columns:repeat(4,1fr);}
-  }
+  #toast.la{transform:translate(-50%,0);}
+  #toast.ko{background:var(--terre);}
+  [hidden]{display:none !important;}
 </style>
 </head>
 <body>
 
-<div class="haut">
-  <div>
+<!-- ═══════════ Connexion ═══════════ -->
+<div class="voile-connexion" id="ecranConnexion">
+  <div class="co-carte">
+    <svg viewBox="0 0 200 210" fill="none" aria-hidden="true">
+      <path d="M100 195 C98 172 102 152 97 130 C93 112 100 100 97 80" stroke="#4a5335" stroke-width="9" stroke-linecap="round"/>
+      <ellipse cx="100" cy="58" rx="46" ry="16" fill="#7d8560"/>
+      <ellipse cx="100" cy="47" rx="33" ry="13" fill="#9aa17e"/>
+      <ellipse cx="57" cy="68" rx="25" ry="12" fill="#9aa17e"/>
+      <ellipse cx="144" cy="66" rx="25" ry="12" fill="#7d8560"/>
+      <circle cx="100" cy="77" r="5" fill="#c2a15c"/>
+    </svg>
     <h1>A Piaghja</h1>
-    <span class="sous">Direction</span>
-  </div>
-  <div class="onglets" id="onglets" hidden>
-    <button class="onglet actif" data-vue="jour">Jour</button>
-    <button class="onglet" data-vue="service">Service en cours</button>
-    <button class="onglet" data-vue="carte">Carte</button>
-    <button class="onglet" data-vue="stats">Statistiques</button>
+    <span class="sous">Espace direction</span>
+    <input type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password">
+    <button id="btnConnexion">Entrer</button>
+    <div class="co-erreur" id="erreurConnexion"></div>
   </div>
 </div>
 
-<main>
-  <!-- Connexion -->
-  <div class="carte connexion" id="ecranConnexion">
-    <p>Espace réservé à la direction.<br>Entrez la clé d'accès.</p>
-    <input class="champ" type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password">
-    <button class="btn" id="btnConnexion">Entrer</button>
-    <p class="erreur" id="erreurConnexion"></p>
-  </div>
-
-  <!-- ===================== VUE JOUR ===================== -->
-  <div id="vueJour" hidden>
-    <div class="nav-jour">
-      <button id="jourPrec">‹</button>
-      <span class="titre-jour" id="titreJour"></span>
-      <button id="jourSuiv">›</button>
-      <button id="aujourdhui">Aujourd'hui</button>
-      <input type="date" id="choixDate" aria-label="Choisir une date">
-    </div>
-
-    <div class="jauges">
-      <div class="carte jauge">
-        <h3>Service du midi</h3>
-        <div class="chiffres"><span id="totMidi">0</span> <small>/ <span id="capMidi">60</span> couverts</small></div>
-        <div class="barre"><i id="barreMidi" style="width:0%"></i></div>
-      </div>
-      <div class="carte jauge">
-        <h3>Service du soir</h3>
-        <div class="chiffres"><span id="totSoir">0</span> <small>/ <span id="capSoir">60</span> couverts</small></div>
-        <div class="barre"><i id="barreSoir" style="width:0%"></i></div>
+<!-- ═══════════ Application ═══════════ -->
+<div id="app" hidden>
+  <header class="topbar">
+    <div class="marque">
+      <svg viewBox="0 0 200 210" fill="none" aria-hidden="true">
+        <path d="M100 195 C98 172 102 152 97 130 C93 112 100 100 97 80" stroke="#4a5335" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="100" cy="58" rx="46" ry="16" fill="#7d8560"/>
+        <ellipse cx="100" cy="47" rx="33" ry="13" fill="#9aa17e"/>
+        <ellipse cx="57" cy="68" rx="25" ry="12" fill="#9aa17e"/>
+        <ellipse cx="144" cy="66" rx="25" ry="12" fill="#7d8560"/>
+        <circle cx="100" cy="77" r="5" fill="#c2a15c"/>
+      </svg>
+      <div>
+        <span class="nom">A Piaghja</span>
+        <span class="role">Direction</span>
       </div>
     </div>
+    <nav class="onglets" id="onglets">
+      <button class="onglet on" data-vue="jour">Jour</button>
+      <button class="onglet" data-vue="service">Services</button>
+      <button class="onglet" data-vue="carte">Carte</button>
+      <button class="onglet" data-vue="evenements">Événements<span class="puce" id="puceEvt" hidden></span></button>
+      <button class="onglet" data-vue="stats">Stats</button>
+    </nav>
+    <button class="btn-sortie" id="btnDeconnexion">Sortir</button>
+  </header>
 
-    <p class="note-passage" id="notePassage"></p>
-
-    <p class="section-titre">Réservations du jour</p>
-    <div class="carte">
-      <table>
-        <thead>
-          <tr><th>Heure</th><th>Nom</th><th>Couverts</th><th>Table</th><th>Téléphone</th><th>Prise le</th><th></th></tr>
-        </thead>
-        <tbody id="lignes"></tbody>
-      </table>
-      <p class="vide" id="aucun" hidden>Aucune réservation ce jour.</p>
-    </div>
-
-    <p class="section-titre">Les 7 prochains jours</p>
-    <div class="semaine" id="semaine"></div>
-  </div>
-
-  <!-- ===================== VUE SERVICE ===================== -->
-  <div id="vueService" hidden>
-    <div class="svc-bascule">
-      <button id="svcMidi">Midi</button>
-      <button id="svcSoir">Soir</button>
-    </div>
-
-    <div class="svc-colonnes">
-    <div class="colonne-passage">
-    <p class="section-titre">Ajouter un passage</p>
-    <div class="carte">
-      <div class="passage-form">
-        <div class="pf-groupe">
-          <label for="pfPax">Couverts</label>
-          <input type="number" id="pfPax" min="1" max="40" value="2" style="width:90px">
-        </div>
-        <div class="pf-groupe">
-          <label for="pfHeure">Heure</label>
-          <input type="time" id="pfHeure" style="width:110px">
-        </div>
-        <div class="pf-groupe">
-          <label for="pfTable">Table</label>
-          <input id="pfTable" placeholder="n°" style="width:80px" maxlength="10">
-        </div>
-        <button type="button" class="pf-camp" id="pfCamp">Camping</button>
-        <button type="button" class="btn" id="pfAjouter">Ajouter</button>
+  <main>
+    <!-- ═══════ Vue Jour ═══════ -->
+    <section id="vueJour">
+      <div class="nav-ligne">
+        <button class="fleche" id="jourPrec" aria-label="Jour précédent">‹</button>
+        <div class="nav-titre"><b id="titreJour">…</b></div>
+        <input type="date" id="choixDate">
+        <button class="btn-doux" id="aujourdhui">Aujourd'hui</button>
+        <button class="fleche" id="jourSuiv" aria-label="Jour suivant">›</button>
       </div>
-      <p class="msg-ok" id="pfMsg"></p>
-    </div>
-    </div>
 
-    <div class="colonne-tables">
-    <p class="section-titre">Tables du service · <span id="svcTitre"></span></p>
-    <div class="carte" id="listeService"></div>
-    </div>
-    </div>
-  </div>
-
-  <!-- ===================== VUE CARTE ===================== -->
-  <div id="vueCarte" hidden>
-    <div class="nav-jour">
-      <select id="cartePanel" class="champ" style="max-width:260px"></select>
-      <input class="champ" id="carteRecherche" placeholder="Rechercher un plat…" style="max-width:260px">
-    </div>
-
-    <p class="section-titre">Ajouter un plat</p>
-    <div class="carte">
-      <div class="passage-form">
-        <div class="pf-groupe" style="min-width:160px">
-          <label for="ajCat">Catégorie</label>
-          <select id="ajCat"></select>
+      <div class="jauges">
+        <div class="jauge" id="jaugeMidi">
+          <div class="j-tete"><span class="j-nom">☀️ Midi</span>
+            <span class="j-val"><span id="totMidi">0</span><small> / <span id="capMidi">60</span></small></span></div>
+          <div class="j-barre"><i id="barreMidi"></i></div>
         </div>
-        <div class="pf-groupe" id="ajCatNouvGroupe" hidden style="min-width:160px">
-          <label for="ajCatNouv">Nouvelle catégorie</label>
-          <input id="ajCatNouv" placeholder="Nom de la catégorie">
+        <div class="jauge" id="jaugeSoir">
+          <div class="j-tete"><span class="j-nom">🌙 Soir</span>
+            <span class="j-val"><span id="totSoir">0</span><small> / <span id="capSoir">60</span></small></span></div>
+          <div class="j-barre"><i id="barreSoir"></i></div>
         </div>
-        <div class="pf-groupe" style="flex:1;min-width:180px">
-          <label for="ajNom">Nom du plat</label>
-          <input id="ajNom" placeholder="Nom">
-        </div>
-        <div class="pf-groupe" style="flex:1.4;min-width:200px">
-          <label for="ajDesc">Description (optionnelle)</label>
-          <input id="ajDesc" placeholder="Ingrédients, précisions…">
-        </div>
-        <div class="pf-groupe">
-          <label for="ajPrix">Prix</label>
-          <input id="ajPrix" placeholder="12 €" style="width:90px">
-        </div>
-        <button type="button" class="btn" id="ajBtn">Ajouter</button>
       </div>
-      <p class="msg-ok" id="ajMsg"></p>
-    </div>
 
-    <p class="section-titre">Plats de l'onglet</p>
-    <div class="carte" id="listeCarte"></div>
-  </div>
-
-  <!-- ===================== VUE STATISTIQUES ===================== -->
-  <div id="vueStats" hidden>
-    <div class="nav-jour">
-      <button id="moisPrec">‹</button>
-      <span class="titre-jour" id="titreMois"></span>
-      <button id="moisSuiv">›</button>
-    </div>
-
-    <div class="kpis">
-      <div class="kpi"><div class="k-val" id="kCouverts">0</div><div class="k-lab">Couverts sur le mois</div></div>
-      <div class="kpi"><div class="k-val" id="kResas">0</div><div class="k-lab">Réservations</div></div>
-      <div class="kpi"><div class="k-val" id="kPassage">0</div><div class="k-lab">Couverts en passage</div></div>
-      <div class="kpi"><div class="k-val" id="kCamping">0%</div><div class="k-lab">Résidents camping</div></div>
-    </div>
-
-    <div class="stats-colonnes">
-    <div>
-    <p class="section-titre">Affluence jour par jour</p>
-    <div class="carte">
-      <div class="graph" id="graph"></div>
-      <div class="g-jours" id="graphJours"></div>
-      <div class="legende">
-        <span><i style="background:var(--or)"></i>Midi</span>
-        <span><i style="background:var(--olive-soft)"></i>Soir</span>
+      <div class="carte">
+        <div id="lignes"></div>
       </div>
-    </div>
 
-    </div>
+      <div class="carte">
+        <h2 class="titre">Ajouter un passage</h2>
+        <div class="passage">
+          <div class="pf-g"><label for="pfHeure">Heure</label><input type="time" id="pfHeure"></div>
+          <div class="pf-g"><label for="pfPax">Couverts</label><input type="number" id="pfPax" min="1" max="40" value="2" style="width:80px"></div>
+          <div class="pf-g"><label for="pfTable">Table</label><input id="pfTable" placeholder="n°" maxlength="10" style="width:70px"></div>
+          <label class="pf-camp"><input type="checkbox" id="pfCamp"> Camping</label>
+          <button class="btn-plein" id="pfAjouter">Ajouter</button>
+        </div>
+        <div class="msg" id="pfMsg"></div>
+      </div>
 
-    <div>
-    <p class="section-titre">Répartition par créneau</p>
-    <div class="carte">
-      <div class="h-barres" id="heures"></div>
-    </div>
-    </div>
-    </div>
-  </div>
+      <div class="semaine" id="semaine"></div>
+    </section>
 
-  <div class="deconnexion" id="zoneDeconnexion" hidden><button id="btnDeconnexion">Se déconnecter</button></div>
-</main>
+    <!-- ═══════ Vue Services ═══════ -->
+    <section id="vueService" hidden>
+      <div class="nav-ligne">
+        <div class="nav-titre"><b id="svcTitre">…</b></div>
+      </div>
+      <div class="plan">
+        <div class="carte"><h2 class="titre">Midi</h2><div id="svcMidi"></div></div>
+        <div class="carte"><h2 class="titre">Soir</h2><div id="svcSoir"></div></div>
+      </div>
+    </section>
 
-<nav class="barre-app" id="barreApp" hidden aria-label="Navigation">
-  <button class="bar-item actif" data-vue="jour"><span class="bi-ico">📅</span><span>Jour</span></button>
-  <button class="bar-item" data-vue="service"><span class="bi-ico">🍽️</span><span>Service</span></button>
-  <button class="bar-item" data-vue="carte"><span class="bi-ico">🧾</span><span>Carte</span></button>
-  <button class="bar-item" data-vue="stats"><span class="bi-ico">📊</span><span>Stats</span></button>
-</nav>
+    <!-- ═══════ Vue Carte ═══════ -->
+    <section id="vueCarte" hidden>
+      <div class="outils-carte">
+        <input class="recherche" id="carteRecherche" placeholder="Rechercher un plat, une catégorie…">
+        <span class="compteur" id="carteCompteur"></span>
+      </div>
+      <div class="panneaux" id="panneaux"></div>
+
+      <div class="carte">
+        <h2 class="titre">Ajouter un plat</h2>
+        <div class="ajout">
+          <select id="ajCat" style="min-width:170px"></select>
+          <input id="ajCatNouv" placeholder="Nouvelle catégorie" hidden style="min-width:170px">
+          <input id="ajNom" placeholder="Nom du plat" style="flex:2;min-width:160px">
+          <input id="ajDesc" placeholder="Description (facultatif)" style="flex:3;min-width:180px">
+          <input id="ajPrix" placeholder="Prix" style="width:80px">
+          <button class="btn-plein" id="ajBtn">Ajouter</button>
+        </div>
+        <div class="msg" id="ajMsg"></div>
+      </div>
+
+      <div id="listeCarte"></div>
+    </section>
+
+    <!-- ═══════ Vue Événements ═══════ -->
+    <section id="vueEvenements" hidden>
+      <div class="nav-ligne">
+        <div class="nav-titre"><b>Demandes de devis</b> <span class="compteur" id="evtCompteur"></span></div>
+        <button class="btn-doux" id="evtRecharger">Actualiser</button>
+      </div>
+      <div class="devis-grille" id="devisGrille"></div>
+    </section>
+
+    <!-- ═══════ Vue Stats ═══════ -->
+    <section id="vueStats" hidden>
+      <div class="nav-ligne">
+        <button class="fleche" id="moisPrec" aria-label="Mois précédent">‹</button>
+        <div class="nav-titre"><b id="titreMois">…</b></div>
+        <input type="month" id="choixMois">
+        <button class="fleche" id="moisSuiv" aria-label="Mois suivant">›</button>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="k-val" id="kCouverts">0</div><div class="k-lab">Couverts sur le mois</div></div>
+        <div class="kpi"><div class="k-val" id="kResas">0</div><div class="k-lab">Réservations</div></div>
+        <div class="kpi"><div class="k-val" id="kPassage">0</div><div class="k-lab">Couverts en passage</div></div>
+        <div class="kpi"><div class="k-val" id="kCamping">0%</div><div class="k-lab">Résidents camping</div></div>
+      </div>
+      <div class="stats-2">
+        <div class="carte">
+          <h2 class="titre">Couverts par jour</h2>
+          <div class="graphe" id="graph"></div>
+          <div class="g-jours" id="graphJours"></div>
+          <div class="legende">
+            <span><i style="background:var(--olive-soft)"></i>Midi</span>
+            <span><i style="background:var(--or)"></i>Soir</span>
+          </div>
+        </div>
+        <div class="carte">
+          <h2 class="titre">Par heure d'arrivée</h2>
+          <div id="heures"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+</div>
 
 <script>
-  const $ = id => document.getElementById(id);
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+
+  // ═══════════ Couche data : cache + jeton anti-croisement + préchargement ═══════════
   let cle = "";
-  let dateCourante = maintenantLocal();
+  try { cle = localStorage.getItem("apg_admin_cle") || ""; } catch (e) {}
+
+  const TTL = 45000;                       // fraîcheur du cache : 45 s
+  const cache = new Map();                 // url → { t, data }
+  let generation = 0;                      // jeton : les réponses en retard sont ignorées
+
+  async function apiGet(url, force){
+    const present = cache.get(url);
+    if (!force && present && Date.now() - present.t < TTL) return present.data;
+    const r = await fetch(url);
+    if (r.status === 401) { deconnecter(true); throw new Error("non_autorise"); }
+    const data = await r.json();
+    cache.set(url, { t: Date.now(), data });
+    return data;
+  }
+  function invalider(prefixe){
+    for (const k of cache.keys()) if (k.startsWith(prefixe)) cache.delete(k);
+  }
+  async function apiPost(url, corps){
+    const r = await fetch(url, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...corps, key: cle })
+    });
+    if (r.status === 401) { deconnecter(true); throw new Error("non_autorise"); }
+    return r.json();
+  }
+  const precharger = (url) => {
+    const lance = () => { apiGet(url).catch(() => {}); };
+    if ("requestIdleCallback" in window) requestIdleCallback(lance, { timeout: 2500 });
+    else setTimeout(lance, 900);
+  };
+
+  function toast(texte, ko){
+    const t = $("toast");
+    t.textContent = texte;
+    t.classList.toggle("ko", !!ko);
+    t.classList.add("la");
+    clearTimeout(t._h);
+    t._h = setTimeout(() => t.classList.remove("la"), 2600);
+  }
+  const squelettes = (n) => '<div class="sk sk-l"></div>'.repeat(n);
+
+  // ═══════════ Dates ═══════════
+  const isoLocal = (d) => {
+    const x = d || new Date();
+    return x.getFullYear() + "-" + String(x.getMonth()+1).padStart(2,"0") + "-" + String(x.getDate()).padStart(2,"0");
+  };
+  const joli = (iso) => new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
+
+  let dateCourante = isoLocal();
   let moisStats = dateCourante.slice(0, 7);
-  let serviceCourant = (new Date().getHours() < 17) ? "midi" : "soir";
 
-  function maintenantLocal(){
-    const d = new Date();
-    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  // ═══════════ Navigation entre vues ═══════════
+  const VUES = { jour: "vueJour", service: "vueService", carte: "vueCarte", evenements: "vueEvenements", stats: "vueStats" };
+  let vueCourante = "jour";
+  function montrerVue(nom){
+    vueCourante = nom;
+    for (const [n, id] of Object.entries(VUES)) $(id).hidden = (n !== nom);
+    document.querySelectorAll(".onglet").forEach(b => b.classList.toggle("on", b.dataset.vue === nom));
+    if (nom === "jour") chargerJour();
+    if (nom === "service") chargerServiceVue();
+    if (nom === "carte") chargerCarte();
+    if (nom === "evenements") chargerEvenements();
+    if (nom === "stats") chargerStats();
   }
-  function decale(dateStr, n){
-    const d = new Date(dateStr + "T12:00:00");
-    d.setDate(d.getDate() + n);
-    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-  }
-  function joli(dateStr){
-    return new Date(dateStr + "T12:00:00").toLocaleDateString("fr-FR", { weekday:"long", day:"numeric", month:"long" });
-  }
-  function echap(s){
-    return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  }
+  $("onglets").addEventListener("click", (e) => {
+    const b = e.target.closest(".onglet");
+    if (b) montrerVue(b.dataset.vue);
+  });
 
-  // ---------- Connexion ----------
-  $("btnConnexion").addEventListener("click", connecter);
-  $("cle").addEventListener("keydown", e => { if (e.key === "Enter") connecter(); });
+  // ═══════════ Connexion ═══════════
   async function connecter(){
     cle = $("cle").value.trim();
     if (!cle) return;
-    $("erreurConnexion").textContent = "Vérification…";
-    try{
-      const r = await fetch(`/api/resa/admin?date=${dateCourante}&key=${encodeURIComponent(cle)}`);
-      if (r.status === 401){ $("erreurConnexion").textContent = "Clé incorrecte."; return; }
-      if (!r.ok) throw 0;
-      $("ecranConnexion").hidden = true;
-      $("onglets").hidden = false;
-      $("barreApp").hidden = false;
-      $("zoneDeconnexion").hidden = false;
-      montrerVue("jour");
-    }catch{
-      $("erreurConnexion").textContent = "Service indisponible, réessayez.";
+    $("erreurConnexion").textContent = "";
+    try {
+      const r = await fetch(`/api/resa/admin?date=${isoLocal()}&key=${encodeURIComponent(cle)}`);
+      if (r.status === 401) { $("erreurConnexion").textContent = "Clé refusée."; return; }
+      if (!r.ok) { $("erreurConnexion").textContent = "Service indisponible."; return; }
+      const data = await r.json();
+      cache.set(`/api/resa/admin?date=${isoLocal()}&key=${encodeURIComponent(cle)}`, { t: Date.now(), data });
+      try { localStorage.setItem("apg_admin_cle", cle); } catch (e) {}
+      ouvrir();
+    } catch (e) {
+      $("erreurConnexion").textContent = "Connexion impossible.";
     }
   }
-  $("btnDeconnexion").addEventListener("click", () => location.reload());
+  function ouvrir(){
+    $("ecranConnexion").hidden = true;
+    $("app").hidden = false;
+    montrerVue("jour");
+    compterEvenements();
+  }
+  function deconnecter(auto){
+    try { localStorage.removeItem("apg_admin_cle"); } catch (e) {}
+    cache.clear();
+    cle = "";
+    $("app").hidden = true;
+    $("ecranConnexion").hidden = false;
+    $("cle").value = "";
+    if (auto) $("erreurConnexion").textContent = "Session expirée, reconnectez-vous.";
+  }
+  $("btnConnexion").addEventListener("click", connecter);
+  $("cle").addEventListener("keydown", (e) => { if (e.key === "Enter") connecter(); });
+  $("btnDeconnexion").addEventListener("click", () => deconnecter(false));
 
-  // ---------- Onglets ----------
-  document.querySelectorAll(".onglet, .bar-item").forEach(o => {
-    o.addEventListener("click", () => montrerVue(o.dataset.vue));
-  });
-  function montrerVue(vue){
-    document.querySelectorAll(".onglet, .bar-item").forEach(o => o.classList.toggle("actif", o.dataset.vue === vue));
-    $("vueJour").hidden = vue !== "jour";
-    $("vueService").hidden = vue !== "service";
-    $("vueCarte").hidden = vue !== "carte";
-    $("vueStats").hidden = vue !== "stats";
-    if (vue === "jour") chargerJour(dateCourante);
-    if (vue === "service") chargerServiceVue();
-    if (vue === "carte") chargerCarte();
-    if (vue === "stats") chargerStats();
+  // ═══════════ Vue Jour ═══════════
+  const urlJour = (d) => `/api/resa/admin?date=${d}&key=${encodeURIComponent(cle)}`;
+
+  function jauge(idJauge, idTot, idBarre, tot, cap){
+    $(idTot).textContent = tot;
+    const pct = cap ? Math.min(100, Math.round(tot / cap * 100)) : 0;
+    $(idBarre).style.width = pct + "%";
+    const j = $(idJauge);
+    j.classList.toggle("plein", tot >= cap);
+    j.classList.toggle("chaud", tot < cap && pct >= 70);
   }
 
-  // ---------- Vue jour ----------
-  async function chargerJour(dateStr){
-    dateCourante = dateStr;
-    $("titreJour").textContent = joli(dateStr);
-    $("choixDate").value = dateStr;
-    try{
-      const r = await fetch(`/api/resa/admin?date=${dateStr}&key=${encodeURIComponent(cle)}`);
-      const d = await r.json();
-      if (!r.ok) throw 0;
-
-      $("capMidi").textContent = d.capacite.midi;
-      $("capSoir").textContent = d.capacite.soir;
-      $("totMidi").textContent = d.totaux.midi;
-      $("totSoir").textContent = d.totaux.soir;
-      const pMidi = Math.min(100, Math.round(d.totaux.midi / d.capacite.midi * 100));
-      const pSoir = Math.min(100, Math.round(d.totaux.soir / d.capacite.soir * 100));
-      $("barreMidi").style.width = pMidi + "%";
-      $("barreSoir").style.width = pSoir + "%";
-      $("barreMidi").className = pMidi >= 100 ? "plein" : "";
-      $("barreSoir").className = pSoir >= 100 ? "plein" : "";
-
-      // Le récap ne montre que les réservations ; les passages vivent dans Service en cours
-      const resasSeules = d.resas.filter(x => x.type !== "passage");
-      const paxPassage = d.resas.filter(x => x.type === "passage").reduce((s, x) => s + x.pax, 0);
-      $("notePassage").textContent = paxPassage
-        ? "+ " + paxPassage + " couverts en passage ce jour (voir Service en cours)" : "";
-      const tb = $("lignes");
-      tb.innerHTML = "";
-      $("aucun").hidden = resasSeules.length > 0;
-      for (const resa of resasSeules){
-        const tr = document.createElement("tr");
-        const prise = resa.created_at ? resa.created_at.slice(0, 16).replace("T", " ") : "";
-        let badges = "<span class='svc'>" + resa.service + "</span>";
-        if (resa.camping) badges += " <span class='svc camp'>Camping</span>";
-        tr.innerHTML =
-          "<td><b>" + resa.heure + "</b></td>" +
-          "<td><b>" + echap(resa.prenom) + " " + echap(resa.nom) + "</b><div class='badges-cell'>" + badges + "</div></td>" +
-          "<td>" + resa.pax + "</td>" +
-          "<td>" + (resa.table_num ? "<b>" + echap(resa.table_num) + "</b>" : "<span style='color:#8a8a7a'>—</span>") + "</td>" +
-          "<td>" + (resa.tel ? "<a href='tel:" + echap(resa.tel) + "'>" + echap(resa.tel) + "</a>" : "—") + "</td>" +
-          "<td style='color:#8a8a7a;font-size:.78rem'>" + prise + "</td>" +
-          "<td></td>";
-        const btn = document.createElement("button");
-        btn.className = "annuler"; btn.textContent = "Annuler";
-        btn.addEventListener("click", () => annuler(resa));
-        tr.lastElementChild.appendChild(btn);
-        tb.appendChild(tr);
+  function ligneResa(r){
+    const l = document.createElement("div");
+    l.className = "resa";
+    const estPassage = r.type === "passage";
+    const nomAffiche = estPassage ? "Passage" : ((r.prenom ? r.prenom + " " : "") + (r.nom || ""));
+    l.innerHTML =
+      '<span class="r-heure">' + r.heure + '</span>' +
+      '<div class="r-nom"><span>' + nomAffiche + '</span>' +
+        (r.tel ? '<small><a href="tel:' + r.tel.replace(/\s/g, "") + '">' + r.tel + '</a></small>' : "") +
+      '</div>' +
+      '<span class="r-pax">' + r.pax + ' cvts</span>' +
+      (r.camping ? '<span class="badge camp">🏕 camping</span>' : "") +
+      (estPassage ? '<span class="badge pass">passage</span>' : "");
+    const table = document.createElement("input");
+    table.className = "r-table" + (r.table_num ? " ok" : "");
+    table.placeholder = "table";
+    table.maxLength = 10;
+    table.value = r.table_num || "";
+    let derniere = table.value;
+    const poserTable = async () => {
+      const v = table.value.trim();
+      if (v === derniere) return;
+      const rep = await apiPost("/api/resa/admin", { action: "table", id: r.id, table: v });
+      if (rep.ok) {
+        derniere = v;
+        table.classList.toggle("ok", !!v);
+        invalider("/api/resa/admin?date=" + dateCourante);
+        toast(v ? "Table " + v + " attribuée" : "Table retirée");
+      } else toast("Échec de l'attribution", true);
+    };
+    table.addEventListener("blur", poserTable);
+    table.addEventListener("keydown", (e) => { if (e.key === "Enter") table.blur(); });
+    l.appendChild(table);
+    const sup = document.createElement("button");
+    sup.className = "r-suppr";
+    sup.textContent = "🗑";
+    sup.title = "Supprimer";
+    sup.addEventListener("click", async () => {
+      if (!sup.classList.contains("arme")) {
+        sup.classList.add("arme");
+        sup.textContent = "sûr ?";
+        setTimeout(() => { sup.classList.remove("arme"); sup.textContent = "🗑"; }, 2600);
+        return;
       }
-      chargerSemaine();
-    }catch{
-      alert("Impossible de charger cette journée, reconnectez-vous.");
-    }
+      const rep = await apiPost("/api/resa/admin", { action: "delete", id: r.id });
+      if (rep.ok) {
+        l.style.opacity = ".25";
+        invalider("/api/resa/admin?date=" + dateCourante);
+        invalider("/api/resa/admin?from=");
+        toast("Réservation supprimée");
+        chargerJour(true);
+      } else toast("Suppression impossible", true);
+    });
+    l.appendChild(sup);
+    return l;
   }
 
-  async function annuler(resa){
-    const qui = resa.type === "passage" ? "ce passage" : resa.prenom + " " + resa.nom;
-    if (!confirm("Annuler " + qui + " (" + resa.pax + " couverts à " + resa.heure + ") ?")) return;
-    // (les passages s'annulent depuis Service en cours)
-    try{
-      const r = await fetch("/api/resa/admin", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "delete", id: resa.id, key: cle })
-      });
-      const d = await r.json();
-      if (!r.ok || !d.ok) throw 0;
-      chargerJour(dateCourante);
-      if (!$("vueService").hidden) chargerServiceVue();
-    }catch{
-      alert("Suppression impossible, réessayez.");
+  async function chargerJour(silencieux){
+    const gen = ++generation;
+    $("titreJour").textContent = joli(dateCourante);
+    $("choixDate").value = dateCourante;
+    if (!silencieux) $("lignes").innerHTML = squelettes(4);
+    try {
+      const [data] = await Promise.all([ apiGet(urlJour(dateCourante), silencieux), chargerSemaine() ]);
+      if (gen !== generation || vueCourante !== "jour") return;
+      $("capMidi").textContent = data.capacite.midi;
+      $("capSoir").textContent = data.capacite.soir;
+      jauge("jaugeMidi", "totMidi", "barreMidi", data.totaux.midi, data.capacite.midi);
+      jauge("jaugeSoir", "totSoir", "barreSoir", data.totaux.soir, data.capacite.soir);
+      const zone = $("lignes");
+      zone.innerHTML = "";
+      if (!data.resas.length) {
+        zone.innerHTML = '<div class="vide">Aucune réservation pour cette journée — la plage est à vous. 🌊</div>';
+      } else {
+        const frag = document.createDocumentFragment();
+        for (const svc of ["midi", "soir"]) {
+          const groupe = data.resas.filter(r => r.service === svc);
+          if (!groupe.length) continue;
+          const sep = document.createElement("div");
+          sep.className = "svc-sep";
+          sep.textContent = (svc === "midi" ? "☀️ Midi · " : "🌙 Soir · ") + data.totaux[svc] + " couverts";
+          frag.appendChild(sep);
+          for (const r of groupe) frag.appendChild(ligneResa(r));
+        }
+        zone.appendChild(frag);
+      }
+      // Préchargement des jours voisins : navigation instantanée
+      const d = new Date(dateCourante + "T12:00:00");
+      const veille = new Date(d); veille.setDate(d.getDate() - 1);
+      const lendemain = new Date(d); lendemain.setDate(d.getDate() + 1);
+      precharger(urlJour(isoLocal(veille)));
+      precharger(urlJour(isoLocal(lendemain)));
+    } catch (e) {
+      if (gen === generation && vueCourante === "jour")
+        $("lignes").innerHTML = '<div class="vide">Impossible de charger la journée.</div>';
     }
   }
 
   async function chargerSemaine(){
-    const from = maintenantLocal();
-    const to = decale(from, 6);
-    try{
-      const r = await fetch(`/api/resa/admin?from=${from}&to=${to}&key=${encodeURIComponent(cle)}`);
-      const d = await r.json();
-      if (!r.ok) throw 0;
-      const cont = $("semaine");
-      cont.innerHTML = "";
-      for (let i = 0; i <= 6; i++){
-        const ds = decale(from, i);
-        const j = d.jours[ds] || { midi:{pax:0}, soir:{pax:0} };
-        const el = document.createElement("div");
-        el.className = "sem-jour" + (ds === dateCourante ? " actif" : "");
-        const dd = new Date(ds + "T12:00:00");
-        el.innerHTML =
-          "<div class='sj-nom'>" + dd.toLocaleDateString("fr-FR", { weekday:"short" }) + "</div>" +
-          "<div class='sj-num'>" + dd.getDate() + "</div>" +
-          "<div class='sj-tot'>" + (j.midi.pax || 0) + " · " + (j.soir.pax || 0) + "</div>";
-        el.addEventListener("click", () => chargerJour(ds));
-        cont.appendChild(el);
-      }
-    }catch{ /* silencieux */ }
+    const d = new Date(dateCourante + "T12:00:00");
+    const lundi = new Date(d); lundi.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    const dimanche = new Date(lundi); dimanche.setDate(lundi.getDate() + 6);
+    const from = isoLocal(lundi), to = isoLocal(dimanche);
+    const data = await apiGet(`/api/resa/admin?from=${from}&to=${to}&key=${encodeURIComponent(cle)}`);
+    const zone = $("semaine");
+    zone.innerHTML = "";
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < 7; i++) {
+      const jour = new Date(lundi); jour.setDate(lundi.getDate() + i);
+      const iso = isoLocal(jour);
+      const t = (data.jours && data.jours[iso]) || { midi: { pax: 0 }, soir: { pax: 0 } };
+      const el = document.createElement("div");
+      el.className = "sem-j" + (iso === dateCourante ? " actif" : "");
+      el.innerHTML =
+        '<div class="sj-nom">' + jour.toLocaleDateString("fr-FR", { weekday: "short" }) + '</div>' +
+        '<div class="sj-num">' + jour.getDate() + '</div>' +
+        '<div class="sj-tot">' + t.midi.pax + ' <b>·</b> ' + t.soir.pax + '</div>';
+      el.addEventListener("click", () => { dateCourante = iso; chargerJour(); });
+      frag.appendChild(el);
+    }
+    zone.appendChild(frag);
+    return data;
   }
 
-  $("jourPrec").addEventListener("click", () => chargerJour(decale(dateCourante, -1)));
-  $("jourSuiv").addEventListener("click", () => chargerJour(decale(dateCourante, 1)));
-  $("aujourdhui").addEventListener("click", () => chargerJour(maintenantLocal()));
-  $("choixDate").addEventListener("change", e => { if (e.target.value) chargerJour(e.target.value); });
-
-  // ---------- Vue service ----------
-  $("svcMidi").addEventListener("click", () => { serviceCourant = "midi"; chargerServiceVue(); });
-  $("svcSoir").addEventListener("click", () => { serviceCourant = "soir"; chargerServiceVue(); });
-  let campingPassage = 0;
-  $("pfCamp").addEventListener("click", () => {
-    campingPassage = campingPassage ? 0 : 1;
-    $("pfCamp").classList.toggle("sel", !!campingPassage);
+  function decale(n){
+    const d = new Date(dateCourante + "T12:00:00");
+    d.setDate(d.getDate() + n);
+    dateCourante = isoLocal(d);
+    chargerJour();
+  }
+  $("jourPrec").addEventListener("click", () => decale(-1));
+  $("jourSuiv").addEventListener("click", () => decale(1));
+  $("aujourdhui").addEventListener("click", () => { dateCourante = isoLocal(); chargerJour(); });
+  $("choixDate").addEventListener("change", () => {
+    if ($("choixDate").value) { dateCourante = $("choixDate").value; chargerJour(); }
   });
 
-  async function chargerServiceVue(){
-    $("svcMidi").classList.toggle("actif", serviceCourant === "midi");
-    $("svcSoir").classList.toggle("actif", serviceCourant === "soir");
-    $("svcTitre").textContent = joli(maintenantLocal());
-    if (!$("pfHeure").value){
-      const n = new Date();
-      $("pfHeure").value = String(n.getHours()).padStart(2,"0") + ":" + String(n.getMinutes()).padStart(2,"0");
-    }
-    try{
-      const r = await fetch(`/api/resa/admin?date=${maintenantLocal()}&key=${encodeURIComponent(cle)}`);
-      const d = await r.json();
-      if (!r.ok) throw 0;
-      const liste = $("listeService");
-      liste.innerHTML = "";
-      const duService = d.resas.filter(x => x.service === serviceCourant);
-      if (!duService.length){
-        liste.innerHTML = "<p class='vide'>Aucune réservation sur ce service pour l'instant.</p>";
-        return;
-      }
-      for (const resa of duService){
-        const ligne = document.createElement("div");
-        ligne.className = "ligne-svc";
-        const nomAff = resa.type === "passage" ? "Passage" : echap(resa.prenom) + " " + echap(resa.nom);
-        let badges = "";
-        if (resa.camping) badges += "<span class='svc camp'>Camping</span>";
-        if (resa.type === "passage") badges += "<span class='svc pass'>Passage</span>";
-        ligne.innerHTML =
-          "<div class='ls-heure'>" + resa.heure + "</div>" +
-          "<div class='ls-nom'><b>" + nomAff + "</b><div class='badges'>" + badges + "</div></div>" +
-          "<div class='ls-pax'>" + resa.pax + "<small>couverts</small></div>";
-        const zone = document.createElement("div");
-        zone.className = "ls-table";
-        const inp = document.createElement("input");
-        inp.placeholder = "table";
-        inp.value = resa.table_num || "";
-        inp.maxLength = 10;
-        if (resa.table_num) inp.classList.add("ok");
-        const ok = document.createElement("button");
-        ok.className = "ls-ok"; ok.textContent = "✓"; ok.title = "Enregistrer la table";
-        const enregistrer = async () => {
-          try{
-            const r2 = await fetch("/api/resa/admin", {
-              method: "POST", headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ action: "table", id: resa.id, table: inp.value.trim(), key: cle })
-            });
-            const d2 = await r2.json();
-            if (!r2.ok || !d2.ok) throw 0;
-            inp.classList.toggle("ok", !!inp.value.trim());
-          }catch{ alert("Enregistrement impossible, réessayez."); }
-        };
-        ok.addEventListener("click", enregistrer);
-        inp.addEventListener("keydown", e => { if (e.key === "Enter") enregistrer(); });
-        zone.appendChild(inp); zone.appendChild(ok);
-        ligne.appendChild(zone);
-        liste.appendChild(ligne);
-      }
-    }catch{
-      $("listeService").innerHTML = "<p class='vide'>Chargement impossible, reconnectez-vous.</p>";
-    }
-  }
-
+  // Passage — enregistré sur la journée affichée
   $("pfAjouter").addEventListener("click", async () => {
-    const pax = parseInt($("pfPax").value, 10);
     const heure = $("pfHeure").value;
-    if (!Number.isInteger(pax) || pax < 1){ $("pfMsg").textContent = "Nombre de couverts invalide."; return; }
-    if (!heure){ $("pfMsg").textContent = "Indiquez l'heure."; return; }
-    $("pfMsg").textContent = "Ajout…";
-    try{
-      const r = await fetch("/api/resa/admin", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "passage", date: maintenantLocal(), heure,
-          pax, table: $("pfTable").value.trim(), camping: campingPassage, key: cle
-        })
-      });
-      const d = await r.json();
-      if (!r.ok || !d.ok) throw 0;
-      $("pfMsg").textContent = "✓ Passage de " + pax + " enregistré" + (d.table ? " en table " + d.table : "") + ".";
-      $("pfTable").value = ""; $("pfPax").value = 2;
-      campingPassage = 0; $("pfCamp").classList.remove("sel");
-      serviceCourant = d.service;
-      chargerServiceVue();
-    }catch{
-      $("pfMsg").textContent = "Ajout impossible, réessayez.";
+    const pax = parseInt($("pfPax").value, 10);
+    const msg = $("pfMsg");
+    msg.className = "msg";
+    if (!heure || !pax) { msg.textContent = "Heure et couverts obligatoires."; msg.classList.add("ko"); return; }
+    const rep = await apiPost("/api/resa/admin", {
+      action: "passage", date: dateCourante, heure, pax,
+      table: $("pfTable").value.trim(), camping: $("pfCamp").checked ? 1 : 0
+    });
+    if (rep.ok) {
+      msg.textContent = "Passage enregistré — " + pax + " couverts à " + heure + ".";
+      msg.classList.add("ok");
+      $("pfTable").value = ""; $("pfCamp").checked = false;
+      invalider("/api/resa/admin?date=" + dateCourante);
+      invalider("/api/resa/admin?from=");
+      chargerJour(true);
+      toast("Passage ajouté");
+    } else {
+      msg.textContent = "Enregistrement refusé (" + (rep.error || "erreur") + ").";
+      msg.classList.add("ko");
     }
   });
 
-  // ---------- Vue statistiques ----------
-  $("moisPrec").addEventListener("click", () => { moisStats = decaleMois(moisStats, -1); chargerStats(); });
-  $("moisSuiv").addEventListener("click", () => { moisStats = decaleMois(moisStats, 1); chargerStats(); });
-  function decaleMois(m, n){
-    const d = new Date(m + "-15T12:00:00");
-    d.setMonth(d.getMonth() + n);
-    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0");
-  }
-
-  async function chargerStats(){
-    const d0 = new Date(moisStats + "-15T12:00:00");
-    $("titreMois").textContent = d0.toLocaleDateString("fr-FR", { month:"long", year:"numeric" });
-    try{
-      const r = await fetch(`/api/resa/admin?stats=${moisStats}&key=${encodeURIComponent(cle)}`);
-      const d = await r.json();
-      if (!r.ok) throw 0;
-
-      let totMois = 0;
-      for (const ds in d.jours) totMois += (d.jours[ds].midi || 0) + (d.jours[ds].soir || 0);
-      $("kCouverts").textContent = totMois;
-      $("kResas").textContent = d.types.resa.nb || 0;
-      $("kPassage").textContent = d.types.passage.pax || 0;
-      const totCamp = (d.camping.oui || 0) + (d.camping.non || 0);
-      $("kCamping").textContent = totCamp ? Math.round((d.camping.oui || 0) / totCamp * 100) + "%" : "—";
-
-      // Graphique jour par jour
-      const nbJours = new Date(d0.getFullYear(), d0.getMonth() + 1, 0).getDate();
-      let maxJour = 1;
-      for (let j = 1; j <= nbJours; j++){
-        const ds = moisStats + "-" + String(j).padStart(2,"0");
-        const v = d.jours[ds];
-        if (v) maxJour = Math.max(maxJour, (v.midi || 0) + (v.soir || 0));
-      }
-      const graph = $("graph"), gj = $("graphJours");
-      graph.innerHTML = ""; gj.innerHTML = "";
-      for (let j = 1; j <= nbJours; j++){
-        const ds = moisStats + "-" + String(j).padStart(2,"0");
-        const v = d.jours[ds] || { midi: 0, soir: 0 };
-        const col = document.createElement("div");
-        col.className = "g-col";
-        col.title = j + " : " + (v.midi || 0) + " midi · " + (v.soir || 0) + " soir";
-        const hMidi = Math.round((v.midi || 0) / maxJour * 100);
-        const hSoir = Math.round((v.soir || 0) / maxJour * 100);
-        col.innerHTML =
-          "<div class='g-soir' style='height:" + hSoir + "%'></div>" +
-          "<div class='g-midi' style='height:" + hMidi + "%'></div>";
-        graph.appendChild(col);
-        const lab = document.createElement("span");
-        lab.textContent = (j === 1 || j % 5 === 0) ? j : "";
-        gj.appendChild(lab);
-      }
-
-      // Répartition par créneau
-      const heures = $("heures");
-      heures.innerHTML = "";
-      const clefs = Object.keys(d.heures).sort();
-      const maxH = Math.max(1, ...clefs.map(k => d.heures[k]));
-      if (!clefs.length) heures.innerHTML = "<p class='vide'>Aucune donnée sur ce mois.</p>";
-      for (const k of clefs){
-        const ligne = document.createElement("div");
-        ligne.className = "h-ligne";
-        ligne.innerHTML =
-          "<span class='h-h'>" + k + "</span>" +
-          "<span class='h-fond'><span class='h-rempli' style='width:" + Math.round(d.heures[k] / maxH * 100) + "%'></span></span>" +
-          "<span class='h-val'>" + d.heures[k] + "</span>";
-        heures.appendChild(ligne);
-      }
-    }catch{
-      alert("Statistiques indisponibles, reconnectez-vous.");
+  // Rafraîchissement discret pendant le service (60 s, onglet visible uniquement)
+  setInterval(() => {
+    if (document.visibilityState === "visible" && !$("app").hidden && vueCourante === "jour") {
+      invalider("/api/resa/admin?date=" + dateCourante);
+      chargerJour(true);
     }
-  }
-  // ---------- Vue carte : édition du menu en temps réel ----------
-  const PANEL_NOMS = ["Bar & Cocktails","À partager","Plats","La braise","Les pizze","Desserts & Glaces","Les vins","Softs & Cafés","Petit déjeuner"];
-  let carteData = null;
-  let panelCourant = 0;
+  }, 60000);
 
-  PANEL_NOMS.forEach((n, i) => {
-    const o = document.createElement("option");
-    o.value = i; o.textContent = n;
-    $("cartePanel").appendChild(o);
-  });
-  $("cartePanel").addEventListener("change", () => {
-    panelCourant = parseInt($("cartePanel").value, 10);
-    $("carteRecherche").value = "";
-    rendreCarte(); majAjoutCats();
-  });
-  $("carteRecherche").addEventListener("input", rendreCarte);
-  $("ajCat").addEventListener("change", () => {
-    $("ajCatNouvGroupe").hidden = $("ajCat").value !== "__nouvelle__";
-  });
-
-  async function chargerCarte(){
-    try{
-      const r = await fetch(`/api/carte?all=1&key=${encodeURIComponent(cle)}`);
-      const d = await r.json();
-      if (!r.ok) throw 0;
-      carteData = d.panels;
-      $("cartePanel").value = panelCourant;
-      rendreCarte(); majAjoutCats();
-    }catch{
-      $("listeCarte").innerHTML = "<p class='vide'>Carte indisponible. La migration a-t-elle été faite ?</p>";
-    }
-  }
-
-  function panelData(i){
-    return (carteData || []).find(p => p.panel === i) || { cats: [] };
-  }
-
-  function majAjoutCats(){
-    const sel = $("ajCat");
-    sel.innerHTML = "";
-    for (const cat of panelData(panelCourant).cats){
-      const o = document.createElement("option");
-      o.value = cat.titre; o.textContent = cat.titre;
-      sel.appendChild(o);
-    }
-    const o = document.createElement("option");
-    o.value = "__nouvelle__"; o.textContent = "+ Nouvelle catégorie…";
-    sel.appendChild(o);
-    $("ajCatNouvGroupe").hidden = true;
-  }
-
-  function normC(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
-
-  function rendreCarte(){
-    const liste = $("listeCarte");
-    liste.innerHTML = "";
-    const q = normC($("carteRecherche").value.trim());
-
-    const sources = q.length >= 2
-      ? (carteData || [])
-      : [panelData(panelCourant)];
-
-    let total = 0;
-    for (const p of sources){
-      for (const cat of p.cats){
-        const plats = q.length >= 2
-          ? cat.plats.filter(x => normC(x.nom + " " + (x.descr || "")).includes(q))
-          : cat.plats;
-        if (!plats.length) continue;
-        const titre = document.createElement("div");
-        titre.className = "cat-titre";
-        titre.textContent = (q.length >= 2 ? PANEL_NOMS[p.panel] + " · " : "") + cat.titre;
-        liste.appendChild(titre);
-        for (const plat of plats){
-          total++;
-          liste.appendChild(lignePlat(plat));
+  // ═══════════ Vue Services ═══════════
+  async function chargerServiceVue(){
+    const gen = ++generation;
+    $("svcTitre").textContent = "Plan de service · " + joli(dateCourante);
+    $("svcMidi").innerHTML = squelettes(3);
+    $("svcSoir").innerHTML = squelettes(3);
+    try {
+      const data = await apiGet(urlJour(dateCourante));
+      if (gen !== generation || vueCourante !== "service") return;
+      for (const svc of ["midi", "soir"]) {
+        const zone = $(svc === "midi" ? "svcMidi" : "svcSoir");
+        zone.innerHTML = "";
+        const groupe = data.resas.filter(r => r.service === svc);
+        if (!groupe.length) { zone.innerHTML = '<div class="vide">Aucune arrivée.</div>'; continue; }
+        const heures = {};
+        for (const r of groupe) (heures[r.heure] = heures[r.heure] || []).push(r);
+        const frag = document.createDocumentFragment();
+        for (const h of Object.keys(heures).sort()) {
+          const bloc = document.createElement("div");
+          bloc.className = "creneau";
+          const totalH = heures[h].reduce((s, r) => s + r.pax, 0);
+          let corps = '<div class="c-h"><span>' + h + '</span><span>' + totalH + ' cvts</span></div>';
+          for (const r of heures[h]) {
+            const nomAffiche = r.type === "passage" ? "Passage" : ((r.prenom ? r.prenom + " " : "") + (r.nom || ""));
+            corps += '<div class="c-l"><b>' + nomAffiche + '</b><span>' + r.pax + 'p</span>' +
+                     (r.table_num ? '<span class="t">T' + r.table_num + '</span>' : "") +
+                     (r.camping ? '<span>🏕</span>' : "") + '</div>';
+          }
+          bloc.innerHTML = corps;
+          frag.appendChild(bloc);
         }
+        zone.appendChild(frag);
       }
+    } catch (e) {
+      if (gen === generation && vueCourante === "service")
+        $("svcMidi").innerHTML = '<div class="vide">Chargement impossible.</div>';
     }
-    if (!total) liste.innerHTML = "<p class='vide'>" + (q ? "Aucun plat ne correspond." : "Aucun plat dans cet onglet.") + "</p>";
+  }
+
+  // ═══════════ Vue Carte ═══════════
+  const NOMS_PANELS = ["Bar & cocktails","À partager","Plats","Braise","Pizze","Desserts","Vins","Softs","Petit-déj"];
+  let panelCourant = 0;
+  let donneesCarte = null;
+
+  function urlCarte(){ return `/api/carte?all=1&key=${encodeURIComponent(cle)}`; }
+
+  async function chargerCarte(force){
+    const gen = ++generation;
+    $("listeCarte").innerHTML = squelettes(5);
+    try {
+      donneesCarte = await apiGet(urlCarte(), force);
+      if (gen !== generation || vueCourante !== "carte") return;
+      rendrePanneaux();
+      rendreCarte();
+      majAjoutCats();
+    } catch (e) {
+      if (gen === generation && vueCourante === "carte")
+        $("listeCarte").innerHTML = '<div class="vide">Chargement impossible.</div>';
+    }
+  }
+
+  function rendrePanneaux(){
+    const zone = $("panneaux");
+    zone.innerHTML = "";
+    NOMS_PANELS.forEach((nom, i) => {
+      const b = document.createElement("button");
+      b.className = "p-pill" + (i === panelCourant ? " on" : "");
+      b.textContent = nom;
+      b.addEventListener("click", () => {
+        panelCourant = i;
+        zone.querySelectorAll(".p-pill").forEach((x, k) => x.classList.toggle("on", k === i));
+        rendreCarte();
+        majAjoutCats();
+      });
+      zone.appendChild(b);
+    });
   }
 
   function lignePlat(plat){
     const l = document.createElement("div");
-    l.className = "ligne-plat" + (plat.visible ? "" : " masque");
+    l.className = "plat-l" + (plat.visible ? "" : " off");
     const iNom = document.createElement("input");
-    iNom.className = "lp-nom"; iNom.value = plat.nom; iNom.maxLength = 120;
+    iNom.className = "i-nom"; iNom.value = plat.nom;
     const iDesc = document.createElement("input");
-    iDesc.className = "lp-desc"; iDesc.value = plat.descr || ""; iDesc.placeholder = "description"; iDesc.maxLength = 300;
+    iDesc.className = "i-desc"; iDesc.value = plat.descr || ""; iDesc.placeholder = "description";
     const iPrix = document.createElement("input");
-    iPrix.className = "lp-prix"; iPrix.value = plat.prix; iPrix.maxLength = 20;
-
-    const bSave = bouton("💾", "Enregistrer", async () => {
-      const r = await action({ action: "update", id: plat.id, nom: iNom.value, descr: iDesc.value, prix: iPrix.value });
-      if (r) { bSave.classList.add("save"); setTimeout(() => bSave.classList.remove("save"), 900); }
+    iPrix.className = "i-prix"; iPrix.value = plat.prix;
+    const bSauver = document.createElement("button");
+    bSauver.className = "mini"; bSauver.textContent = "💾"; bSauver.title = "Enregistrer"; bSauver.hidden = true;
+    const changement = () => {
+      bSauver.hidden = (iNom.value === plat.nom && iDesc.value === (plat.descr || "") && iPrix.value === plat.prix);
+      bSauver.classList.toggle("sauver", !bSauver.hidden);
+    };
+    [iNom, iDesc, iPrix].forEach(i => i.addEventListener("input", changement));
+    bSauver.addEventListener("click", async () => {
+      const rep = await apiPost("/api/carte", { action: "update", id: plat.id, nom: iNom.value, descr: iDesc.value, prix: iPrix.value });
+      if (!rep.error) {
+        plat.nom = iNom.value; plat.descr = iDesc.value; plat.prix = iPrix.value;
+        changement();
+        invalider("/api/carte");
+        toast("Plat mis à jour");
+      } else toast("Mise à jour refusée", true);
     });
-    const bVis = bouton(plat.visible ? "👁" : "🚫", plat.visible ? "Masquer du site" : "Réafficher", async () => {
-      const r = await action({ action: "visible", id: plat.id, visible: plat.visible ? 0 : 1 });
-      if (r) chargerCarte();
+    const bOeil = document.createElement("button");
+    bOeil.className = "mini"; bOeil.textContent = plat.visible ? "👁" : "🚫"; bOeil.title = plat.visible ? "Masquer (86)" : "Réafficher";
+    bOeil.addEventListener("click", async () => {
+      const cible = plat.visible ? 0 : 1;
+      const rep = await apiPost("/api/carte", { action: "visible", id: plat.id, visible: cible });
+      if (!rep.error) {
+        plat.visible = cible;
+        l.classList.toggle("off", !cible);
+        bOeil.textContent = cible ? "👁" : "🚫";
+        bOeil.title = cible ? "Masquer (86)" : "Réafficher";
+        invalider("/api/carte");
+        majCompteur();
+        toast(cible ? "Plat réaffiché" : "Plat masqué (86)");
+      } else toast("Action refusée", true);
     });
-    const bSuppr = bouton("🗑", "Supprimer définitivement", async () => {
-      if (!confirm("Supprimer définitivement « " + plat.nom + " » ?\n(Pour un plat épuisé, préférez Masquer 👁)")) return;
-      const r = await action({ action: "delete", id: plat.id });
-      if (r) chargerCarte();
+    const bSuppr = document.createElement("button");
+    bSuppr.className = "mini"; bSuppr.textContent = "🗑"; bSuppr.title = "Supprimer";
+    bSuppr.addEventListener("click", async () => {
+      if (!bSuppr.classList.contains("arme")) {
+        bSuppr.classList.add("arme"); bSuppr.textContent = "sûr ?";
+        setTimeout(() => { bSuppr.classList.remove("arme"); bSuppr.textContent = "🗑"; }, 2600);
+        return;
+      }
+      const rep = await apiPost("/api/carte", { action: "delete", id: plat.id });
+      if (!rep.error) {
+        l.remove();
+        invalider("/api/carte");
+        toast("Plat supprimé");
+        chargerCarte(true);
+      } else toast("Suppression refusée", true);
     });
-    bSuppr.classList.add("suppr");
-
-    [iNom, iDesc, iPrix].forEach(i => i.addEventListener("keydown", e => { if (e.key === "Enter") bSave.click(); }));
-    l.append(iNom, iDesc, iPrix, bSave, bVis, bSuppr);
+    l.appendChild(iNom); l.appendChild(iDesc); l.appendChild(iPrix);
+    l.appendChild(bSauver); l.appendChild(bOeil); l.appendChild(bSuppr);
     return l;
   }
 
-  function bouton(txt, titre, fn){
-    const b = document.createElement("button");
-    b.className = "lp-btn"; b.textContent = txt; b.title = titre;
-    b.addEventListener("click", fn);
-    return b;
-  }
-
-  async function action(corps){
-    try{
-      const r = await fetch("/api/carte", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...corps, key: cle })
-      });
-      const d = await r.json();
-      if (!r.ok || !d.ok) throw 0;
-      return true;
-    }catch{
-      alert("Action impossible, réessayez.");
-      return false;
+  function rendreCarte(){
+    const zone = $("listeCarte");
+    zone.innerHTML = "";
+    const panel = donneesCarte.panels && donneesCarte.panels[panelCourant];
+    if (!panel || !panel.cats.length) { zone.innerHTML = '<div class="vide">Aucun plat dans cette section.</div>'; majCompteur(); return; }
+    const frag = document.createDocumentFragment();
+    for (const cat of panel.cats) {
+      const bloc = document.createElement("div");
+      bloc.className = "cat-bloc";
+      const tete = document.createElement("button");
+      tete.className = "cat-tete";
+      tete.innerHTML = "<span>" + cat.titre + "</span><small>" + cat.plats.length + " plat" + (cat.plats.length > 1 ? "s" : "") + "</small>";
+      const corpsCat = document.createElement("div");
+      corpsCat.className = "cat-corps";
+      tete.addEventListener("click", () => { corpsCat.hidden = !corpsCat.hidden; });
+      for (const plat of cat.plats) corpsCat.appendChild(lignePlat(plat));
+      bloc.appendChild(tete); bloc.appendChild(corpsCat);
+      frag.appendChild(bloc);
     }
+    zone.appendChild(frag);
+    majCompteur();
+    filtrerCarte();
   }
 
+  function majCompteur(){
+    if (!donneesCarte || !donneesCarte.panels) return;
+    let total = 0, masques = 0;
+    for (const p of Object.values(donneesCarte.panels))
+      for (const c of p.cats)
+        for (const pl of c.plats) { total++; if (!pl.visible) masques++; }
+    $("carteCompteur").textContent = total + " plats · " + masques + " masqué" + (masques > 1 ? "s" : "");
+  }
+
+  const normC = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  let minuterieRecherche = null;
+  function filtrerCarte(){
+    const q = normC($("carteRecherche").value.trim());
+    document.querySelectorAll("#listeCarte .cat-bloc").forEach(bloc => {
+      let visibles = 0;
+      bloc.querySelectorAll(".plat-l").forEach(l => {
+        const texte = normC(l.querySelector(".i-nom").value + " " + l.querySelector(".i-desc").value);
+        const ok = !q || texte.includes(q) || normC(bloc.querySelector(".cat-tete span").textContent).includes(q);
+        l.hidden = !ok;
+        if (ok) visibles++;
+      });
+      bloc.hidden = !!(q && !visibles);
+      if (q && visibles) bloc.querySelector(".cat-corps").hidden = false;
+    });
+  }
+  $("carteRecherche").addEventListener("input", () => {
+    clearTimeout(minuterieRecherche);
+    minuterieRecherche = setTimeout(filtrerCarte, 150);
+  });
+
+  function majAjoutCats(){
+    const sel = $("ajCat");
+    sel.innerHTML = "";
+    const panel = donneesCarte && donneesCarte.panels && donneesCarte.panels[panelCourant];
+    const cats = panel ? panel.cats.map(c => c.titre) : [];
+    for (const c of cats) {
+      const o = document.createElement("option");
+      o.value = c; o.textContent = c;
+      sel.appendChild(o);
+    }
+    const oN = document.createElement("option");
+    oN.value = "__nouvelle__"; oN.textContent = "➕ Nouvelle catégorie…";
+    sel.appendChild(oN);
+    $("ajCatNouv").hidden = true;
+  }
+  $("ajCat").addEventListener("change", () => {
+    $("ajCatNouv").hidden = ($("ajCat").value !== "__nouvelle__");
+  });
   $("ajBtn").addEventListener("click", async () => {
+    const msg = $("ajMsg");
+    msg.className = "msg";
     let categorie = $("ajCat").value;
     if (categorie === "__nouvelle__") categorie = $("ajCatNouv").value.trim();
-    const nom = $("ajNom").value.trim();
-    const prix = $("ajPrix").value.trim();
-    if (!categorie || !nom || !prix){ $("ajMsg").textContent = "Catégorie, nom et prix sont requis."; return; }
-    $("ajMsg").textContent = "Ajout…";
-    const ok = await action({ action: "add", panel: panelCourant, categorie, nom, descr: $("ajDesc").value.trim(), prix });
-    if (ok){
-      $("ajMsg").textContent = "✓ « " + nom + " » ajouté, en ligne immédiatement.";
+    const nom = $("ajNom").value.trim(), prix = $("ajPrix").value.trim();
+    if (!categorie || !nom || !prix) { msg.textContent = "Catégorie, nom et prix obligatoires."; msg.classList.add("ko"); return; }
+    const rep = await apiPost("/api/carte", {
+      action: "add", panel: panelCourant, categorie, nom, descr: $("ajDesc").value.trim(), prix
+    });
+    if (!rep.error) {
+      msg.textContent = "« " + nom + " » ajouté."; msg.classList.add("ok");
       $("ajNom").value = ""; $("ajDesc").value = ""; $("ajPrix").value = ""; $("ajCatNouv").value = "";
-      chargerCarte();
+      invalider("/api/carte");
+      chargerCarte(true);
+      toast("Plat ajouté à la carte");
     } else {
-      $("ajMsg").textContent = "";
+      msg.textContent = "Ajout refusé (" + (rep.error || "erreur") + ")."; msg.classList.add("ko");
     }
   });
+
+  // ═══════════ Vue Événements ═══════════
+  const urlEvt = () => `/api/evenement?key=${encodeURIComponent(cle)}`;
+  const JOUR_MS = 86400000;
+  const dateSql = (s) => new Date(String(s).replace(" ", "T") + "Z");
+
+  async function chargerEvenements(force){
+    const gen = ++generation;
+    $("devisGrille").innerHTML = squelettes(3);
+    try {
+      const data = await apiGet(urlEvt(), force);
+      if (gen !== generation || vueCourante !== "evenements") return;
+      const demandes = data.demandes || [];
+      $("evtCompteur").textContent = demandes.length ? "· " + demandes.length + " demande" + (demandes.length > 1 ? "s" : "") : "";
+      majPuceEvt(demandes);
+      const zone = $("devisGrille");
+      zone.innerHTML = "";
+      if (!demandes.length) {
+        zone.innerHTML = '<div class="vide">Aucune demande pour l\'instant — l\'assistant du site les enverra ici. 🎉</div>';
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      for (const d of demandes) {
+        const carte = document.createElement("div");
+        const neuf = d.cree_le && (Date.now() - dateSql(d.cree_le).getTime() < 2 * JOUR_MS);
+        carte.className = "devis" + (neuf ? " neuf" : "");
+        const recu = d.cree_le ? dateSql(d.cree_le).toLocaleDateString("fr-FR", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
+        carte.innerHTML =
+          '<div class="d-type">' + (d.type || "Événement") + '</div>' +
+          '<div class="d-date">' + (d.date_evt ? joli(d.date_evt) : "date à définir") + (d.moment ? " · " + d.moment : "") + '</div>' +
+          '<div class="d-l"><span>Invités</span><b>' + d.pax + '</b></div>' +
+          '<div class="d-l"><span>Formule</span><b>' + (d.formule || "—") + '</b></div>' +
+          (d.options ? '<div class="d-l"><span>Options</span><b>' + d.options + '</b></div>' : "") +
+          '<div class="d-tot"><span>Pré-devis</span><b>' + (d.estimation ? d.estimation.toLocaleString("fr-FR") + " €" : "sur mesure") + '</b></div>' +
+          '<div class="d-pied">' +
+            '<span>' + (d.prenom || "—") + '</span>' +
+            (d.tel ? '<a class="d-tel" href="tel:' + d.tel.replace(/\s/g, "") + '">📞 ' + d.tel + '</a>' : "") +
+          '</div>' +
+          '<div class="d-recu">reçu le ' + recu + '</div>';
+        frag.appendChild(carte);
+      }
+      zone.appendChild(frag);
+    } catch (e) {
+      if (gen === generation && vueCourante === "evenements")
+        $("devisGrille").innerHTML = '<div class="vide">Chargement impossible (le point /api/evenement est-il déployé ?).</div>';
+    }
+  }
+  function majPuceEvt(demandes){
+    const recents = demandes.filter(d => d.cree_le && Date.now() - dateSql(d.cree_le).getTime() < 2 * JOUR_MS).length;
+    const puce = $("puceEvt");
+    puce.hidden = !recents;
+    puce.textContent = recents;
+  }
+  async function compterEvenements(){
+    try {
+      const data = await apiGet(urlEvt());
+      majPuceEvt(data.demandes || []);
+    } catch (e) { /* le point n'est peut-être pas encore déployé */ }
+  }
+  $("evtRecharger").addEventListener("click", () => { invalider("/api/evenement"); chargerEvenements(true); });
+
+  // ═══════════ Vue Stats ═══════════
+  async function chargerStats(){
+    const gen = ++generation;
+    const [an, mois] = moisStats.split("-");
+    $("titreMois").textContent = new Date(an, mois - 1, 1).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+    $("choixMois").value = moisStats;
+    $("graph").innerHTML = "";
+    $("heures").innerHTML = squelettes(4);
+    try {
+      const data = await apiGet(`/api/resa/admin?stats=${moisStats}&key=${encodeURIComponent(cle)}`);
+      if (gen !== generation || vueCourante !== "stats") return;
+      let couverts = 0;
+      const totalCamping = data.camping.oui + data.camping.non;
+      $("kResas").textContent = data.types.resa.nb;
+      $("kPassage").textContent = data.types.passage.pax;
+      $("kCamping").textContent = totalCamping ? Math.round(data.camping.oui / totalCamping * 100) + "%" : "0%";
+
+      const nbJours = new Date(an, mois, 0).getDate();
+      const graph = $("graph"), gJours = $("graphJours");
+      graph.innerHTML = ""; gJours.innerHTML = "";
+      let maxJour = 1;
+      for (let j = 1; j <= nbJours; j++) {
+        const iso = moisStats + "-" + String(j).padStart(2, "0");
+        const t = data.jours[iso] || { midi: 0, soir: 0 };
+        couverts += t.midi + t.soir;
+        maxJour = Math.max(maxJour, t.midi + t.soir);
+      }
+      $("kCouverts").textContent = couverts;
+      const fragG = document.createDocumentFragment(), fragJ = document.createDocumentFragment();
+      for (let j = 1; j <= nbJours; j++) {
+        const iso = moisStats + "-" + String(j).padStart(2, "0");
+        const t = data.jours[iso] || { midi: 0, soir: 0 };
+        const col = document.createElement("div");
+        col.className = "g-col";
+        col.dataset.bulle = j + " · midi " + t.midi + " / soir " + t.soir;
+        const hMidi = Math.round(t.midi / maxJour * 150);
+        const hSoir = Math.round(t.soir / maxJour * 150);
+        col.innerHTML = '<i class="soir" style="height:' + hSoir + 'px"></i><i class="midi" style="height:' + hMidi + 'px"></i>';
+        col.addEventListener("click", () => { dateCourante = iso; montrerVue("jour"); });
+        fragG.appendChild(col);
+        const lab = document.createElement("span");
+        lab.textContent = (j === 1 || j % 5 === 0) ? j : "";
+        fragJ.appendChild(lab);
+      }
+      graph.appendChild(fragG); gJours.appendChild(fragJ);
+
+      const zoneH = $("heures");
+      zoneH.innerHTML = "";
+      const heures = Object.entries(data.heures);
+      if (!heures.length) { zoneH.innerHTML = '<div class="vide">Pas encore de données.</div>'; }
+      else {
+        const maxH = Math.max(...heures.map(([, v]) => v), 1);
+        const fragH = document.createDocumentFragment();
+        for (const [h, v] of heures) {
+          const l = document.createElement("div");
+          l.className = "h-ligne";
+          l.innerHTML = '<span class="h-h">' + h + '</span><div class="h-b"><i style="width:' + Math.round(v / maxH * 100) + '%"></i></div><span class="h-v">' + v + '</span>';
+          fragH.appendChild(l);
+        }
+        zoneH.appendChild(fragH);
+      }
+    } catch (e) {
+      if (gen === generation && vueCourante === "stats")
+        $("heures").innerHTML = '<div class="vide">Chargement impossible.</div>';
+    }
+  }
+  function decaleMois(n){
+    const [an, mois] = moisStats.split("-").map(Number);
+    const d = new Date(an, mois - 1 + n, 1);
+    moisStats = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+    chargerStats();
+  }
+  $("moisPrec").addEventListener("click", () => decaleMois(-1));
+  $("moisSuiv").addEventListener("click", () => decaleMois(1));
+  $("choixMois").addEventListener("change", () => {
+    if ($("choixMois").value) { moisStats = $("choixMois").value; chargerStats(); }
+  });
+
+  // ═══════════ Démarrage ═══════════
+  (function(){
+    const maintenant = new Date();
+    const minutes = Math.floor(maintenant.getMinutes() / 15) * 15;
+    $("pfHeure").value = String(maintenant.getHours()).padStart(2, "0") + ":" + String(minutes).padStart(2, "0");
+    if (cle) {
+      // Clé mémorisée : revalidation silencieuse
+      fetch(`/api/resa/admin?date=${isoLocal()}&key=${encodeURIComponent(cle)}`)
+        .then(r => {
+          if (r.ok) return r.json().then(data => {
+            cache.set(urlJour(isoLocal()), { t: Date.now(), data });
+            ouvrir();
+          });
+          deconnecter(false);
+        })
+        .catch(() => { /* hors ligne : l'écran de connexion reste */ });
+    }
+  })();
 </script>
 </body>
 </html>
