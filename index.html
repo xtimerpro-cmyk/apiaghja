@@ -1370,13 +1370,25 @@
     .defile-piste span{font-size:.48rem;letter-spacing:.2em;}
   }
   .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;}
-  .defile-piste em{font-style:normal;}
   @keyframes defiler{
     from{transform:translateX(0);}
     to{transform:translateX(-50%);}
   }
   @media (prefers-reduced-motion: reduce){
     .defile-piste{animation:none;}
+  }
+
+  /* ---------- Météo dans l'en-tête ---------- */
+  .nav-meteo{
+    order:5;display:flex;align-items:center;gap:.3rem;
+    font-size:.66rem;letter-spacing:.06em;color:var(--encre);
+    background:var(--sable);border:1px solid rgba(194,161,92,.45);
+    border-radius:999px;padding:.32rem .7rem;white-space:nowrap;
+  }
+  .nav-meteo .nm-lieu{color:#8a8a7a;}
+  @media (max-width:640px){
+    .nav-meteo{padding:.28rem .55rem;font-size:.62rem;}
+    .nav-meteo .nm-lieu{display:none;}
   }
 </style>
 </head>
@@ -1453,10 +1465,11 @@
     <li><a href="#avis" data-i18n="nav_avis">Avis</a></li>
     <li><a class="nav-cta" href="#reserver" data-i18n="nav_resa">Réserver</a></li>
   </ul>
+  <span class="nav-meteo" id="navMeteo" hidden><span class="nm-lieu">Porto-Vecchio</span><span id="navMeteoVal"></span></span>
   <div class="lang-sel drapeaux" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
 
   <div class="defile" aria-hidden="true">
-    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i></span></div>
+    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i></span></div>
   </div>
 </nav>
 
@@ -3546,11 +3559,12 @@
 
 <script>
   (function(){
-    var els = document.querySelectorAll('.defile-meteo');
-    if (!els.length) return;
-    function poser(txt){ els.forEach(function(e){ e.textContent = txt; }); }
+    var pastille = document.getElementById('navMeteo');
+    var val = document.getElementById('navMeteoVal');
+    if (!pastille || !val) return;
+    function poser(txt){ val.textContent = txt; pastille.hidden = false; }
     var cache = null;
-    try { cache = JSON.parse(localStorage.getItem('apg_meteo') || 'null'); } catch(e) {}
+    try { cache = JSON.parse(localStorage.getItem('apg_meteo2') || 'null'); } catch(e) {}
     if (cache && Date.now() - cache.t < 1800000) { poser(cache.txt); return; }
     fetch('https://api.open-meteo.com/v1/forecast?latitude=41.6243&longitude=9.3158&current=temperature_2m,weather_code')
       .then(function(r){ return r.json(); })
@@ -3563,11 +3577,11 @@
         else if (code >= 45 && code <= 48) ico = '🌫️';
         else if (code === 3) ico = '☁️';
         else if (code === 1 || code === 2) ico = '🌤️';
-        var txt = 'Porto-Vecchio ' + ico + ' ' + Math.round(c.temperature_2m) + '°';
+        var txt = ico + ' ' + Math.round(c.temperature_2m) + '°';
         poser(txt);
-        try { localStorage.setItem('apg_meteo', JSON.stringify({ t: Date.now(), txt: txt })); } catch(e) {}
+        try { localStorage.setItem('apg_meteo2', JSON.stringify({ t: Date.now(), txt: txt })); } catch(e) {}
       })
-      .catch(function(){ /* le bandeau garde « Porto-Vecchio » */ });
+      .catch(function(){ /* pastille masquée si la météo ne répond pas */ });
   })();
 </script>
 </body>
