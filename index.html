@@ -1353,7 +1353,7 @@
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
     border-bottom:1px solid rgba(194,161,92,.35);
     overflow:hidden;white-space:nowrap;
-    padding:.38rem 0;
+    padding:.32rem 0;
   }
   .defile-piste{
     display:inline-flex;width:max-content;
@@ -1362,10 +1362,15 @@
   }
   .defile:hover .defile-piste{animation-play-state:paused;}
   .defile-piste span{
-    font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+    font-size:.54rem;letter-spacing:.26em;text-transform:uppercase;
     color:var(--sable);padding-right:.3em;
   }
+  @media (max-width:520px){
+    .defile{padding:.28rem 0;}
+    .defile-piste span{font-size:.48rem;letter-spacing:.2em;}
+  }
   .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;}
+  .defile-piste em{font-style:normal;}
   @keyframes defiler{
     from{transform:translateX(0);}
     to{transform:translateX(-50%);}
@@ -1451,7 +1456,7 @@
   <div class="lang-sel drapeaux" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
 
   <div class="defile" aria-hidden="true">
-    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i></span></div>
+    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i>Bar &amp; Restaurant<i>✦</i><em class="defile-meteo">Porto-Vecchio</em><i>✦</i></span></div>
   </div>
 </nav>
 
@@ -3539,5 +3544,31 @@
   })();
 </script>
 
+<script>
+  (function(){
+    var els = document.querySelectorAll('.defile-meteo');
+    if (!els.length) return;
+    function poser(txt){ els.forEach(function(e){ e.textContent = txt; }); }
+    var cache = null;
+    try { cache = JSON.parse(localStorage.getItem('apg_meteo') || 'null'); } catch(e) {}
+    if (cache && Date.now() - cache.t < 1800000) { poser(cache.txt); return; }
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=41.6243&longitude=9.3158&current=temperature_2m,weather_code')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var c = d.current || {};
+        var code = c.weather_code, ico = '☀️';
+        if (code >= 95) ico = '⛈️';
+        else if ([71,73,75,77,85,86].indexOf(code) !== -1) ico = '❄️';
+        else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) ico = '🌧️';
+        else if (code >= 45 && code <= 48) ico = '🌫️';
+        else if (code === 3) ico = '☁️';
+        else if (code === 1 || code === 2) ico = '🌤️';
+        var txt = 'Porto-Vecchio ' + ico + ' ' + Math.round(c.temperature_2m) + '°';
+        poser(txt);
+        try { localStorage.setItem('apg_meteo', JSON.stringify({ t: Date.now(), txt: txt })); } catch(e) {}
+      })
+      .catch(function(){ /* le bandeau garde « Porto-Vecchio » */ });
+  })();
+</script>
 </body>
 </html>
