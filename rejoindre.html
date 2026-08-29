@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rejoignez-nous · A Piaghja · Porto-Vecchio</title>
+<meta name="description" content="Rejoignez l'équipe d'A Piaghja, bar & restaurant sur la plage du Golfo di Sogno à Porto-Vecchio : salle, bar, cuisine, pizzeria. Postulez en 1 minute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#7d8560;--olive-soft:#9aa17e;--olive-fonce:#4a5335;
+    --sable:#efe9dd;--sable-deep:#e2d9c6;--rose:#e7c6bd;--or:#c2a15c;
+    --encre:#2a2b24;--blanc:#fdfcf9;--terre:#b0553f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Questrial',sans-serif;color:var(--encre);background:var(--sable);min-height:100dvh;}
+  button{font-family:inherit;cursor:pointer;}
+  input,select,textarea{font-family:inherit;color:var(--encre);}
+  ::placeholder{color:#a09f92;}
+
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.85rem 1.3rem;
+    background:rgba(253,252,249,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(194,161,92,.3);
+  }
+  .brand{
+    font-family:'Allura',cursive;font-size:1.8rem;color:var(--olive-fonce);
+    text-decoration:none;line-height:1;text-shadow:0 1px 2px rgba(42,43,36,.14);
+  }
+  .nav-retour{
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--encre);
+    text-decoration:none;border:1px solid rgba(194,161,92,.5);border-radius:999px;
+    padding:.42rem .95rem;transition:all .2s ease;white-space:nowrap;
+  }
+  .nav-retour:hover{border-color:var(--or);transform:translateY(-1px);}
+  .defile{
+    position:fixed;top:calc(1.7rem + 1.9rem);left:0;right:0;z-index:49;
+    background:rgba(42,43,36,.92);border-bottom:1px solid rgba(194,161,92,.35);
+    overflow:hidden;white-space:nowrap;padding:.22rem 0;
+  }
+  .defile-piste{display:inline-flex;width:max-content;animation:defiler 38s linear infinite;}
+  .defile-piste span{
+    font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);
+    text-shadow:0 1px 2px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  @keyframes defiler{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  main{max-width:960px;margin:0 auto;padding:8.2rem 1.2rem 4rem;}
+  .entete{text-align:center;margin-bottom:3rem;}
+  h1{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(3rem,8vw,5rem);line-height:1.05;margin-bottom:.6rem;
+  }
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    h1, h2{
+      background:linear-gradient(172deg,#55603c 8%,var(--olive) 55%,#99a07c 96%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 2px 2px rgba(42,43,36,.2)) drop-shadow(0 10px 20px rgba(42,43,36,.1));
+    }
+  }
+  .entete p{color:#6b6c5e;max-width:52ch;margin:0 auto;line-height:1.7;}
+  .filet{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);margin:1.2rem auto 0;}
+  h2{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(2.2rem,5vw,3rem);line-height:1.1;margin-bottom:1.2rem;text-align:center;
+  }
+  .promesses{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:3.4rem;}
+  .promesse{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.4);border-radius:20px;
+    padding:1.4rem 1.3rem;text-align:center;box-shadow:0 14px 36px rgba(42,43,36,.07);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .promesse:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(42,43,36,.12);}
+  .promesse .p-ico{font-size:1.6rem;}
+  .promesse .p-titre{
+    font-family:'Allura',cursive;font-size:1.7rem;color:var(--olive-fonce);line-height:1.1;margin:.3rem 0 .4rem;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .promesse p{font-size:.84rem;color:#6b6c5e;line-height:1.65;}
+  .postes{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:3.4rem;}
+  .poste{
+    border:1px solid rgba(194,161,92,.5);border-radius:999px;background:var(--blanc);
+    padding:.5rem 1.1rem;font-size:.85rem;box-shadow:0 6px 16px rgba(42,43,36,.05);
+  }
+  .carte-form{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.45);border-radius:24px;
+    padding:2rem 1.8rem;box-shadow:0 24px 60px rgba(42,43,36,.1);
+  }
+  @media (max-width:560px){.carte-form{padding:1.4rem 1.1rem;}}
+  .etape{margin-bottom:1.3rem;}
+  .etape label.titre-etape{
+    display:block;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--or);
+    margin-bottom:.55rem;
+  }
+  .pills{display:flex;gap:.45rem;flex-wrap:wrap;}
+  .pill{
+    border:1px solid rgba(194,161,92,.55);border-radius:999px;background:var(--blanc);
+    padding:.5rem .95rem;font-size:.84rem;color:var(--encre);transition:all .2s ease;
+  }
+  .pill:hover{border-color:var(--or);transform:translateY(-1px);}
+  .pill.on{
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    border-color:transparent;box-shadow:0 6px 16px rgba(74,83,53,.28);
+  }
+  .champs{display:flex;gap:.7rem;flex-wrap:wrap;}
+  .champs > *{flex:1;min-width:140px;}
+  input[type="text"], input[type="tel"], textarea{
+    width:100%;padding:.65rem .85rem;border:1px solid var(--sable-deep);border-radius:12px;
+    background:var(--sable);font-size:.95rem;
+  }
+  textarea{min-height:96px;resize:vertical;}
+  input:focus, textarea:focus{outline:none;border-color:var(--or);background:var(--blanc);}
+  .envoyer{
+    display:block;width:100%;margin-top:1.2rem;padding:.9rem;border:none;border-radius:999px;
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .envoyer:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(74,83,53,.32);}
+  .envoyer:disabled{opacity:.5;transform:none;box-shadow:none;cursor:default;}
+  .msg{min-height:1.2em;margin-top:.7rem;font-size:.84rem;text-align:center;}
+  .msg.ok{color:var(--olive-fonce);}
+  .msg.ko{color:var(--terre);}
+  .merci{text-align:center;padding:2.4rem 1rem;display:none;}
+  .merci.la{display:block;animation:apparait .5s ease;}
+  @keyframes apparait{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  .merci .m-titre{
+    font-family:'Allura',cursive;font-size:2.6rem;color:var(--olive-fonce);
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .merci p{color:#6b6c5e;margin-top:.6rem;line-height:1.7;}
+  footer{
+    text-align:center;padding:2.4rem 1rem 3rem;color:#7a7a68;font-size:.8rem;
+    border-top:1px solid rgba(194,161,92,.25);
+  }
+  footer .brand-foot{
+    font-family:'Allura',cursive;font-size:2rem;color:var(--olive);display:block;margin-bottom:.4rem;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.vu{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html">A Piaghja</a>
+  <a class="nav-retour" href="index.html">‹ Retour au site</a>
+</nav>
+<div class="defile" aria-hidden="true">
+  <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span></div>
+</div>
+
+<main>
+  <div class="entete reveal">
+    <h1>Rejoignez l'équipage</h1>
+    <p>Travailler à A Piaghja, c'est servir face au Golfo di Sogno, entre la braise, le four à pizza et le bar à cocktails — dans une équipe soudée qui aime les belles saisons et le travail bien fait, les pieds dans le sable.</p>
+    <div class="filet"></div>
+  </div>
+
+  <div class="promesses reveal">
+    <div class="promesse">
+      <div class="p-ico">🌊</div>
+      <div class="p-titre">Le cadre</div>
+      <p>Votre bureau donne sur la mer. Lever de soleil au petit-déj, coucher de soleil au service du soir — difficile de faire mieux.</p>
+    </div>
+    <div class="promesse">
+      <div class="p-ico">🤝</div>
+      <div class="p-titre">L'équipe</div>
+      <p>Une maison familiale, une ambiance de saison qui soude, et une direction qui respecte le travail et les gens.</p>
+    </div>
+    <div class="promesse">
+      <div class="p-ico">🔥</div>
+      <div class="p-titre">Le métier</div>
+      <p>Braise, four à bois, cocktails, produits corses : ici on apprend, on progresse et on sert de la vraie belle maison.</p>
+    </div>
+  </div>
+
+  <h2 class="reveal">Les postes selon la saison</h2>
+  <div class="postes reveal">
+    <span class="poste">🍽️ Chef de rang</span>
+    <span class="poste">🏃 Serveur·se / Runner</span>
+    <span class="poste">🍹 Barman·aid</span>
+    <span class="poste">🍕 Pizzaiolo</span>
+    <span class="poste">👨‍🍳 Cuisine</span>
+    <span class="poste">🫧 Plonge / Polyvalent</span>
+  </div>
+
+  <h2 class="reveal">Postulez en 1 minute</h2>
+  <div class="carte-form reveal">
+    <form id="formCand" onsubmit="return false;">
+      <div class="etape">
+        <label class="titre-etape">Le poste qui vous appelle</label>
+        <div class="pills" id="pPoste"></div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Vous</label>
+        <div class="champs">
+          <input type="text" id="cPrenom" placeholder="Prénom &amp; nom" maxlength="80">
+          <input type="tel" id="cTel" placeholder="Téléphone">
+        </div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Vos disponibilités</label>
+        <input type="text" id="cDispo" placeholder="Ex : de mai à septembre, logé·e sur place ou non…" maxlength="120">
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Un mot sur vous</label>
+        <textarea id="cMessage" placeholder="Expérience, envies, ce qui vous donne envie de nous rejoindre…" maxlength="600"></textarea>
+      </div>
+      <button class="envoyer" id="btnCand">Envoyer ma candidature</button>
+      <div class="msg" id="cMsg"></div>
+    </form>
+    <div class="merci" id="merci">
+      <div class="m-titre">Bien reçu !</div>
+      <p>Votre candidature est entre les mains de l'équipe.<br>Si votre profil correspond à la saison, on vous rappelle très vite. 🌊</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="brand-foot">A Piaghja</span>
+  Bar &amp; Restaurant · Plage du Golfo di Sogno · Porto-Vecchio · <a href="tel:0622061488" style="color:inherit">06 22 06 14 88</a>
+</footer>
+
+<script>
+  "use strict";
+  var POSTES = ["Chef de rang","Serveur·se / Runner","Barman·aid","Pizzaiolo","Cuisine","Plonge / Polyvalent","Autre"];
+  var posteChoisi = null;
+  var $ = function(id){ return document.getElementById(id); };
+
+  var zone = $("pPoste");
+  POSTES.forEach(function(p){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "pill"; b.textContent = p;
+    b.addEventListener("click", function(){
+      zone.querySelectorAll(".pill").forEach(function(x){ x.classList.remove("on"); });
+      b.classList.add("on");
+      posteChoisi = p;
+    });
+    zone.appendChild(b);
+  });
+
+  $("btnCand").addEventListener("click", function(){
+    var msg = $("cMsg");
+    msg.className = "msg";
+    var prenom = $("cPrenom").value.trim();
+    var tel = $("cTel").value.trim();
+    if (!posteChoisi){ msg.textContent = "Choisissez le poste qui vous intéresse."; msg.classList.add("ko"); return; }
+    if (prenom.length < 2){ msg.textContent = "Indiquez votre prénom et nom."; msg.classList.add("ko"); return; }
+    if (!/^[+0-9][0-9 .\-()]{7,}$/.test(tel)){ msg.textContent = "Un numéro de téléphone valide est nécessaire."; msg.classList.add("ko"); return; }
+    var btn = $("btnCand");
+    btn.disabled = true;
+    fetch("/api/candidature", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        poste: posteChoisi, prenom: prenom, tel: tel,
+        dispo: $("cDispo").value.trim(), message: $("cMessage").value.trim()
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(rep){
+      if (rep.ok){
+        $("formCand").style.display = "none";
+        $("merci").classList.add("la");
+      } else {
+        btn.disabled = false;
+        msg.textContent = "Envoi refusé — vérifiez vos informations ou appelez-nous au 06 22 06 14 88.";
+        msg.classList.add("ko");
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      msg.textContent = "Connexion impossible — appelez-nous au 06 22 06 14 88.";
+      msg.classList.add("ko");
+    });
+  });
+
+  var obs = new IntersectionObserver(function(entrees){
+    entrees.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("vu"); obs.unobserve(e.target); } });
+  }, { threshold: .12 });
+  document.querySelectorAll(".reveal").forEach(function(el){ obs.observe(el); });
+</script>
+</body>
+</html>

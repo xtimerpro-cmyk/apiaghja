@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Organisation d'événements · A Piaghja · Porto-Vecchio</title>
+<meta name="description" content="Privatisez A Piaghja, bar & restaurant sur la plage du Golfo di Sogno à Porto-Vecchio : mariages, anniversaires, soirées d'entreprise. Pré-devis en 1 minute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#7d8560;--olive-soft:#9aa17e;--olive-fonce:#4a5335;
+    --sable:#efe9dd;--sable-deep:#e2d9c6;--rose:#e7c6bd;--or:#c2a15c;
+    --encre:#2a2b24;--blanc:#fdfcf9;--terre:#b0553f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Questrial',sans-serif;color:var(--encre);background:var(--sable);min-height:100dvh;}
+  button{font-family:inherit;cursor:pointer;}
+  input,select,textarea{font-family:inherit;color:var(--encre);}
+  ::placeholder{color:#a09f92;}
+
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.85rem 1.3rem;
+    background:rgba(253,252,249,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(194,161,92,.3);
+  }
+  .brand{
+    font-family:'Allura',cursive;font-size:1.8rem;color:var(--olive-fonce);
+    text-decoration:none;line-height:1;text-shadow:0 1px 2px rgba(42,43,36,.14);
+  }
+  .nav-retour{
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--encre);
+    text-decoration:none;border:1px solid rgba(194,161,92,.5);border-radius:999px;
+    padding:.42rem .95rem;transition:all .2s ease;white-space:nowrap;
+  }
+  .nav-retour:hover{border-color:var(--or);transform:translateY(-1px);}
+  .defile{
+    position:fixed;top:calc(1.7rem + 1.9rem);left:0;right:0;z-index:49;
+    background:rgba(42,43,36,.92);border-bottom:1px solid rgba(194,161,92,.35);
+    overflow:hidden;white-space:nowrap;padding:.22rem 0;
+  }
+  .defile-piste{display:inline-flex;width:max-content;animation:defiler 38s linear infinite;}
+  .defile-piste span{
+    font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose);
+    text-shadow:0 1px 2px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  @keyframes defiler{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  main{max-width:960px;margin:0 auto;padding:8.2rem 1.2rem 4rem;}
+  .entete{text-align:center;margin-bottom:3rem;}
+  h1{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(3rem,8vw,5rem);line-height:1.05;margin-bottom:.6rem;
+  }
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    h1, h2{
+      background:linear-gradient(172deg,#55603c 8%,var(--olive) 55%,#99a07c 96%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 2px 2px rgba(42,43,36,.2)) drop-shadow(0 10px 20px rgba(42,43,36,.1));
+    }
+  }
+  .entete p{color:#6b6c5e;max-width:52ch;margin:0 auto;line-height:1.7;}
+  .filet{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);margin:1.2rem auto 0;}
+  h2{
+    font-family:'Allura',cursive;font-weight:400;
+    font-size:clamp(2.2rem,5vw,3rem);line-height:1.1;margin-bottom:1.2rem;text-align:center;
+  }
+  .types{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem;}
+  .type{
+    border:1px solid rgba(194,161,92,.5);border-radius:999px;background:var(--blanc);
+    padding:.5rem 1.1rem;font-size:.85rem;box-shadow:0 6px 16px rgba(42,43,36,.05);
+  }
+  .formules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:3.4rem;}
+  .formule{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.4);border-radius:20px;
+    padding:1.6rem 1.4rem;text-align:center;
+    box-shadow:0 14px 36px rgba(42,43,36,.07);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .formule:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(42,43,36,.12);}
+  .formule .f-nom{
+    font-family:'Allura',cursive;font-size:1.9rem;color:var(--olive-fonce);line-height:1.1;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .formule .f-sous{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--or);margin:.35rem 0 .8rem;}
+  .formule p{font-size:.85rem;color:#6b6c5e;line-height:1.65;}
+  .carte-devis{
+    background:var(--blanc);border:1px solid rgba(194,161,92,.45);border-radius:24px;
+    padding:2rem 1.8rem;box-shadow:0 24px 60px rgba(42,43,36,.1);
+  }
+  @media (max-width:560px){.carte-devis{padding:1.4rem 1.1rem;}}
+  .etape{margin-bottom:1.4rem;}
+  .etape label.titre-etape{
+    display:block;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--or);
+    margin-bottom:.55rem;
+  }
+  .pills{display:flex;gap:.45rem;flex-wrap:wrap;}
+  .pill{
+    border:1px solid rgba(194,161,92,.55);border-radius:999px;background:var(--blanc);
+    padding:.5rem .95rem;font-size:.84rem;color:var(--encre);transition:all .2s ease;
+  }
+  .pill:hover{border-color:var(--or);transform:translateY(-1px);}
+  .pill.on{
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    border-color:transparent;box-shadow:0 6px 16px rgba(74,83,53,.28);
+  }
+  .champs{display:flex;gap:.7rem;flex-wrap:wrap;}
+  .champs > *{flex:1;min-width:140px;}
+  input[type="number"], input[type="date"], input[type="text"], input[type="tel"]{
+    width:100%;padding:.65rem .85rem;border:1px solid var(--sable-deep);border-radius:12px;
+    background:var(--sable);font-size:.95rem;
+  }
+  input:focus{outline:none;border-color:var(--or);background:var(--blanc);}
+  .estimation{
+    margin-top:1.6rem;background:var(--sable);border:1px solid rgba(194,161,92,.45);
+    border-radius:18px;padding:1.1rem 1.2rem;
+  }
+  .estimation h3{
+    font-family:'Allura',cursive;font-weight:400;font-size:1.8rem;color:var(--olive-fonce);
+    text-align:center;margin-bottom:.5rem;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .dv-ligne{display:flex;justify-content:space-between;gap:.6rem;font-size:.84rem;color:#5c5d50;padding:.2rem 0;}
+  .dv-ligne b{font-weight:normal;color:var(--encre);}
+  .dv-total{
+    display:flex;justify-content:space-between;margin-top:.5rem;padding-top:.55rem;
+    border-top:1px solid var(--sable-deep);font-size:1rem;
+  }
+  .dv-total b{color:var(--olive);font-size:1.15rem;}
+  .dv-note{font-size:.68rem;color:#8a8a7a;margin-top:.5rem;text-align:center;line-height:1.6;}
+  .envoyer{
+    display:block;width:100%;margin-top:1.2rem;padding:.9rem;border:none;border-radius:999px;
+    background:linear-gradient(135deg,#6c7452,var(--olive));color:var(--blanc);
+    font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .envoyer:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(74,83,53,.32);}
+  .envoyer:disabled{opacity:.5;transform:none;box-shadow:none;cursor:default;}
+  .msg{min-height:1.2em;margin-top:.7rem;font-size:.84rem;text-align:center;}
+  .msg.ok{color:var(--olive-fonce);}
+  .msg.ko{color:var(--terre);}
+  .merci{
+    text-align:center;padding:2.4rem 1rem;display:none;
+  }
+  .merci.la{display:block;animation:apparait .5s ease;}
+  @keyframes apparait{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  .merci .m-titre{
+    font-family:'Allura',cursive;font-size:2.6rem;color:var(--olive-fonce);
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .merci p{color:#6b6c5e;margin-top:.6rem;line-height:1.7;}
+  footer{
+    text-align:center;padding:2.4rem 1rem 3rem;color:#7a7a68;font-size:.8rem;
+    border-top:1px solid rgba(194,161,92,.25);
+  }
+  footer .brand-foot{
+    font-family:'Allura',cursive;font-size:2rem;color:var(--olive);display:block;margin-bottom:.4rem;
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.vu{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html">A Piaghja</a>
+  <a class="nav-retour" href="index.html">‹ Retour au site</a>
+</nav>
+<div class="defile" aria-hidden="true">
+  <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span></div>
+</div>
+
+<main>
+  <div class="entete reveal">
+    <h1>Vos événements sur la plage</h1>
+    <p>Mariage les pieds dans le sable, anniversaire au coucher du soleil, soirée d'entreprise face au Golfo di Sogno… A Piaghja privatise sa terrasse et met sa braise, sa cave et son équipe au service de vos plus belles occasions.</p>
+    <div class="filet"></div>
+  </div>
+
+  <div class="types reveal">
+    <span class="type">💍 Mariage</span>
+    <span class="type">🎂 Anniversaire</span>
+    <span class="type">🥂 Entreprise</span>
+    <span class="type">👯 EVJF / EVG</span>
+    <span class="type">🕊️ Baptême</span>
+    <span class="type">✨ Sur mesure</span>
+  </div>
+
+  <div class="formules reveal">
+    <div class="formule">
+      <div class="f-nom">Apéritif dînatoire</div>
+      <div class="f-sous">Convivial &amp; iodé</div>
+      <p>Planches corses, pièces à partager, cocktails signature — l'esprit apéro face à la mer, debout ou lounge, au rythme du soleil qui descend.</p>
+    </div>
+    <div class="formule">
+      <div class="f-nom">Repas assis</div>
+      <div class="f-sous">La grande tablée</div>
+      <p>Un menu construit avec vous autour de la braise et des produits de l'île, servi à table sur la terrasse — l'option des grandes occasions.</p>
+    </div>
+    <div class="formule">
+      <div class="f-nom">Cocktail + repas</div>
+      <div class="f-sous">La soirée complète</div>
+      <p>Apéritif au bord de l'eau puis dîner à table, et la nuit qui continue en musique. La formule sans compromis, du premier verre au dessert.</p>
+    </div>
+  </div>
+
+  <h2 class="reveal">Votre pré-devis en 1 minute</h2>
+  <div class="carte-devis reveal">
+    <form id="formDevis" onsubmit="return false;">
+      <div class="etape">
+        <label class="titre-etape">Type d'événement</label>
+        <div class="pills" id="pType"></div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Vos invités &amp; la date</label>
+        <div class="champs">
+          <input type="number" id="fPax" min="2" max="500" placeholder="Nombre d'invités">
+          <input type="date" id="fDate">
+        </div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Le moment</label>
+        <div class="pills" id="pMoment"></div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">La formule</label>
+        <div class="pills" id="pFormule"></div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Vos envies en plus</label>
+        <div class="pills" id="pOptions"></div>
+      </div>
+      <div class="etape">
+        <label class="titre-etape">Pour vous recontacter</label>
+        <div class="champs">
+          <input type="text" id="fPrenom" placeholder="Votre prénom" maxlength="60">
+          <input type="tel" id="fTel" placeholder="Votre téléphone">
+        </div>
+      </div>
+
+      <div class="estimation" id="zoneEstim" hidden>
+        <h3>Votre pré-devis</h3>
+        <div id="estimLignes"></div>
+        <div class="dv-total"><span>Estimation</span><b id="estimTotal">—</b></div>
+        <div class="dv-note">Pré-devis indicatif, établi instantanément.<br>L'équipe vous confirme le devis définitif très rapidement.</div>
+      </div>
+
+      <button class="envoyer" id="btnEnvoyer">Recevoir mon devis</button>
+      <div class="msg" id="fMsg"></div>
+    </form>
+
+    <div class="merci" id="merci">
+      <div class="m-titre">Merci !</div>
+      <p>Votre demande est bien transmise à l'équipe d'A Piaghja.<br>Nous vous rappelons très vite pour affiner ensemble votre événement. 🌊</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="brand-foot">A Piaghja</span>
+  Bar &amp; Restaurant · Plage du Golfo di Sogno · Porto-Vecchio · <a href="tel:0622061488" style="color:inherit">06 22 06 14 88</a>
+</footer>
+
+<script>
+  "use strict";
+  // ⚠️ TARIFS INDICATIFS À AJUSTER — identiques à ceux de l'assistant du site.
+  var EVT_TARIFS = {
+    formules: {
+      aperitif:       { nom: "Apéritif dînatoire",  parPers: 39 },
+      repas:          { nom: "Repas assis",         parPers: 59 },
+      cocktail_repas: { nom: "Cocktail + repas",    parPers: 75 }
+    },
+    options: {
+      musique: { nom: "Ambiance musicale / DJ",   forfait: 300 },
+      gateau:  { nom: "Gâteau d'événement",       parPers: 8 },
+      deco:    { nom: "Décoration personnalisée", forfait: 150 },
+      openbar: { nom: "Formule open bar (2h)",    parPers: 25 }
+    }
+  };
+  var TYPES = ["Anniversaire","Mariage","Entreprise","EVJF / EVG","Baptême","Autre"];
+  var MOMENTS = ["☀️ Déjeuner","🌅 Soirée","🌙 Journée complète"];
+  var choix = { type: null, moment: null, formule: null, options: [] };
+  var $ = function(id){ return document.getElementById(id); };
+
+  function pills(zone, liste, multi, fait){
+    var z = $(zone);
+    liste.forEach(function(item){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "pill"; b.textContent = item.label;
+      b.addEventListener("click", function(){
+        if (multi){
+          b.classList.toggle("on");
+        } else {
+          z.querySelectorAll(".pill").forEach(function(x){ x.classList.remove("on"); });
+          b.classList.add("on");
+        }
+        fait(item.valeur, b.classList.contains("on"));
+        calculer();
+      });
+      z.appendChild(b);
+    });
+  }
+  pills("pType", TYPES.map(function(t){ return { label: t, valeur: t }; }), false,
+    function(v){ choix.type = v; });
+  pills("pMoment", MOMENTS.map(function(m){ return { label: m, valeur: m.replace(/^..\s*/, "") }; }), false,
+    function(v){ choix.moment = v; });
+  pills("pFormule",
+    Object.keys(EVT_TARIFS.formules).map(function(cle){
+      var f = EVT_TARIFS.formules[cle];
+      return { label: f.nom + " · " + f.parPers + " €/pers", valeur: cle };
+    }).concat([{ label: "Je ne sais pas encore", valeur: null }]), false,
+    function(v){ choix.formule = v; });
+  pills("pOptions",
+    Object.keys(EVT_TARIFS.options).map(function(cle){
+      var o = EVT_TARIFS.options[cle];
+      return { label: o.nom + (o.parPers ? " · " + o.parPers + " €/pers" : " · " + o.forfait + " €"), valeur: cle };
+    }), true,
+    function(v, actif){
+      var i = choix.options.indexOf(v);
+      if (actif && i === -1) choix.options.push(v);
+      if (!actif && i !== -1) choix.options.splice(i, 1);
+    });
+
+  $("fPax").addEventListener("input", calculer);
+
+  function calculer(){
+    var pax = parseInt($("fPax").value, 10);
+    var zone = $("zoneEstim"), lignes = $("estimLignes"), totalEl = $("estimTotal");
+    if (!pax || pax < 2 || (!choix.formule && !choix.options.length)){ zone.hidden = true; return; }
+    var total = 0, htmlL = "";
+    if (choix.formule){
+      var f = EVT_TARIFS.formules[choix.formule];
+      var m = f.parPers * pax;
+      htmlL += '<div class="dv-ligne"><span>' + f.nom + ' × ' + pax + '</span><b>' + m.toLocaleString("fr-FR") + ' €</b></div>';
+      total += m;
+    }
+    choix.options.forEach(function(cle){
+      var o = EVT_TARIFS.options[cle];
+      var m = o.forfait ? o.forfait : o.parPers * pax;
+      htmlL += '<div class="dv-ligne"><span>' + o.nom + (o.parPers ? ' × ' + pax : '') + '</span><b>' + m.toLocaleString("fr-FR") + ' €</b></div>';
+      total += m;
+    });
+    lignes.innerHTML = htmlL;
+    if (total > 0){
+      var bas = Math.round(total * .95 / 10) * 10;
+      var haut = Math.round(total * 1.15 / 10) * 10;
+      totalEl.textContent = bas.toLocaleString("fr-FR") + " – " + haut.toLocaleString("fr-FR") + " €";
+    } else {
+      totalEl.textContent = "sur mesure";
+    }
+    zone.hidden = false;
+    zone._total = total;
+  }
+
+  $("btnEnvoyer").addEventListener("click", function(){
+    var msg = $("fMsg");
+    msg.className = "msg";
+    var pax = parseInt($("fPax").value, 10);
+    var date = $("fDate").value;
+    var tel = $("fTel").value.trim();
+    var prenom = $("fPrenom").value.trim();
+    if (!choix.type){ msg.textContent = "Choisissez le type d'événement."; msg.classList.add("ko"); return; }
+    if (!pax || pax < 2){ msg.textContent = "Indiquez le nombre d'invités."; msg.classList.add("ko"); return; }
+    if (!date){ msg.textContent = "Choisissez une date, même approximative."; msg.classList.add("ko"); return; }
+    if (!/^[+0-9][0-9 .\-()]{7,}$/.test(tel)){ msg.textContent = "Un numéro de téléphone valide est nécessaire."; msg.classList.add("ko"); return; }
+    calculer();
+    var btn = $("btnEnvoyer");
+    btn.disabled = true;
+    fetch("/api/evenement", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: choix.type, date: date, moment: choix.moment || "",
+        pax: Math.min(pax, 500),
+        formule: choix.formule ? EVT_TARIFS.formules[choix.formule].nom : "À définir",
+        options: choix.options.map(function(c){ return EVT_TARIFS.options[c].nom; }).join(", "),
+        prenom: prenom || "Non précisé", tel: tel,
+        estimation: ($("zoneEstim")._total || 0)
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(rep){
+      if (rep.ok){
+        $("formDevis").style.display = "none";
+        $("merci").classList.add("la");
+      } else {
+        btn.disabled = false;
+        msg.textContent = "Envoi refusé — vérifiez vos informations ou appelez-nous au 06 22 06 14 88.";
+        msg.classList.add("ko");
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      msg.textContent = "Connexion impossible — appelez-nous au 06 22 06 14 88.";
+      msg.classList.add("ko");
+    });
+  });
+
+  // Révélations douces
+  var obs = new IntersectionObserver(function(entrees){
+    entrees.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add("vu"); obs.unobserve(e.target); } });
+  }, { threshold: .12 });
+  document.querySelectorAll(".reveal").forEach(function(el){ obs.observe(el); });
+</script>
+</body>
+</html>
