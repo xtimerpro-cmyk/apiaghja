@@ -1345,6 +1345,34 @@
   @media (max-width:520px){
     .cg-bar{bottom:10px;padding:.8rem .9rem;}
   }
+
+  /* ---------- Bandeau défilant sous l'en-tête ---------- */
+  .defile{
+    position:absolute;top:100%;left:0;right:0;
+    background:rgba(42,43,36,.92);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(194,161,92,.35);
+    overflow:hidden;white-space:nowrap;
+    padding:.38rem 0;
+  }
+  .defile-piste{
+    display:inline-flex;width:max-content;
+    animation:defiler 38s linear infinite;
+    will-change:transform;
+  }
+  .defile:hover .defile-piste{animation-play-state:paused;}
+  .defile-piste span{
+    font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--sable);padding-right:.3em;
+  }
+  .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;}
+  @keyframes defiler{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .defile-piste{animation:none;}
+  }
 </style>
 </head>
 <body>
@@ -1421,6 +1449,10 @@
     <li><a class="nav-cta" href="#reserver" data-i18n="nav_resa">Réserver</a></li>
   </ul>
   <div class="lang-sel drapeaux" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
+
+  <div class="defile" aria-hidden="true">
+    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Plage du Golfo di Sogno<i>✦</i>Corse du Sud<i>✦</i>Cuisine au feu de bois<i>✦</i>Cocktails face à la mer<i>✦</i></span></div>
+  </div>
 </nav>
 
 
