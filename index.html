@@ -99,22 +99,6 @@
     animation:brandIn .9s cubic-bezier(.2,.8,.3,1) 1.65s forwards;
   }
   @keyframes brandIn{to{opacity:1;transform:none;filter:blur(0);}}
-  .nav-ticker{
-    flex:1;overflow:hidden;margin:0 clamp(.8rem,3vw,2rem);
-    opacity:0;animation:heroFade 1s ease 2s forwards;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
-    mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
-  }
-  .nav-ticker-piste{
-    display:flex;width:max-content;
-    animation:tickerDefile 11s linear infinite;
-  }
-  .nav-ticker span{
-    flex:none;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
-    color:var(--rose);white-space:nowrap;
-  }
-  nav.scrolled .nav-ticker span{color:var(--olive);}
-  @keyframes tickerDefile{to{transform:translateX(-50%);}}
   .nav-links{display:flex;gap:2.2rem;list-style:none;}
   .nav-links a{
     text-decoration:none;color:var(--blanc);
@@ -937,10 +921,8 @@
     .hero-scroll{animation:none;opacity:1;}
     .hs-dot,.hs-chevron{animation:none;}
     .rail-social > *{animation:none;opacity:1;transform:none;}
-    .nav-ticker-piste{animation:none;}
     .brand{animation:none;opacity:1;transform:none;filter:none;}
     .hero-cta::after{animation:none;transform:scaleX(1);}
-    .nav-ticker{animation:none;opacity:1;}
     .galerie-grid.reveal figure{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
   }
@@ -1466,9 +1448,6 @@
 
 <nav id="nav">
   <a class="brand" href="#top">A Piaghja</a>
-  <div class="nav-ticker" aria-label="Bar et Restaurant, Porto-Vecchio">
-    <div class="nav-ticker-piste" aria-hidden="true"><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span><span>Bar &amp; Restaurant · Porto-Vecchio&nbsp;·&nbsp;</span></div>
-  </div>
   <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" onclick="toggleMenu(this)">
     <span></span><span></span><span></span>
   </button>
@@ -1483,7 +1462,7 @@
   <div class="lang-sel drapeaux" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
 
   <div class="defile" aria-hidden="true">
-    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i>Bar &amp; Restaurant<i>✦</i></span></div>
+    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span></div>
   </div>
 </nav>
 
