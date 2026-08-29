@@ -302,6 +302,14 @@
   }
   .devis .d-recu{font-size:.66rem;color:#a3a294;margin-top:.4rem;}
 
+
+  /* ---------- Candidatures ---------- */
+  .cand .d-msg{
+    margin-top:.5rem;background:rgba(239,233,221,.5);border-radius:12px;
+    padding:.6rem .75rem;font-size:.8rem;color:#5c5d50;line-height:1.55;
+    white-space:pre-wrap;word-break:break-word;
+  }
+
   /* ---------- Stats ---------- */
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1rem;}
   .kpi{
@@ -581,6 +589,7 @@
       <button class="onglet" data-vue="clients">Fichier client</button>
       <button class="onglet" data-vue="carte">Carte</button>
       <button class="onglet" data-vue="evenements">Événements<span class="puce" id="puceEvt" hidden></span></button>
+      <button class="onglet" data-vue="candidatures">Candidatures<span class="puce" id="puceCand" hidden></span></button>
       <button class="onglet" data-vue="stats">Stats</button>
     </nav>
     <button class="btn-sortie" id="btnDeconnexion">Sortir</button>
@@ -738,6 +747,15 @@
       <div class="devis-grille" id="devisGrille"></div>
     </section>
 
+    <!-- ═══════ Vue Candidatures ═══════ -->
+    <section id="vueCandidatures" hidden>
+      <div class="nav-ligne">
+        <div class="nav-titre"><b>Candidatures reçues</b> <span class="compteur" id="candCompteur"></span></div>
+        <button class="btn-doux" id="candRecharger">Actualiser</button>
+      </div>
+      <div class="devis-grille" id="candGrille"></div>
+    </section>
+
     <!-- ═══════ Vue Stats ═══════ -->
     <section id="vueStats" hidden>
       <div class="nav-ligne">
@@ -832,7 +850,7 @@
   let moisStats = dateCourante.slice(0, 7);
 
   // ═══════════ Navigation entre vues ═══════════
-  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", clients: "vueClients", carte: "vueCarte", evenements: "vueEvenements", stats: "vueStats" };
+  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", clients: "vueClients", carte: "vueCarte", evenements: "vueEvenements", candidatures: "vueCandidatures", stats: "vueStats" };
   let vueCourante = "jour";
   function montrerVue(nom){
     vueCourante = nom;
@@ -844,6 +862,7 @@
     if (nom === "clients") chargerClients();
     if (nom === "carte") chargerCarte();
     if (nom === "evenements") chargerEvenements();
+    if (nom === "candidatures") chargerCandidatures();
     if (nom === "stats") chargerStats();
   }
   $("onglets").addEventListener("click", (e) => {
@@ -873,6 +892,7 @@
     $("app").hidden = false;
     montrerVue("jour");
     compterEvenements();
+    compterCandidatures();
   }
   function deconnecter(auto){
     try { localStorage.removeItem("apg_admin_cle"); } catch (e) {}
@@ -1678,6 +1698,63 @@
     $("campMsg").className = "msg ok";
     $("campMsg").textContent = "CSV téléchargé (" + cibleCampagne.length + " clients).";
   });
+
+
+  // ═══════════ Vue Candidatures ═══════════
+  const urlCand = () => `/api/candidature?key=${encodeURIComponent(cle)}`;
+
+  async function chargerCandidatures(force){
+    const gen = ++generation;
+    $("candGrille").innerHTML = squelettes(3);
+    try {
+      const data = await apiGet(urlCand(), force);
+      if (gen !== generation || vueCourante !== "candidatures") return;
+      const liste = data.candidatures || [];
+      $("candCompteur").textContent = liste.length ? "· " + liste.length + " candidature" + (liste.length > 1 ? "s" : "") : "";
+      majPuceCand(liste);
+      const zone = $("candGrille");
+      zone.innerHTML = "";
+      if (!liste.length) {
+        zone.innerHTML = '<div class="vide">Aucune candidature pour l\'instant — la page « Rejoignez-nous » les enverra ici. 🤝</div>';
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      for (const c of liste) {
+        const carte = document.createElement("div");
+        const neuf = c.cree_le && (Date.now() - dateSql(c.cree_le).getTime() < 2 * JOUR_MS);
+        carte.className = "devis cand" + (neuf ? " neuf" : "");
+        const recu = c.cree_le ? dateSql(c.cree_le).toLocaleDateString("fr-FR", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
+        carte.innerHTML =
+          '<div class="d-type">' + (c.poste || "Candidature") + '</div>' +
+          '<div class="d-date">' + (c.prenom || "—") + '</div>' +
+          (c.dispo ? '<div class="d-l"><span>Disponibilités</span><b>' + c.dispo + '</b></div>' : "") +
+          (c.message ? '<div class="d-msg">' + c.message + '</div>' : "") +
+          '<div class="d-pied">' +
+            '<span></span>' +
+            (c.tel ? '<a class="d-tel" href="tel:' + c.tel.replace(/\s/g, "") + '">📞 ' + c.tel + '</a>' : "") +
+          '</div>' +
+          '<div class="d-recu">reçue le ' + recu + '</div>';
+        frag.appendChild(carte);
+      }
+      zone.appendChild(frag);
+    } catch (e) {
+      if (gen === generation && vueCourante === "candidatures")
+        $("candGrille").innerHTML = '<div class="vide">Chargement impossible (le point /api/candidature est-il déployé ?).</div>';
+    }
+  }
+  function majPuceCand(liste){
+    const recents = liste.filter(c => c.cree_le && Date.now() - dateSql(c.cree_le).getTime() < 2 * JOUR_MS).length;
+    const puce = $("puceCand");
+    puce.hidden = !recents;
+    puce.textContent = recents;
+  }
+  async function compterCandidatures(){
+    try {
+      const data = await apiGet(urlCand());
+      majPuceCand(data.candidatures || []);
+    } catch (e) { /* point pas encore déployé */ }
+  }
+  $("candRecharger").addEventListener("click", () => { invalider("/api/candidature"); chargerCandidatures(true); });
 
   // ═══════════ Vue Stats ═══════════
   async function chargerStats(){
