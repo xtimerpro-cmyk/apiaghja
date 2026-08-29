@@ -25,10 +25,7 @@
   html{-webkit-text-size-adjust:100%;}
   body{
     font-family:'Questrial',sans-serif;color:var(--encre);
-    background:
-      radial-gradient(ellipse 60% 40% at 85% -5%, rgba(194,161,92,.10), transparent 60%),
-      radial-gradient(ellipse 50% 35% at 0% 100%, rgba(125,133,96,.08), transparent 60%),
-      var(--sable);
+    background:var(--sable);
     min-height:100dvh;
   }
   button{font-family:inherit;cursor:pointer;}
@@ -418,6 +415,69 @@
   .camp-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem;}
   .camp-note{font-size:.68rem;color:#8a8a7a;margin-top:.6rem;line-height:1.5;}
 
+
+  /* ---------- Fond animé de l'espace direction ---------- */
+  .fond{
+    position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+    background:var(--sable);
+  }
+  .halo{
+    position:absolute;border-radius:50%;
+    will-change:transform;
+  }
+  .halo.h1{
+    width:60vmax;height:60vmax;left:-18vmax;top:-24vmax;
+    background:radial-gradient(circle, rgba(154,161,126,.22), rgba(154,161,126,.07) 45%, transparent 68%);
+    animation:derive1 46s ease-in-out infinite;
+  }
+  .halo.h2{
+    width:52vmax;height:52vmax;right:-20vmax;top:6vmax;
+    background:radial-gradient(circle, rgba(194,161,92,.20), rgba(194,161,92,.06) 45%, transparent 68%);
+    animation:derive2 58s ease-in-out infinite;
+  }
+  .halo.h3{
+    width:44vmax;height:44vmax;left:22vmax;bottom:-16vmax;
+    background:radial-gradient(circle, rgba(231,198,189,.20), rgba(231,198,189,.06) 45%, transparent 68%);
+    animation:derive3 52s ease-in-out infinite;
+  }
+  .halo.h4{
+    width:26vmax;height:26vmax;right:16vmax;bottom:20vmax;
+    background:radial-gradient(circle, rgba(253,252,249,.5), rgba(253,252,249,.12) 40%, transparent 65%);
+    animation:derive1 38s ease-in-out infinite reverse;
+  }
+  @keyframes derive1{
+    0%,100%{transform:translate(0,0) scale(1);}
+    33%{transform:translate(6vmax,4vmax) scale(1.08);}
+    66%{transform:translate(-4vmax,7vmax) scale(.95);}
+  }
+  @keyframes derive2{
+    0%,100%{transform:translate(0,0) scale(1);}
+    30%{transform:translate(-7vmax,5vmax) scale(1.06);}
+    65%{transform:translate(3vmax,-5vmax) scale(.96);}
+  }
+  @keyframes derive3{
+    0%,100%{transform:translate(0,0) scale(1);}
+    40%{transform:translate(5vmax,-6vmax) scale(1.05);}
+    70%{transform:translate(-6vmax,2vmax) scale(.97);}
+  }
+  .mer{
+    position:absolute;left:0;right:0;bottom:0;height:150px;
+  }
+  .mer svg{
+    position:absolute;bottom:0;left:0;width:200%;height:100%;
+    will-change:transform;
+  }
+  .mer .vague1{animation:houle 26s linear infinite;opacity:.5;}
+  .mer .vague2{animation:houle 17s linear infinite reverse;opacity:.35;bottom:-14px;}
+  .mer .vague3{animation:houle 40s linear infinite;opacity:.22;bottom:-30px;}
+  @keyframes houle{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .halo, .mer svg{animation:none !important;}
+  }
+
   /* ---------- Squelettes & toast ---------- */
   .sk{position:relative;overflow:hidden;background:var(--sable);border-radius:10px;min-height:16px;}
   .sk::after{
@@ -438,6 +498,24 @@
 </style>
 </head>
 <body>
+
+<div class="fond" aria-hidden="true">
+  <div class="halo h1"></div>
+  <div class="halo h2"></div>
+  <div class="halo h3"></div>
+  <div class="halo h4"></div>
+  <div class="mer">
+    <svg class="vague1" viewBox="0 0 2880 150" preserveAspectRatio="none">
+      <path fill="rgba(154,161,126,.30)" d="M0,60 C120,40 240,80 360,62 C480,44 600,78 720,60 C840,42 960,80 1080,62 C1200,44 1320,78 1440,60 L1440,150 L0,150 Z M1440,60 C1560,40 1680,80 1800,62 C1920,44 2040,78 2160,60 C2280,42 2400,80 2520,62 C2640,44 2760,78 2880,60 L2880,150 L1440,150 Z"/>
+    </svg>
+    <svg class="vague2" viewBox="0 0 2880 150" preserveAspectRatio="none">
+      <path fill="rgba(194,161,92,.28)" d="M0,60 C120,40 240,80 360,62 C480,44 600,78 720,60 C840,42 960,80 1080,62 C1200,44 1320,78 1440,60 L1440,150 L0,150 Z M1440,60 C1560,40 1680,80 1800,62 C1920,44 2040,78 2160,60 C2280,42 2400,80 2520,62 C2640,44 2760,78 2880,60 L2880,150 L1440,150 Z"/>
+    </svg>
+    <svg class="vague3" viewBox="0 0 2880 150" preserveAspectRatio="none">
+      <path fill="rgba(125,133,96,.30)" d="M0,60 C120,40 240,80 360,62 C480,44 600,78 720,60 C840,42 960,80 1080,62 C1200,44 1320,78 1440,60 L1440,150 L0,150 Z M1440,60 C1560,40 1680,80 1800,62 C1920,44 2040,78 2160,60 C2280,42 2400,80 2520,62 C2640,44 2760,78 2880,60 L2880,150 L1440,150 Z"/>
+    </svg>
+  </div>
+</div>
 
 <!-- ═══════════ Connexion ═══════════ -->
 <div class="voile-connexion" id="ecranConnexion">
