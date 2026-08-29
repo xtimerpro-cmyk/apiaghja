@@ -416,66 +416,85 @@
   .camp-note{font-size:.68rem;color:#8a8a7a;margin-top:.6rem;line-height:1.5;}
 
 
-  /* ---------- Fond animé de l'espace direction ---------- */
-  .fond{
+
+  /* ---------- Fond 3D de l'espace direction ---------- */
+  .fond3d{
     position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
-    background:var(--sable);
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 0%, rgba(253,252,249,.75), transparent 65%),
+      var(--sable);
+    perspective:1100px;
   }
-  .halo{
-    position:absolute;border-radius:50%;
+  .scene{
+    position:absolute;inset:-12%;
+    transform-style:preserve-3d;
+    animation:camera 44s ease-in-out infinite alternate;
+  }
+  @keyframes camera{
+    from{transform:rotateX(5deg) rotateY(-7deg);}
+    to{transform:rotateX(-2deg) rotateY(7deg);}
+  }
+  .pos{position:absolute;transform-style:preserve-3d;}
+  .pan{
+    border-radius:18px;
+    animation:flotter 8s ease-in-out infinite alternate;
     will-change:transform;
+    box-shadow:0 22px 50px rgba(42,43,36,.10);
   }
-  .halo.h1{
-    width:60vmax;height:60vmax;left:-18vmax;top:-24vmax;
-    background:radial-gradient(circle, rgba(154,161,126,.22), rgba(154,161,126,.07) 45%, transparent 68%);
-    animation:derive1 46s ease-in-out infinite;
+  @keyframes flotter{
+    from{transform:translateY(-12px) translateZ(-14px) rotateZ(-1.2deg);}
+    to{transform:translateY(12px) translateZ(14px) rotateZ(1.2deg);}
   }
-  .halo.h2{
-    width:52vmax;height:52vmax;right:-20vmax;top:6vmax;
-    background:radial-gradient(circle, rgba(194,161,92,.20), rgba(194,161,92,.06) 45%, transparent 68%);
-    animation:derive2 58s ease-in-out infinite;
+  .v-olive{
+    background:linear-gradient(135deg, rgba(125,133,96,.20), rgba(154,161,126,.08));
+    border:1px solid rgba(125,133,96,.25);
   }
-  .halo.h3{
-    width:44vmax;height:44vmax;left:22vmax;bottom:-16vmax;
-    background:radial-gradient(circle, rgba(231,198,189,.20), rgba(231,198,189,.06) 45%, transparent 68%);
-    animation:derive3 52s ease-in-out infinite;
+  .v-or{
+    background:linear-gradient(135deg, rgba(194,161,92,.20), rgba(212,178,110,.07));
+    border:1px solid rgba(194,161,92,.30);
   }
-  .halo.h4{
-    width:26vmax;height:26vmax;right:16vmax;bottom:20vmax;
-    background:radial-gradient(circle, rgba(253,252,249,.5), rgba(253,252,249,.12) 40%, transparent 65%);
-    animation:derive1 38s ease-in-out infinite reverse;
+  .v-verre{
+    background:linear-gradient(135deg, rgba(253,252,249,.55), rgba(253,252,249,.15));
+    border:1px solid rgba(194,161,92,.28);
   }
-  @keyframes derive1{
-    0%,100%{transform:translate(0,0) scale(1);}
-    33%{transform:translate(6vmax,4vmax) scale(1.08);}
-    66%{transform:translate(-4vmax,7vmax) scale(.95);}
+  .voile-bas{
+    position:absolute;left:0;right:0;bottom:0;height:34vh;
+    background:linear-gradient(to top, var(--sable) 12%, transparent);
   }
-  @keyframes derive2{
-    0%,100%{transform:translate(0,0) scale(1);}
-    30%{transform:translate(-7vmax,5vmax) scale(1.06);}
-    65%{transform:translate(3vmax,-5vmax) scale(.96);}
-  }
-  @keyframes derive3{
-    0%,100%{transform:translate(0,0) scale(1);}
-    40%{transform:translate(5vmax,-6vmax) scale(1.05);}
-    70%{transform:translate(-6vmax,2vmax) scale(.97);}
-  }
-  .mer{
-    position:absolute;left:0;right:0;bottom:0;height:150px;
-  }
-  .mer svg{
-    position:absolute;bottom:0;left:0;width:200%;height:100%;
-    will-change:transform;
-  }
-  .mer .vague1{animation:houle 26s linear infinite;opacity:.5;}
-  .mer .vague2{animation:houle 17s linear infinite reverse;opacity:.35;bottom:-14px;}
-  .mer .vague3{animation:houle 40s linear infinite;opacity:.22;bottom:-30px;}
-  @keyframes houle{
-    from{transform:translateX(0);}
-    to{transform:translateX(-50%);}
+  .p1{left:6vw;top:12vh;transform:translateZ(-520px) rotateY(34deg) rotateX(-4deg);}
+  .p1 .pan{width:220px;height:150px;animation-duration:8s;animation-delay:-4s;}
+  .p2{left:78vw;top:8vh;transform:translateZ(-560px) rotateY(-30deg) rotateX(6deg);}
+  .p2 .pan{width:240px;height:160px;animation-duration:9s;animation-delay:-8s;}
+  .p3{left:30vw;top:4vh;transform:translateZ(-420px) rotateY(-18deg) rotateX(-8deg);}
+  .p3 .pan{width:180px;height:240px;animation-duration:10s;animation-delay:-3s;}
+  .p4{left:58vw;top:30vh;transform:translateZ(-360px) rotateY(24deg) rotateX(5deg);}
+  .p4 .pan{width:200px;height:140px;animation-duration:11s;animation-delay:-7s;}
+  .p5{left:12vw;top:55vh;transform:translateZ(-300px) rotateY(-26deg) rotateX(8deg);}
+  .p5 .pan{width:230px;height:150px;animation-duration:12s;animation-delay:-2s;}
+  .p6{left:84vw;top:48vh;transform:translateZ(-340px) rotateY(20deg) rotateX(-6deg);}
+  .p6 .pan{width:190px;height:250px;animation-duration:13s;animation-delay:-6s;}
+  .p7{left:44vw;top:66vh;transform:translateZ(-240px) rotateY(-14deg) rotateX(4deg);}
+  .p7 .pan{width:210px;height:140px;animation-duration:14s;animation-delay:-1s;}
+  .p8{left:68vw;top:78vh;transform:translateZ(-180px) rotateY(28deg) rotateX(-5deg);}
+  .p8 .pan{width:180px;height:120px;animation-duration:7s;animation-delay:-5s;}
+  .p9{left:4vw;top:82vh;transform:translateZ(-200px) rotateY(18deg) rotateX(7deg);}
+  .p9 .pan{width:200px;height:130px;animation-duration:8s;animation-delay:-0s;}
+  .p10{left:26vw;top:34vh;transform:translateZ(-120px) rotateY(-22deg) rotateX(-4deg);}
+  .p10 .pan{width:150px;height:200px;animation-duration:9s;animation-delay:-4s;}
+  .p11{left:90vw;top:26vh;transform:translateZ(-80px) rotateY(16deg) rotateX(6deg);}
+  .p11 .pan{width:140px;height:100px;animation-duration:10s;animation-delay:-8s;}
+  .p12{left:50vw;top:9vh;transform:translateZ(40px) rotateY(-12deg) rotateX(5deg);}
+  .p12 .pan{width:120px;height:90px;animation-duration:11s;animation-delay:-3s;}
+  .p13{left:16vw;top:28vh;transform:translateZ(110px) rotateY(22deg) rotateX(-7deg);}
+  .p13 .pan{width:100px;height:140px;animation-duration:12s;animation-delay:-7s;}
+  .p14{left:74vw;top:62vh;transform:translateZ(150px) rotateY(-18deg) rotateX(4deg);}
+  .p14 .pan{width:110px;height:80px;animation-duration:13s;animation-delay:-2s;}
+  @media (max-width:640px){
+    .fond3d{perspective:800px;}
+    .pos:nth-child(3n){display:none;}   /* scène allégée sur téléphone */
   }
   @media (prefers-reduced-motion: reduce){
-    .halo, .mer svg{animation:none !important;}
+    .scene, .pan{animation:none !important;}
   }
 
   /* ---------- Squelettes & toast ---------- */
@@ -499,22 +518,24 @@
 </head>
 <body>
 
-<div class="fond" aria-hidden="true">
-  <div class="halo h1"></div>
-  <div class="halo h2"></div>
-  <div class="halo h3"></div>
-  <div class="halo h4"></div>
-  <div class="mer">
-    <svg class="vague1" viewBox="0 0 2880 150" preserveAspectRatio="none">
-      <path fill="rgba(154,161,126,.30)" d="M0,60 C120,40 240,80 360,62 C480,44 600,78 720,60 C840,42 960,80 1080,62 C1200,44 1320,78 1440,60 L1440,150 L0,150 Z M1440,60 C1560,40 1680,80 1800,62 C1920,44 2040,78 2160,60 C2280,42 2400,80 2520,62 C2640,44 2760,78 2880,60 L2880,150 L1440,150 Z"/>
-    </svg>
-    <svg class="vague2" viewBox="0 0 2880 150" preserveAspectRatio="none">
-      <path fill="rgba(194,161,92,.28)" d="M0,60 C120,40 240,80 360,62 C480,44 600,78 720,60 C840,42 960,80 1080,62 C1200,44 1320,78 1440,60 L1440,150 L0,150 Z M1440,60 C1560,40 1680,80 1800,62 C1920,44 2040,78 2160,60 C2280,42 2400,80 2520,62 C2640,44 2760,78 2880,60 L2880,150 L1440,150 Z"/>
-    </svg>
-    <svg class="vague3" viewBox="0 0 2880 150" preserveAspectRatio="none">
-      <path fill="rgba(125,133,96,.30)" d="M0,60 C120,40 240,80 360,62 C480,44 600,78 720,60 C840,42 960,80 1080,62 C1200,44 1320,78 1440,60 L1440,150 L0,150 Z M1440,60 C1560,40 1680,80 1800,62 C1920,44 2040,78 2160,60 C2280,42 2400,80 2520,62 C2640,44 2760,78 2880,60 L2880,150 L1440,150 Z"/>
-    </svg>
+<div class="fond3d" aria-hidden="true">
+  <div class="scene">
+    <div class="pos p1"><div class="pan v-olive"></div></div>
+    <div class="pos p2"><div class="pan v-or"></div></div>
+    <div class="pos p3"><div class="pan v-verre"></div></div>
+    <div class="pos p4"><div class="pan v-olive"></div></div>
+    <div class="pos p5"><div class="pan v-or"></div></div>
+    <div class="pos p6"><div class="pan v-verre"></div></div>
+    <div class="pos p7"><div class="pan v-olive"></div></div>
+    <div class="pos p8"><div class="pan v-or"></div></div>
+    <div class="pos p9"><div class="pan v-verre"></div></div>
+    <div class="pos p10"><div class="pan v-or"></div></div>
+    <div class="pos p11"><div class="pan v-olive"></div></div>
+    <div class="pos p12"><div class="pan v-verre"></div></div>
+    <div class="pos p13"><div class="pan v-olive"></div></div>
+    <div class="pos p14"><div class="pan v-or"></div></div>
   </div>
+  <div class="voile-bas"></div>
 </div>
 
 <!-- ═══════════ Connexion ═══════════ -->
