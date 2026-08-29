@@ -1,4 +1,5 @@
-// /api/resa/admin — réservé à la direction (clé ADMIN_KEY)
+// /api/resa/admin v4 — réservé à la direction (clé ADMIN_KEY)
+// v4 : la vue période (?from&to) détaille résa / passage par service (rétro-compatible)
 // GET  ?date=YYYY-MM-DD&key=...               → réservations du jour + totaux
 // GET  ?from=...&to=...&key=...               → totaux par jour (max 31 j)
 // GET  ?stats=YYYY-MM&key=...                 → statistiques du mois
@@ -62,13 +63,18 @@ export async function onRequestGet({ env, request }) {
       return jsonReponse({ error: "periode_trop_longue" }, 400);
 
     const rows = await env.DB.prepare(
-      "SELECT date, service, COALESCE(SUM(pax),0) AS total, COUNT(*) AS nb FROM reservations WHERE date BETWEEN ?1 AND ?2 GROUP BY date, service"
+      "SELECT date, service, type, COALESCE(SUM(pax),0) AS total, COUNT(*) AS nb FROM reservations WHERE date BETWEEN ?1 AND ?2 GROUP BY date, service, type"
     ).bind(from, to).all();
 
+    const vierge = () => ({ pax: 0, nb: 0, resa_pax: 0, resa_nb: 0, passage_pax: 0, passage_nb: 0 });
     const jours = {};
     for (const r of rows.results || []) {
-      if (!jours[r.date]) jours[r.date] = { midi: { pax: 0, nb: 0 }, soir: { pax: 0, nb: 0 } };
-      jours[r.date][r.service] = { pax: r.total, nb: r.nb };
+      if (!jours[r.date]) jours[r.date] = { midi: vierge(), soir: vierge() };
+      const s = jours[r.date][r.service];
+      if (!s) continue;
+      s.pax += r.total; s.nb += r.nb;
+      if (r.type === "passage") { s.passage_pax += r.total; s.passage_nb += r.nb; }
+      else { s.resa_pax += r.total; s.resa_nb += r.nb; }
     }
     return jsonReponse({ from, to, jours, capacite: CAPACITE });
   }

@@ -338,6 +338,33 @@
   .h-ligne .h-b i{display:block;height:100%;background:linear-gradient(90deg,var(--olive-soft),var(--olive));border-radius:999px;width:0;transition:width .6s ease;}
   .h-ligne .h-v{width:34px;text-align:right;color:var(--olive-fonce);}
 
+
+  /* ---------- Data services ---------- */
+  .ds-jour{
+    display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+    padding:.65rem .5rem;border-bottom:1px dashed rgba(194,161,92,.3);
+    cursor:pointer;transition:background .2s ease;border-radius:10px;
+  }
+  .ds-jour:hover{background:rgba(239,233,221,.5);}
+  .ds-jour:last-child{border-bottom:none;}
+  .ds-date{width:120px;font-size:.85rem;text-transform:capitalize;}
+  .ds-date small{display:block;color:#8a8a7a;font-size:.68rem;}
+  .ds-svc{flex:1;min-width:180px;}
+  .ds-svc .ds-lab{
+    display:flex;justify-content:space-between;font-size:.7rem;color:#8a8a7a;margin-bottom:.2rem;
+  }
+  .ds-svc .ds-lab b{font-weight:normal;color:var(--encre);}
+  .ds-svc .ds-lab .ds-detail{color:var(--olive-fonce);}
+  .ds-barre{height:10px;border-radius:999px;background:var(--sable);overflow:hidden;display:flex;}
+  .ds-barre .b-resa{height:100%;background:linear-gradient(90deg,var(--olive-soft),var(--olive));}
+  .ds-barre .b-pass{height:100%;background:linear-gradient(90deg,var(--or),#d4b26e);}
+  .ds-tete-l{
+    display:flex;gap:1rem;padding:.3rem .5rem .6rem;font-size:.66rem;
+    letter-spacing:.18em;text-transform:uppercase;color:#8a8a7a;
+  }
+  .ds-tete-l span:first-child{width:120px;}
+  .ds-tete-l span{flex:1;min-width:180px;}
+
   /* ---------- Squelettes & toast ---------- */
   .sk{position:relative;overflow:hidden;background:var(--sable);border-radius:10px;min-height:16px;}
   .sk::after{
@@ -396,8 +423,9 @@
       </div>
     </div>
     <nav class="onglets" id="onglets">
-      <button class="onglet on" data-vue="jour">Jour</button>
-      <button class="onglet" data-vue="service">Services</button>
+      <button class="onglet on" data-vue="jour">Carnet de réservations</button>
+      <button class="onglet" data-vue="service">Service en cours</button>
+      <button class="onglet" data-vue="dataservices">Data services</button>
       <button class="onglet" data-vue="carte">Carte</button>
       <button class="onglet" data-vue="evenements">Événements<span class="puce" id="puceEvt" hidden></span></button>
       <button class="onglet" data-vue="stats">Stats</button>
@@ -456,6 +484,30 @@
       <div class="plan">
         <div class="carte"><h2 class="titre">Midi</h2><div id="svcMidi"></div></div>
         <div class="carte"><h2 class="titre">Soir</h2><div id="svcSoir"></div></div>
+      </div>
+    </section>
+
+    <!-- ═══════ Vue Data services ═══════ -->
+    <section id="vueDataServices" hidden>
+      <div class="nav-ligne">
+        <button class="fleche" id="dataPrec" aria-label="Mois précédent">‹</button>
+        <div class="nav-titre"><b id="titreMoisData">…</b></div>
+        <input type="month" id="choixMoisData">
+        <button class="fleche" id="dataSuiv" aria-label="Mois suivant">›</button>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="k-val" id="dsTotal">0</div><div class="k-lab">Couverts consolidés</div></div>
+        <div class="kpi"><div class="k-val" id="dsResa">0</div><div class="k-lab">Dont réservations</div></div>
+        <div class="kpi"><div class="k-val" id="dsPassage">0</div><div class="k-lab">Dont passages</div></div>
+        <div class="kpi"><div class="k-val" id="dsRemplissage">0%</div><div class="k-lab">Remplissage moyen</div></div>
+      </div>
+      <div class="carte">
+        <div class="legende" style="margin:0 0 .5rem">
+          <span><i style="background:var(--olive)"></i>Réservations</span>
+          <span><i style="background:var(--or)"></i>Passages</span>
+        </div>
+        <div class="ds-tete-l"><span>Journée</span><span>☀️ Midi</span><span>🌙 Soir</span></div>
+        <div id="dsListe"></div>
       </div>
     </section>
 
@@ -586,7 +638,7 @@
   let moisStats = dateCourante.slice(0, 7);
 
   // ═══════════ Navigation entre vues ═══════════
-  const VUES = { jour: "vueJour", service: "vueService", carte: "vueCarte", evenements: "vueEvenements", stats: "vueStats" };
+  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", carte: "vueCarte", evenements: "vueEvenements", stats: "vueStats" };
   let vueCourante = "jour";
   function montrerVue(nom){
     vueCourante = nom;
@@ -594,6 +646,7 @@
     document.querySelectorAll(".onglet").forEach(b => b.classList.toggle("on", b.dataset.vue === nom));
     if (nom === "jour") chargerJour();
     if (nom === "service") chargerServiceVue();
+    if (nom === "dataservices") chargerDataServices();
     if (nom === "carte") chargerCarte();
     if (nom === "evenements") chargerEvenements();
     if (nom === "stats") chargerStats();
@@ -824,7 +877,7 @@
   // ═══════════ Vue Services ═══════════
   async function chargerServiceVue(){
     const gen = ++generation;
-    $("svcTitre").textContent = "Plan de service · " + joli(dateCourante);
+    $("svcTitre").textContent = "Service en cours · " + joli(dateCourante);
     $("svcMidi").innerHTML = squelettes(3);
     $("svcSoir").innerHTML = squelettes(3);
     try {
@@ -1112,6 +1165,103 @@
     } catch (e) { /* le point n'est peut-être pas encore déployé */ }
   }
   $("evtRecharger").addEventListener("click", () => { invalider("/api/evenement"); chargerEvenements(true); });
+
+
+  // ═══════════ Vue Data services : consolidation résas + passages par service ═══════════
+  let moisData = moisStats;
+
+  async function chargerDataServices(){
+    const gen = ++generation;
+    const [anD, moD] = moisData.split("-");
+    $("titreMoisData").textContent = "Data services · " + new Date(anD, moD - 1, 1).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+    $("choixMoisData").value = moisData;
+    $("dsListe").innerHTML = squelettes(6);
+    try {
+      const nbJours = new Date(anD, moD, 0).getDate();
+      const from = moisData + "-01";
+      const to = moisData + "-" + String(nbJours).padStart(2, "0");
+      const [periode, jourRef] = await Promise.all([
+        apiGet(`/api/resa/admin?from=${from}&to=${to}&key=${encodeURIComponent(cle)}`),
+        apiGet(urlJour(isoLocal()))
+      ]);
+      if (gen !== generation || vueCourante !== "dataservices") return;
+      const cap = (jourRef && jourRef.capacite) || { midi: 60, soir: 60 };
+      const detail = periode.jours && Object.values(periode.jours).some(j => j.midi && j.midi.resa_pax !== undefined);
+
+      let tot = 0, totResa = 0, totPassage = 0, sommesPct = 0, servicesActifs = 0;
+      const zone = $("dsListe");
+      zone.innerHTML = "";
+      const frag = document.createDocumentFragment();
+      let auMoinsUn = false;
+
+      for (let j = 1; j <= nbJours; j++) {
+        const iso = moisData + "-" + String(j).padStart(2, "0");
+        const t = (periode.jours && periode.jours[iso]) || null;
+        const midi = (t && t.midi) || { pax: 0, nb: 0 };
+        const soir = (t && t.soir) || { pax: 0, nb: 0 };
+        if (!midi.pax && !soir.pax) continue;
+        auMoinsUn = true;
+
+        for (const [svc, capa] of [[midi, cap.midi], [soir, cap.soir]]) {
+          tot += svc.pax;
+          if (detail) { totResa += svc.resa_pax || 0; totPassage += svc.passage_pax || 0; }
+          if (svc.pax) { sommesPct += Math.min(100, svc.pax / capa * 100); servicesActifs++; }
+        }
+
+        const l = document.createElement("div");
+        l.className = "ds-jour";
+        const dateEl = document.createElement("div");
+        dateEl.className = "ds-date";
+        const dj = new Date(iso + "T12:00:00");
+        dateEl.innerHTML = dj.toLocaleDateString("fr-FR", { weekday: "long" }) + " " + dj.getDate() +
+          "<small>" + (midi.pax + soir.pax) + " couverts au total</small>";
+        l.appendChild(dateEl);
+
+        for (const [svc, capa] of [[midi, cap.midi], [soir, cap.soir]]) {
+          const bloc = document.createElement("div");
+          bloc.className = "ds-svc";
+          const resaPax = detail ? (svc.resa_pax || 0) : svc.pax;
+          const passPax = detail ? (svc.passage_pax || 0) : 0;
+          const texte = detail
+            ? resaPax + " résa + " + passPax + " passage = " + svc.pax
+            : String(svc.pax);
+          bloc.innerHTML =
+            '<div class="ds-lab"><b class="ds-detail">' + texte + '</b><span>' + svc.pax + '/' + capa + '</span></div>' +
+            '<div class="ds-barre">' +
+              '<i class="b-resa" style="width:' + Math.min(100, resaPax / capa * 100) + '%"></i>' +
+              '<i class="b-pass" style="width:' + Math.min(100 - Math.min(100, resaPax / capa * 100), passPax / capa * 100) + '%"></i>' +
+            '</div>';
+          l.appendChild(bloc);
+        }
+        l.addEventListener("click", () => { dateCourante = iso; montrerVue("jour"); });
+        frag.appendChild(l);
+      }
+
+      if (!auMoinsUn) zone.innerHTML = '<div class="vide">Aucun service enregistré sur ce mois.</div>';
+      else zone.appendChild(frag);
+
+      $("dsTotal").textContent = tot;
+      $("dsResa").textContent = detail ? totResa : "—";
+      $("dsPassage").textContent = detail ? totPassage : "—";
+      $("dsRemplissage").textContent = servicesActifs ? Math.round(sommesPct / servicesActifs) + "%" : "0%";
+      if (!detail && auMoinsUn)
+        toast("Déployez l'API v4 pour le détail résa / passage", true);
+    } catch (e) {
+      if (gen === generation && vueCourante === "dataservices")
+        $("dsListe").innerHTML = '<div class="vide">Chargement impossible.</div>';
+    }
+  }
+  function decaleMoisData(n){
+    const [an, mois] = moisData.split("-").map(Number);
+    const d = new Date(an, mois - 1 + n, 1);
+    moisData = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+    chargerDataServices();
+  }
+  $("dataPrec").addEventListener("click", () => decaleMoisData(-1));
+  $("dataSuiv").addEventListener("click", () => decaleMoisData(1));
+  $("choixMoisData").addEventListener("change", () => {
+    if ($("choixMoisData").value) { moisData = $("choixMoisData").value; chargerDataServices(); }
+  });
 
   // ═══════════ Vue Stats ═══════════
   async function chargerStats(){
