@@ -1386,6 +1386,40 @@
     #langSel.ouvert button.on::after{content:"";}
     .nav-meteo{margin-left:auto;}
   }
+
+  /* ---------- Typographie ombrée & texturée (V92) ---------- */
+  /* Bandeau : rose pâle, gravé dans le sombre, encore plus fin sur mobile */
+  .defile{padding:.26rem 0;}
+  .defile-piste span{
+    color:var(--rose);
+    text-shadow:0 1px 2px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .defile-piste span i{color:var(--or);text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  @media (max-width:520px){
+    .defile{padding:.18rem 0;}
+    .defile-piste span{font-size:.42rem;letter-spacing:.18em;}
+  }
+  /* Titre héros : lettres blanches profondes sur les photos */
+  .hero-title .lt{
+    text-shadow:0 1px 0 rgba(255,255,255,.16), 0 3px 6px rgba(20,22,14,.5), 0 14px 38px rgba(20,22,14,.32);
+  }
+  .hero-ghost{text-shadow:0 2px 10px rgba(20,22,14,.25);}
+  /* Logo nav : lisible sur photos, doux sur verre au scroll */
+  .brand{text-shadow:0 2px 8px rgba(20,22,14,.45);}
+  nav.scrolled .brand{text-shadow:0 1px 2px rgba(42,43,36,.14);}
+  /* Titres Allura sur fond clair : encre dégradée + ombre portée (texture) */
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    h2, .resa-card h3, footer .brand-foot{
+      background:linear-gradient(172deg, #55603c 8%, var(--olive) 55%, #99a07c 96%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 2px 2px rgba(42,43,36,.20)) drop-shadow(0 10px 20px rgba(42,43,36,.10));
+    }
+  }
+  /* Petits titres & scripts : relief discret */
+  .splash-nom, .rw-confirm-titre, .carte-cat h3, .chat-devis h4, .note-verbatim{
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .chat-titre{text-shadow:0 1px 3px rgba(20,22,14,.35);}
 </style>
 </head>
 <body>

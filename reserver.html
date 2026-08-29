@@ -100,22 +100,6 @@
     animation:brandIn .9s cubic-bezier(.2,.8,.3,1) 1.65s forwards;
   }
   @keyframes brandIn{to{opacity:1;transform:none;filter:blur(0);}}
-  .nav-ticker{
-    flex:1;overflow:hidden;margin:0 clamp(.8rem,3vw,2rem);
-    opacity:0;animation:heroFade 1s ease 2s forwards;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
-    mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
-  }
-  .nav-ticker-piste{
-    display:flex;width:max-content;
-    animation:tickerDefile 11s linear infinite;
-  }
-  .nav-ticker span{
-    flex:none;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
-    color:var(--rose);white-space:nowrap;
-  }
-  nav.scrolled .nav-ticker span{color:var(--olive);}
-  @keyframes tickerDefile{to{transform:translateX(-50%);}}
   .nav-links{display:flex;gap:2.2rem;list-style:none;}
   .nav-links a{
     text-decoration:none;color:var(--blanc);
@@ -938,10 +922,8 @@
     .hero-scroll{animation:none;opacity:1;}
     .hs-dot,.hs-chevron{animation:none;}
     .rail-social > *{animation:none;opacity:1;transform:none;}
-    .nav-ticker-piste{animation:none;}
     .brand{animation:none;opacity:1;transform:none;filter:none;}
     .hero-cta::after{animation:none;transform:scaleX(1);}
-    .nav-ticker{animation:none;opacity:1;}
     .galerie-grid.reveal figure{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
   }
@@ -1346,6 +1328,99 @@
   @media (max-width:520px){
     .cg-bar{bottom:10px;padding:.8rem .9rem;}
   }
+
+  /* ---------- Bandeau défilant sous l'en-tête ---------- */
+  .defile{
+    position:absolute;top:100%;left:0;right:0;
+    background:rgba(42,43,36,.92);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(194,161,92,.35);
+    overflow:hidden;white-space:nowrap;
+    padding:.32rem 0;
+  }
+  .defile-piste{
+    display:inline-flex;width:max-content;
+    animation:defiler 38s linear infinite;
+    will-change:transform;
+  }
+  .defile:hover .defile-piste{animation-play-state:paused;}
+  .defile-piste span{
+    font-size:.54rem;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--sable);padding-right:.3em;
+  }
+  @media (max-width:520px){
+    .defile{padding:.28rem 0;}
+    .defile-piste span{font-size:.48rem;letter-spacing:.2em;}
+  }
+  .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;}
+  @keyframes defiler{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .defile-piste{animation:none;}
+  }
+
+  /* ---------- Météo dans l'en-tête ---------- */
+  .nav-meteo{
+    order:5;display:flex;align-items:center;gap:.3rem;
+    font-size:.66rem;letter-spacing:.06em;color:var(--encre);
+    background:var(--sable);border:1px solid rgba(194,161,92,.45);
+    border-radius:999px;padding:.32rem .7rem;white-space:nowrap;
+  }
+  .nav-meteo .nm-lieu{color:#8a8a7a;}
+  @media (max-width:640px){
+    .nav-meteo{padding:.28rem .55rem;font-size:.62rem;}
+    .nav-meteo .nm-lieu{display:none;}
+  }
+
+  /* ---------- Drapeaux repliés sur mobile ---------- */
+  @media (max-width:640px){
+    #langSel button{display:none;font-size:.6rem;padding:.26rem .4rem;}
+    #langSel button.on{display:inline-block;position:relative;padding-right:.9rem;}
+    #langSel button.on::after{
+      content:"▾";position:absolute;right:.22rem;top:50%;transform:translateY(-50%);
+      font-size:.5rem;color:#8a8a7a;
+    }
+    #langSel.ouvert button{display:inline-block;}
+    #langSel.ouvert button.on{padding-right:.4rem;}
+    #langSel.ouvert button.on::after{content:"";}
+    .nav-meteo{margin-left:auto;}
+  }
+
+  /* ---------- Typographie ombrée & texturée (V92) ---------- */
+  /* Bandeau : rose pâle, gravé dans le sombre, encore plus fin sur mobile */
+  .defile{padding:.26rem 0;}
+  .defile-piste span{
+    color:var(--rose);
+    text-shadow:0 1px 2px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.08);
+  }
+  .defile-piste span i{color:var(--or);text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  @media (max-width:520px){
+    .defile{padding:.18rem 0;}
+    .defile-piste span{font-size:.42rem;letter-spacing:.18em;}
+  }
+  /* Titre héros : lettres blanches profondes sur les photos */
+  .hero-title .lt{
+    text-shadow:0 1px 0 rgba(255,255,255,.16), 0 3px 6px rgba(20,22,14,.5), 0 14px 38px rgba(20,22,14,.32);
+  }
+  .hero-ghost{text-shadow:0 2px 10px rgba(20,22,14,.25);}
+  /* Logo nav : lisible sur photos, doux sur verre au scroll */
+  .brand{text-shadow:0 2px 8px rgba(20,22,14,.45);}
+  nav.scrolled .brand{text-shadow:0 1px 2px rgba(42,43,36,.14);}
+  /* Titres Allura sur fond clair : encre dégradée + ombre portée (texture) */
+  @supports ((-webkit-background-clip:text) or (background-clip:text)){
+    h2, .resa-card h3, footer .brand-foot{
+      background:linear-gradient(172deg, #55603c 8%, var(--olive) 55%, #99a07c 96%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      filter:drop-shadow(0 2px 2px rgba(42,43,36,.20)) drop-shadow(0 10px 20px rgba(42,43,36,.10));
+    }
+  }
+  /* Petits titres & scripts : relief discret */
+  .splash-nom, .rw-confirm-titre, .carte-cat h3, .chat-devis h4, .note-verbatim{
+    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  }
+  .chat-titre{text-shadow:0 1px 3px rgba(20,22,14,.35);}
 
 
   /* ---------- Ajustements page dédiée réservation ---------- */
