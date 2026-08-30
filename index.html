@@ -839,38 +839,80 @@
 
 
   /* ---------- Lecteur musical figé ---------- */
-  .lecteur{
+  /* ---------- Radio A piaghja (esprit maison de couture) ---------- */
+  .radio{
     position:fixed;left:16px;bottom:16px;z-index:65;
-    width:min(330px, calc(100vw - 32px));
-    background:rgba(42,43,36,.88);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border:1px solid rgba(194,161,92,.45);border-radius:16px;
-    box-shadow:0 16px 50px rgba(20,22,14,.5);
-    padding:.55rem .65rem .65rem;
-    opacity:0;transform:translateY(14px);
-    transition:opacity .6s ease, transform .6s ease;
+    width:min(340px, calc(100vw - 32px));
+    background:linear-gradient(160deg, rgba(34,35,28,.97), rgba(22,23,18,.97));
+    border:1px solid rgba(194,161,92,.5);border-radius:999px;
+    box-shadow:0 18px 55px rgba(10,11,8,.6), inset 0 1px 0 rgba(253,252,249,.07);
+    padding:.45rem .55rem;
+    opacity:0;transform:translateY(16px);
+    transition:opacity .6s ease, transform .6s ease, border-radius .35s ease;
   }
-  .lecteur.la{opacity:1;transform:none;}
-  .lect-tete{display:flex;align-items:center;gap:.5rem;}
-  .lect-note{color:var(--or);font-size:.95rem;}
-  .lect-titre{
-    flex:1;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--rose);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  .radio.la{opacity:1;transform:none;}
+  .radio-bar{display:flex;align-items:center;gap:.65rem;}
+  .radio-vinyle{
+    width:46px;height:46px;flex:none;border-radius:50%;position:relative;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle,
+      #d4b26e 0 17%, #b1904f 18% 21%,
+      #101010 22% 30%, #1d1d18 31% 34%, #101010 35% 43%,
+      #1b1b16 44% 47%, #0f0f0d 48% 100%);
+    border:1px solid rgba(194,161,92,.5);
+    box-shadow:0 5px 16px rgba(0,0,0,.55);
   }
-  .lect-toggle{
+  .radio-vinyle::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:linear-gradient(135deg, rgba(253,252,249,.16), transparent 48%);
+  }
+  .radio-vinyle svg{width:15px;height:15px;position:relative;z-index:1;}
+  .radio.joue .radio-vinyle{animation:vinyleTourne 3.6s linear infinite;}
+  @keyframes vinyleTourne{to{transform:rotate(360deg);}}
+  .radio-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;cursor:pointer;}
+  .radio-nom{
+    font-family:'Mrs Saint Delafield','Allura',cursive;
+    font-size:1.25rem;line-height:1;color:var(--sable);
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
+  }
+  .radio-sous{
+    font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:var(--or);
+    display:flex;align-items:center;gap:.5rem;white-space:nowrap;
+  }
+  .radio-eq{display:inline-flex;gap:2px;align-items:flex-end;height:8px;}
+  .radio-eq i{width:2px;height:2px;background:var(--rose);border-radius:1px;}
+  .radio.joue .radio-eq i{animation:eqDanse .8s ease-in-out infinite alternate;}
+  .radio.joue .radio-eq i:nth-child(2){animation-delay:.14s;}
+  .radio.joue .radio-eq i:nth-child(3){animation-delay:.28s;}
+  .radio.joue .radio-eq i:nth-child(4){animation-delay:.42s;}
+  @keyframes eqDanse{from{height:2px;}to{height:8px;}}
+  .radio-play{
+    width:40px;height:40px;flex:none;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(194,161,92,.4);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .radio-play:hover{transform:scale(1.07);box-shadow:0 8px 24px rgba(194,161,92,.55);}
+  .radio-play svg{width:15px;height:15px;}
+  .radio-play .ico-pause{display:none;}
+  .radio.joue .ico-play{display:none;}
+  .radio.joue .ico-pause{display:block;}
+  .radio-reduire{
     background:none;border:1px solid rgba(253,252,249,.3);border-radius:50%;
     width:24px;height:24px;color:var(--sable);cursor:pointer;
-    font-size:.9rem;line-height:1;flex:none;
-    transition:border-color .2s ease;
+    font-size:.9rem;line-height:1;flex:none;transition:border-color .2s ease;
   }
-  .lect-toggle:hover{border-color:var(--or);}
-  .lecteur iframe{
-    width:100%;height:80px;border:0;display:block;margin-top:.5rem;border-radius:12px;
-  }
-  .lecteur.mini{cursor:pointer;padding:.5rem .8rem;}
-  .lecteur.mini iframe{display:none;}
+  .radio-reduire:hover{border-color:var(--or);}
+  .radio-panneau{overflow:hidden;max-height:0;transition:max-height .45s ease;}
+  .radio.ouvert{border-radius:22px;}
+  .radio.ouvert .radio-panneau{max-height:110px;}
+  .radio-panneau .hote{margin-top:.55rem;border-radius:14px;overflow:hidden;}
+  .radio-panneau iframe{display:block;width:100%;height:80px;border:0;}
+  .radio.mini{width:auto;cursor:pointer;padding:.4rem;}
+  .radio.mini .radio-info, .radio.mini .radio-play, .radio.mini .radio-reduire, .radio.mini .radio-panneau{display:none;}
   @media (max-width:520px){
-    .lecteur{left:12px;bottom:12px;width:min(300px, calc(100vw - 24px));}
+    .radio{left:12px;bottom:12px;width:min(310px, calc(100vw - 24px));}
   }
   /* ---------- Rail social latéral ---------- */
   .rail-social{
@@ -2221,14 +2263,29 @@
   <p style="margin-top:1.6rem;font-size:.75rem;">© 2026 A Piaghja · Tous droits réservés</p>
 </footer>
 
-<div class="lecteur" id="lecteur" hidden>
-  <div class="lect-tete">
-    <span class="lect-note" aria-hidden="true">♪</span>
-    <span class="lect-titre">L'ambiance A Piaghja</span>
-    <button class="lect-toggle" id="lectToggle" aria-expanded="true" aria-label="Réduire le lecteur">–</button>
+<div class="radio" id="radio" hidden>
+  <div class="radio-bar">
+    <div class="radio-vinyle" aria-hidden="true">
+      <svg viewBox="0 0 200 210" fill="none">
+        <path d="M100 195 C98 172 102 152 97 130 C93 112 100 100 97 80" stroke="#1b1c16" stroke-width="16" stroke-linecap="round"/>
+        <ellipse cx="100" cy="58" rx="52" ry="19" fill="#1b1c16"/>
+        <ellipse cx="55" cy="70" rx="27" ry="13" fill="#1b1c16"/>
+        <ellipse cx="146" cy="68" rx="27" ry="13" fill="#1b1c16"/>
+      </svg>
+    </div>
+    <div class="radio-info" id="radioInfo" role="button" tabindex="0" aria-expanded="false" aria-label="Afficher la playlist Spotify">
+      <span class="radio-nom">A piaghja</span>
+      <span class="radio-sous">Radio de la plage
+        <span class="radio-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </span>
+    </div>
+    <button class="radio-play" id="radioPlay" aria-label="Écouter la radio A piaghja">
+      <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+      <svg class="ico-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg>
+    </button>
+    <button class="radio-reduire" id="radioReduire" aria-label="Réduire la radio">–</button>
   </div>
-  <iframe id="lectIframe" title="Playlist A Piaghja sur Spotify"
-          allow="encrypted-media; clipboard-write; fullscreen; picture-in-picture"></iframe>
+  <div class="radio-panneau"><div class="hote" id="radioHote"></div></div>
 </div>
 
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Assistant A Piaghja" hidden>
@@ -3703,43 +3760,80 @@
         'rotateX(' + (11 - vy * 3.5) + 'deg) rotateZ(' + (-7 + vx * 2.5) + 'deg) scale(1.08)';
     })();
   })();
-  // ---------- Lecteur musical : la playlist Spotify du rail, figée en bas ----------
+  // ---------- Radio A piaghja : lecteur maison qui pilote Spotify ----------
   (function(){
-    const lecteur = document.getElementById('lecteur');
-    if (!lecteur) return;
+    const radio = document.getElementById('radio');
+    if (!radio) return;
     const ancre = document.querySelector('.rail-social a[href*="open.spotify.com"]');
-    if (!ancre) return;   // tant que le lien de la playlist n'est pas renseigné, pas de lecteur
-    const m = ancre.href.match(/open\.spotify\.com\/(playlist|album|artist|track)\/([A-Za-z0-9]+)/);
-    if (!m) return;
+    if (!ancre) return;
+    const mm = ancre.href.match(/open\.spotify\.com\/(playlist|album|artist|track)\/([A-Za-z0-9]+)/);
+    if (!mm) return;
+    const URI = 'spotify:' + mm[1] + ':' + mm[2];
 
-    const iframe = document.getElementById('lectIframe');
-    const toggle = document.getElementById('lectToggle');
+    const hote = document.getElementById('radioHote');
+    const bPlay = document.getElementById('radioPlay');
+    const bReduire = document.getElementById('radioReduire');
+    const info = document.getElementById('radioInfo');
+    let controleur = null, apiDemandee = false, secours = false, jouerDes = false;
 
-    function charger(){
-      if (!iframe.src) iframe.src = 'https://open.spotify.com/embed/' + m[1] + '/' + m[2] + '?theme=0';
-    }
-
-    // Apparition en douceur une fois la page chargée
     function montrer(){
-      charger();
-      lecteur.hidden = false;
-      requestAnimationFrame(() => lecteur.classList.add('la'));
+      radio.hidden = false;
+      requestAnimationFrame(() => radio.classList.add('la'));
     }
     if (document.readyState === 'complete') setTimeout(montrer, 1200);
     else window.addEventListener('load', () => setTimeout(montrer, 1200));
 
-    function basculer(mini){
-      lecteur.classList.toggle('mini', mini);
-      toggle.textContent = mini ? '♪' : '–';
-      toggle.setAttribute('aria-expanded', String(!mini));
-      toggle.setAttribute('aria-label', mini ? 'Ouvrir le lecteur' : 'Réduire le lecteur');
+    function ouvrir(x){
+      radio.classList.toggle('ouvert', x);
+      info.setAttribute('aria-expanded', String(x));
     }
-    toggle.addEventListener('click', e => {
-      e.stopPropagation();
-      basculer(!lecteur.classList.contains('mini'));
+    function planB(){
+      if (secours || controleur) return;
+      secours = true;
+      hote.innerHTML = '<iframe title="Playlist A piaghja sur Spotify" src="https://open.spotify.com/embed/' + mm[1] + '/' + mm[2] + '?theme=0" allow="encrypted-media; clipboard-write; fullscreen; picture-in-picture"></iframe>';
+      ouvrir(true);
+    }
+    function chargerApi(){
+      if (apiDemandee) return;
+      apiDemandee = true;
+      window.onSpotifyIframeApiReady = (api) => {
+        const el = document.createElement('div');
+        hote.appendChild(el);
+        api.createController(el, { uri: URI, width: '100%', height: 80, theme: 'dark' }, (c) => {
+          controleur = c;
+          c.addListener('playback_update', (e) => {
+            if (e && e.data) radio.classList.toggle('joue', !e.data.isPaused);
+          });
+          if (jouerDes){ jouerDes = false; c.play(); }
+        });
+      };
+      const s = document.createElement('script');
+      s.src = 'https://open.spotify.com/embed/iframe-api/v1';
+      s.async = true;
+      s.onerror = planB;
+      document.head.appendChild(s);
+      setTimeout(() => { if (!controleur) planB(); }, 4500);
+    }
+    bPlay.addEventListener('click', () => {
+      if (controleur){ controleur.togglePlay(); return; }
+      jouerDes = true;
+      chargerApi();
+      if (secours) ouvrir(true);
     });
-    lecteur.addEventListener('click', () => {
-      if (lecteur.classList.contains('mini')) basculer(false);
+    info.addEventListener('click', () => {
+      chargerApi();
+      ouvrir(!radio.classList.contains('ouvert'));
+    });
+    info.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); info.click(); }
+    });
+    bReduire.addEventListener('click', (e) => {
+      e.stopPropagation();
+      radio.classList.add('mini');
+      ouvrir(false);
+    });
+    radio.addEventListener('click', () => {
+      if (radio.classList.contains('mini')) radio.classList.remove('mini');
     });
   })();
 </script>
