@@ -948,13 +948,6 @@
     .rw-slot{padding:.55rem .9rem;}
     .gcard{max-width:none;}
 
-    .nav-links{
-      position:fixed;inset:0;background:var(--olive);
-      flex-direction:column;align-items:center;justify-content:center;gap:2rem;
-      transform:translateX(100%);transition:transform .35s ease;
-    }
-    .nav-links.open{transform:none;}
-    .nav-links a{color:var(--blanc) !important;font-size:1rem;}
     .burger{display:block;}
     .histoire,.infos,.google-inner{grid-template-columns:1fr;}
     .carte-grid{grid-template-columns:1fr;gap:2.5rem;}
@@ -1420,6 +1413,87 @@
     text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
   }
   .chat-titre{text-shadow:0 1px 3px rgba(20,22,14,.35);}
+
+  /* ---------- Menu mobile signature (V97) ---------- */
+  html.menu-ouvert{overflow:hidden;}
+  @media (max-width:860px){
+    .nav-links{
+      position:fixed;inset:0;z-index:55;
+      display:flex;flex-direction:column;justify-content:flex-start;
+      padding:5.6rem 1.7rem 2.2rem;gap:0;
+      background:
+        radial-gradient(60% 40% at 88% 10%, rgba(194,161,92,.17), transparent 62%),
+        radial-gradient(52% 38% at 8% 92%, rgba(125,133,96,.22), transparent 62%),
+        rgba(30,31,25,.96);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      opacity:0;pointer-events:none;transform:translateY(10px);
+      transition:opacity .38s ease, transform .38s cubic-bezier(.2,.8,.3,1);
+      overflow-y:auto;-webkit-overflow-scrolling:touch;
+      scroll-snap-type:y proximity;
+      counter-reset:menu;
+    }
+    .nav-links::before{
+      content:"A Piaghja";position:fixed;left:50%;bottom:-1.4rem;transform:translateX(-50%);
+      font-family:'Allura',cursive;font-size:7.5rem;color:rgba(253,252,249,.05);
+      pointer-events:none;white-space:nowrap;
+    }
+    .nav-links.open{opacity:1;pointer-events:auto;transform:none;}
+    .nav-links li{
+      list-style:none;counter-increment:menu;
+      border-bottom:1px solid rgba(253,252,249,.08);
+      scroll-snap-align:center;
+      opacity:0;transform:translateY(26px);
+      transition:opacity .55s ease, transform .55s cubic-bezier(.2,.8,.3,1);
+    }
+    .nav-links.open li{opacity:1;transform:none;}
+    .nav-links li:nth-child(1){transition-delay:.05s;}
+    .nav-links li:nth-child(2){transition-delay:.11s;}
+    .nav-links li:nth-child(3){transition-delay:.17s;}
+    .nav-links li:nth-child(4){transition-delay:.23s;}
+    .nav-links li:nth-child(5){transition-delay:.29s;}
+    .nav-links li:nth-child(6){transition-delay:.35s;}
+    .nav-links li:nth-child(7){transition-delay:.41s;}
+    .nav-links li:nth-child(8){transition-delay:.47s;}
+    .nav-links a{
+      display:flex;align-items:center;gap:1.1rem;
+      padding:1.05rem .25rem;min-height:52px;
+      font-size:1.02rem;letter-spacing:.22em;
+      color:var(--sable) !important;
+      transition:transform .28s cubic-bezier(.2,.8,.3,1), color .28s ease;
+      text-shadow:0 1px 3px rgba(0,0,0,.4);
+    }
+    .nav-links a::after{display:none;}
+    .nav-links a::before{
+      content:counter(menu, decimal-leading-zero);
+      font-size:.6rem;letter-spacing:.14em;color:var(--or);opacity:.9;
+      min-width:1.6em;
+    }
+    .nav-links li.pulse a, .nav-links a:active{
+      transform:translateX(8px);color:var(--or) !important;
+    }
+    .nav-links a:focus-visible{
+      outline:2px solid var(--or);outline-offset:4px;border-radius:6px;
+    }
+    .nav-links li:last-child{border-bottom:none;margin-top:1.3rem;scroll-snap-align:end;}
+    .nav-links a.nav-cta{
+      justify-content:center;gap:.6rem;
+      background:linear-gradient(135deg,var(--or),#d4b26e);
+      color:var(--encre) !important;border-radius:999px;
+      padding:1.05rem;letter-spacing:.26em;
+      box-shadow:0 14px 34px rgba(194,161,92,.35);
+      text-shadow:none;
+    }
+    .nav-links a.nav-cta::before{content:"✦";color:var(--encre);min-width:auto;font-size:.8rem;}
+    .nav-links li.pulse a.nav-cta, .nav-links a.nav-cta:active{transform:scale(.97);color:var(--encre) !important;}
+    /* Burger → croix */
+    .burger.x span{background:var(--sable) !important;}
+    .burger.x span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+    .burger.x span:nth-child(2){opacity:0;}
+    .burger.x span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .nav-links, .nav-links li, .nav-links a{transition:opacity .2s ease !important;transform:none !important;}
+  }
 </style>
 </head>
 <body>
@@ -2184,14 +2258,58 @@
   function toggleMenu(btn){
     const links = document.getElementById('navLinks');
     const open = links.classList.toggle('open');
+    btn.classList.toggle('x', open);
     btn.setAttribute('aria-expanded', open);
+    document.documentElement.classList.toggle('menu-ouvert', open);
+    if (navigator.vibrate) navigator.vibrate(8);
+    if (open){
+      const premier = links.querySelector('a');
+      if (premier) setTimeout(() => premier.focus({ preventScroll: true }), 420);
+    } else {
+      btn.focus({ preventScroll: true });
+    }
+  }
+  function fermerMenu(){
+    const links = document.getElementById('navLinks');
+    const burger = document.querySelector('.burger');
+    links.classList.remove('open');
+    burger.classList.remove('x');
+    burger.setAttribute('aria-expanded', 'false');
+    document.documentElement.classList.remove('menu-ouvert');
   }
   document.querySelectorAll('#navLinks a').forEach(a =>
     a.addEventListener('click', () => {
-      document.getElementById('navLinks').classList.remove('open');
-      document.querySelector('.burger').setAttribute('aria-expanded','false');
+      if (navigator.vibrate) navigator.vibrate(6);
+      fermerMenu();
     })
   );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('navLinks').classList.contains('open')) fermerMenu();
+  });
+  // Cran haptique façon Apple : l'entrée qui passe au centre pulse (et vibre si l'appareil le permet)
+  (function(){
+    const liste = document.getElementById('navLinks');
+    let dernier = null, image = null;
+    liste.addEventListener('scroll', () => {
+      if (image) return;
+      image = requestAnimationFrame(() => {
+        image = null;
+        if (!liste.classList.contains('open')) return;
+        const centre = liste.scrollTop + liste.clientHeight / 2;
+        let proche = null, dist = Infinity;
+        liste.querySelectorAll('li').forEach(li => {
+          const d = Math.abs(li.offsetTop + li.offsetHeight / 2 - centre);
+          if (d < dist){ dist = d; proche = li; }
+        });
+        if (proche && proche !== dernier){
+          if (dernier) dernier.classList.remove('pulse');
+          proche.classList.add('pulse');
+          dernier = proche;
+          if (navigator.vibrate) navigator.vibrate(4);
+        }
+      });
+    }, { passive: true });
+  })();
 
   // Apparition au scroll
   const io = new IntersectionObserver(entries => {
