@@ -2270,7 +2270,7 @@
   <p style="margin-top:1.6rem;font-size:.75rem;">© 2026 A Piaghja · Tous droits réservés</p>
 </footer>
 
-<div class="radio mini" id="radio" hidden>
+<div class="radio" id="radio" hidden>
   <div class="radio-bar">
     <div class="radio-vinyle" aria-hidden="true">
       <svg viewBox="0 0 200 210" fill="none">
@@ -3786,6 +3786,7 @@
     function montrer(){
       radio.hidden = false;
       requestAnimationFrame(() => radio.classList.add('la'));
+      setTimeout(() => { chargerApi(); ouvrir(true); }, 700);
     }
     if (document.readyState === 'complete') setTimeout(montrer, 1200);
     else window.addEventListener('load', () => setTimeout(montrer, 1200));
