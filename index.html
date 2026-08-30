@@ -1483,11 +1483,6 @@
       scroll-snap-type:y proximity;
       overscroll-behavior:contain;touch-action:pan-y;
     }
-    .nav-links::before{
-      content:"A Piaghja";position:fixed;left:50%;bottom:-1.4rem;transform:translateX(-50%);
-      font-family:'Allura',cursive;font-size:7.5rem;color:rgba(253,252,249,.05);
-      pointer-events:none;white-space:nowrap;
-    }
     .nav-links.open{opacity:1;pointer-events:auto;transform:none;}
     .nav-links li{
       list-style:none;
@@ -1520,17 +1515,8 @@
     .nav-links a:focus-visible{
       outline:2px solid var(--or);outline-offset:4px;border-radius:6px;
     }
-    .nav-links li:last-child{border-bottom:none;margin-top:1.3rem;scroll-snap-align:end;}
-    .nav-links a.nav-cta{
-      justify-content:center;gap:.6rem;
-      background:linear-gradient(135deg,var(--or),#d4b26e);
-      color:var(--encre) !important;border-radius:999px;
-      padding:1.05rem;letter-spacing:.26em;
-      box-shadow:0 14px 34px rgba(194,161,92,.35);
-      text-shadow:none;
-    }
-    .nav-links a.nav-cta::before{content:"✦";color:var(--encre);min-width:auto;font-size:.8rem;}
-    .nav-links li.pulse a.nav-cta, .nav-links a.nav-cta:active{transform:scale(.97);color:var(--encre) !important;}
+    .nav-links li:last-child{border-bottom:none;scroll-snap-align:end;}
+    .nav-links a.nav-cta{color:var(--or) !important;}
     .nav-links{padding-bottom:calc(2.2rem + env(safe-area-inset-bottom));}
     .nav-links li.pulse{
       background:linear-gradient(90deg, rgba(194,161,92,.14), transparent 72%);
