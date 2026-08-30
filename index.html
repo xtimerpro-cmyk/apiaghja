@@ -1416,6 +1416,15 @@
 
   /* ---------- Menu mobile signature (V97) ---------- */
   html.menu-ouvert{overflow:hidden;}
+  /* Un flou (backdrop-filter) sur la nav emprisonnerait le menu fixe : on le coupe menu ouvert */
+  nav.menu-actif{
+    backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
+    filter:none !important;transform:none !important;
+    z-index:57;background:transparent !important;box-shadow:none !important;
+  }
+  nav.menu-actif .defile, nav.menu-actif .nav-meteo, nav.menu-actif .lang-sel{visibility:hidden;}
+  nav.menu-actif .brand{color:var(--sable) !important;text-shadow:0 2px 8px rgba(0,0,0,.5);}
+  html.menu-ouvert, html.menu-ouvert body{overflow:hidden;height:100%;}
   @media (max-width:860px){
     .nav-links{
       position:fixed;inset:0;z-index:55;
@@ -2271,6 +2280,7 @@
     const links = document.getElementById('navLinks');
     const open = links.classList.toggle('open');
     btn.classList.toggle('x', open);
+    document.querySelector('nav').classList.toggle('menu-actif', open);
     btn.setAttribute('aria-expanded', open);
     document.documentElement.classList.toggle('menu-ouvert', open);
     if (navigator.vibrate) navigator.vibrate(8);
@@ -2286,6 +2296,7 @@
     const burger = document.querySelector('.burger');
     links.classList.remove('open');
     burger.classList.remove('x');
+    document.querySelector('nav').classList.remove('menu-actif');
     burger.setAttribute('aria-expanded', 'false');
     document.documentElement.classList.remove('menu-ouvert');
   }
@@ -2298,6 +2309,23 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.getElementById('navLinks').classList.contains('open')) fermerMenu();
   });
+  // iOS : un flou/filtre sur un parent piège les éléments fixes → le menu est déplacé dans <body> sur mobile
+  (function(){
+    const liste = document.getElementById('navLinks');
+    const nav = document.querySelector('nav');
+    const repere = document.getElementById('navMeteo');
+    const mq = window.matchMedia('(max-width:860px)');
+    function placer(){
+      if (mq.matches){
+        if (liste.parentNode !== document.body) document.body.appendChild(liste);
+      } else {
+        if (liste.parentNode !== nav){ nav.insertBefore(liste, repere); fermerMenu(); }
+      }
+    }
+    placer();
+    if (mq.addEventListener) mq.addEventListener('change', placer);
+    else mq.addListener(placer);
+  })();
   // Crans haptiques façon Apple : le doigt qui glisse sur le menu fait « cliquer » chaque entrée traversée
   (function(){
     const liste = document.getElementById('navLinks');
