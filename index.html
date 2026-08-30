@@ -1430,7 +1430,7 @@
       transition:opacity .38s ease, transform .38s cubic-bezier(.2,.8,.3,1);
       overflow-y:auto;-webkit-overflow-scrolling:touch;
       scroll-snap-type:y proximity;
-      counter-reset:menu;
+      overscroll-behavior:contain;touch-action:pan-y;
     }
     .nav-links::before{
       content:"A Piaghja";position:fixed;left:50%;bottom:-1.4rem;transform:translateX(-50%);
@@ -1439,7 +1439,7 @@
     }
     .nav-links.open{opacity:1;pointer-events:auto;transform:none;}
     .nav-links li{
-      list-style:none;counter-increment:menu;
+      list-style:none;
       border-bottom:1px solid rgba(253,252,249,.08);
       scroll-snap-align:center;
       opacity:0;transform:translateY(26px);
@@ -1463,11 +1463,6 @@
       text-shadow:0 1px 3px rgba(0,0,0,.4);
     }
     .nav-links a::after{display:none;}
-    .nav-links a::before{
-      content:counter(menu, decimal-leading-zero);
-      font-size:.6rem;letter-spacing:.14em;color:var(--or);opacity:.9;
-      min-width:1.6em;
-    }
     .nav-links li.pulse a, .nav-links a:active{
       transform:translateX(8px);color:var(--or) !important;
     }
@@ -1485,6 +1480,23 @@
     }
     .nav-links a.nav-cta::before{content:"✦";color:var(--encre);min-width:auto;font-size:.8rem;}
     .nav-links li.pulse a.nav-cta, .nav-links a.nav-cta:active{transform:scale(.97);color:var(--encre) !important;}
+    .nav-links{padding-bottom:calc(2.2rem + env(safe-area-inset-bottom));}
+    .nav-links li.pulse{
+      background:linear-gradient(90deg, rgba(194,161,92,.14), transparent 72%);
+      border-radius:12px;
+    }
+    /* Rail de défilement doré */
+    .menu-rail{
+      position:fixed;right:10px;top:6rem;bottom:calc(2.4rem + env(safe-area-inset-bottom));
+      width:3px;border-radius:999px;background:rgba(253,252,249,.1);
+      opacity:0;transition:opacity .3s ease;pointer-events:none;z-index:56;
+    }
+    .menu-rail.la{opacity:1;}
+    .menu-rail i{
+      position:absolute;left:0;right:0;top:0;border-radius:999px;
+      background:linear-gradient(180deg,var(--or),#d4b26e);
+      box-shadow:0 0 10px rgba(194,161,92,.55);
+    }
     /* Burger → croix */
     .burger.x span{background:var(--sable) !important;}
     .burger.x span:nth-child(1){transform:translateY(8px) rotate(45deg);}
@@ -2286,28 +2298,51 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.getElementById('navLinks').classList.contains('open')) fermerMenu();
   });
-  // Cran haptique façon Apple : l'entrée qui passe au centre pulse (et vibre si l'appareil le permet)
+  // Crans haptiques façon Apple : le doigt qui glisse sur le menu fait « cliquer » chaque entrée traversée
   (function(){
     const liste = document.getElementById('navLinks');
-    let dernier = null, image = null;
-    liste.addEventListener('scroll', () => {
-      if (image) return;
-      image = requestAnimationFrame(() => {
-        image = null;
-        if (!liste.classList.contains('open')) return;
-        const centre = liste.scrollTop + liste.clientHeight / 2;
-        let proche = null, dist = Infinity;
-        liste.querySelectorAll('li').forEach(li => {
-          const d = Math.abs(li.offsetTop + li.offsetHeight / 2 - centre);
-          if (d < dist){ dist = d; proche = li; }
-        });
-        if (proche && proche !== dernier){
-          if (dernier) dernier.classList.remove('pulse');
-          proche.classList.add('pulse');
-          dernier = proche;
-          if (navigator.vibrate) navigator.vibrate(4);
-        }
-      });
+
+    // Rail de défilement doré, adapté à la position
+    const rail = document.createElement('div');
+    rail.className = 'menu-rail';
+    rail.setAttribute('aria-hidden', 'true');
+    const pouce = document.createElement('i');
+    rail.appendChild(pouce);
+    document.body.appendChild(rail);
+    function majRail(){
+      const debord = liste.scrollHeight - liste.clientHeight;
+      const visible = liste.classList.contains('open') && debord > 8;
+      rail.classList.toggle('la', visible);
+      if (!visible) return;
+      const hauteur = Math.max(30, Math.round(rail.clientHeight * liste.clientHeight / liste.scrollHeight));
+      pouce.style.height = hauteur + 'px';
+      pouce.style.transform = 'translateY(' + Math.round((rail.clientHeight - hauteur) * (liste.scrollTop / debord)) + 'px)';
+    }
+    liste.addEventListener('scroll', majRail, { passive: true });
+    new MutationObserver(majRail).observe(liste, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('resize', majRail, { passive: true });
+
+    // Glissement du doigt : une pulsation + une vibration par entrée traversée
+    let dernier = null, repos = null;
+    function cran(e){
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      const el = document.elementFromPoint(t.clientX, t.clientY);
+      const li = el && el.closest ? el.closest('#navLinks li') : null;
+      if (li && li !== dernier){
+        if (dernier) dernier.classList.remove('pulse');
+        li.classList.add('pulse');
+        dernier = li;
+        if (navigator.vibrate) navigator.vibrate(5);
+      }
+    }
+    liste.addEventListener('touchstart', cran, { passive: true });
+    liste.addEventListener('touchmove', cran, { passive: true });
+    liste.addEventListener('touchend', () => {
+      clearTimeout(repos);
+      repos = setTimeout(() => {
+        if (dernier){ dernier.classList.remove('pulse'); dernier = null; }
+      }, 380);
     }, { passive: true });
   })();
 
