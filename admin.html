@@ -7,7 +7,7 @@
 <title>A Piaghja · Direction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Allura&family=Questrial&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Mrs+Saint+Delafield&family=Questrial&display=swap" rel="stylesheet">
 <style>
   :root{
     --olive:#7d8560;
@@ -522,6 +522,161 @@
   #toast.la{transform:translate(-50%,0);}
   #toast.ko{background:var(--terre);}
   [hidden]{display:none !important;}
+
+  /* ═══════════ PEAU SOMBRE V12 — les codes du menu : verre profond, or, sable, rose ═══════════ */
+  body{
+    color:var(--sable);
+    background:
+      radial-gradient(60% 40% at 88% 0%, rgba(194,161,92,.14), transparent 62%),
+      radial-gradient(52% 38% at 4% 100%, rgba(125,133,96,.16), transparent 62%),
+      #1d1e18;
+  }
+  .fond3d{
+    background:
+      radial-gradient(60% 40% at 88% 6%, rgba(194,161,92,.12), transparent 62%),
+      radial-gradient(52% 38% at 8% 94%, rgba(125,133,96,.14), transparent 62%),
+      #1d1e18;
+  }
+  .v-olive{background:linear-gradient(135deg, rgba(125,133,96,.16), rgba(125,133,96,.04));border-color:rgba(125,133,96,.28);}
+  .v-or{background:linear-gradient(135deg, rgba(194,161,92,.14), rgba(194,161,92,.04));border-color:rgba(194,161,92,.3);}
+  .v-verre{background:linear-gradient(135deg, rgba(253,252,249,.09), rgba(253,252,249,.02));border-color:rgba(253,252,249,.14);}
+  .pan{box-shadow:0 24px 60px rgba(0,0,0,.35);}
+  .voile-bas{background:linear-gradient(to top, #1d1e18 12%, transparent);}
+
+  .topbar{
+    background:rgba(23,24,19,.86);
+    border-bottom:1px solid rgba(194,161,92,.3);
+  }
+  .marque .nom{font-family:'Mrs Saint Delafield','Allura',cursive;font-size:1.6rem;color:var(--sable);text-shadow:0 1px 3px rgba(0,0,0,.5);}
+  .onglet{background:rgba(253,252,249,.05);border-color:rgba(194,161,92,.35);color:var(--sable);}
+  .onglet:hover{border-color:var(--or);}
+  .onglet.on{
+    background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;
+    box-shadow:0 8px 22px rgba(194,161,92,.35);
+  }
+  .btn-sortie{color:rgba(239,233,221,.5);}
+  .btn-sortie:hover{color:var(--terre);}
+
+  .carte{
+    background:rgba(253,252,249,.045);
+    border-color:rgba(194,161,92,.28);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+  }
+  h2.titre{color:var(--sable);text-shadow:0 1px 3px rgba(0,0,0,.45);}
+  .vide{color:rgba(239,233,221,.5);}
+
+  .voile-connexion{background:transparent;}
+  .co-carte{
+    background:rgba(253,252,249,.05);border-color:rgba(194,161,92,.4);
+    box-shadow:0 34px 80px rgba(0,0,0,.55);
+  }
+  .co-carte h1{font-family:'Mrs Saint Delafield','Allura',cursive;color:var(--sable);text-shadow:0 2px 6px rgba(0,0,0,.5);}
+  .co-carte input{background:rgba(253,252,249,.07);border-color:rgba(194,161,92,.3);color:var(--sable);}
+  .co-carte input:focus{border-color:var(--or);}
+  .co-carte button{background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;}
+
+  .nav-ligne .fleche, .btn-doux{background:rgba(253,252,249,.05);border-color:rgba(194,161,92,.35);color:var(--sable);}
+  input[type="date"], input[type="month"], input[type="time"], input[type="number"], #vueJour input, .r-table{
+    background:rgba(253,252,249,.07);border-color:rgba(194,161,92,.3);color:var(--sable);
+  }
+  input::placeholder, .r-table::placeholder{color:rgba(239,233,221,.35);}
+  input[type="date"]{color-scheme:dark;}
+  input[type="month"], input[type="time"]{color-scheme:dark;}
+
+  .jauge{background:rgba(253,252,249,.045);border-color:rgba(194,161,92,.28);}
+  .jauge .j-val{color:var(--sable);}
+  .jauge .j-barre{background:rgba(253,252,249,.09);}
+  .resa{border-bottom-color:rgba(194,161,92,.2);}
+  .r-heure{background:rgba(253,252,249,.08);color:var(--sable);}
+  .r-nom small, .r-nom small a{color:rgba(239,233,221,.55);}
+  .r-pax{background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;}
+  .badge{border-color:rgba(194,161,92,.35);color:rgba(239,233,221,.7);}
+  .badge.camp{border-color:rgba(154,161,126,.5);color:var(--olive-soft);background:rgba(125,133,96,.12);}
+  .badge.pass{border-color:rgba(231,151,127,.4);color:#e7a48f;background:rgba(176,85,63,.12);}
+  .r-table.ok{border-color:var(--olive-soft);background:rgba(125,133,96,.14);}
+  .r-suppr{color:rgba(239,233,221,.4);}
+  .pf-g label{color:rgba(239,233,221,.5);}
+  .pf-camp{color:rgba(239,233,221,.75);}
+  .btn-plein{background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;}
+  .btn-plein:hover{box-shadow:0 10px 24px rgba(194,161,92,.4);}
+  .msg.ok{color:var(--olive-soft);}
+  .msg.ko{color:#e7a48f;}
+
+  .sem-j{background:rgba(253,252,249,.045);border-color:rgba(194,161,92,.28);}
+  .sem-j .sj-nom{color:rgba(239,233,221,.45);}
+  .sem-j .sj-tot{color:var(--olive-soft);}
+  .sem-j.actif{border-color:var(--or);box-shadow:0 8px 20px rgba(194,161,92,.2);}
+
+  .creneau .c-l{color:rgba(239,233,221,.7);}
+  .creneau .c-l b{color:var(--sable);}
+
+  .recherche{background:rgba(253,252,249,.06);border-color:rgba(194,161,92,.3);color:var(--sable);}
+  .compteur{color:rgba(239,233,221,.5);}
+  .p-pill{background:rgba(253,252,249,.05);border-color:rgba(194,161,92,.35);color:var(--sable);}
+  .p-pill.on{background:linear-gradient(135deg,var(--or),#d4b26e);border-color:transparent;color:#1b1c16;}
+  .cat-bloc{background:rgba(253,252,249,.035);border-color:rgba(194,161,92,.22);}
+  .cat-tete{background:rgba(253,252,249,.05);color:var(--sable);}
+  .cat-tete small{color:rgba(239,233,221,.45);}
+  .plat-l{border-bottom-color:rgba(194,161,92,.16);}
+  .plat-l input{color:var(--sable);}
+  .plat-l input:hover{border-color:rgba(194,161,92,.35);}
+  .plat-l input:focus{background:rgba(253,252,249,.08);}
+  .plat-l .i-desc{color:rgba(239,233,221,.55);}
+  .mini{color:rgba(239,233,221,.45);}
+  .mini:hover{color:var(--sable);background:rgba(253,252,249,.08);}
+  .ajout input, .ajout select{background:rgba(253,252,249,.07);border-color:rgba(194,161,92,.3);color:var(--sable);}
+  .ajout select option{background:#1d1e18;color:var(--sable);}
+
+  .devis{background:rgba(253,252,249,.045);border-color:rgba(194,161,92,.32);box-shadow:0 12px 34px rgba(0,0,0,.35);}
+  .devis .d-type{color:var(--sable);text-shadow:0 1px 3px rgba(0,0,0,.45);}
+  .devis .d-date{color:var(--rose);}
+  .devis .d-l{color:rgba(239,233,221,.65);}
+  .devis .d-l b{color:var(--sable);}
+  .devis .d-tot{border-top-color:rgba(194,161,92,.25);}
+  .devis .d-tot b{color:var(--or);}
+  .devis .d-tel{background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;}
+  .devis .d-recu{color:rgba(239,233,221,.35);}
+  .cand .d-msg{background:rgba(253,252,249,.05);color:rgba(239,233,221,.75);}
+
+  .cl-tete:hover{background:rgba(253,252,249,.04);}
+  .cl-ligne{border-bottom-color:rgba(194,161,92,.18);}
+  .cl-id small{color:rgba(239,233,221,.5);}
+  .cl-der{color:rgba(239,233,221,.35);}
+  .cl-bloc{background:rgba(253,252,249,.05);}
+  .cl-bloc .d-l{color:rgba(239,233,221,.65);}
+  .cl-bloc .d-l b{color:var(--sable);}
+  .cl-sw{color:rgba(239,233,221,.8);}
+  .cl-note, .camp-txt{background:rgba(253,252,249,.07);border-color:rgba(194,161,92,.3);color:var(--sable);}
+  .cl-actions a{border-color:rgba(194,161,92,.4);color:var(--sable);}
+  .cl-actions a.plein{background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;border:none;}
+  .camp-cible{color:rgba(239,233,221,.7);}
+  .camp-cible b{color:var(--or);}
+  .camp-note{color:rgba(239,233,221,.4);}
+
+  .ds-jour{border-bottom-color:rgba(194,161,92,.18);}
+  .ds-jour:hover{background:rgba(253,252,249,.04);}
+  .ds-date small{color:rgba(239,233,221,.45);}
+  .ds-svc .ds-lab{color:rgba(239,233,221,.5);}
+  .ds-svc .ds-lab b{color:var(--sable);}
+  .ds-svc .ds-lab .ds-detail{color:var(--olive-soft);}
+  .ds-barre{background:rgba(253,252,249,.08);}
+  .ds-tete-l{color:rgba(239,233,221,.4);}
+
+  .kpi{background:rgba(253,252,249,.045);border-color:rgba(194,161,92,.28);}
+  .kpi:hover{box-shadow:0 14px 34px rgba(0,0,0,.4);}
+  .kpi .k-val{color:var(--or);}
+  .kpi .k-lab{color:rgba(239,233,221,.5);}
+  .g-col::after{background:var(--sable);color:var(--encre);}
+  .g-jours span{color:rgba(239,233,221,.35);}
+  .legende{color:rgba(239,233,221,.5);}
+  .h-ligne .h-h{color:rgba(239,233,221,.5);}
+  .h-ligne .h-b{background:rgba(253,252,249,.08);}
+  .h-ligne .h-v{color:var(--or);}
+
+  .sk{background:rgba(253,252,249,.06);}
+  .sk::after{background:linear-gradient(90deg,transparent,rgba(253,252,249,.12),transparent);}
+  #toast{background:var(--sable);color:var(--encre);}
+  #toast.ko{background:var(--terre);color:var(--blanc);}
 </style>
 </head>
 <body>
@@ -557,7 +712,7 @@
       <ellipse cx="144" cy="66" rx="25" ry="12" fill="#7d8560"/>
       <circle cx="100" cy="77" r="5" fill="#c2a15c"/>
     </svg>
-    <h1>A Piaghja</h1>
+    <h1>A piaghja</h1>
     <span class="sous">Espace direction</span>
     <input type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password">
     <button id="btnConnexion">Entrer</button>
@@ -578,7 +733,7 @@
         <circle cx="100" cy="77" r="5" fill="#c2a15c"/>
       </svg>
       <div>
-        <span class="nom">A Piaghja</span>
+        <span class="nom">A piaghja</span>
         <span class="role">Direction</span>
       </div>
     </div>
