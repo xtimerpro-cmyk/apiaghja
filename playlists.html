@@ -3,42 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nos playlists · A Piaghja · Porto-Vecchio</title>
-<meta name="description" content="Les playlists d'A Piaghja : les ambiances de la plage du Golfo di Sogno à emporter partout — du café du matin aux soirées face à la mer.">
+<title>Nos playlists · A piaghja · Porto-Vecchio</title>
+<meta name="description" content="Les playlists d'A piaghja : la bande-son de la plage du Golfo di Sogno à Porto-Vecchio, à écouter partout.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Allura&family=Mrs+Saint+Delafield&family=Questrial&display=swap" rel="stylesheet">
+<script>
+  if (location.search.indexOf('embed=1') !== -1) document.documentElement.classList.add('embarque');
+</script>
 <style>
   :root{
     --olive:#7d8560;--olive-soft:#9aa17e;--olive-fonce:#4a5335;
     --sable:#efe9dd;--sable-deep:#e2d9c6;--rose:#e7c6bd;--or:#c2a15c;
-    --encre:#2a2b24;--blanc:#fdfcf9;--terre:#b0553f;
+    --encre:#2a2b24;--blanc:#fdfcf9;--terre:#b0553f;--vert-sp:#1DB954;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{font-family:'Questrial',sans-serif;color:var(--encre);background:var(--sable);min-height:100dvh;}
-  ::placeholder{color:#a09f92;}
+  body{
+    font-family:'Questrial',sans-serif;color:var(--sable);
+    background:#181913;min-height:100dvh;
+  }
+  button{font-family:inherit;cursor:pointer;}
 
   nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
     display:flex;align-items:center;justify-content:space-between;gap:1rem;
     padding:.85rem 1.3rem;
-    background:rgba(253,252,249,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid rgba(194,161,92,.3);
+    background:rgba(20,21,16,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(194,161,92,.25);
   }
   .brand{
-    font-family:'Mrs Saint Delafield','Allura',cursive;font-size:1.6rem;color:var(--olive-fonce);white-space:nowrap;
-    text-decoration:none;line-height:1;text-shadow:0 1px 2px rgba(42,43,36,.14);
+    font-family:'Mrs Saint Delafield','Allura',cursive;font-size:1.6rem;color:var(--sable);
+    text-decoration:none;line-height:1;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.5);
   }
   .nav-retour{
-    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--encre);
-    text-decoration:none;border:1px solid rgba(194,161,92,.5);border-radius:999px;
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--sable);
+    text-decoration:none;border:1px solid rgba(194,161,92,.45);border-radius:999px;
     padding:.42rem .95rem;transition:all .2s ease;white-space:nowrap;
   }
   .nav-retour:hover{border-color:var(--or);transform:translateY(-1px);}
   .defile{
-    position:fixed;top:calc(1.7rem + 1.9rem);left:0;right:0;z-index:49;
-    background:rgba(42,43,36,.92);border-bottom:1px solid rgba(194,161,92,.35);
+    position:fixed;top:calc(1.7rem + 1.7rem);left:0;right:0;z-index:49;
+    background:rgba(12,13,9,.9);border-bottom:1px solid rgba(194,161,92,.3);
     overflow:hidden;white-space:nowrap;padding:.22rem 0;
   }
   .defile-piste{display:inline-flex;width:max-content;animation:defiler 38s linear infinite;}
@@ -48,55 +54,144 @@
   }
   .defile-piste span i{font-style:normal;color:var(--or);padding:0 1.1em;text-shadow:0 1px 2px rgba(0,0,0,.5);}
   @keyframes defiler{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  html.embarque nav, html.embarque .defile{display:none;}
+  html.embarque .bandeau{padding-top:2.2rem;}
 
-  main{max-width:960px;margin:0 auto;padding:8.2rem 1.2rem 4rem;}
-  .entete{text-align:center;margin-bottom:2.6rem;}
-  h1{
-    font-family:'Allura',cursive;font-weight:400;
-    font-size:clamp(3rem,8vw,5rem);line-height:1.05;margin-bottom:.6rem;
+  /* ---------- Bandeau d'en-tête façon Spotify ---------- */
+  .bandeau{
+    padding:7.6rem 1.4rem 2.2rem;
+    background:
+      radial-gradient(70% 90% at 15% 0%, rgba(125,133,96,.45), transparent 60%),
+      radial-gradient(50% 70% at 90% 10%, rgba(194,161,92,.22), transparent 60%),
+      linear-gradient(180deg, #2c2f21 0%, #1f2018 55%, #181913 100%);
   }
-  @supports ((-webkit-background-clip:text) or (background-clip:text)){
-    h1{
-      background:linear-gradient(172deg,#55603c 8%,var(--olive) 55%,#99a07c 96%);
-      -webkit-background-clip:text;background-clip:text;color:transparent;
-      filter:drop-shadow(0 2px 2px rgba(42,43,36,.2)) drop-shadow(0 10px 20px rgba(42,43,36,.1));
-    }
+  .bandeau-in{max-width:1000px;margin:0 auto;display:flex;align-items:flex-end;gap:1.6rem;flex-wrap:wrap;}
+  .grande-pochette{
+    width:150px;height:150px;flex:none;border-radius:14px;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(231,198,189,.5), transparent 55%),
+      linear-gradient(150deg, var(--olive) 0%, #3a4028 60%, #23241b 100%);
+    box-shadow:0 22px 60px rgba(0,0,0,.6);
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
   }
-  .entete p{color:#6b6c5e;max-width:52ch;margin:0 auto;line-height:1.7;}
-  .filet{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--or),transparent);margin:1.2rem auto 0;}
+  .grande-pochette svg{width:74px;height:74px;opacity:.95;}
+  .grande-pochette::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg, rgba(253,252,249,.12), transparent 45%);
+  }
+  .bandeau-txt .etiquette{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);}
+  .bandeau-txt h1{
+    font-family:'Mrs Saint Delafield','Allura',cursive;font-weight:400;
+    font-size:clamp(3rem,9vw,5.4rem);line-height:1;color:var(--sable);
+    text-shadow:0 2px 6px rgba(0,0,0,.5);margin:.15rem 0 .4rem;
+  }
+  .bandeau-txt p{color:rgba(239,233,221,.6);font-size:.9rem;max-width:46ch;line-height:1.6;}
+  .bandeau-actions{display:flex;align-items:center;gap:1rem;margin-top:1.1rem;}
+  .gros-play{
+    width:56px;height:56px;border-radius:50%;border:none;
+    background:var(--vert-sp);color:#0c0d09;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 30px rgba(29,185,84,.35);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .gros-play:hover{transform:scale(1.07);box-shadow:0 16px 38px rgba(29,185,84,.45);}
+  .gros-play svg{width:22px;height:22px;margin-left:2px;}
+  .suivre{
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sable);
+    text-decoration:none;border:1px solid rgba(239,233,221,.35);border-radius:999px;
+    padding:.55rem 1.1rem;transition:border-color .2s ease;
+  }
+  .suivre:hover{border-color:var(--vert-sp);}
 
-  .playlists{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;}
+  /* ---------- Grille de playlists ---------- */
+  main{max-width:1000px;margin:0 auto;padding:1.8rem 1.4rem 4rem;}
+  .rang-titre{
+    display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;
+  }
+  .rang-titre h2{font-size:1.1rem;letter-spacing:.06em;color:var(--sable);font-weight:normal;}
+  .rang-titre span{font-size:.68rem;color:rgba(239,233,221,.4);letter-spacing:.14em;text-transform:uppercase;}
+  .grille{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;
+  }
   .pl{
-    background:var(--blanc);border:1px solid rgba(194,161,92,.4);border-radius:22px;
-    overflow:hidden;box-shadow:0 16px 40px rgba(42,43,36,.08);
-    transition:transform .25s ease, box-shadow .25s ease;
-    display:flex;flex-direction:column;
+    background:rgba(253,252,249,.045);border:1px solid transparent;border-radius:12px;
+    padding:.8rem;transition:background .25s ease, border-color .25s ease, transform .25s ease;
+    position:relative;
   }
-  .pl:hover{transform:translateY(-4px);box-shadow:0 26px 56px rgba(42,43,36,.13);}
-  .pl-tete{padding:1.3rem 1.3rem 1rem;text-align:center;}
-  .pl-ico{font-size:1.7rem;}
-  .pl-titre{
-    font-family:'Allura',cursive;font-size:2rem;color:var(--olive-fonce);line-height:1.1;margin:.25rem 0 .35rem;
-    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+  .pl:hover{background:rgba(253,252,249,.08);transform:translateY(-3px);}
+  .pl.joue{border-color:rgba(29,185,84,.6);background:rgba(29,185,84,.06);}
+  .pochette{
+    position:relative;width:100%;aspect-ratio:1;border-radius:9px;overflow:hidden;
+    box-shadow:0 10px 26px rgba(0,0,0,.5);
+    display:flex;align-items:center;justify-content:center;font-size:2.6rem;
   }
-  .pl-sous{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--or);}
-  .pl-desc{font-size:.84rem;color:#6b6c5e;line-height:1.65;margin-top:.6rem;}
-  .pl-corps{margin-top:auto;}
-  .pl-corps iframe{display:block;width:100%;height:352px;border:0;}
-  .pl-attente{
-    margin:0 1.3rem 1.3rem;background:var(--sable);border:1px dashed rgba(194,161,92,.55);
-    border-radius:16px;padding:1.1rem;text-align:center;font-size:.8rem;color:#8a8a7a;line-height:1.6;
+  .pochette::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg, rgba(253,252,249,.14), transparent 50%);
   }
-  .pl-attente b{color:var(--olive-fonce);font-weight:normal;}
+  .po-matin{background:linear-gradient(150deg, var(--rose) 0%, #c98d6b 55%, #7a4f3a 100%);}
+  .po-jour{background:linear-gradient(150deg, #e5c87e 0%, var(--or) 45%, var(--olive) 100%);}
+  .po-plage{background:linear-gradient(150deg, var(--olive-soft) 0%, var(--olive) 50%, #2e331f 100%);}
+  .po-nuit{background:linear-gradient(150deg, #4a5335 0%, #2a2e1d 55%, #14150f 100%);}
+  .p-play{
+    position:absolute;right:.55rem;bottom:.55rem;z-index:2;
+    width:42px;height:42px;border-radius:50%;border:none;
+    background:var(--vert-sp);color:#0c0d09;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 22px rgba(0,0,0,.5);
+    opacity:0;transform:translateY(8px);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .p-play svg{width:16px;height:16px;margin-left:1px;}
+  .pl:hover .p-play, .pl.joue .p-play{opacity:1;transform:none;}
+  @media (hover:none){.p-play{opacity:1;transform:none;}}
+  .pl.attente .p-play{background:rgba(239,233,221,.22);color:rgba(239,233,221,.6);box-shadow:none;}
+  .p-eq{
+    position:absolute;left:.6rem;bottom:.65rem;z-index:2;
+    display:none;gap:2px;align-items:flex-end;height:12px;
+  }
+  .p-eq i{width:3px;background:var(--vert-sp);border-radius:1px;animation:eqDanse .8s ease-in-out infinite alternate;}
+  .p-eq i:nth-child(2){animation-delay:.15s;}
+  .p-eq i:nth-child(3){animation-delay:.3s;}
+  .pl.joue .p-eq{display:inline-flex;}
+  @keyframes eqDanse{from{height:3px;}to{height:12px;}}
+  .pl h3{font-size:.92rem;color:var(--sable);margin:.65rem 0 .2rem;font-weight:normal;}
+  .pl .pl-sous{
+    font-family:'Mrs Saint Delafield','Allura',cursive;font-size:1.05rem;color:var(--or);line-height:1;
+  }
+  .pl p.desc{font-size:.72rem;color:rgba(239,233,221,.5);line-height:1.55;margin-top:.35rem;}
+  .pl .bientot{
+    display:inline-block;margin-top:.4rem;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--rose);border:1px solid rgba(231,198,189,.35);border-radius:999px;padding:.2rem .55rem;
+  }
+
+  /* ---------- Zone lecteur ---------- */
+  .zone-lecteur{
+    margin-top:1.6rem;border-radius:16px;overflow:hidden;
+    max-height:0;transition:max-height .5s ease;
+    border:1px solid transparent;
+  }
+  .zone-lecteur.la{max-height:420px;border-color:rgba(29,185,84,.4);}
+  .zone-lecteur .zl-tete{
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(29,185,84,.08);padding:.6rem .9rem;
+  }
+  .zone-lecteur .zl-tete b{font-weight:normal;color:var(--sable);font-size:.85rem;}
+  .zone-lecteur .zl-tete button{
+    background:none;border:1px solid rgba(239,233,221,.3);border-radius:50%;
+    width:24px;height:24px;color:var(--sable);font-size:.85rem;line-height:1;
+  }
+  .zone-lecteur iframe{display:block;width:100%;height:352px;border:0;}
 
   footer{
-    text-align:center;padding:2.4rem 1rem 3rem;color:#7a7a68;font-size:.8rem;
-    border-top:1px solid rgba(194,161,92,.25);margin-top:3rem;
+    text-align:center;padding:2.2rem 1rem 3rem;color:rgba(239,233,221,.4);font-size:.78rem;
+    border-top:1px solid rgba(194,161,92,.2);
   }
   footer .brand-foot{
-    font-family:'Allura',cursive;font-size:2rem;color:var(--olive);display:block;margin-bottom:.4rem;
-    text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
+    font-family:'Mrs Saint Delafield','Allura',cursive;font-size:1.8rem;color:var(--sable);
+    display:block;margin-bottom:.4rem;text-shadow:0 1px 3px rgba(0,0,0,.5);
   }
+  footer a{color:inherit;}
   .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
   .reveal.vu{opacity:1;transform:none;}
 </style>
@@ -111,74 +206,129 @@
   <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span></div>
 </div>
 
-<main>
-  <div class="entete reveal">
-    <h1>Nos playlists</h1>
-    <p>La bande-son d'A Piaghja à emporter partout : du premier café face au Golfo di Sogno aux dernières lueurs sur l'eau. Appuyez sur lecture, fermez les yeux — vous êtes sur la plage.</p>
-    <div class="filet"></div>
+<header class="bandeau">
+  <div class="bandeau-in">
+    <div class="grande-pochette" aria-hidden="true">
+      <svg viewBox="0 0 200 210" fill="none">
+        <path d="M100 195 C98 172 102 152 97 130 C93 112 100 100 97 80" stroke="#fdfcf9" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+        <ellipse cx="100" cy="58" rx="46" ry="16" fill="#fdfcf9" opacity=".85"/>
+        <ellipse cx="57" cy="68" rx="25" ry="12" fill="#fdfcf9" opacity=".7"/>
+        <ellipse cx="144" cy="66" rx="25" ry="12" fill="#fdfcf9" opacity=".7"/>
+      </svg>
+    </div>
+    <div class="bandeau-txt">
+      <span class="etiquette">Playlists officielles</span>
+      <h1>Nos playlists</h1>
+      <p>La bande-son de la plage du Golfo di Sogno — du premier café aux dernières braises. Appuyez sur lecture, vous y êtes.</p>
+      <div class="bandeau-actions">
+        <button class="gros-play" id="grosPlay" aria-label="Écouter la playlist de la plage">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        </button>
+        <a class="suivre" href="https://open.spotify.com/playlist/2zZorJXeZxPXS6g4w2bvy0" target="_blank" rel="noopener">Suivre sur Spotify</a>
+      </div>
+    </div>
   </div>
+</header>
 
-  <div class="playlists reveal" id="playlists"></div>
+<main>
+  <div class="rang-titre reveal">
+    <h2>Les ambiances de la plage</h2>
+    <span>A piaghja · Porto-Vecchio</span>
+  </div>
+  <div class="grille reveal" id="grille"></div>
+  <div class="zone-lecteur" id="zoneLecteur">
+    <div class="zl-tete">
+      <b id="zlTitre">…</b>
+      <button id="zlFermer" aria-label="Fermer le lecteur">×</button>
+    </div>
+    <div id="zlHote"></div>
+  </div>
 </main>
 
 <footer>
-  <span class="brand-foot">A Piaghja</span>
-  Bar &amp; Restaurant · Plage du Golfo di Sogno · Porto-Vecchio · <a href="tel:0622061488" style="color:inherit">06 22 06 14 88</a>
+  <span class="brand-foot">A piaghja</span>
+  Bar &amp; Restaurant · Plage du Golfo di Sogno · Porto-Vecchio · <a href="tel:0622061488">06 22 06 14 88</a>
 </footer>
 
 <script>
   "use strict";
-  // ═══════════════════════════════════════════════════════════════════
-  // ⚠️ VOS PLAYLISTS : collez simplement vos liens Spotify ci-dessous
-  // (lien de partage : Spotify → playlist → ··· → Partager → Copier le lien)
-  // Tant qu'un lien contient [ ], la carte affiche « bientôt disponible ».
-  // ═══════════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════
+  // ⚠️ VOS PLAYLISTS : collez vos liens Spotify (Partager → Copier le lien).
+  // Une carte sans lien valide affiche « bientôt ».
+  // ═══════════════════════════════════════════════════════════════
   var PLAYLISTS = [
     {
-      ico: "🌊", titre: "A piaghja", sous: "La playlist de la plage",
-      desc: "Celle qui joue vraiment sur la plage du Golfo di Sogno — appuyez sur lecture et vous y êtes.",
+      cls: "po-plage", ico: "🌊", titre: "La playlist de la plage", sous: "A piaghja",
+      desc: "Celle qui joue vraiment sur la plage — l'ambiance maison, du matin au soir.",
       lien: "https://open.spotify.com/playlist/2zZorJXeZxPXS6g4w2bvy0?si=b20f5cfc82894528"
     },
     {
-      ico: "☀️", titre: "Plein soleil", sous: "Plage · Déjeuner",
-      desc: "L'énergie chic de la plage : nu-disco, balearic et pépites ensoleillées pour l'après-midi.",
+      cls: "po-matin", ico: "🌅", titre: "Matin doré", sous: "Café · Lever de soleil",
+      desc: "Douceur acoustique et bossa légère face à la mer.",
+      lien: "[LIEN_SPOTIFY_MATIN]"
+    },
+    {
+      cls: "po-jour", ico: "☀️", titre: "Plein soleil", sous: "Plage · Déjeuner",
+      desc: "Nu-disco et pépites balearic pour l'après-midi.",
       lien: "[LIEN_SPOTIFY_JOUR]"
     },
     {
-      ico: "🌊", titre: "Golden hour", sous: "Apéritif · Coucher de soleil",
-      desc: "Le moment signature d'A Piaghja : mélodies suspendues et cocktails quand le ciel s'embrase.",
-      lien: "[LIEN_SPOTIFY_SUNSET]"
-    },
-    {
-      ico: "🌙", titre: "Notte", sous: "Dîner · Soirée",
-      desc: "La nuit s'installe sur le Golfo di Sogno : grooves feutrés et braises qui rougeoient.",
+      cls: "po-nuit", ico: "🌙", titre: "Notte", sous: "Dîner · Soirée",
+      desc: "Grooves feutrés quand les braises rougeoient.",
       lien: "[LIEN_SPOTIFY_SOIR]"
     }
   ];
 
-  var zone = document.getElementById("playlists");
+  var $ = function(id){ return document.getElementById(id); };
+  var grille = $("grille"), zone = $("zoneLecteur"), zlHote = $("zlHote"), zlTitre = $("zlTitre");
+  var carteActive = null;
+
+  function pret(p){ return p.lien && p.lien.indexOf("[") === -1 && p.lien.indexOf("open.spotify.com") !== -1; }
+  function embed(p){ return p.lien.split("?")[0].replace("open.spotify.com/", "open.spotify.com/embed/") + "?theme=0"; }
+
+  function jouer(p, carte){
+    if (!pret(p)) return;
+    if (carteActive === carte){ fermer(); return; }
+    document.querySelectorAll(".pl.joue").forEach(function(x){ x.classList.remove("joue"); });
+    carte.classList.add("joue");
+    carteActive = carte;
+    zlTitre.textContent = p.titre + " — " + p.sous;
+    zlHote.innerHTML = '<iframe title="' + p.titre + '" src="' + embed(p) + '" allow="autoplay; encrypted-media; clipboard-write; fullscreen; picture-in-picture" loading="lazy"></iframe>';
+    zone.classList.add("la");
+    zone.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  function fermer(){
+    zone.classList.remove("la");
+    zlHote.innerHTML = "";
+    if (carteActive) carteActive.classList.remove("joue");
+    carteActive = null;
+  }
+  $("zlFermer").addEventListener("click", fermer);
+
   PLAYLISTS.forEach(function(p){
     var carte = document.createElement("article");
-    carte.className = "pl";
-    var pret = p.lien && p.lien.indexOf("[") === -1 && p.lien.indexOf("open.spotify.com") !== -1;
-    var corps;
-    if (pret){
-      var embed = p.lien.split("?")[0].replace("open.spotify.com/", "open.spotify.com/embed/");
-      corps = '<div class="pl-corps"><iframe src="' + embed + '?theme=0" loading="lazy" ' +
-              'allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" ' +
-              'title="Playlist ' + p.titre + '"></iframe></div>';
-    } else {
-      corps = '<div class="pl-corps"><div class="pl-attente"><b>Bientôt disponible</b><br>' +
-              'Cette ambiance arrive très vite sur notre Spotify — en attendant, elle joue en vrai sur la plage. 🌊</div></div>';
-    }
+    carte.className = "pl" + (pret(p) ? "" : " attente");
     carte.innerHTML =
-      '<div class="pl-tete">' +
-        '<div class="pl-ico">' + p.ico + '</div>' +
-        '<div class="pl-titre">' + p.titre + '</div>' +
-        '<div class="pl-sous">' + p.sous + '</div>' +
-        '<p class="pl-desc">' + p.desc + '</p>' +
-      '</div>' + corps;
-    zone.appendChild(carte);
+      '<div class="pochette ' + p.cls + '">' + p.ico +
+        '<span class="p-eq" aria-hidden="true"><i></i><i></i><i></i></span>' +
+        '<button class="p-play" aria-label="Écouter ' + p.titre + '">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>' +
+        '</button>' +
+      '</div>' +
+      '<h3>' + p.titre + '</h3>' +
+      '<span class="pl-sous">' + p.sous + '</span>' +
+      '<p class="desc">' + p.desc + '</p>' +
+      (pret(p) ? '' : '<span class="bientot">Bientôt</span>');
+    carte.querySelector(".p-play").addEventListener("click", function(){ jouer(p, carte); });
+    grille.appendChild(carte);
+  });
+
+  $("grosPlay").addEventListener("click", function(){
+    var premiere = null, carte = null;
+    for (var i = 0; i < PLAYLISTS.length; i++){
+      if (pret(PLAYLISTS[i])){ premiere = PLAYLISTS[i]; carte = grille.children[i]; break; }
+    }
+    if (premiere) jouer(premiere, carte);
   });
 
   var obs = new IntersectionObserver(function(entrees){

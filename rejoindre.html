@@ -145,7 +145,14 @@
   }
   .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
   .reveal.vu{opacity:1;transform:none;}
+
+  /* Mode embarqué (ouvert par-dessus l'accueil) */
+  html.embarque nav, html.embarque .defile{display:none;}
+  html.embarque main{padding-top:2.2rem;}
 </style>
+<script>
+  if (location.search.indexOf('embed=1') !== -1) document.documentElement.classList.add('embarque');
+</script>
 </head>
 <body>
 

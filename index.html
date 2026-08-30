@@ -1543,6 +1543,24 @@
   @media (prefers-reduced-motion: reduce){
     .nav-links, .nav-links li, .nav-links a{transition:opacity .2s ease !important;transform:none !important;}
   }
+
+  /* ---------- Sous-pages ouvertes par-dessus l'accueil (la radio continue) ---------- */
+  .voile-page{
+    position:fixed;inset:0;z-index:62;background:#181913;
+    opacity:0;transform:translateY(12px);
+    transition:opacity .38s ease, transform .38s ease;
+  }
+  .voile-page.la{opacity:1;transform:none;}
+  .voile-page iframe{width:100%;height:100%;border:0;display:block;}
+  .voile-fermer{
+    position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;z-index:2;
+    background:rgba(20,21,16,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(194,161,92,.45);border-radius:999px;
+    color:var(--sable);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    padding:.5rem 1rem;cursor:pointer;transition:border-color .2s ease;
+  }
+  .voile-fermer:hover{border-color:var(--or);}
+  html.page-ouverte{overflow:hidden;}
 </style>
 </head>
 <body>
@@ -2327,7 +2345,7 @@
     document.querySelector('nav').classList.toggle('menu-actif', open);
     btn.setAttribute('aria-expanded', open);
     document.documentElement.classList.toggle('menu-ouvert', open);
-    if (navigator.vibrate) navigator.vibrate(8);
+    window.__vibrer(8);
     if (open){
       const premier = links.querySelector('a');
       if (premier) setTimeout(() => premier.focus({ preventScroll: true }), 420);
@@ -2346,7 +2364,7 @@
   }
   document.querySelectorAll('#navLinks a').forEach(a =>
     a.addEventListener('click', () => {
-      if (navigator.vibrate) navigator.vibrate(6);
+      window.__vibrer(6);
       fermerMenu();
     })
   );
@@ -2405,7 +2423,7 @@
         if (dernier) dernier.classList.remove('pulse');
         li.classList.add('pulse');
         dernier = li;
-        if (navigator.vibrate) navigator.vibrate(5);
+        window.__vibrer(5);
       }
     }
     liste.addEventListener('touchstart', cran, { passive: true });
@@ -3824,6 +3842,8 @@
   })();
 </script>
 
+<input type="checkbox" switch id="hapticSwitch" aria-hidden="true" tabindex="-1"
+       style="position:fixed;left:-100px;top:0;width:1px;height:1px;opacity:0;pointer-events:none">
 <div class="cg-bar" id="cgBar" role="region" aria-label="Conditions générales" hidden>
   <p data-i18n="cg_txt">En poursuivant votre navigation, vous acceptez nos <a href="legal.html">Conditions Générales &amp; mentions légales</a>.</p>
   <div class="cg-actions">
@@ -3894,6 +3914,68 @@
     }, true);
     document.addEventListener('click', function(e){
       if (!sel.contains(e.target)) sel.classList.remove('ouvert');
+    });
+  })();
+</script>
+<script>
+  // Retour haptique universel : navigator.vibrate (Android) ou interrupteur système (iOS 18+)
+  window.__vibrer = function(ms){
+    if (navigator.vibrate){ navigator.vibrate(ms || 5); return; }
+    var sw = document.getElementById('hapticSwitch');
+    if (sw){ try { sw.click(); } catch(e) {} }
+  };
+  // Un cran à chaque changement de catégorie de la carte
+  document.querySelectorAll('.tabs .tab-btn').forEach(function(b){
+    b.addEventListener('click', function(){ window.__vibrer(6); });
+  });
+</script>
+<script>
+  // Les pages Événements / Rejoignez-nous / Playlists s'ouvrent par-dessus l'accueil :
+  // la page ne se recharge jamais → la radio A piaghja continue de jouer.
+  (function(){
+    var PAGES = ['evenements.html', 'rejoindre.html', 'playlists.html'];
+    var voile = document.createElement('div');
+    voile.className = 'voile-page';
+    voile.hidden = true;
+    voile.innerHTML = '<button class="voile-fermer" aria-label="Retour au site">‹ Retour</button>' +
+                      '<iframe title="Page A piaghja"></iframe>';
+    document.body.appendChild(voile);
+    var cadre = voile.querySelector('iframe');
+    var bFermer = voile.querySelector('.voile-fermer');
+    var ouverte = false;
+
+    function ouvrirPage(href){
+      cadre.src = href + '?embed=1';
+      voile.hidden = false;
+      requestAnimationFrame(function(){ voile.classList.add('la'); });
+      document.documentElement.classList.add('page-ouverte');
+      ouverte = true;
+      try { history.pushState({ sousPage: href }, '', '#' + href.replace('.html', '')); } catch(e) {}
+      if (window.__vibrer) window.__vibrer(6);
+    }
+    function fermerPage(reculer){
+      if (!ouverte) return;
+      ouverte = false;
+      voile.classList.remove('la');
+      document.documentElement.classList.remove('page-ouverte');
+      setTimeout(function(){ voile.hidden = true; cadre.src = 'about:blank'; }, 400);
+      if (reculer !== false){
+        try { if (history.state && history.state.sousPage) history.back(); } catch(e) {}
+      }
+      if (window.__vibrer) window.__vibrer(5);
+    }
+    bFermer.addEventListener('click', function(){ fermerPage(); });
+    window.addEventListener('popstate', function(){ if (ouverte) fermerPage(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && ouverte) fermerPage(); });
+
+    document.querySelectorAll('#navLinks a').forEach(function(a){
+      var href = a.getAttribute('href') || '';
+      if (PAGES.indexOf(href) !== -1){
+        a.addEventListener('click', function(e){
+          e.preventDefault();
+          ouvrirPage(href);
+        });
+      }
     });
   })();
 </script>
