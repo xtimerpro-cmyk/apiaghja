@@ -909,6 +909,9 @@
   .radio.ouvert .radio-panneau{max-height:110px;}
   .radio-panneau .hote{margin-top:.55rem;border-radius:14px;overflow:hidden;}
   .radio-panneau iframe{display:block;width:100%;height:80px;border:0;}
+  .radio{touch-action:none;will-change:transform;cursor:grab;}
+  .radio.saisie{transition:none !important;cursor:grabbing;box-shadow:0 28px 72px rgba(10,11,8,.7);}
+  .radio.retour{transition:transform .9s cubic-bezier(.3,1.35,.35,1), opacity .6s ease, border-radius .35s ease !important;}
   .radio.mini{width:auto;cursor:pointer;padding:.4rem;}
   .radio.mini .radio-info, .radio.mini .radio-play, .radio.mini .radio-reduire, .radio.mini .radio-panneau{display:none;}
   @media (max-width:520px){
@@ -2267,7 +2270,7 @@
   <p style="margin-top:1.6rem;font-size:.75rem;">© 2026 A Piaghja · Tous droits réservés</p>
 </footer>
 
-<div class="radio" id="radio" hidden>
+<div class="radio mini" id="radio" hidden>
   <div class="radio-bar">
     <div class="radio-vinyle" aria-hidden="true">
       <svg viewBox="0 0 200 210" fill="none">
@@ -3837,8 +3840,56 @@
       ouvrir(false);
     });
     radio.addEventListener('click', () => {
-      if (radio.classList.contains('mini')) radio.classList.remove('mini');
+      if (radio.classList.contains('mini')){ radio.classList.remove('mini'); if (window.__vibrer) window.__vibrer(5); }
     });
+
+    // ── La radio se laisse déplacer au doigt, puis revient à sa place ──
+    if (window.PointerEvent){
+      let doigt = null, x0 = 0, y0 = 0, tx = 0, ty = 0, txDep = 0, tyDep = 0;
+      let bouge = false, cadre0 = null, tRetour = null;
+      const SEUIL = 7, MARGE = 8;
+      function poser(){
+        radio.style.transform = (tx || ty) ? 'translate3d(' + tx + 'px,' + ty + 'px,0)' : '';
+      }
+      radio.addEventListener('pointerdown', (e) => {
+        if (e.target.closest('button') || e.target.closest('.radio-panneau')) return;
+        doigt = e.pointerId; bouge = false;
+        x0 = e.clientX; y0 = e.clientY; txDep = tx; tyDep = ty;
+        const r = radio.getBoundingClientRect();
+        cadre0 = { gauche: r.left - tx, haut: r.top - ty, droite: r.right - tx, bas: r.bottom - ty };
+        clearTimeout(tRetour);
+        radio.classList.remove('retour');
+        try { radio.setPointerCapture(doigt); } catch(err) {}
+      });
+      radio.addEventListener('pointermove', (e) => {
+        if (doigt !== e.pointerId) return;
+        const dx = e.clientX - x0, dy = e.clientY - y0;
+        if (!bouge && Math.hypot(dx, dy) < SEUIL) return;
+        if (!bouge){ bouge = true; radio.classList.add('saisie'); if (window.__vibrer) window.__vibrer(4); }
+        tx = Math.min(Math.max(txDep + dx, -cadre0.gauche + MARGE), innerWidth - cadre0.droite - MARGE);
+        ty = Math.min(Math.max(tyDep + dy, -cadre0.haut + MARGE), innerHeight - cadre0.bas - MARGE);
+        poser();
+      });
+      function lacher(e){
+        if (doigt !== e.pointerId) return;
+        doigt = null;
+        radio.classList.remove('saisie');
+        if (!bouge) return;
+        radio.addEventListener('click', function avaler(ev){
+          ev.stopImmediatePropagation(); ev.preventDefault();
+          radio.removeEventListener('click', avaler, true);
+        }, true);
+        tRetour = setTimeout(() => {
+          radio.classList.add('retour');
+          tx = 0; ty = 0;
+          poser();
+          if (window.__vibrer) window.__vibrer(4);
+          setTimeout(() => radio.classList.remove('retour'), 950);
+        }, 3500);
+      }
+      radio.addEventListener('pointerup', lacher);
+      radio.addEventListener('pointercancel', lacher);
+    }
   })();
 </script>
 
