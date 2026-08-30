@@ -1420,6 +1420,10 @@
     text-shadow:0 1px 0 rgba(253,252,249,.55), 0 2px 4px rgba(42,43,36,.15);
   }
   .chat-titre{text-shadow:0 1px 3px rgba(20,22,14,.35);}
+
+  /* Une seule occurrence visible à la fois dans le bandeau */
+  .defile-piste{animation-duration:16s;}
+  .defile-piste span{display:inline-flex;align-items:center;min-width:118vw;}
 </style>
 </head>
 <body>
@@ -1499,7 +1503,7 @@
   <div class="lang-sel drapeaux" id="langSel" role="group" aria-label="Langue"><button type="button" data-lg="fr" class="on" aria-label="Français">🇫🇷</button><button type="button" data-lg="en" aria-label="English">🇬🇧</button><button type="button" data-lg="it" aria-label="Italiano">🇮🇹</button><button type="button" data-lg="de" aria-label="Deutsch">🇩🇪</button><button type="button" data-lg="nl" aria-label="Nederlands">🇳🇱</button></div>
 
   <div class="defile" aria-hidden="true">
-    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio<i>✦</i></span></div>
+    <div class="defile-piste"><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio</span><span>Bar &amp; Restaurant<i>✦</i>Porto-Vecchio</span></div>
   </div>
 </nav>
 
