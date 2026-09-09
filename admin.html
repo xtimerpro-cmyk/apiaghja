@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1d1e18">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d1e18'/%3E%3Cpath d='M32 54 C31 44 33 38 31 30' stroke='%23c2a15c' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3Cellipse cx='32' cy='22' rx='16' ry='6.5' fill='%23c2a15c'/%3E%3Cellipse cx='18' cy='26' rx='8' ry='4' fill='%23c2a15c' opacity='.75'/%3E%3Cellipse cx='46' cy='25' rx='8' ry='4' fill='%23c2a15c' opacity='.75'/%3E%3C/svg%3E">
 <meta name="robots" content="noindex, nofollow">
 <title>A Piaghja · Direction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -677,9 +679,50 @@
   .sk::after{background:linear-gradient(90deg,transparent,rgba(253,252,249,.12),transparent);}
   #toast{background:var(--sable);color:var(--encre);}
   #toast.ko{background:var(--terre);color:var(--blanc);}
+
+  /* ═══════════ FINITIONS V13 ═══════════ */
+  *{-webkit-tap-highlight-color:transparent;}
+  ::selection{background:rgba(194,161,92,.4);color:var(--blanc);}
+  :focus-visible{outline:2px solid var(--or);outline-offset:3px;border-radius:6px;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:rgba(194,161,92,.35);border-radius:99px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  html{scrollbar-color:rgba(194,161,92,.35) transparent;}
+
+  .topbar{padding-top:calc(.7rem + env(safe-area-inset-top));}
+  main{padding-bottom:calc(2.5rem + env(safe-area-inset-bottom));}
+  #toast{bottom:calc(18px + env(safe-area-inset-bottom));}
+
+  .co-pin{width:56px;height:58px;display:block;margin:0 auto .4rem;
+    filter:drop-shadow(0 4px 12px rgba(194,161,92,.3));}
+  .co-champ{position:relative;}
+  .co-champ input{width:100%;padding-right:2.6rem;}
+  .co-oeil{
+    position:absolute;right:.4rem;top:50%;transform:translateY(-50%);
+    background:none;border:none;font-size:1rem;cursor:pointer;
+    opacity:.5;transition:opacity .2s ease;padding:.3rem;
+  }
+  .co-oeil:hover, .co-oeil.on{opacity:1;}
+
+  section{animation:vueEntre .35s ease;}
+  @keyframes vueEntre{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  @media (max-width:900px){
+    .onglets{
+      flex-wrap:nowrap;overflow-x:auto;max-width:100%;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+      scroll-snap-type:x proximity;padding:.15rem .1rem;
+      mask-image:linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+      -webkit-mask-image:linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    }
+    .onglets::-webkit-scrollbar{display:none;}
+    .onglet{flex:none;scroll-snap-align:center;white-space:nowrap;}
+  }
 </style>
 </head>
 <body>
+<input type="checkbox" switch id="hapticSwitch" aria-hidden="true" tabindex="-1"
+       style="position:fixed;left:-100px;top:0;width:1px;height:1px;opacity:0;pointer-events:none">
 
 <div class="fond3d" aria-hidden="true">
   <div class="scene">
@@ -712,9 +755,18 @@
       <ellipse cx="144" cy="66" rx="25" ry="12" fill="#7d8560"/>
       <circle cx="100" cy="77" r="5" fill="#c2a15c"/>
     </svg>
-    <h1>A piaghja</h1>
+    <svg class="co-pin" viewBox="0 0 200 210" fill="none" aria-hidden="true">
+        <path d="M100 195 C98 172 102 152 97 130 C93 112 100 100 97 80" stroke="#c2a15c" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="100" cy="58" rx="46" ry="16" fill="#c2a15c"/>
+        <ellipse cx="57" cy="68" rx="25" ry="12" fill="#c2a15c" opacity=".75"/>
+        <ellipse cx="144" cy="66" rx="25" ry="12" fill="#c2a15c" opacity=".75"/>
+      </svg>
+      <h1>A piaghja</h1>
     <span class="sous">Espace direction</span>
-    <input type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password">
+    <div class="co-champ">
+        <input type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password" autofocus>
+        <button type="button" class="co-oeil" id="cleOeil" aria-label="Afficher la clé">👁</button>
+      </div>
     <button id="btnConnexion">Entrer</button>
     <div class="co-erreur" id="erreurConnexion"></div>
   </div>
@@ -1007,10 +1059,20 @@
   // ═══════════ Navigation entre vues ═══════════
   const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", clients: "vueClients", carte: "vueCarte", evenements: "vueEvenements", candidatures: "vueCandidatures", stats: "vueStats" };
   let vueCourante = "jour";
+  window.__vibrer = function(ms){
+    if (navigator.vibrate){ navigator.vibrate(ms || 5); return; }
+    const sw = document.getElementById("hapticSwitch");
+    if (sw){ try { sw.click(); } catch(e) {} }
+  };
   function montrerVue(nom){
     vueCourante = nom;
     for (const [n, id] of Object.entries(VUES)) $(id).hidden = (n !== nom);
-    document.querySelectorAll(".onglet").forEach(b => b.classList.toggle("on", b.dataset.vue === nom));
+    document.querySelectorAll(".onglet").forEach(b => {
+      const actif = b.dataset.vue === nom;
+      b.classList.toggle("on", actif);
+      if (actif && b.scrollIntoView) b.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    });
+    window.__vibrer(6);
     if (nom === "jour") chargerJour();
     if (nom === "service") chargerServiceVue();
     if (nom === "dataservices") chargerDataServices();
@@ -1060,6 +1122,13 @@
   }
   $("btnConnexion").addEventListener("click", connecter);
   $("cle").addEventListener("keydown", (e) => { if (e.key === "Enter") connecter(); });
+  $("cleOeil").addEventListener("click", () => {
+    const c = $("cle");
+    const voir = c.type === "password";
+    c.type = voir ? "text" : "password";
+    $("cleOeil").classList.toggle("on", voir);
+    c.focus();
+  });
   $("btnDeconnexion").addEventListener("click", () => deconnecter(false));
 
   // ═══════════ Vue Jour ═══════════
