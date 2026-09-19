@@ -603,15 +603,20 @@
     .jauge{background:var(--blanc);box-shadow:0 4px 14px rgba(42,43,36,.08);}
   }
 
-  /* Plan de salle embarqué */
-  #vuePlan{padding:0;}
+  /* Plan de salle embarqué — pleine largeur d'écran */
+  #vuePlan{
+    padding:0;
+    width:calc(100vw - 2rem);
+    margin-left:calc(50% - 50vw + 1rem);
+  }
   #planCadre{
-    display:block;width:100%;height:calc(100dvh - 10.5rem);
-    min-height:420px;border:1px solid var(--sable-deep);border-radius:16px;
+    display:block;width:100%;height:calc(100dvh - 7.6rem);
+    min-height:480px;border:1px solid var(--sable-deep);border-radius:16px;
     background:var(--blanc);
   }
   @media (max-width:900px){
-    #planCadre{height:calc(100dvh - 12.5rem);border-radius:12px;}
+    #vuePlan{width:100vw;margin-left:calc(50% - 50vw);}
+    #planCadre{height:calc(100dvh - 10.6rem);border-radius:0;border-left:none;border-right:none;}
   }
 
   /* ═══════════ V14 — OUTILS DE SERVICE (thème clair service) ═══════════ */
