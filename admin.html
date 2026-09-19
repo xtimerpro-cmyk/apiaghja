@@ -603,6 +603,17 @@
     .jauge{background:var(--blanc);box-shadow:0 4px 14px rgba(42,43,36,.08);}
   }
 
+  /* Plan de salle embarqué */
+  #vuePlan{padding:0;}
+  #planCadre{
+    display:block;width:100%;height:calc(100dvh - 10.5rem);
+    min-height:420px;border:1px solid var(--sable-deep);border-radius:16px;
+    background:var(--blanc);
+  }
+  @media (max-width:900px){
+    #planCadre{height:calc(100dvh - 12.5rem);border-radius:12px;}
+  }
+
   /* ═══════════ V14 — OUTILS DE SERVICE (thème clair service) ═══════════ */
   .ligne-outils{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin:0 0 1rem;}
   .ligne-outils .recherche{flex:1;min-width:200px;}
@@ -737,6 +748,7 @@
     <nav class="onglets" id="onglets">
       <button class="onglet on" data-vue="jour">Carnet</button>
       <button class="onglet" data-vue="service">Service en cours</button>
+      <button class="onglet" data-vue="plan">Plan de salle</button>
       <button class="onglet" data-vue="dataservices">Data services</button>
       <button class="onglet" data-vue="clients">Fichier client</button>
       <button class="onglet" data-vue="carte">Carte</button>
@@ -804,6 +816,11 @@
         <div class="carte"><h2 class="titre">Midi</h2><div id="svcMidi"></div></div>
         <div class="carte"><h2 class="titre">Soir</h2><div id="svcSoir"></div></div>
       </div>
+    </section>
+
+    <!-- ═══════ Vue Plan de salle ═══════ -->
+    <section id="vuePlan" hidden>
+      <iframe id="planCadre" title="Plan de salle A piaghja"></iframe>
     </section>
 
     <!-- ═══════ Vue Data services ═══════ -->
@@ -1009,7 +1026,7 @@
   let moisStats = dateCourante.slice(0, 7);
 
   // ═══════════ Navigation entre vues ═══════════
-  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", clients: "vueClients", carte: "vueCarte", evenements: "vueEvenements", candidatures: "vueCandidatures", stats: "vueStats" };
+  const VUES = { jour: "vueJour", service: "vueService", dataservices: "vueDataServices", clients: "vueClients", plan: "vuePlan", carte: "vueCarte", evenements: "vueEvenements", candidatures: "vueCandidatures", stats: "vueStats" };
   let vueCourante = "jour";
   window.__vibrer = function(ms){
     if (navigator.vibrate){ navigator.vibrate(ms || 5); return; }
@@ -1025,6 +1042,7 @@
     carte: '<path d="M4 5h16M4 10h16M4 15h10M4 20h7"/>',
     evenements: '<path d="M12 3l2.4 5.4 5.6.6-4.2 3.9 1.2 5.6-5-3-5 3 1.2-5.6L4 9l5.6-.6z"/>',
     candidatures: '<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.8-3.6 3.4-5.5 6.5-5.5 1.4 0 2.7.4 3.8 1.1M18 14v6M15 17h6"/>',
+    plan: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h8M11 3v9M11 16h10"/>',
     stats: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'
   };
   document.querySelectorAll(".onglet").forEach(b => {
@@ -1053,6 +1071,7 @@
     if (nom === "dataservices") chargerDataServices();
     if (nom === "clients") chargerClients();
     if (nom === "carte") chargerCarte();
+    if (nom === "plan" && !$("planCadre").src) $("planCadre").src = "plan.html";
     if (nom === "evenements") chargerEvenements();
     if (nom === "candidatures") chargerCandidatures();
     if (nom === "stats") chargerStats();

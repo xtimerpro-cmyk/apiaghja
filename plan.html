@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Piaghja — Plan de salle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=Questrial&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papier:#F1EFE8;
+    --papier-2:#FAF8F3;
+    --ink:#1C3A31;
+    --ink-2:#4A6258;
+    --trait:#9FB3A6;
+    --grid:#DCE2D9;
+    --sauge:#86A292;
+    --or:#A8762C;
+    --or-clair:#EFE0C2;
+    --rose:#C08379;
+    --rose-clair:#F0DDD8;
+    --vert:#41715B;
+    --vert-clair:#C7DACB;
+    --rule:#CFD6CC;
+    --panel:#FBFAF6;
+    --danger:#9B4A3C;
+    --focus:#1C3A31;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --papier:#161E1B;
+      --papier-2:#1C2622;
+      --ink:#E6EDE6;
+      --ink-2:#A9BCB0;
+      --trait:#5B7266;
+      --grid:#232E29;
+      --sauge:#7E9A89;
+      --or:#D7AE62;
+      --or-clair:#4A3A1C;
+      --rose:#D9A197;
+      --rose-clair:#4A2E28;
+      --vert:#7FC49E;
+      --vert-clair:#22402F;
+      --rule:#2C3A33;
+      --panel:#1B2420;
+      --danger:#E39182;
+      --focus:#E6EDE6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --papier:#161E1B; --papier-2:#1C2622; --ink:#E6EDE6; --ink-2:#A9BCB0;
+    --trait:#5B7266; --grid:#232E29; --sauge:#7E9A89; --or:#D7AE62;
+    --or-clair:#4A3A1C; --rose:#D9A197; --rose-clair:#4A2E28; --vert:#7FC49E;
+    --vert-clair:#22402F; --rule:#2C3A33; --panel:#1B2420; --danger:#E39182;
+    --focus:#E6EDE6;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--papier); color:var(--ink);
+    font-family:"Questrial","Avenir Next","Segoe UI",system-ui,sans-serif;
+    -webkit-text-size-adjust:100%;
+    overflow:hidden;
+  }
+  .num{font-family:"Archivo Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;font-variant-numeric:tabular-nums}
+
+  /* ---------- structure ---------- */
+  .app{display:flex;flex-direction:column;height:100dvh}
+  .bandeau{
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    padding:10px 16px;border-bottom:1px solid var(--rule);
+    background:var(--papier-2);
+  }
+  .marque{display:flex;flex-direction:column;line-height:1.05;margin-right:4px}
+  .marque b{font-weight:400;font-size:17px;letter-spacing:.04em}
+  .marque span{font-size:10.5px;color:var(--ink-2);letter-spacing:.14em}
+
+  .champ{display:flex;align-items:center;gap:8px}
+  .champ label{font-size:11.5px;color:var(--ink-2);letter-spacing:.06em}
+  input[type=date],input[type=text],input[type=time],input[type=tel],input[type=number],textarea,select{
+    font:inherit;font-size:14px;color:var(--ink);background:var(--panel);
+    border:1px solid var(--rule);border-radius:2px;padding:7px 9px;min-height:38px;
+  }
+  input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible,[tabindex]:focus-visible{
+    outline:2px solid var(--focus);outline-offset:2px;
+  }
+  .segment{display:flex;border:1px solid var(--rule);border-radius:2px;overflow:hidden;background:var(--panel)}
+  .segment button{
+    font:inherit;font-size:14px;border:0;background:transparent;color:var(--ink-2);
+    padding:9px 16px;cursor:pointer;min-height:38px;
+  }
+  .segment button[aria-pressed=true]{background:var(--ink);color:var(--papier-2)}
+
+  .compteurs{display:flex;gap:22px;margin-left:auto;align-items:baseline}
+  .compteur{display:flex;align-items:baseline;gap:6px}
+  .compteur b{font-size:22px;font-weight:500}
+  .compteur span{font-size:11px;color:var(--ink-2);letter-spacing:.08em}
+
+  .outils{display:flex;gap:8px;align-items:center}
+  .btn{
+    font:inherit;font-size:13.5px;padding:9px 14px;min-height:38px;cursor:pointer;
+    background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:2px;
+  }
+  .btn:hover{border-color:var(--sauge)}
+  .btn.plein{background:var(--ink);color:var(--papier-2);border-color:var(--ink)}
+  .btn.discret{border-color:transparent;background:transparent;color:var(--ink-2)}
+  .btn.danger{color:var(--danger)}
+  .btn[aria-pressed=true]{background:var(--ink);color:var(--papier-2);border-color:var(--ink)}
+
+  .corps{flex:1;display:flex;min-height:0}
+  .feuille{position:relative;flex:1;min-width:0;overflow:hidden;touch-action:none;background:var(--papier)}
+  #plan{display:block;width:100%;height:100%}
+
+  /* ---------- cartouche & échelle ---------- */
+  .cartouche,.echelle{
+    position:absolute;background:color-mix(in srgb,var(--papier-2) 88%,transparent);
+    border:1px solid var(--ink);pointer-events:none;
+  }
+  .cartouche{right:14px;bottom:14px;width:246px}
+  .cartouche div{display:flex;justify-content:space-between;gap:10px;padding:5px 9px;border-bottom:1px solid var(--rule);font-size:11px;color:var(--ink-2)}
+  .cartouche div:last-child{border-bottom:0}
+  .cartouche .titre{display:block;padding:8px 9px;font-size:14px;color:var(--ink);letter-spacing:.06em;border-bottom:1px solid var(--ink)}
+  .cartouche .titre small{display:block;font-size:10px;color:var(--ink-2);letter-spacing:.14em;margin-top:2px}
+  .cartouche b{color:var(--ink);font-weight:400}
+  .echelle{left:14px;bottom:14px;padding:8px 10px;display:flex;align-items:flex-end;gap:14px}
+  .echelle figcaption{font-size:10px;color:var(--ink-2);letter-spacing:.1em}
+
+  .zoom{position:absolute;left:14px;top:14px;display:flex;flex-direction:column;gap:6px}
+  .zoom button{width:38px;height:38px;font-size:16px;line-height:1;padding:0}
+
+  .legende{
+    position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:7px;
+    background:color-mix(in srgb,var(--papier-2) 88%,transparent);
+    border:1px solid var(--rule);padding:10px 12px;
+  }
+  .legende span{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2)}
+  .legende i{width:15px;height:15px;border:1.4px solid var(--ink);display:inline-block}
+  .legende i.libre{background:var(--panel)}
+  .legende i.reservee{background:var(--or-clair);border-color:var(--or)}
+  .legende i.occupee{background:var(--vert-clair);border-color:var(--vert)}
+  .legende i.debarrasser{background:var(--rose-clair);border-color:var(--rose)}
+
+  /* ---------- panneau ---------- */
+  .panneau{
+    width:352px;flex:0 0 352px;border-left:1px solid var(--rule);background:var(--panel);
+    display:flex;flex-direction:column;min-height:0;
+  }
+  .panneau header{padding:14px 18px 12px;border-bottom:1px solid var(--rule)}
+  .panneau header h2{margin:0;font-size:15px;font-weight:400;letter-spacing:.04em}
+  .panneau header p{margin:3px 0 0;font-size:12px;color:var(--ink-2)}
+  .panneau .contenu{flex:1;overflow:auto;padding:16px 18px 24px;-webkit-overflow-scrolling:touch}
+
+  .fiche-num{display:flex;align-items:baseline;gap:12px;margin-bottom:2px}
+  .fiche-num b{font-size:42px;font-weight:500;line-height:.9;letter-spacing:-.01em}
+  .fiche-num em{font-style:normal;font-size:12.5px;color:var(--ink-2)}
+  .statuts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:16px 0 18px}
+  .statuts button{
+    font:inherit;font-size:13px;padding:11px 8px;cursor:pointer;text-align:left;
+    border:1.4px solid var(--rule);background:transparent;color:var(--ink-2);border-radius:2px;
+  }
+  .statuts button[aria-pressed=true]{color:var(--ink);font-weight:400}
+  .statuts button[data-s=libre][aria-pressed=true]{background:var(--panel);border-color:var(--ink)}
+  .statuts button[data-s=reservee][aria-pressed=true]{background:var(--or-clair);border-color:var(--or)}
+  .statuts button[data-s=occupee][aria-pressed=true]{background:var(--vert-clair);border-color:var(--vert)}
+  .statuts button[data-s=debarrasser][aria-pressed=true]{background:var(--rose-clair);border-color:var(--rose)}
+
+  .form{display:flex;flex-direction:column;gap:12px}
+  .pas{display:flex;align-items:center;gap:10px;border:1px solid var(--rule);border-radius:2px;padding:8px 10px;background:var(--papier-2)}
+  .pas span{flex:1;font-size:11.5px;color:var(--ink-2);letter-spacing:.05em}
+  .pas b{font-size:22px;font-weight:500;min-width:30px;text-align:center}
+  .pas button{width:42px;height:42px;font:inherit;font-size:20px;line-height:1;cursor:pointer;
+    background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:2px}
+  .form label{display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--ink-2);letter-spacing:.05em}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  textarea{resize:vertical;min-height:62px}
+  .actions{display:flex;gap:8px;margin-top:18px}
+  .actions .btn{flex:1;justify-content:center}
+
+  .liste{list-style:none;margin:0;padding:0}
+  .liste li{border-bottom:1px solid var(--rule)}
+  .liste button{
+    width:100%;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:baseline;
+    padding:12px 2px;background:none;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer;
+  }
+  .liste .t{font-size:18px;color:var(--ink)}
+  .liste .n{font-size:14px}
+  .liste .n small{display:block;font-size:11.5px;color:var(--ink-2);margin-top:2px}
+  .liste .c{font-size:13px;color:var(--ink-2)}
+  .liste button:hover{background:color-mix(in srgb,var(--sauge) 12%,transparent)}
+  .vide{color:var(--ink-2);font-size:13.5px;line-height:1.6;margin:10px 0 0}
+
+  .note{font-size:11.5px;color:var(--ink-2);line-height:1.55;margin-top:20px;padding-top:14px;border-top:1px solid var(--rule)}
+  .sync{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-2)}
+  .sync i{width:7px;height:7px;border-radius:50%;background:var(--trait);display:inline-block}
+  .sync[data-on="1"] i{background:var(--vert)}
+
+  /* ---------- svg ---------- */
+  .mur{fill:none;stroke:var(--ink);stroke-width:9}
+  .mur-fin{fill:none;stroke:var(--trait);stroke-width:1}
+  .limite{fill:none;stroke:var(--trait);stroke-width:1.6;stroke-dasharray:14 7}
+  .cote{stroke:var(--trait);stroke-width:1}
+  .cote-txt{fill:var(--ink-2);font-size:13px;letter-spacing:.06em}
+  .zone-txt{fill:var(--ink-2);font-size:15px;letter-spacing:.22em}
+  .couloir-bord{fill:none;stroke:var(--ink);stroke-width:62;stroke-linecap:butt}
+  .couloir-fond{fill:none;stroke:var(--papier-2);stroke-width:58.5;stroke-linecap:butt}
+  .couloir-txt{fill:var(--trait);font-size:13px;letter-spacing:.24em}
+
+  .table{cursor:pointer}
+  .table .forme{fill:var(--panel);stroke:var(--ink);stroke-width:2.2;transition:fill .12s ease}
+  .table .num{fill:var(--ink);font-size:21px;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+  .table .pax{fill:var(--ink-2);font-size:12px;text-anchor:middle;pointer-events:none}
+  .table[data-statut=reservee] .forme{fill:var(--or-clair);stroke:var(--or)}
+  .table[data-statut=occupee] .forme{fill:var(--vert-clair);stroke:var(--vert)}
+  .table[data-statut=debarrasser] .forme{fill:var(--rose-clair);stroke:var(--rose)}
+  .table[data-prov=1] .forme{stroke-dasharray:7 4}
+  .table[data-hs=1] .forme{fill:none;stroke:var(--trait);stroke-dasharray:4 4}
+  .table[data-hs=1] .num{fill:var(--trait)}
+  .table .halo{fill:none;stroke:var(--ink);stroke-width:2;opacity:0}
+  .table.sel .halo{opacity:1}
+  .table .etiq{fill:var(--ink);font-size:12.5px;text-anchor:middle;pointer-events:none}
+  .banc{fill:none;stroke:var(--trait);stroke-width:2.4;stroke-linecap:round}
+  .edition .table{cursor:grab}
+  .edition .table.drag{cursor:grabbing}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+  /* ---------- tablette / mobile ---------- */
+  @media (max-width:1080px){
+    .panneau{flex:0 0 300px;width:300px}
+    .legende{display:none}
+  }
+  @media (max-width:820px){
+    .corps{flex-direction:column}
+    .panneau{width:auto;flex:0 0 46dvh;border-left:0;border-top:1px solid var(--rule)}
+    .compteurs{margin-left:0;order:3;width:100%}
+    .cartouche{display:none}
+  }
+  .masque{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="bandeau">
+    <div class="marque">
+      <b>A Piaghja</b>
+      <span class="num">PLAN DE SALLE</span>
+    </div>
+
+    <div class="champ">
+      <label for="date">Date</label>
+      <input type="date" id="date">
+    </div>
+
+    <div class="segment" role="group" aria-label="Service">
+      <button type="button" id="svc-midi" aria-pressed="true">Midi</button>
+      <button type="button" id="svc-soir" aria-pressed="false">Soir</button>
+    </div>
+
+    <div class="outils">
+      <button class="btn" type="button" id="btn-edition" aria-pressed="false">Modifier le plan</button>
+      <button class="btn discret" type="button" id="btn-export">Exporter</button>
+    </div>
+
+    <div class="compteurs">
+      <div class="compteur"><b class="num" id="n-couverts">0</b><span>couverts</span></div>
+      <div class="compteur"><b class="num" id="n-tables">0</b><span>tables prises</span></div>
+      <div class="compteur"><b class="num" id="n-libres">0</b><span>libres</span></div>
+    </div>
+  </div>
+
+  <div class="corps">
+    <div class="feuille" id="feuille">
+      <svg id="plan" viewBox="0 0 1760 1020" role="img" aria-label="Plan de la salle">
+        <defs>
+          <pattern id="grid" width="55.6" height="55.6" patternUnits="userSpaceOnUse">
+            <path d="M55.6 0 H0 V55.6" fill="none" stroke="var(--grid)" stroke-width="0.8"/>
+          </pattern>
+          <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="var(--trait)" stroke-width="1.5"/>
+          </pattern>
+        </defs>
+
+        <rect x="-3000" y="-3000" width="9000" height="9000" fill="url(#grid)"/>
+
+        <g id="viewport">
+          <!-- murs de la salle -->
+          <path class="mur" d="M36,52 H1064"/>
+          <path class="mur" d="M1064,52 V266"/>
+          <path class="mur" d="M1064,334 V524"/>
+          <path class="mur" d="M36,52 V330"/>
+          <path class="mur" d="M36,398 V524"/>
+          <path class="mur" d="M36,524 H742"/>
+          <path class="mur" d="M962,524 H1064"/>
+          <path class="mur-fin" d="M44,60 H1056 V266"/>
+          <path class="mur-fin" d="M1056,334 V516"/>
+          <!-- porte d'entrée (ouvrant) -->
+          <path class="mur-fin" d="M36,330 A68,68 0 0 0 104,398"/>
+          <line class="mur-fin" x1="36" y1="398" x2="36" y2="330"/>
+          <!-- passage vers le bar -->
+          <path class="limite" d="M742,524 H962"/>
+
+          <!-- limites terrasse / plage -->
+          <path class="limite" d="M36,524 V812 H980 V660"/>
+          <path class="limite" d="M1064,524 V660 H980"/>
+
+          <!-- couloir de circulation -->
+          <path class="couloir-bord" d="M1030,300 C1420,292 1580,560 1600,940"/>
+          <path class="couloir-fond" d="M1030,300 C1420,292 1580,560 1600,940"/>
+          <text class="couloir-txt num" x="1076" y="314" transform="rotate(8 1076 314)">COULOIR</text>
+
+          <!-- cotes -->
+          <g class="cote">
+            <line x1="36" y1="28" x2="1064" y2="28"/>
+            <line x1="36" y1="20" x2="36" y2="36"/>
+            <line x1="1064" y1="20" x2="1064" y2="36"/>
+          </g>
+          <text class="cote-txt num" x="550" y="22" text-anchor="middle">18,40 m</text>
+          <g class="cote">
+            <line x1="16" y1="52" x2="16" y2="524"/>
+            <line x1="8" y1="52" x2="24" y2="52"/>
+            <line x1="8" y1="524" x2="24" y2="524"/>
+          </g>
+          <text class="cote-txt num" x="16" y="288" text-anchor="middle" transform="rotate(-90 16 288)">8,50 m</text>
+
+          <!-- libellés de zone -->
+          <text class="zone-txt num" x="330" y="96">TERRASSE BOIS</text>
+          <text class="zone-txt num" x="60" y="580">ENTRÉE</text>
+          <text class="zone-txt num" x="700" y="848">PLAGE</text>
+
+          <g id="tables"></g>
+        </g>
+      </svg>
+
+      <div class="zoom">
+        <button class="btn" type="button" id="z-plus" aria-label="Agrandir">+</button>
+        <button class="btn" type="button" id="z-moins" aria-label="Réduire">−</button>
+        <button class="btn" type="button" id="z-fit" aria-label="Recadrer le plan">◻</button>
+      </div>
+
+      <div class="legende" aria-hidden="true">
+        <span><i class="libre"></i>Libre</span>
+        <span><i class="reservee"></i>Réservée</span>
+        <span><i class="occupee"></i>Occupée</span>
+        <span><i class="debarrasser"></i>À redresser</span>
+      </div>
+
+      <figure class="cartouche num">
+        <b class="titre">A PIAGHJA — GOLFO DI SOGNO<small>PLAN DE SALLE · RÉSERVATIONS</small></b>
+        <div><span>Service</span><b id="c-service">—</b></div>
+        <div><span>Échelle</span><b>1:100 · cotes à confirmer</b></div>
+        <div><span>Couverts placés</span><b id="c-couverts">0</b></div>
+        <div><span>État</span><b class="sync" id="c-sync"><i></i><span id="c-sync-txt">Local</span></b></div>
+      </figure>
+
+      <figure class="echelle num">
+        <svg width="150" height="30" aria-hidden="true">
+          <rect x="1" y="12" width="27.8" height="8" fill="var(--ink)"/>
+          <rect x="28.8" y="12" width="27.8" height="8" fill="none" stroke="var(--ink)"/>
+          <rect x="56.6" y="12" width="27.8" height="8" fill="var(--ink)"/>
+          <rect x="84.4" y="12" width="55.6" height="8" fill="none" stroke="var(--ink)"/>
+          <text x="0" y="9" font-size="9" fill="var(--ink-2)">0</text>
+          <text x="53" y="9" font-size="9" fill="var(--ink-2)">2</text>
+          <text x="134" y="9" font-size="9" fill="var(--ink-2)">5 m</text>
+        </svg>
+        <figcaption>NORD ↑</figcaption>
+      </figure>
+    </div>
+
+    <aside class="panneau">
+      <header>
+        <h2 id="p-titre">Réservations du service</h2>
+        <p id="p-sous">Touchez une table sur le plan pour la placer.</p>
+      </header>
+      <div class="contenu" id="p-contenu"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ plan par défaut ============ */
+  function sq(id,x,y,z,seats){return{id:id,x:x,y:y,w:56,h:56,shape:"square",seats:seats||2,zone:z};}
+  var PLAN_DEFAUT = [
+    // salle — rangée 100
+    sq("100",320,140,"bois"), sq("101",410,140,"bois"), sq("102",500,140,"bois"),
+    sq("103",590,140,"bois"), sq("104",680,140,"bois"), sq("105",770,140,"bois"),
+    sq("106",856,140,"bois"),
+    // salle — rangée 200
+    sq("200",320,250,"bois"), sq("201",410,250,"bois"), sq("202",500,250,"bois"),
+    sq("203",590,250,"bois"), sq("204",680,250,"bois"), sq("205",770,250,"bois"),
+    // salle — rangée 300
+    sq("300",320,352,"bois"), sq("301",410,352,"bois"), sq("302",500,352,"bois"),
+    sq("303",590,352,"bois"), sq("304",680,352,"bois"), sq("305",770,352,"bois"),
+    // salle — bout de salle
+    {id:"206",x:995,y:452,w:76,h:76,shape:"square",seats:6,zone:"bois"},
+    {id:"700",x:1000,y:266,w:50,h:200,shape:"rect",seats:0,zone:"bois",hs:true},
+    // salle — côté entrée
+    {id:"91",x:236,y:150,w:88,h:58,shape:"oval",seats:4,zone:"bois"},
+    {id:"90",x:128,y:150,w:88,h:58,shape:"oval",seats:4,zone:"bois"},
+    {id:"44",x:62,y:252,w:34,h:50,shape:"rect",seats:2,zone:"bois"},
+    // rangée 400 — dans le rectangle, juste sous les 300
+    {id:"400",x:320,y:456,w:76,h:76,shape:"square",seats:6,zone:"bois"},
+    {id:"401",x:420,y:456,w:62,h:62,shape:"square",seats:4,zone:"bois"},
+    {id:"402",x:510,y:456,w:62,h:62,shape:"square",seats:4,zone:"bois"},
+    {id:"403",x:600,y:456,w:62,h:62,shape:"square",seats:4,zone:"bois"},
+    {id:"404",x:690,y:456,w:62,h:62,shape:"square",seats:4,zone:"bois"},
+    {id:"405",x:790,y:456,w:76,h:76,shape:"square",seats:6,zone:"bois"},
+    {id:"406",x:890,y:456,w:76,h:76,shape:"square",seats:6,zone:"bois"},
+    {id:"89",x:200,y:456,w:36,h:36,shape:"square",seats:2,zone:"bois"},
+    // entrée / avant-terrasse
+    {id:"45",x:150,y:640,w:52,h:52,shape:"square",seats:4,zone:"entree",bancs:"h"},
+    {id:"46",x:150,y:730,w:52,h:52,shape:"square",seats:4,zone:"entree",bancs:"h"},
+    // bar
+    // extérieur du couloir — rondes de 4, chacune face à sa C
+    {id:"B1",x:1197,y:232,w:72,h:72,shape:"round",seats:4,zone:"couloir"},
+    {id:"B2",x:1429,y:337,w:72,h:72,shape:"round",seats:4,zone:"couloir"},
+    {id:"B3",x:1575,y:508,w:72,h:72,shape:"round",seats:4,zone:"couloir"},
+    {id:"B4",x:1650,y:707,w:72,h:72,shape:"round",seats:4,zone:"couloir"},
+    {id:"B5",x:1674,y:840,w:72,h:72,shape:"round",seats:4,zone:"couloir"},
+    // intérieur du couloir — rectangles de 6
+    {id:"C1",x:1162,y:403,w:130,h:62,shape:"rect",seats:6,zone:"couloir"},
+    {id:"C2",x:1322,y:474,w:130,h:62,shape:"rect",seats:6,zone:"couloir"},
+    {id:"C3",x:1423,y:593,w:130,h:62,shape:"rect",seats:6,zone:"couloir"},
+    {id:"C4",x:1481,y:748,w:130,h:62,shape:"rect",seats:6,zone:"couloir"},
+    // dernière table, dans l'axe du couloir
+    {id:"600",x:1600,y:940,w:190,h:74,shape:"rect",seats:8,zone:"couloir"}
+  ];
+
+  var ZONES={bois:"Terrasse bois",entree:"Entrée",couloir:"Côté couloir"};
+  var STATUTS=[["libre","Libre"],["reservee","Réservée"],["occupee","Occupée"],["debarrasser","À redresser"]];
+
+  /* ============ état ============ */
+  var etat={
+    date:new Date().toISOString().slice(0,10),
+    service:"soir",
+    tables:PLAN_DEFAUT.map(function(t){return Object.assign({},t);}),
+    places:{},              // id table -> {statut,nom,couverts,heure,tel,note}
+    sel:null,
+    edition:false
+  };
+  var db=null, unsubPlaces=null, unsubPlan=null, ecritureOk=true;
+
+  var $=function(s){return document.querySelector(s);};
+  var svg=$("#plan"), gTables=$("#tables"), viewport=$("#viewport");
+  var NS="http://www.w3.org/2000/svg";
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a){e.setAttribute(k,a[k]);}return e;}
+  function tableById(id){for(var i=0;i<etat.tables.length;i++){if(etat.tables[i].id===id)return etat.tables[i];}return null;}
+  function cle(){return "services/"+etat.date+"_"+etat.service;}
+  function placeDe(id){return etat.places[id]||{statut:"libre"};}
+
+  /* ============ dessin des tables ============ */
+  function dessinerTables(){
+    gTables.textContent="";
+    etat.tables.forEach(function(t){
+      var p=placeDe(t.id);
+      var g=el("g",{"class":"table","data-id":t.id,"data-statut":t.hs?"libre":(p.statut||"libre"),
+                    tabindex:"0",role:"button"});
+      if(t.prov)g.setAttribute("data-prov","1");
+      if(t.hs)g.setAttribute("data-hs","1");
+      g.setAttribute("aria-label","Table "+t.id+" — "+libelleStatut(p.statut));
+
+      var x=t.x-t.w/2, y=t.y-t.h/2;
+      if(t.bancs==="h"){
+        g.appendChild(el("path",{"class":"banc",d:"M"+(x-4)+","+(y-11)+" h"+(t.w+8)}));
+        g.appendChild(el("path",{"class":"banc",d:"M"+(x-4)+","+(y+t.h+11)+" h"+(t.w+8)}));
+      }
+      var forme;
+      if(t.shape==="round"||t.shape==="oval"){
+        forme=el("ellipse",{"class":"forme",cx:t.x,cy:t.y,rx:t.w/2,ry:t.h/2});
+        g.appendChild(el("ellipse",{"class":"halo",cx:t.x,cy:t.y,rx:t.w/2+7,ry:t.h/2+7}));
+      }else{
+        forme=el("rect",{"class":"forme",x:x,y:y,width:t.w,height:t.h,rx:t.shape==="rect"?8:3});
+        g.appendChild(el("rect",{"class":"halo",x:x-7,y:y-7,width:t.w+14,height:t.h+14,rx:6}));
+      }
+      g.insertBefore(forme,g.firstChild);
+
+      var num=el("text",{"class":"num",x:t.x,y:t.y+(t.hs?0:-3)});
+      num.textContent=t.id;
+      if(t.w<40)num.setAttribute("font-size","15");
+      g.appendChild(num);
+
+      if(!t.hs&&t.seats>1){
+        var pax=el("text",{"class":"pax num",x:t.x,y:t.y+t.h/2-7});
+        pax.textContent=t.seats;
+        g.appendChild(pax);
+      }
+      if(!t.hs&&p.statut&&p.statut!=="libre"&&p.nom){
+        var et=el("text",{"class":"etiq num",x:t.x,y:t.y+t.h/2+20});
+        et.textContent=(p.heure?p.heure+" ":"")+p.nom;
+        g.appendChild(et);
+      }
+      if(t.hs){
+        g.appendChild(el("path",{"class":"mur-fin",d:"M"+x+","+y+" L"+(x+t.w)+","+(y+t.h)}));
+      }
+      gTables.appendChild(g);
+    });
+    if(etat.sel){
+      var n=gTables.querySelector('[data-id="'+cssEsc(etat.sel)+'"]');
+      if(n)n.classList.add("sel");
+    }
+  }
+  function cssEsc(s){return String(s).replace(/"/g,'\\"');}
+  function libelleStatut(s){
+    for(var i=0;i<STATUTS.length;i++){if(STATUTS[i][0]===(s||"libre"))return STATUTS[i][1];}
+    return "Libre";
+  }
+
+  /* ============ compteurs ============ */
+  function majCompteurs(){
+    var couverts=0,prises=0,libres=0;
+    etat.tables.forEach(function(t){
+      if(t.hs)return;
+      var p=placeDe(t.id);
+      if(p.statut&&p.statut!=="libre"){prises++;couverts+=Number(p.couverts||0);}
+      else libres++;
+    });
+    $("#n-couverts").textContent=couverts;
+    $("#n-tables").textContent=prises;
+    $("#n-libres").textContent=libres;
+    $("#c-couverts").textContent=couverts;
+    var d=new Date(etat.date+"T12:00:00");
+    $("#c-service").textContent=d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit"})+" · "+(etat.service==="midi"?"midi":"soir");
+  }
+
+  /* ============ panneau ============ */
+  function rendrePanneau(){
+    var c=$("#p-contenu");
+    if(etat.edition){rendreEdition(c);return;}
+    if(!etat.sel){rendreListe(c);return;}
+    var t=tableById(etat.sel);
+    if(!t){etat.sel=null;rendreListe(c);return;}
+    var p=placeDe(t.id);
+
+    $("#p-titre").textContent="Table "+t.id;
+    $("#p-sous").textContent=ZONES[t.zone]+" · "+(t.hs?"hors service":t.seats+" couverts");
+
+    c.textContent="";
+    if(t.hs){
+      c.innerHTML='<p class="vide">Table marquée hors service. Passez en modification du plan pour la réactiver.</p>';
+      ajouterRetour(c);return;
+    }
+
+    var num=document.createElement("div");
+    num.className="fiche-num";
+    num.innerHTML='<b class="num">'+t.id+'</b><em>'+t.seats+' couverts · '+ZONES[t.zone]+'</em>';
+    c.appendChild(num);
+
+    var grp=document.createElement("div");
+    grp.className="statuts";
+    STATUTS.forEach(function(s){
+      var b=document.createElement("button");
+      b.type="button";b.dataset.s=s[0];b.textContent=s[1];
+      b.setAttribute("aria-pressed",(p.statut||"libre")===s[0]?"true":"false");
+      b.addEventListener("click",function(){
+        var cur=lireFormulaire();cur.statut=s[0];
+        enregistrer(t.id,cur);
+      });
+      grp.appendChild(b);
+    });
+    c.appendChild(grp);
+
+    var f=document.createElement("div");
+    f.className="form";
+    f.innerHTML=
+      '<label>Nom<input type="text" id="f-nom" autocomplete="off" placeholder="Nom de la réservation"></label>'+
+      '<div class="duo">'+
+        '<label>Couverts<input type="number" id="f-couverts" min="1" max="20" inputmode="numeric"></label>'+
+        '<label>Heure<input type="time" id="f-heure" step="300"></label>'+
+      '</div>'+
+      '<label>Téléphone<input type="tel" id="f-tel" autocomplete="off" placeholder="06 …"></label>'+
+      '<label>Note de service<textarea id="f-note" placeholder="Allergie, anniversaire, poussette…"></textarea></label>';
+    c.appendChild(f);
+    $("#f-nom").value=p.nom||"";
+    $("#f-couverts").value=p.couverts||"";
+    $("#f-heure").value=p.heure||"";
+    $("#f-tel").value=p.tel||"";
+    $("#f-note").value=p.note||"";
+
+    var act=document.createElement("div");
+    act.className="actions";
+    var ok=document.createElement("button");
+    ok.className="btn plein";ok.type="button";ok.textContent="Enregistrer";
+    ok.addEventListener("click",function(){
+      var cur=lireFormulaire();
+      if((cur.statut||"libre")==="libre"&&(cur.nom||cur.heure))cur.statut="reservee";
+      enregistrer(t.id,cur);
+    });
+    var lib=document.createElement("button");
+    lib.className="btn danger";lib.type="button";lib.textContent="Libérer";
+    lib.addEventListener("click",function(){enregistrer(t.id,null);});
+    act.appendChild(ok);act.appendChild(lib);
+    c.appendChild(act);
+    ajouterRetour(c);
+  }
+
+  function lireFormulaire(){
+    var p=Object.assign({},placeDe(etat.sel));
+    if($("#f-nom")){
+      p.nom=$("#f-nom").value.trim();
+      p.couverts=$("#f-couverts").value?Number($("#f-couverts").value):"";
+      p.heure=$("#f-heure").value;
+      p.tel=$("#f-tel").value.trim();
+      p.note=$("#f-note").value.trim();
+    }
+    return p;
+  }
+
+  function ajouterRetour(c){
+    var r=document.createElement("button");
+    r.className="btn discret";r.type="button";r.textContent="← Toutes les réservations";
+    r.style.marginTop="18px";
+    r.addEventListener("click",function(){selectionner(null);});
+    c.appendChild(r);
+  }
+
+  function rendreListe(c){
+    $("#p-titre").textContent="Réservations du service";
+    $("#p-sous").textContent="Touchez une table sur le plan pour la placer.";
+    c.textContent="";
+    var lignes=[];
+    etat.tables.forEach(function(t){
+      var p=placeDe(t.id);
+      if(p.statut&&p.statut!=="libre")lignes.push({t:t,p:p});
+    });
+    lignes.sort(function(a,b){return (a.p.heure||"99").localeCompare(b.p.heure||"99");});
+    if(!lignes.length){
+      var v=document.createElement("p");
+      v.className="vide";
+      v.textContent="Aucune table placée pour ce service. Touchez une table pour y inscrire une réservation, puis passez-la en occupée à l’arrivée des clients.";
+      c.appendChild(v);
+    }else{
+      var ul=document.createElement("ul");ul.className="liste";
+      lignes.forEach(function(l){
+        var li=document.createElement("li");
+        var b=document.createElement("button");b.type="button";
+        b.innerHTML='<span class="t num">'+l.t.id+'</span>'+
+          '<span class="n">'+echap(l.p.nom||"Sans nom")+'<small>'+libelleStatut(l.p.statut)+(l.p.note?" · "+echap(l.p.note):"")+'</small></span>'+
+          '<span class="c num">'+(l.p.heure||"—")+' · '+(l.p.couverts||"?")+' cv</span>';
+        b.addEventListener("click",function(){selectionner(l.t.id);});
+        li.appendChild(b);ul.appendChild(li);
+      });
+      c.appendChild(ul);
+    }
+    var n=document.createElement("p");
+    n.className="note";
+    n.innerHTML="Les tables en pointillé n’ont pas de numéro sur le croquis : tous les numéros sont confirmés. Passez par « Modifier le plan » pour déplacer une table ou changer ses couverts.";
+    c.appendChild(n);
+  }
+  function echap(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML;}
+
+  function rendreEdition(c){
+    $("#p-titre").textContent="Modification du plan";
+    $("#p-sous").textContent="Déplacez les tables au doigt. Les réservations ne sont pas touchées.";
+    c.textContent="";
+    if(!etat.sel){
+      c.innerHTML='<p class="vide">Faites glisser une table sur le plan pour la déplacer. Touchez-la pour changer son numéro, ses couverts, sa forme ou sa taille. Les réservations en cours ne bougent pas.</p>';
+      var add=document.createElement("button");
+      add.className="btn";add.type="button";add.textContent="Ajouter une table";
+      add.style.marginTop="16px";
+      add.addEventListener("click",ajouterTable);
+      c.appendChild(add);
+      return;
+    }
+    var t=tableById(etat.sel);
+    if(!t)return;
+    var f=document.createElement("div");
+    f.className="form";
+    f.innerHTML=
+      '<label>Numéro<input type="text" id="e-id" value="'+echap(t.id)+'"></label>'+
+      '<div class="pas"><span>Couverts par défaut</span>'+
+        '<button type="button" id="e-moins" aria-label="Retirer un couvert">−</button>'+
+        '<b class="num" id="e-val">'+(t.seats||0)+'</b>'+
+        '<button type="button" id="e-plus" aria-label="Ajouter un couvert">+</button>'+
+      '</div>'+
+      '<label>Forme<select id="e-shape">'+
+        '<option value="square">Carrée</option><option value="rect">Rectangle</option>'+
+        '<option value="oval">Ovale</option><option value="round">Ronde</option>'+
+      '</select></label>'+
+      '<div class="duo">'+
+        '<label>Largeur<input type="number" id="e-w" min="20" max="400" value="'+t.w+'"></label>'+
+        '<label>Hauteur<input type="number" id="e-h" min="20" max="400" value="'+t.h+'"></label>'+
+      '</div>'+
+      '<label>Zone<select id="e-zone">'+
+        '<option value="bois">Terrasse bois</option>'+
+        '<option value="entree">Entrée</option><option value="couloir">Côté couloir</option>'+
+      '</select></label>';
+    c.appendChild(f);
+    $("#e-shape").value=t.shape;
+    $("#e-zone").value=t.zone;
+    function pas(n){
+      t.seats=Math.max(0,Math.min(20,(t.seats||0)+n));
+      $("#e-val").textContent=t.seats;
+      sauverPlan();dessinerTables();majCompteurs();
+    }
+    $("#e-moins").addEventListener("click",function(){pas(-1);});
+    $("#e-plus").addEventListener("click",function(){pas(1);});
+
+    var hs=document.createElement("label");
+    hs.style.cssText="display:flex;gap:9px;align-items:center;margin-top:14px;font-size:13px;color:var(--ink)";
+    hs.innerHTML='<input type="checkbox" id="e-hs" style="min-height:0;width:18px;height:18px"> Hors service';
+    c.appendChild(hs);
+    $("#e-hs").checked=!!t.hs;
+
+    var act=document.createElement("div");
+    act.className="actions";
+    var ok=document.createElement("button");
+    ok.className="btn plein";ok.type="button";ok.textContent="Appliquer";
+    ok.addEventListener("click",function(){
+      var nid=$("#e-id").value.trim()||t.id;
+      if(nid!==t.id&&tableById(nid)){alert("Le numéro "+nid+" est déjà utilisé.");return;}
+      if(nid!==t.id&&etat.places[t.id]){etat.places[nid]=etat.places[t.id];delete etat.places[t.id];sauverPlaces();}
+      t.id=nid;
+      t.shape=$("#e-shape").value;
+      t.w=Number($("#e-w").value)||56;
+      t.h=Number($("#e-h").value)||56;
+      t.zone=$("#e-zone").value;
+      t.hs=$("#e-hs").checked;
+      delete t.prov;
+      etat.sel=nid;
+      sauverPlan();tout();
+    });
+    var sup=document.createElement("button");
+    sup.className="btn danger";sup.type="button";sup.textContent="Supprimer";
+    sup.addEventListener("click",function(){
+      if(!confirm("Supprimer la table "+t.id+" du plan ?"))return;
+      etat.tables=etat.tables.filter(function(x){return x.id!==t.id;});
+      delete etat.places[t.id];
+      etat.sel=null;sauverPlan();sauverPlaces();tout();
+    });
+    act.appendChild(ok);act.appendChild(sup);
+    c.appendChild(act);
+    ajouterRetour(c);
+  }
+
+  function ajouterTable(){
+    var n=1,id;
+    do{id="N"+(n++);}while(tableById(id));
+    var vue=vueCentre();
+    etat.tables.push({id:id,x:Math.round(vue.x),y:Math.round(vue.y),w:56,h:56,shape:"square",seats:2,zone:"bois"});
+    etat.sel=id;sauverPlan();tout();
+  }
+
+  /* ============ sélection ============ */
+  function selectionner(id){
+    etat.sel=id;
+    Array.prototype.forEach.call(gTables.querySelectorAll(".table"),function(n){
+      n.classList.toggle("sel",n.dataset.id===id);
+    });
+    rendrePanneau();
+  }
+
+  /* ============ persistance ============ */
+  function enregistrer(id,valeur){
+    if(valeur===null||(valeur.statut||"libre")==="libre"&&!valeur.nom&&!valeur.heure){
+      delete etat.places[id];
+    }else{
+      if(!valeur.couverts){
+        var t=tableById(id);
+        valeur.couverts=t?t.seats:2;
+      }
+      etat.places[id]=valeur;
+    }
+    sauverPlaces();
+    tout();
+  }
+
+  var enCours=false,enAttente=false;
+  function sauverPlaces(){
+    memoire("places:"+cle(),etat.places);
+    if(!db)return;
+    if(enCours){enAttente=true;return;}
+    enCours=true;
+    db.doc(cle()).set({places:etat.places,maj:new Date().toISOString()})
+      .then(function(){ecritureOk=true;})
+      .catch(function(e){if(e&&e.code==="invalid_argument")ecritureOk=false;majSync();})
+      .then(function(){
+        enCours=false;
+        if(enAttente){enAttente=false;sauverPlaces();}
+      });
+  }
+  function sauverPlan(){
+    memoire("plan",etat.tables);
+    if(!db)return;
+    db.doc("layout/salle").set({tables:etat.tables,maj:new Date().toISOString()})
+      .catch(function(){ecritureOk=false;majSync();});
+  }
+  function memoire(k,v){
+    try{localStorage.setItem("apiaghja."+k,JSON.stringify(v));}catch(e){}
+  }
+  function lireMemoire(k){
+    try{var v=localStorage.getItem("apiaghja."+k);return v?JSON.parse(v):null;}catch(e){return null;}
+  }
+  function majSync(){
+    var n=$("#c-sync"),t=$("#c-sync-txt");
+    if(!n)return;
+    if(db&&ecritureOk){n.dataset.on="1";t.textContent="Synchronisé";}
+    else if(db&&!ecritureOk){n.dataset.on="0";t.textContent="Lecture seule";}
+    else{n.dataset.on="0";t.textContent="Cet appareil";}
+  }
+
+  function abonner(){
+    if(!db)return;
+    if(unsubPlaces){unsubPlaces();unsubPlaces=null;}
+    unsubPlaces=db.doc(cle()).onSnapshot(function(snap){
+      if(!snap.exists){if(!snap.metadata||!snap.metadata.hasPendingWrites){etat.places={};tout();}return;}
+      var d=snap.data()||{};
+      etat.places=d.places||{};
+      tout();
+    },function(){});
+  }
+
+  /* ============ vue : zoom / déplacement ============ */
+  var vue={x:0,y:0,k:1};
+  function appliquerVue(){
+    viewport.setAttribute("transform","translate("+vue.x+","+vue.y+") scale("+vue.k+")");
+  }
+  function recadrer(){
+    vue={x:0,y:0,k:1};appliquerVue();
+  }
+  function vueCentre(){
+    var r=svg.getBoundingClientRect();
+    var pt=ecranVersPlan(r.left+r.width/2,r.top+r.height/2);
+    return pt;
+  }
+  function ecranVersPlan(cx,cy){
+    var pt=svg.createSVGPoint();pt.x=cx;pt.y=cy;
+    var m=viewport.getScreenCTM();
+    if(!m)return{x:0,y:0};
+    return pt.matrixTransform(m.inverse());
+  }
+  function zoomer(f,cx,cy){
+    var r=svg.getBoundingClientRect();
+    cx=cx==null?r.left+r.width/2:cx; cy=cy==null?r.top+r.height/2:cy;
+    var avant=ecranVersPlan(cx,cy);
+    vue.k=Math.min(4,Math.max(.4,vue.k*f));
+    appliquerVue();
+    var apres=ecranVersPlan(cx,cy);
+    vue.x+=(apres.x-avant.x)*vue.k;
+    vue.y+=(apres.y-avant.y)*vue.k;
+    appliquerVue();
+  }
+
+  var pointeurs={},panDepart=null,dragTable=null,pinch=null,bougé=false;
+  var feuille=$("#feuille");
+
+  feuille.addEventListener("pointerdown",function(e){
+    pointeurs[e.pointerId]={x:e.clientX,y:e.clientY};
+    var g=e.target.closest?e.target.closest(".table"):null;
+    bougé=false;
+    if(Object.keys(pointeurs).length===2){
+      var ids=Object.keys(pointeurs);
+      pinch={d:dist(pointeurs[ids[0]],pointeurs[ids[1]]),k:vue.k};
+      panDepart=null;dragTable=null;return;
+    }
+    if(etat.edition&&g){
+      var t=tableById(g.dataset.id);
+      if(t){
+        dragTable={t:t,g:g,orig:ecranVersPlan(e.clientX,e.clientY),tx:t.x,ty:t.y};
+        g.classList.add("drag");
+        feuille.setPointerCapture(e.pointerId);
+        return;
+      }
+    }
+    panDepart={x:e.clientX,y:e.clientY,vx:vue.x,vy:vue.y};
+  });
+
+  feuille.addEventListener("pointermove",function(e){
+    if(pointeurs[e.pointerId])pointeurs[e.pointerId]={x:e.clientX,y:e.clientY};
+    if(pinch){
+      var ids=Object.keys(pointeurs);
+      if(ids.length<2)return;
+      var d=dist(pointeurs[ids[0]],pointeurs[ids[1]]);
+      var f=(d/pinch.d)*pinch.k/vue.k;
+      var mx=(pointeurs[ids[0]].x+pointeurs[ids[1]].x)/2;
+      var my=(pointeurs[ids[0]].y+pointeurs[ids[1]].y)/2;
+      zoomer(f,mx,my);
+      bougé=true;return;
+    }
+    if(dragTable){
+      var p=ecranVersPlan(e.clientX,e.clientY);
+      var dx=Math.round((p.x-dragTable.orig.x)/2)*2, dy=Math.round((p.y-dragTable.orig.y)/2)*2;
+      dragTable.dx=dx;dragTable.dy=dy;
+      dragTable.g.setAttribute("transform","translate("+dx+","+dy+")");
+      bougé=true;
+      return;
+    }
+    if(panDepart){
+      var dx=e.clientX-panDepart.x, dy=e.clientY-panDepart.y;
+      if(Math.abs(dx)>3||Math.abs(dy)>3)bougé=true;
+      vue.x=panDepart.vx+dx;vue.y=panDepart.vy+dy;appliquerVue();
+    }
+  });
+
+  function finPointeur(e){
+    delete pointeurs[e.pointerId];
+    if(Object.keys(pointeurs).length<2)pinch=null;
+    if(dragTable){
+      dragTable.g.classList.remove("drag");
+      dragTable.g.removeAttribute("transform");
+      if(bougé){
+        dragTable.t.x=dragTable.tx+(dragTable.dx||0);
+        dragTable.t.y=dragTable.ty+(dragTable.dy||0);
+        sauverPlan();dessinerTables();
+      }else{
+        selectionner(dragTable.t.id);
+      }
+      dragTable=null;return;
+    }
+    panDepart=null;
+  }
+  feuille.addEventListener("pointerup",finPointeur);
+  feuille.addEventListener("pointercancel",finPointeur);
+
+  feuille.addEventListener("click",function(e){
+    if(bougé)return;
+    var g=e.target.closest?e.target.closest(".table"):null;
+    if(g)selectionner(g.dataset.id);
+    else if(!etat.edition&&etat.sel)selectionner(null);
+  });
+  gTables.addEventListener("keydown",function(e){
+    if(e.key!=="Enter"&&e.key!==" ")return;
+    var g=e.target.closest?e.target.closest(".table"):null;
+    if(g){e.preventDefault();selectionner(g.dataset.id);}
+  });
+  feuille.addEventListener("wheel",function(e){
+    e.preventDefault();
+    zoomer(e.deltaY>0?0.9:1.1,e.clientX,e.clientY);
+  },{passive:false});
+  function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+
+  /* ============ export ============ */
+  function exporter(){
+    var data={
+      etablissement:"A Piaghja",
+      version:1,
+      plan:etat.tables,
+      service:{date:etat.date,service:etat.service,places:etat.places}
+    };
+    var texte=JSON.stringify(data,null,2);
+    claude.use("downloads").then(function(dl){
+      if(!dl)throw new Error("indisponible");
+      return dl.save({filename:"apiaghja-plan-"+etat.date+"-"+etat.service+".json",data:texte});
+    }).catch(function(){
+      var w=document.createElement("textarea");
+      w.value=texte;
+      w.style.cssText="position:fixed;inset:6% 6% auto;height:70dvh;z-index:99;font-family:monospace;font-size:12px;padding:14px;border:1px solid var(--ink);background:var(--panel);color:var(--ink)";
+      document.body.appendChild(w);w.focus();w.select();
+      w.addEventListener("blur",function(){w.remove();});
+    });
+  }
+
+  /* ============ rendu global ============ */
+  function tout(){dessinerTables();majCompteurs();rendrePanneau();majSync();}
+
+  /* ============ branchements ============ */
+  $("#date").value=etat.date;
+  $("#date").addEventListener("change",function(){
+    etat.date=this.value||etat.date;
+    etat.places=lireMemoire("places:"+cle())||{};
+    etat.sel=null;abonner();tout();
+  });
+  function setService(s){
+    etat.service=s;
+    $("#svc-midi").setAttribute("aria-pressed",s==="midi"?"true":"false");
+    $("#svc-soir").setAttribute("aria-pressed",s==="soir"?"true":"false");
+    etat.places=lireMemoire("places:"+cle())||{};
+    etat.sel=null;abonner();tout();
+  }
+  $("#svc-midi").addEventListener("click",function(){setService("midi");});
+  $("#svc-soir").addEventListener("click",function(){setService("soir");});
+  $("#btn-edition").addEventListener("click",function(){
+    etat.edition=!etat.edition;
+    this.setAttribute("aria-pressed",etat.edition?"true":"false");
+    this.textContent=etat.edition?"Terminer":"Modifier le plan";
+    feuille.classList.toggle("edition",etat.edition);
+    etat.sel=null;tout();
+  });
+  $("#btn-export").addEventListener("click",exporter);
+  $("#z-plus").addEventListener("click",function(){zoomer(1.2);});
+  $("#z-moins").addEventListener("click",function(){zoomer(1/1.2);});
+  $("#z-fit").addEventListener("click",recadrer);
+
+  /* état local d'abord, puis la base si elle répond */
+  var PLAN_VERSION=15;
+  var planLocal=lireMemoire("plan");
+  if(planLocal&&planLocal.length&&lireMemoire("planv")===PLAN_VERSION)etat.tables=planLocal;
+  else memoire("planv",PLAN_VERSION);
+  etat.places=lireMemoire("places:"+cle())||{};
+  setService(etat.service);
+
+  if(window.claude&&claude.use){
+    claude.use("db").then(function(d){
+      if(!d)return;
+      db=d;
+      unsubPlan=db.doc("layout/salle").onSnapshot(function(snap){
+        if(snap.exists){
+          var t=(snap.data()||{}).tables;
+          if(t&&t.length){etat.tables=t;memoire("plan",t);tout();}
+        }
+      },function(){});
+      abonner();majSync();
+    }).catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
