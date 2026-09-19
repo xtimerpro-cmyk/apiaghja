@@ -2,7 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="A piaghja">
+<link rel="apple-touch-icon" href="/images/icone-admin.png">
 <meta name="theme-color" content="#efe9dd">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d1e18'/%3E%3Cpath d='M32 54 C31 44 33 38 31 30' stroke='%23c2a15c' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3Cellipse cx='32' cy='22' rx='16' ry='6.5' fill='%23c2a15c'/%3E%3Cellipse cx='18' cy='26' rx='8' ry='4' fill='%23c2a15c' opacity='.75'/%3E%3Cellipse cx='46' cy='25' rx='8' ry='4' fill='%23c2a15c' opacity='.75'/%3E%3C/svg%3E">
 <meta name="robots" content="noindex, nofollow">
@@ -556,16 +561,36 @@
   section{animation:vueEntre .35s ease;}
   @keyframes vueEntre{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
+  button, .onglet, .p-pill, .r-statut, .d-st{touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+  .onglet{display:inline-flex;align-items:center;gap:.42rem;}
+  .onglet svg{width:15px;height:15px;flex:none;}
+  /* ── Barre d'application (mobile & tablette) ── */
   @media (max-width:900px){
     .onglets{
-      flex-wrap:nowrap;overflow-x:auto;max-width:100%;
-      -webkit-overflow-scrolling:touch;scrollbar-width:none;
-      scroll-snap-type:x proximity;padding:.15rem .1rem;
-      mask-image:linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-      -webkit-mask-image:linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+      position:fixed;left:0;right:0;bottom:0;z-index:80;margin:0;
+      display:flex;flex-wrap:nowrap;overflow-x:auto;gap:0;
+      background:rgba(253,252,249,.96);
+      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border-top:1px solid var(--sable-deep);
+      padding:.32rem .3rem calc(.32rem + env(safe-area-inset-bottom));
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x proximity;
+      box-shadow:0 -6px 24px rgba(42,43,36,.08);
     }
     .onglets::-webkit-scrollbar{display:none;}
-    .onglet{flex:none;scroll-snap-align:center;white-space:nowrap;}
+    .onglet{
+      flex:1 0 auto;min-width:76px;scroll-snap-align:center;
+      flex-direction:column;gap:3px;
+      border:none;background:none;border-radius:12px;
+      padding:.42rem .5rem;font-size:.58rem;letter-spacing:.02em;
+      color:#8a8a7a;box-shadow:none;
+    }
+    .onglet svg{width:22px;height:22px;}
+    .onglet.on{background:var(--sable-deep);color:var(--olive-fonce);font-weight:600;}
+    .onglet .puce{top:0;right:10px;}
+    main{padding-bottom:calc(6.4rem + env(safe-area-inset-bottom));}
+    #toast{bottom:calc(78px + env(safe-area-inset-bottom));}
+    .jauges{position:sticky;top:.4rem;z-index:5;}
+    .jauge{background:var(--blanc);box-shadow:0 4px 14px rgba(42,43,36,.08);}
   }
 
   /* ═══════════ V14 — OUTILS DE SERVICE (thème clair service) ═══════════ */
@@ -675,7 +700,7 @@
     <span class="sous">Espace direction</span>
     <div class="co-champ">
         <input type="password" id="cle" placeholder="Clé d'accès" autocomplete="current-password" autofocus>
-        <button type="button" class="co-oeil" id="cleOeil" aria-label="Afficher la clé">👁</button>
+        <button type="button" class="co-oeil" id="cleOeil" aria-label="Afficher la clé"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
       </div>
     <button id="btnConnexion">Entrer</button>
     <div class="co-erreur" id="erreurConnexion"></div>
@@ -700,7 +725,7 @@
       </div>
     </div>
     <nav class="onglets" id="onglets">
-      <button class="onglet on" data-vue="jour">Carnet de réservations</button>
+      <button class="onglet on" data-vue="jour">Carnet</button>
       <button class="onglet" data-vue="service">Service en cours</button>
       <button class="onglet" data-vue="dataservices">Data services</button>
       <button class="onglet" data-vue="clients">Fichier client</button>
@@ -723,19 +748,19 @@
         <button class="fleche" id="jourSuiv" aria-label="Jour suivant">›</button>
       </div>
       <div class="ligne-outils">
-        <input class="recherche" id="rechGlob" placeholder="🔍 Retrouver un client — nom ou téléphone, toutes dates">
-        <button class="btn-doux" id="btnImprimer" title="Imprimer la feuille du jour">🖨 Imprimer</button>
+        <input class="recherche" id="rechGlob" placeholder="Rechercher un client — nom ou téléphone, toutes dates">
+        <button class="btn-doux" id="btnImprimer" title="Imprimer la feuille du jour">Imprimer</button>
       </div>
       <div id="resGlob"></div>
 
       <div class="jauges">
         <div class="jauge" id="jaugeMidi">
-          <div class="j-tete"><span class="j-nom">☀️ Midi</span>
+          <div class="j-tete"><span class="j-nom">Midi</span>
             <span class="j-val"><span id="totMidi">0</span><small> / <span id="capMidi">60</span></small></span><span class="j-assis" id="assisMidi"></span></div>
           <div class="j-barre"><i id="barreMidi"></i></div>
         </div>
         <div class="jauge" id="jaugeSoir">
-          <div class="j-tete"><span class="j-nom">🌙 Soir</span>
+          <div class="j-tete"><span class="j-nom">Soir</span>
             <span class="j-val"><span id="totSoir">0</span><small> / <span id="capSoir">60</span></small></span><span class="j-assis" id="assisSoir"></span></div>
           <div class="j-barre"><i id="barreSoir"></i></div>
         </div>
@@ -790,7 +815,7 @@
           <span><i style="background:var(--olive)"></i>Réservations</span>
           <span><i style="background:var(--or)"></i>Passages</span>
         </div>
-        <div class="ds-tete-l"><span>Journée</span><span>☀️ Midi</span><span>🌙 Soir</span></div>
+        <div class="ds-tete-l"><span>Journée</span><span>Midi</span><span>Soir</span></div>
         <div id="dsListe"></div>
       </div>
     </section>
@@ -800,15 +825,15 @@
       <div class="cl-outils">
         <input class="recherche" id="clRecherche" placeholder="Rechercher un nom, un numéro…">
         <span class="compteur" id="clCompteur"></span>
-        <button class="btn-doux" id="clCampagneBtn">🎯 Campagne</button>
+        <button class="btn-doux" id="clCampagneBtn">Campagne</button>
       </div>
       <div class="cl-filtres" id="clFiltres">
         <button class="p-pill on" data-f="tous">Tous</button>
         <button class="p-pill" data-f="fideles">Fidèles 3+</button>
         <button class="p-pill" data-f="sansavis">Sans avis</button>
-        <button class="p-pill" data-f="avis">Avis laissé ⭐</button>
-        <button class="p-pill" data-f="camping">Camping 🏕</button>
-        <button class="p-pill" data-f="devis">Événement 🎉</button>
+        <button class="p-pill" data-f="avis">Avis laissé</button>
+        <button class="p-pill" data-f="camping">Camping</button>
+        <button class="p-pill" data-f="devis">Événement</button>
         <button class="p-pill" data-f="vip">VIP</button>
         <button class="p-pill" data-f="optout">Ne pas contacter</button>
       </div>
@@ -823,9 +848,9 @@
         </div>
         <textarea class="camp-txt" id="campTexte" placeholder="Votre message…"></textarea>
         <div class="camp-actions">
-          <button class="btn-plein" id="campCopierNums">📋 Copier les numéros</button>
-          <button class="btn-doux" id="campCopierMsg">📋 Copier le message</button>
-          <button class="btn-doux" id="campCsv">💾 Export CSV</button>
+          <button class="btn-plein" id="campCopierNums">Copier les numéros</button>
+          <button class="btn-doux" id="campCopierMsg">Copier le message</button>
+          <button class="btn-doux" id="campCsv">Export CSV</button>
         </div>
         <div class="camp-note">La cible reprend vos filtres actuels — les clients « ne pas contacter » sont toujours exclus automatiquement. Le CSV est prêt pour un envoi groupé (Brevo, etc.). Pensez à inclure « STOP au … » dans vos SMS commerciaux.</div>
         <div class="msg" id="campMsg"></div>
@@ -981,6 +1006,29 @@
     const sw = document.getElementById("hapticSwitch");
     if (sw){ try { sw.click(); } catch(e) {} }
   };
+  // Icônes d'application (traits, sans émoji)
+  const ICONES = {
+    jour: '<path d="M4 4h16v18H4z"/><path d="M4 9h16M9 4v5"/>',
+    service: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+    dataservices: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+    clients: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.7c2.6.3 4.6 1.9 5.5 4.8"/>',
+    carte: '<path d="M4 5h16M4 10h16M4 15h10M4 20h7"/>',
+    evenements: '<path d="M12 3l2.4 5.4 5.6.6-4.2 3.9 1.2 5.6-5-3-5 3 1.2-5.6L4 9l5.6-.6z"/>',
+    candidatures: '<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.8-3.6 3.4-5.5 6.5-5.5 1.4 0 2.7.4 3.8 1.1M18 14v6M15 17h6"/>',
+    stats: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'
+  };
+  document.querySelectorAll(".onglet").forEach(b => {
+    const vue = b.dataset.vue;
+    if (!ICONES[vue]) return;
+    const texte = b.childNodes[0];
+    const lab = document.createElement("span");
+    lab.className = "o-lab";
+    lab.textContent = (texte.textContent || "").trim();
+    b.replaceChild(lab, texte);
+    b.insertAdjacentHTML("afterbegin",
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES[vue] + '</svg>');
+  });
+
   function montrerVue(nom){
     vueCourante = nom;
     for (const [n, id] of Object.entries(VUES)) $(id).hidden = (n !== nom);
@@ -1071,10 +1119,10 @@
         (r.tel ? '<small><a href="tel:' + r.tel.replace(/\s/g, "") + '">' + r.tel + '</a></small>' : "") +
       '</div>' +
       '<span class="r-pax">' + r.pax + ' cvts</span>' +
-      (r.camping ? '<span class="badge camp">🏕 camping</span>' : "") +
+      (r.camping ? '<span class="badge camp">camping</span>' : "") +
       (estPassage ? '<span class="badge pass">passage</span>' : "");
     if (!estPassage){
-      const ETATS = { confirmee: "Confirmée", arrivee: "🪑 Arrivée", terminee: "✓ Terminée", noshow: "✗ No-show" };
+      const ETATS = { confirmee: "Confirmée", arrivee: "Arrivée", terminee: "Terminée", noshow: "No-show" };
       const SUIVANT = { confirmee: "arrivee", arrivee: "terminee", terminee: "noshow", noshow: "confirmee" };
       let statut = ETATS[r.statut] ? r.statut : "confirmee";
       l.classList.add("st-" + statut);
@@ -1122,13 +1170,13 @@
     l.appendChild(table);
     const sup = document.createElement("button");
     sup.className = "r-suppr";
-    sup.textContent = "🗑";
+    sup.textContent = "Suppr.";
     sup.title = "Supprimer";
     sup.addEventListener("click", async () => {
       if (!sup.classList.contains("arme")) {
         sup.classList.add("arme");
         sup.textContent = "sûr ?";
-        setTimeout(() => { sup.classList.remove("arme"); sup.textContent = "🗑"; }, 2600);
+        setTimeout(() => { sup.classList.remove("arme"); sup.textContent = "Suppr."; }, 2600);
         return;
       }
       const rep = await apiPost("/api/resa/admin", { action: "delete", id: r.id });
@@ -1150,8 +1198,8 @@
     for (const r of resasJour){
       if (r.type !== "passage" && r.statut === "arrivee") compte[r.service] = (compte[r.service] || 0) + (r.pax || 0);
     }
-    $("assisMidi").textContent = compte.midi ? "🪑 " + compte.midi + " assis" : "";
-    $("assisSoir").textContent = compte.soir ? "🪑 " + compte.soir + " assis" : "";
+    $("assisMidi").textContent = compte.midi ? compte.midi + " assis" : "";
+    $("assisSoir").textContent = compte.soir ? compte.soir + " assis" : "";
   }
   async function chargerJour(silencieux){
     const gen = ++generation;
@@ -1170,7 +1218,7 @@
       const zone = $("lignes");
       zone.innerHTML = "";
       if (!data.resas.length) {
-        zone.innerHTML = '<div class="vide">Aucune réservation pour cette journée — la plage est à vous. 🌊</div>';
+        zone.innerHTML = '<div class="vide">Aucune réservation pour cette journée — la plage est à vous.</div>';
       } else {
         const frag = document.createDocumentFragment();
         for (const svc of ["midi", "soir"]) {
@@ -1178,7 +1226,7 @@
           if (!groupe.length) continue;
           const sep = document.createElement("div");
           sep.className = "svc-sep";
-          sep.textContent = (svc === "midi" ? "☀️ Midi · " : "🌙 Soir · ") + data.totaux[svc] + " couverts";
+          sep.textContent = (svc === "midi" ? "Midi · " : "Soir · ") + data.totaux[svc] + " couverts";
           frag.appendChild(sep);
           for (const r of groupe) frag.appendChild(ligneResa(r));
         }
@@ -1328,7 +1376,7 @@
             const nomAffiche = r.type === "passage" ? "Passage" : ((r.prenom ? r.prenom + " " : "") + (r.nom || ""));
             corps += '<div class="c-l"><b>' + nomAffiche + '</b><span>' + r.pax + 'p</span>' +
                      (r.table_num ? '<span class="t">T' + r.table_num + '</span>' : "") +
-                     (r.camping ? '<span>🏕</span>' : "") + '</div>';
+                     (r.camping ? '<span>camping</span>' : "") + '</div>';
           }
           bloc.innerHTML = corps;
           frag.appendChild(bloc);
@@ -1390,7 +1438,7 @@
     const iPrix = document.createElement("input");
     iPrix.className = "i-prix"; iPrix.value = plat.prix;
     const bSauver = document.createElement("button");
-    bSauver.className = "mini"; bSauver.textContent = "💾"; bSauver.title = "Enregistrer"; bSauver.hidden = true;
+    bSauver.className = "mini"; bSauver.textContent = "OK"; bSauver.title = "Enregistrer"; bSauver.hidden = true;
     const changement = () => {
       bSauver.hidden = (iNom.value === plat.nom && iDesc.value === (plat.descr || "") && iPrix.value === plat.prix);
       bSauver.classList.toggle("sauver", !bSauver.hidden);
@@ -1406,14 +1454,14 @@
       } else toast("Mise à jour refusée", true);
     });
     const bOeil = document.createElement("button");
-    bOeil.className = "mini"; bOeil.textContent = plat.visible ? "👁" : "🚫"; bOeil.title = plat.visible ? "Masquer (86)" : "Réafficher";
+    bOeil.className = "mini"; bOeil.textContent = plat.visible ? "●" : "○"; bOeil.title = plat.visible ? "Masquer (86)" : "Réafficher";
     bOeil.addEventListener("click", async () => {
       const cible = plat.visible ? 0 : 1;
       const rep = await apiPost("/api/carte", { action: "visible", id: plat.id, visible: cible });
       if (!rep.error) {
         plat.visible = cible;
         l.classList.toggle("off", !cible);
-        bOeil.textContent = cible ? "👁" : "🚫";
+        bOeil.textContent = cible ? "●" : "○";
         bOeil.title = cible ? "Masquer (86)" : "Réafficher";
         invalider("/api/carte");
         majCompteur();
@@ -1421,11 +1469,11 @@
       } else toast("Action refusée", true);
     });
     const bSuppr = document.createElement("button");
-    bSuppr.className = "mini"; bSuppr.textContent = "🗑"; bSuppr.title = "Supprimer";
+    bSuppr.className = "mini"; bSuppr.textContent = "Suppr."; bSuppr.title = "Supprimer";
     bSuppr.addEventListener("click", async () => {
       if (!bSuppr.classList.contains("arme")) {
         bSuppr.classList.add("arme"); bSuppr.textContent = "sûr ?";
-        setTimeout(() => { bSuppr.classList.remove("arme"); bSuppr.textContent = "🗑"; }, 2600);
+        setTimeout(() => { bSuppr.classList.remove("arme"); bSuppr.textContent = "Suppr."; }, 2600);
         return;
       }
       const rep = await apiPost("/api/carte", { action: "delete", id: plat.id });
@@ -1506,7 +1554,7 @@
       sel.appendChild(o);
     }
     const oN = document.createElement("option");
-    oN.value = "__nouvelle__"; oN.textContent = "➕ Nouvelle catégorie…";
+    oN.value = "__nouvelle__"; oN.textContent = "+ Nouvelle catégorie…";
     sel.appendChild(oN);
     $("ajCatNouv").hidden = true;
   }
@@ -1539,7 +1587,7 @@
   const JOUR_MS = 86400000;
   const dateSql = (s) => new Date(String(s).replace(" ", "T") + "Z");
 
-  const EVT_ST = { nouveau: "Nouveau", rappele: "☎ Rappelé", confirme: "✓ Confirmé", clos: "Clos" };
+  const EVT_ST = { nouveau: "Nouveau", rappele: "Rappelé", confirme: "Confirmé", clos: "Clos" };
   let evtDonnees = [], evtFiltre = "tous";
   function evtStatutDe(d){ return EVT_ST[d.statut] ? d.statut : "nouveau"; }
 
@@ -1564,7 +1612,7 @@
     zone.innerHTML = "";
     const liste = evtFiltre === "tous" ? evtDonnees : evtDonnees.filter(d => evtStatutDe(d) === evtFiltre);
     if (!liste.length){
-      zone.innerHTML = '<div class="vide">' + (evtDonnees.length ? "Rien dans ce filtre." : "Aucune demande pour l\'instant — l\'assistant du site les enverra ici. 🎉") + '</div>';
+      zone.innerHTML = '<div class="vide">' + (evtDonnees.length ? "Rien dans ce filtre." : "Aucune demande pour l\'instant — l\'assistant du site les enverra ici.") + '</div>';
       return;
     }
     const frag = document.createDocumentFragment();
@@ -1582,7 +1630,7 @@
         '<div class="d-tot"><span>Pré-devis</span><b>' + (d.estimation ? d.estimation.toLocaleString("fr-FR") + " €" : "sur mesure") + '</b></div>' +
         '<div class="d-pied">' +
           '<span>' + (d.prenom || "—") + '</span>' +
-          (d.tel ? '<a class="d-tel" href="tel:' + d.tel.replace(/\s/g, "") + '">📞 ' + d.tel + '</a>' : "") +
+          (d.tel ? '<a class="d-tel" href="tel:' + d.tel.replace(/\s/g, "") + '">' + d.tel + '</a>' : "") +
         '</div>';
       const rang = document.createElement("div");
       rang.className = "d-statuts";
@@ -1599,7 +1647,7 @@
             rendreEvenements();
             majPuceEvt(evtDonnees);
             if (window.__vibrer) window.__vibrer(5);
-            toast("Devis marqué « " + nom.replace(/^[^ ]+ /, "") + " »");
+            toast("Devis marqué « " + nom + " »");
           } else toast("Statut refusé (API v2 déployée ?)", true);
         });
         rang.appendChild(b);
@@ -1742,7 +1790,7 @@
 
 
   // ═══════════ Vue Fichier client ═══════════
-  // ⚠️ Remplacez [LIEN_AVIS_GOOGLE] par votre lien d'avis Google pour l'inclure dans les SMS.
+  // ⚠ Remplacez [LIEN_AVIS_GOOGLE] par votre lien d'avis Google pour l'inclure dans les SMS.
   const LIEN_AVIS = "[LIEN_AVIS_GOOGLE]";
   const lienAvisPret = () => LIEN_AVIS.indexOf("[") === -1;
   let clientsData = [];
@@ -1752,7 +1800,7 @@
 
   function clInitiales(c){
     const p = (c.prenom || "").trim(), n = (c.nom || "").trim();
-    return ((p[0] || "") + (n[0] || p[1] || "")).toUpperCase() || "☺";
+    return ((p[0] || "") + (n[0] || p[1] || "")).toUpperCase() || "?";
   }
   function clNomComplet(c){
     return ((c.prenom ? c.prenom + " " : "") + (c.nom || "")).trim() || "Client";
@@ -1796,11 +1844,11 @@
       '<div class="cl-badges">' +
         '<span class="badge">' + c.visites + ' visite' + (c.visites > 1 ? 's' : '') + '</span>' +
         '<span class="badge">' + c.couverts + ' cvts</span>' +
-        (c.campings ? '<span class="badge camp">🏕</span>' : '') +
-        (c.devis ? '<span class="badge">🎉</span>' : '') +
-        (c.avis ? '<span class="badge">⭐ avis</span>' : '') +
+        (c.campings ? '<span class="badge camp">camping</span>' : '') +
+        (c.devis ? '<span class="badge">événement</span>' : '') +
+        (c.avis ? '<span class="badge"> avis</span>' : '') +
         (c.vip ? '<span class="badge" style="border-color:var(--or);color:var(--or)">VIP</span>' : '') +
-        (c.optout ? '<span class="badge pass">⛔</span>' : '') +
+        (c.optout ? '<span class="badge pass">stop</span>' : '') +
       '</div>' +
       '<span class="cl-der">vu le ' + new Date(c.derniere + "T12:00:00").toLocaleDateString("fr-FR", { day:"numeric", month:"short", year:"2-digit" }) + '</span>';
     l.appendChild(tete);
@@ -1823,11 +1871,11 @@
         (c.devis ? '<div class="d-l"><span>Devis événement</span><b>' + c.devis + '</b></div>' : "");
       const act = document.createElement("div");
       act.className = "cl-actions";
-      const corpsAvis = "Bonjour" + (c.prenom ? " " + c.prenom : "") + " ! Merci de votre visite à A Piaghja 🌊 Un petit avis nous aiderait énormément" + (lienAvisPret() ? " : " + LIEN_AVIS : " !") + " À très vite sur la plage !";
+      const corpsAvis = "Bonjour" + (c.prenom ? " " + c.prenom : "") + " ! Merci de votre visite à A Piaghja  Un petit avis nous aiderait énormément" + (lienAvisPret() ? " : " + LIEN_AVIS : " !") + " À très vite sur la plage !";
       act.innerHTML =
-        '<a class="plein" href="tel:' + c.telN + '">📞 Appeler</a>' +
+        '<a class="plein" href="tel:' + c.telN + '">Appeler</a>' +
         (c.optout ? "" :
-          '<a href="sms:' + c.telN + '?&body=' + encodeURIComponent(corpsAvis) + '">💬 SMS demande d\'avis</a>');
+          '<a href="sms:' + c.telN + '?&body=' + encodeURIComponent(corpsAvis) + '">SMS demande d\'avis</a>');
       histo.appendChild(act);
 
       const crm = document.createElement("div");
@@ -1850,9 +1898,9 @@
         lab.appendChild(document.createTextNode(" " + label));
         return lab;
       };
-      sw.appendChild(faireSw("A laissé un avis ⭐", "avis"));
+      sw.appendChild(faireSw("A laissé un avis ", "avis"));
       sw.appendChild(faireSw("Client VIP", "vip"));
-      sw.appendChild(faireSw("Ne plus contacter ⛔", "optout"));
+      sw.appendChild(faireSw("Ne plus contacter ", "optout"));
       crm.appendChild(sw);
       const note = document.createElement("textarea");
       note.className = "cl-note";
@@ -1876,7 +1924,7 @@
     const zone = $("clListe");
     zone.innerHTML = "";
     const avecAvis = clientsData.filter(c => c.avis).length;
-    $("clCompteur").textContent = liste.length + " / " + clientsData.length + " clients · " + avecAvis + " avis ⭐";
+    $("clCompteur").textContent = liste.length + " / " + clientsData.length + " clients · " + avecAvis + " avis ";
     majCampagne(liste);
     if (!liste.length) { zone.innerHTML = '<div class="vide">Aucun client ne correspond.</div>'; return; }
     const frag = document.createDocumentFragment();
@@ -1913,9 +1961,9 @@
 
   // ----- Campagne marketing -----
   const MODELES = {
-    avis: () => "Bonjour ! Merci de votre visite à A Piaghja 🌊 Un petit avis Google nous aiderait énormément" + (lienAvisPret() ? " : " + LIEN_AVIS : " !") + " À très vite sur la plage !",
-    event: () => "A Piaghja 🌊 Soirée spéciale sur la plage du Golfo di Sogno ! Réservez vite votre table : https://apiaghja.pages.dev/reserver — On vous attend !",
-    retour: () => "Bonjour ! Ça nous ferait plaisir de vous revoir à A Piaghja 🌊 Votre table face à la mer vous attend : https://apiaghja.pages.dev/reserver"
+    avis: () => "Bonjour ! Merci de votre visite à A Piaghja  Un petit avis Google nous aiderait énormément" + (lienAvisPret() ? " : " + LIEN_AVIS : " !") + " À très vite sur la plage !",
+    event: () => "A Piaghja  Soirée spéciale sur la plage du Golfo di Sogno ! Réservez vite votre table : https://apiaghja.pages.dev/reserver — On vous attend !",
+    retour: () => "Bonjour ! Ça nous ferait plaisir de vous revoir à A Piaghja  Votre table face à la mer vous attend : https://apiaghja.pages.dev/reserver"
   };
   let cibleCampagne = [];
   function majCampagne(liste){
@@ -1965,7 +2013,7 @@
   // ═══════════ Vue Candidatures ═══════════
   const urlCand = () => `/api/candidature?key=${encodeURIComponent(cle)}`;
 
-  const CAND_ST = { nouvelle: "Nouvelle", rappelee: "☎ Rappelée", retenue: "✓ Retenue", refusee: "✗ Refusée" };
+  const CAND_ST = { nouvelle: "Nouvelle", rappelee: "Rappelée", retenue: "Retenue", refusee: "Refusée" };
   let candDonnees = [], candFiltre = "tous";
   function candStatutDe(c){ return CAND_ST[c.statut] ? c.statut : "nouvelle"; }
 
@@ -1990,7 +2038,7 @@
     zone.innerHTML = "";
     const liste = candFiltre === "tous" ? candDonnees : candDonnees.filter(c => candStatutDe(c) === candFiltre);
     if (!liste.length){
-      zone.innerHTML = '<div class="vide">' + (candDonnees.length ? "Rien dans ce filtre." : "Aucune candidature pour l\'instant — la page « Rejoignez-nous » les enverra ici. 🤝") + '</div>';
+      zone.innerHTML = '<div class="vide">' + (candDonnees.length ? "Rien dans ce filtre." : "Aucune candidature pour l\'instant — la page « Rejoignez-nous » les enverra ici.") + '</div>';
       return;
     }
     const frag = document.createDocumentFragment();
@@ -2006,7 +2054,7 @@
         (c.message ? '<div class="d-msg">' + c.message + '</div>' : "") +
         '<div class="d-pied">' +
           '<span></span>' +
-          (c.tel ? '<a class="d-tel" href="tel:' + c.tel.replace(/\s/g, "") + '">📞 ' + c.tel + '</a>' : "") +
+          (c.tel ? '<a class="d-tel" href="tel:' + c.tel.replace(/\s/g, "") + '">' + c.tel + '</a>' : "") +
         '</div>';
       const rang = document.createElement("div");
       rang.className = "d-statuts";
@@ -2023,7 +2071,7 @@
             rendreCandidatures();
             majPuceCand(candDonnees);
             if (window.__vibrer) window.__vibrer(5);
-            toast("Candidature « " + nom.replace(/^[^ ]+ /, "") + " »");
+            toast("Candidature « " + nom + " »");
           } else toast("Statut refusé (API v2 déployée ?)", true);
         });
         rang.appendChild(b);
