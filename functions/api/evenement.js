@@ -12,6 +12,21 @@ const json = (data, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
 
 export async function onRequestPost({ request, env }) {
+  // v2 : mise à jour de statut par la direction
+  {
+    let corps = null;
+    try { corps = await request.clone().json(); } catch (e) {}
+    if (corps && corps.action === "statut") {
+      if (!env.DB) return json({ error: "db_non_configuree" }, 503);
+      if (!env.ADMIN_KEY || corps.key !== env.ADMIN_KEY) return json({ error: "non_autorise" }, 401);
+      const valides = ["nouveau", "rappele", "confirme", "clos"];
+      if (!corps.id || !valides.includes(corps.statut)) return json({ error: "statut_invalide" }, 400);
+      try { await env.DB.prepare(CREATION).run(); } catch (e) {}
+      await env.DB.prepare("UPDATE devis_evenements SET statut = ?1 WHERE id = ?2").bind(corps.statut, corps.id).run();
+      return json({ ok: true });
+    }
+  }
+
   if (!env.DB) return json({ error: "db_non_configuree" }, 503);
   let b;
   try { b = await request.json(); } catch { return json({ error: "corps_invalide" }, 400); }

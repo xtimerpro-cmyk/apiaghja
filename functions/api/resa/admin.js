@@ -1,4 +1,5 @@
-// /api/resa/admin v4 — réservé à la direction (clé ADMIN_KEY)
+// /api/resa/admin v5 — réservé à la direction (clé ADMIN_KEY)
+// v5 : statuts de réservation (confirmée/arrivée/terminée/no-show) + recherche toutes dates (?q=)
 // v4 : la vue période (?from&to) détaille résa / passage par service (rétro-compatible)
 // GET  ?date=YYYY-MM-DD&key=...               → réservations du jour + totaux
 // GET  ?from=...&to=...&key=...               → totaux par jour (max 31 j)
@@ -79,12 +80,25 @@ export async function onRequestGet({ env, request }) {
     return jsonReponse({ from, to, jours, capacite: CAPACITE });
   }
 
+  // ----- Recherche toutes dates (v5) -----
+  const q = url.searchParams.get("q");
+  if (q) {
+    const texte = "%" + q.trim() + "%";
+    const chiffres = q.replace(/\D/g, "");
+    const motifTel = chiffres.length >= 4 ? "%" + chiffres + "%" : "£jamais£";
+    const rows = await env.DB.prepare(
+      "SELECT * FROM reservations WHERE nom LIKE ?1 COLLATE NOCASE OR prenom LIKE ?1 COLLATE NOCASE " +
+      "OR REPLACE(REPLACE(REPLACE(tel,' ',''),'.',''),'-','') LIKE ?2 ORDER BY date DESC, heure LIMIT 60"
+    ).bind(texte, motifTel).all();
+    return jsonReponse({ resultats: rows.results || [] });
+  }
+
   // ----- Vue jour -----
   const date = url.searchParams.get("date") || "";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return jsonReponse({ error: "date_invalide" }, 400);
 
   const rows = await env.DB.prepare(
-    "SELECT id, heure, service, nom, prenom, tel, pax, camping, table_num, type, created_at FROM reservations WHERE date = ?1 ORDER BY heure, nom"
+    "SELECT * FROM reservations WHERE date = ?1 ORDER BY heure, nom"
   ).bind(date).all();
 
   const resas = rows.results || [];
@@ -139,6 +153,14 @@ export async function onRequestPost({ env, request }) {
     ).bind(date, heure, service, pax, camping, table || null).run();
 
     return jsonReponse({ ok: true, date, heure, service, pax, camping, table });
+  }
+
+  if (b.action === "statut") {
+    const valides = ["confirmee", "arrivee", "terminee", "noshow"];
+    if (!b.id || !valides.includes(b.statut)) return jsonReponse({ error: "statut_invalide" }, 400);
+    try { await env.DB.prepare("ALTER TABLE reservations ADD COLUMN statut TEXT").run(); } catch (e) {}
+    await env.DB.prepare("UPDATE reservations SET statut = ?1 WHERE id = ?2").bind(b.statut, b.id).run();
+    return jsonReponse({ ok: true });
   }
 
   return jsonReponse({ error: "action_inconnue" }, 400);

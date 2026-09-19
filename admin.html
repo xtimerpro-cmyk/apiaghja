@@ -718,6 +718,51 @@
     .onglets::-webkit-scrollbar{display:none;}
     .onglet{flex:none;scroll-snap-align:center;white-space:nowrap;}
   }
+
+  /* ═══════════ V14 — OUTILS DE SERVICE ═══════════ */
+  .ligne-outils{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin:0 0 1rem;}
+  .ligne-outils .recherche{flex:1;min-width:200px;}
+  #resGlob .rg-l{display:flex;gap:.8rem;align-items:center;padding:.55rem .6rem;border-bottom:1px dashed rgba(194,161,92,.2);cursor:pointer;font-size:.85rem;flex-wrap:wrap;}
+  #resGlob .rg-l:hover{background:rgba(253,252,249,.05);}
+  #resGlob .rg-date{color:var(--or);min-width:92px;}
+  #resGlob .rg-svc{color:rgba(239,233,221,.5);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;}
+  #resGlob .rg-nom{flex:1;min-width:120px;}
+  #resGlob .rg-nom small{color:rgba(239,233,221,.5);margin-left:.4rem;}
+  .j-assis{font-size:.68rem;color:var(--olive-soft);margin-left:.45rem;white-space:nowrap;}
+  .r-statut{
+    border:1px solid rgba(194,161,92,.4);background:rgba(253,252,249,.06);color:var(--sable);
+    border-radius:999px;padding:.34rem .7rem;font-size:.7rem;cursor:pointer;flex:none;
+    white-space:nowrap;transition:all .2s ease;
+  }
+  .r-statut[data-s="arrivee"]{background:rgba(125,133,96,.3);border-color:var(--olive-soft);color:#d6dcc2;}
+  .r-statut[data-s="terminee"]{opacity:.55;}
+  .r-statut[data-s="noshow"]{background:rgba(176,85,63,.22);border-color:var(--terre);color:#e7a48f;}
+  .resa.st-terminee .r-heure, .resa.st-terminee .r-nom{opacity:.4;}
+  .resa.st-noshow .r-nom > span:first-child{text-decoration:line-through;}
+  .filtres-st{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+  .d-statuts{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.65rem;}
+  .d-st{
+    border:1px solid rgba(194,161,92,.35);background:transparent;color:rgba(239,233,221,.55);
+    border-radius:999px;padding:.3rem .62rem;font-size:.64rem;letter-spacing:.05em;cursor:pointer;
+    transition:all .2s ease;
+  }
+  .d-st:hover{border-color:var(--or);}
+  .d-st.on{background:linear-gradient(135deg,var(--or),#d4b26e);color:#1b1c16;border-color:transparent;}
+  @media print{
+    body{background:#fff !important;}
+    .fond3d, .topbar, #toast, .nav-ligne, .ligne-outils, #resGlob, .r-suppr, .r-statut,
+    #semaine, .sem-j, .pf-g, .pf-camp, #pfAjouter, #pfMsg, .menu-rail{display:none !important;}
+    section[hidden]{display:none !important;}
+    main{padding:0 !important;}
+    .carte{background:#fff !important;border:1px solid #bbb !important;box-shadow:none !important;}
+    #vueJour *{color:#000 !important;text-shadow:none !important;}
+    .r-heure{background:#eee !important;}
+    .r-pax{background:#ddd !important;color:#000 !important;}
+    .jauge{border:1px solid #999 !important;background:#fff !important;}
+    .j-barre{display:none !important;}
+    .resa{border-bottom:1px solid #ccc !important;}
+    .r-table{border:1px solid #999 !important;background:#fff !important;}
+  }
 </style>
 </head>
 <body>
@@ -812,16 +857,21 @@
         <button class="btn-doux" id="aujourdhui">Aujourd'hui</button>
         <button class="fleche" id="jourSuiv" aria-label="Jour suivant">›</button>
       </div>
+      <div class="ligne-outils">
+        <input class="recherche" id="rechGlob" placeholder="🔍 Retrouver un client — nom ou téléphone, toutes dates">
+        <button class="btn-doux" id="btnImprimer" title="Imprimer la feuille du jour">🖨 Imprimer</button>
+      </div>
+      <div id="resGlob"></div>
 
       <div class="jauges">
         <div class="jauge" id="jaugeMidi">
           <div class="j-tete"><span class="j-nom">☀️ Midi</span>
-            <span class="j-val"><span id="totMidi">0</span><small> / <span id="capMidi">60</span></small></span></div>
+            <span class="j-val"><span id="totMidi">0</span><small> / <span id="capMidi">60</span></small></span><span class="j-assis" id="assisMidi"></span></div>
           <div class="j-barre"><i id="barreMidi"></i></div>
         </div>
         <div class="jauge" id="jaugeSoir">
           <div class="j-tete"><span class="j-nom">🌙 Soir</span>
-            <span class="j-val"><span id="totSoir">0</span><small> / <span id="capSoir">60</span></small></span></div>
+            <span class="j-val"><span id="totSoir">0</span><small> / <span id="capSoir">60</span></small></span><span class="j-assis" id="assisSoir"></span></div>
           <div class="j-barre"><i id="barreSoir"></i></div>
         </div>
       </div>
@@ -951,6 +1001,7 @@
         <div class="nav-titre"><b>Demandes de devis</b> <span class="compteur" id="evtCompteur"></span></div>
         <button class="btn-doux" id="evtRecharger">Actualiser</button>
       </div>
+      <div class="filtres-st" id="evtFiltres"></div>
       <div class="devis-grille" id="devisGrille"></div>
     </section>
 
@@ -960,6 +1011,7 @@
         <div class="nav-titre"><b>Candidatures reçues</b> <span class="compteur" id="candCompteur"></span></div>
         <button class="btn-doux" id="candRecharger">Actualiser</button>
       </div>
+      <div class="filtres-st" id="candFiltres"></div>
       <div class="devis-grille" id="candGrille"></div>
     </section>
 
@@ -1156,6 +1208,33 @@
       '<span class="r-pax">' + r.pax + ' cvts</span>' +
       (r.camping ? '<span class="badge camp">🏕 camping</span>' : "") +
       (estPassage ? '<span class="badge pass">passage</span>' : "");
+    if (!estPassage){
+      const ETATS = { confirmee: "Confirmée", arrivee: "🪑 Arrivée", terminee: "✓ Terminée", noshow: "✗ No-show" };
+      const SUIVANT = { confirmee: "arrivee", arrivee: "terminee", terminee: "noshow", noshow: "confirmee" };
+      let statut = ETATS[r.statut] ? r.statut : "confirmee";
+      l.classList.add("st-" + statut);
+      const bSt = document.createElement("button");
+      bSt.className = "r-statut";
+      bSt.dataset.s = statut;
+      bSt.textContent = ETATS[statut];
+      bSt.title = "Toucher pour passer à l'étape suivante (confirmée → arrivée → terminée → no-show)";
+      bSt.addEventListener("click", async () => {
+        const prochain = SUIVANT[statut];
+        const rep = await apiPost("/api/resa/admin", { action: "statut", id: r.id, statut: prochain });
+        if (rep.ok){
+          l.classList.remove("st-" + statut);
+          statut = prochain;
+          r.statut = prochain;
+          l.classList.add("st-" + statut);
+          bSt.dataset.s = statut;
+          bSt.textContent = ETATS[statut];
+          invalider("/api/resa/admin?date=" + dateCourante);
+          recompterAssis();
+          if (window.__vibrer) window.__vibrer(5);
+        } else toast("Changement de statut impossible (API v5 déployée ?)", true);
+      });
+      l.appendChild(bSt);
+    }
     const table = document.createElement("input");
     table.className = "r-table" + (r.table_num ? " ok" : "");
     table.placeholder = "table";
@@ -1200,6 +1279,15 @@
     return l;
   }
 
+  let resasJour = [];
+  function recompterAssis(){
+    const compte = { midi: 0, soir: 0 };
+    for (const r of resasJour){
+      if (r.type !== "passage" && r.statut === "arrivee") compte[r.service] = (compte[r.service] || 0) + (r.pax || 0);
+    }
+    $("assisMidi").textContent = compte.midi ? "🪑 " + compte.midi + " assis" : "";
+    $("assisSoir").textContent = compte.soir ? "🪑 " + compte.soir + " assis" : "";
+  }
   async function chargerJour(silencieux){
     const gen = ++generation;
     $("titreJour").textContent = joli(dateCourante);
@@ -1212,6 +1300,8 @@
       $("capSoir").textContent = data.capacite.soir;
       jauge("jaugeMidi", "totMidi", "barreMidi", data.totaux.midi, data.capacite.midi);
       jauge("jaugeSoir", "totSoir", "barreSoir", data.totaux.soir, data.capacite.soir);
+      resasJour = data.resas;
+      recompterAssis();
       const zone = $("lignes");
       zone.innerHTML = "";
       if (!data.resas.length) {
@@ -1276,6 +1366,40 @@
   $("jourPrec").addEventListener("click", () => decale(-1));
   $("jourSuiv").addEventListener("click", () => decale(1));
   $("aujourdhui").addEventListener("click", () => { dateCourante = isoLocal(); chargerJour(); });
+  $("btnImprimer").addEventListener("click", () => window.print());
+  let tRech = null;
+  $("rechGlob").addEventListener("input", () => {
+    clearTimeout(tRech);
+    const q = $("rechGlob").value.trim();
+    const zone = $("resGlob");
+    if (q.length < 2){ zone.innerHTML = ""; return; }
+    tRech = setTimeout(async () => {
+      try {
+        const data = await apiGet(`/api/resa/admin?key=${encodeURIComponent(cle)}&q=${encodeURIComponent(q)}`, true);
+        const res = data.resultats || [];
+        zone.innerHTML = res.length ? "" : '<div class="vide">Aucune réservation trouvée pour « ' + q + ' ».</div>';
+        for (const r of res){
+          const l = document.createElement("div");
+          l.className = "rg-l";
+          l.innerHTML =
+            '<span class="rg-date">' + joli(r.date) + '</span>' +
+            '<span class="rg-svc">' + (r.service || "") + " " + (r.heure || "") + '</span>' +
+            '<span class="rg-nom">' + ((r.prenom ? r.prenom + " " : "") + (r.nom || "Passage")) +
+              (r.tel ? '<small>' + r.tel + '</small>' : "") + '</span>' +
+            '<span class="r-pax">' + r.pax + ' cvts</span>';
+          l.addEventListener("click", () => {
+            dateCourante = r.date;
+            $("rechGlob").value = "";
+            zone.innerHTML = "";
+            chargerJour();
+          });
+          zone.appendChild(l);
+        }
+      } catch (e) {
+        zone.innerHTML = '<div class="vide">Recherche indisponible (l\'API v5 est-elle déployée ?).</div>';
+      }
+    }, 350);
+  });
   $("choixDate").addEventListener("change", () => {
     if ($("choixDate").value) { dateCourante = $("choixDate").value; chargerJour(); }
   });
@@ -1550,52 +1674,101 @@
   const JOUR_MS = 86400000;
   const dateSql = (s) => new Date(String(s).replace(" ", "T") + "Z");
 
+  const EVT_ST = { nouveau: "Nouveau", rappele: "☎ Rappelé", confirme: "✓ Confirmé", clos: "Clos" };
+  let evtDonnees = [], evtFiltre = "tous";
+  function evtStatutDe(d){ return EVT_ST[d.statut] ? d.statut : "nouveau"; }
+
+  function rendreFiltresEvt(){
+    const zone = $("evtFiltres");
+    zone.innerHTML = "";
+    const comptes = { tous: evtDonnees.length };
+    for (const cle2 of Object.keys(EVT_ST)) comptes[cle2] = evtDonnees.filter(d => evtStatutDe(d) === cle2).length;
+    const tous = [["tous", "Tous"]].concat(Object.entries(EVT_ST));
+    for (const [val, nom] of tous){
+      const b = document.createElement("button");
+      b.className = "p-pill" + (evtFiltre === val ? " on" : "");
+      b.textContent = nom + (comptes[val] ? " · " + comptes[val] : "");
+      b.addEventListener("click", () => { evtFiltre = val; rendreEvenements(); });
+      zone.appendChild(b);
+    }
+  }
+
+  function rendreEvenements(){
+    rendreFiltresEvt();
+    const zone = $("devisGrille");
+    zone.innerHTML = "";
+    const liste = evtFiltre === "tous" ? evtDonnees : evtDonnees.filter(d => evtStatutDe(d) === evtFiltre);
+    if (!liste.length){
+      zone.innerHTML = '<div class="vide">' + (evtDonnees.length ? "Rien dans ce filtre." : "Aucune demande pour l\'instant — l\'assistant du site les enverra ici. 🎉") + '</div>';
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    for (const d of liste){
+      const carte = document.createElement("div");
+      const st = evtStatutDe(d);
+      carte.className = "devis" + (st === "nouveau" ? " neuf" : "");
+      const recu = d.cree_le ? dateSql(d.cree_le).toLocaleDateString("fr-FR", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
+      carte.innerHTML =
+        '<div class="d-type">' + (d.type || "Événement") + '</div>' +
+        '<div class="d-date">' + (d.date_evt ? joli(d.date_evt) : "date à définir") + (d.moment ? " · " + d.moment : "") + '</div>' +
+        '<div class="d-l"><span>Invités</span><b>' + d.pax + '</b></div>' +
+        '<div class="d-l"><span>Formule</span><b>' + (d.formule || "—") + '</b></div>' +
+        (d.options ? '<div class="d-l"><span>Options</span><b>' + d.options + '</b></div>' : "") +
+        '<div class="d-tot"><span>Pré-devis</span><b>' + (d.estimation ? d.estimation.toLocaleString("fr-FR") + " €" : "sur mesure") + '</b></div>' +
+        '<div class="d-pied">' +
+          '<span>' + (d.prenom || "—") + '</span>' +
+          (d.tel ? '<a class="d-tel" href="tel:' + d.tel.replace(/\s/g, "") + '">📞 ' + d.tel + '</a>' : "") +
+        '</div>';
+      const rang = document.createElement("div");
+      rang.className = "d-statuts";
+      for (const [val, nom] of Object.entries(EVT_ST)){
+        const b = document.createElement("button");
+        b.className = "d-st" + (st === val ? " on" : "");
+        b.textContent = nom;
+        b.addEventListener("click", async () => {
+          if (val === st) return;
+          const rep = await apiPost("/api/evenement", { action: "statut", id: d.id, statut: val });
+          if (rep.ok){
+            d.statut = val;
+            invalider("/api/evenement");
+            rendreEvenements();
+            majPuceEvt(evtDonnees);
+            if (window.__vibrer) window.__vibrer(5);
+            toast("Devis marqué « " + nom.replace(/^[^ ]+ /, "") + " »");
+          } else toast("Statut refusé (API v2 déployée ?)", true);
+        });
+        rang.appendChild(b);
+      }
+      carte.appendChild(rang);
+      const pied = document.createElement("div");
+      pied.className = "d-recu";
+      pied.textContent = "reçu le " + recu;
+      carte.appendChild(pied);
+      frag.appendChild(carte);
+    }
+    zone.appendChild(frag);
+  }
+
   async function chargerEvenements(force){
     const gen = ++generation;
     $("devisGrille").innerHTML = squelettes(3);
     try {
       const data = await apiGet(urlEvt(), force);
       if (gen !== generation || vueCourante !== "evenements") return;
-      const demandes = data.demandes || [];
-      $("evtCompteur").textContent = demandes.length ? "· " + demandes.length + " demande" + (demandes.length > 1 ? "s" : "") : "";
-      majPuceEvt(demandes);
-      const zone = $("devisGrille");
-      zone.innerHTML = "";
-      if (!demandes.length) {
-        zone.innerHTML = '<div class="vide">Aucune demande pour l\'instant — l\'assistant du site les enverra ici. 🎉</div>';
-        return;
-      }
-      const frag = document.createDocumentFragment();
-      for (const d of demandes) {
-        const carte = document.createElement("div");
-        const neuf = d.cree_le && (Date.now() - dateSql(d.cree_le).getTime() < 2 * JOUR_MS);
-        carte.className = "devis" + (neuf ? " neuf" : "");
-        const recu = d.cree_le ? dateSql(d.cree_le).toLocaleDateString("fr-FR", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
-        carte.innerHTML =
-          '<div class="d-type">' + (d.type || "Événement") + '</div>' +
-          '<div class="d-date">' + (d.date_evt ? joli(d.date_evt) : "date à définir") + (d.moment ? " · " + d.moment : "") + '</div>' +
-          '<div class="d-l"><span>Invités</span><b>' + d.pax + '</b></div>' +
-          '<div class="d-l"><span>Formule</span><b>' + (d.formule || "—") + '</b></div>' +
-          (d.options ? '<div class="d-l"><span>Options</span><b>' + d.options + '</b></div>' : "") +
-          '<div class="d-tot"><span>Pré-devis</span><b>' + (d.estimation ? d.estimation.toLocaleString("fr-FR") + " €" : "sur mesure") + '</b></div>' +
-          '<div class="d-pied">' +
-            '<span>' + (d.prenom || "—") + '</span>' +
-            (d.tel ? '<a class="d-tel" href="tel:' + d.tel.replace(/\s/g, "") + '">📞 ' + d.tel + '</a>' : "") +
-          '</div>' +
-          '<div class="d-recu">reçu le ' + recu + '</div>';
-        frag.appendChild(carte);
-      }
-      zone.appendChild(frag);
+      evtDonnees = data.demandes || [];
+      $("evtCompteur").textContent = evtDonnees.length ? "· " + evtDonnees.length + " demande" + (evtDonnees.length > 1 ? "s" : "") : "";
+      majPuceEvt(evtDonnees);
+      rendreEvenements();
     } catch (e) {
       if (gen === generation && vueCourante === "evenements")
         $("devisGrille").innerHTML = '<div class="vide">Chargement impossible (le point /api/evenement est-il déployé ?).</div>';
     }
   }
   function majPuceEvt(demandes){
-    const recents = demandes.filter(d => d.cree_le && Date.now() - dateSql(d.cree_le).getTime() < 2 * JOUR_MS).length;
+    const nouveaux = demandes.filter(d => evtStatutDe(d) === "nouveau").length;
     const puce = $("puceEvt");
-    puce.hidden = !recents;
-    puce.textContent = recents;
+    puce.hidden = !nouveaux;
+    puce.textContent = nouveaux;
   }
   async function compterEvenements(){
     try {
@@ -1927,47 +2100,96 @@
   // ═══════════ Vue Candidatures ═══════════
   const urlCand = () => `/api/candidature?key=${encodeURIComponent(cle)}`;
 
+  const CAND_ST = { nouvelle: "Nouvelle", rappelee: "☎ Rappelée", retenue: "✓ Retenue", refusee: "✗ Refusée" };
+  let candDonnees = [], candFiltre = "tous";
+  function candStatutDe(c){ return CAND_ST[c.statut] ? c.statut : "nouvelle"; }
+
+  function rendreFiltresCand(){
+    const zone = $("candFiltres");
+    zone.innerHTML = "";
+    const comptes = { tous: candDonnees.length };
+    for (const cle2 of Object.keys(CAND_ST)) comptes[cle2] = candDonnees.filter(c => candStatutDe(c) === cle2).length;
+    const tous = [["tous", "Toutes"]].concat(Object.entries(CAND_ST));
+    for (const [val, nom] of tous){
+      const b = document.createElement("button");
+      b.className = "p-pill" + (candFiltre === val ? " on" : "");
+      b.textContent = nom + (comptes[val] ? " · " + comptes[val] : "");
+      b.addEventListener("click", () => { candFiltre = val; rendreCandidatures(); });
+      zone.appendChild(b);
+    }
+  }
+
+  function rendreCandidatures(){
+    rendreFiltresCand();
+    const zone = $("candGrille");
+    zone.innerHTML = "";
+    const liste = candFiltre === "tous" ? candDonnees : candDonnees.filter(c => candStatutDe(c) === candFiltre);
+    if (!liste.length){
+      zone.innerHTML = '<div class="vide">' + (candDonnees.length ? "Rien dans ce filtre." : "Aucune candidature pour l\'instant — la page « Rejoignez-nous » les enverra ici. 🤝") + '</div>';
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    for (const c of liste){
+      const carte = document.createElement("div");
+      const st = candStatutDe(c);
+      carte.className = "devis cand" + (st === "nouvelle" ? " neuf" : "");
+      const recu = c.cree_le ? dateSql(c.cree_le).toLocaleDateString("fr-FR", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
+      carte.innerHTML =
+        '<div class="d-type">' + (c.poste || "Candidature") + '</div>' +
+        '<div class="d-date">' + (c.prenom || "—") + '</div>' +
+        (c.dispo ? '<div class="d-l"><span>Disponibilités</span><b>' + c.dispo + '</b></div>' : "") +
+        (c.message ? '<div class="d-msg">' + c.message + '</div>' : "") +
+        '<div class="d-pied">' +
+          '<span></span>' +
+          (c.tel ? '<a class="d-tel" href="tel:' + c.tel.replace(/\s/g, "") + '">📞 ' + c.tel + '</a>' : "") +
+        '</div>';
+      const rang = document.createElement("div");
+      rang.className = "d-statuts";
+      for (const [val, nom] of Object.entries(CAND_ST)){
+        const b = document.createElement("button");
+        b.className = "d-st" + (st === val ? " on" : "");
+        b.textContent = nom;
+        b.addEventListener("click", async () => {
+          if (val === st) return;
+          const rep = await apiPost("/api/candidature", { action: "statut", id: c.id, statut: val });
+          if (rep.ok){
+            c.statut = val;
+            invalider("/api/candidature");
+            rendreCandidatures();
+            majPuceCand(candDonnees);
+            if (window.__vibrer) window.__vibrer(5);
+            toast("Candidature « " + nom.replace(/^[^ ]+ /, "") + " »");
+          } else toast("Statut refusé (API v2 déployée ?)", true);
+        });
+        rang.appendChild(b);
+      }
+      carte.appendChild(rang);
+      const pied = document.createElement("div");
+      pied.className = "d-recu";
+      pied.textContent = "reçue le " + recu;
+      carte.appendChild(pied);
+      frag.appendChild(carte);
+    }
+    zone.appendChild(frag);
+  }
+
   async function chargerCandidatures(force){
     const gen = ++generation;
     $("candGrille").innerHTML = squelettes(3);
     try {
       const data = await apiGet(urlCand(), force);
       if (gen !== generation || vueCourante !== "candidatures") return;
-      const liste = data.candidatures || [];
-      $("candCompteur").textContent = liste.length ? "· " + liste.length + " candidature" + (liste.length > 1 ? "s" : "") : "";
-      majPuceCand(liste);
-      const zone = $("candGrille");
-      zone.innerHTML = "";
-      if (!liste.length) {
-        zone.innerHTML = '<div class="vide">Aucune candidature pour l\'instant — la page « Rejoignez-nous » les enverra ici. 🤝</div>';
-        return;
-      }
-      const frag = document.createDocumentFragment();
-      for (const c of liste) {
-        const carte = document.createElement("div");
-        const neuf = c.cree_le && (Date.now() - dateSql(c.cree_le).getTime() < 2 * JOUR_MS);
-        carte.className = "devis cand" + (neuf ? " neuf" : "");
-        const recu = c.cree_le ? dateSql(c.cree_le).toLocaleDateString("fr-FR", { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
-        carte.innerHTML =
-          '<div class="d-type">' + (c.poste || "Candidature") + '</div>' +
-          '<div class="d-date">' + (c.prenom || "—") + '</div>' +
-          (c.dispo ? '<div class="d-l"><span>Disponibilités</span><b>' + c.dispo + '</b></div>' : "") +
-          (c.message ? '<div class="d-msg">' + c.message + '</div>' : "") +
-          '<div class="d-pied">' +
-            '<span></span>' +
-            (c.tel ? '<a class="d-tel" href="tel:' + c.tel.replace(/\s/g, "") + '">📞 ' + c.tel + '</a>' : "") +
-          '</div>' +
-          '<div class="d-recu">reçue le ' + recu + '</div>';
-        frag.appendChild(carte);
-      }
-      zone.appendChild(frag);
+      candDonnees = data.candidatures || [];
+      $("candCompteur").textContent = candDonnees.length ? "· " + candDonnees.length + " candidature" + (candDonnees.length > 1 ? "s" : "") : "";
+      majPuceCand(candDonnees);
+      rendreCandidatures();
     } catch (e) {
       if (gen === generation && vueCourante === "candidatures")
         $("candGrille").innerHTML = '<div class="vide">Chargement impossible (le point /api/candidature est-il déployé ?).</div>';
     }
   }
   function majPuceCand(liste){
-    const recents = liste.filter(c => c.cree_le && Date.now() - dateSql(c.cree_le).getTime() < 2 * JOUR_MS).length;
+    const recents = liste.filter(c => candStatutDe(c) === "nouvelle").length;
     const puce = $("puceCand");
     puce.hidden = !recents;
     puce.textContent = recents;
